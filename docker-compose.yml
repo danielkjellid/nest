@@ -6,7 +6,6 @@ volumes:
 
 services:
   postgres:
-    container_name: Postgres
     image: postgres:14.3
     environment:
       - POSTGRES_USER=nest
@@ -21,4 +20,4 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
-      - "5433:5432"
+      - "5438:5438"
