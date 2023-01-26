@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
-from nest.config import settings
+from nest import config
 
-app = FastAPI()
+app = FastAPI(title="Nest", docs_url="/docs")
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World", "DB": settings.database_url}
+    return {"message": "Hello World", "DB": config.DATABASE_URL}
