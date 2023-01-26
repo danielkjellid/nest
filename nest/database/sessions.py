@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from nest import config
+from nest.database.core import engine
 from nest.database.utils import (
     get_session_context,
     reset_session_context,
@@ -11,19 +12,19 @@ from sqlalchemy.ext.asyncio import (
     async_scoped_session,
     create_async_engine,
 )
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
-
-class RoutingSession(Session):
-    def get_bind(self, mapper=None, clause=None, **kwargs):
-        return create_async_engine(config.DATABASE_URL, pool_recycle=3600).sync_engine
-
+# async def session() -> AsyncSession:
+#     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+#
+#     async with async_session() as _session:
+#         yield _session
 
 async_session_factory = sessionmaker(
-    class_=AsyncSession, sync_session_class=RoutingSession
+    engine, class_=AsyncSession, expire_on_commit=False
 )
 
-session: AsyncSession | async_scoped_session = async_scoped_session(
+session = async_scoped_session(
     session_factory=async_session_factory,
     scopefunc=get_session_context,
 )

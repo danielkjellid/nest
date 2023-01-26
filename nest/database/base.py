@@ -9,7 +9,7 @@ class CustomBase:
     __repr_max_length__ = 15
 
     @declared_attr
-    def __table_name__(self) -> str:
+    def __tablename__(self) -> str:
         return resolve_table_name(self.__name__)
 
     def dict(self) -> dict[Any, Any]:
