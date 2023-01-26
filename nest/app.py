@@ -14,12 +14,11 @@ def init_routers(app_: FastAPI) -> None:
 def init_middlewares() -> list[Middleware]:
     middlewares = [
         Middleware(
-            CORSMiddleware(
-                allow_origins=["*"],
-                allow_credentials=True,
-                allow_methods=["*"],
-                allow_headers=["*"],
-            )
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
         ),
         Middleware(SQLAlchemyMiddleware),
     ]
@@ -32,8 +31,9 @@ def create_app() -> FastAPI:
         title="Nest",
         description="Nest API",
         version="1.0.0",
-        docs_url=None if config.ENV == "production" else "/docs",
-        redoc_url=None if config.ENV == "production" else "/redoc",
+        # root_path="/api",
+        docs_url=None if config.ENVIRONMENT == "production" else "/docs",
+        redoc_url=None if config.ENVIRONMENT == "production" else "/redoc",
         middleware=init_middlewares(),
     )
     init_routers(app_=app_)

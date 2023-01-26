@@ -1,7 +1,7 @@
 import re
 from contextvars import ContextVar, Token
 
-_session_context = ContextVar[str] = ContextVar("session_context")
+_session_context: ContextVar[str] = ContextVar("session_context")
 
 
 def get_session_context() -> str:

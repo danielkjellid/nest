@@ -1,10 +1,27 @@
-from fastapi import FastAPI
+import os
+
+import click
+import uvicorn
 
 from nest import config
 
-app = FastAPI(title="Nest", docs_url="/docs")
+
+@click.command()
+@click.option(
+    "--env",
+    type=click.Choice(["local", "staging", "prod"], case_sensitive=False),
+    default="local",
+)
+@click.option("--debug", type=click.BOOL, is_flag=True, default=False)
+def main(env: str, debug: bool) -> None:
+    os.environ["ENV"] = env
+    os.environ["DEBUG"] = str(debug)
+    uvicorn.run(
+        app="app:app",
+        reload=True if config.ENVIRONMENT != "production" else False,
+        workers=1,
+    )
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World", "DB": config.DATABASE_URL}
+if __name__ == "__main__":
+    main()
