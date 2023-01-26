@@ -32,7 +32,9 @@ SENTRY_DSN = config("SENTRY_DSN", default="")
 # Database #
 ############
 
-DATABASE_URL = config("DATABASE_URL", default="nest:nest@localhost:5438/nest")
+DATABASE_URL = config(
+    "DATABASE_URL", default="postgresql+asyncpg://nest:nest@localhost:5433/nest"
+)
 
 ###########
 # Alembic #
