@@ -6,18 +6,21 @@ from nest.database.utils import resolve_table_name
 
 
 class CustomBase:
-    __repr_attrs__ = []
+    __repr_attrs__: list[str] = []
     __repr_max_length__ = 15
 
     @declared_attr
     def __tablename__(self) -> str:
-        return resolve_table_name(self.__name__)
+        return resolve_table_name(self.__class__.__name__)
 
     def dict(self) -> dict[Any, Any]:
         """
         Returns the dict representation of a model.
         """
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {
+            c.name: getattr(self, c.name)
+            for c in self.__table__.columns  # type: ignore
+        }
 
 
 Base = declarative_base(cls=CustomBase)
