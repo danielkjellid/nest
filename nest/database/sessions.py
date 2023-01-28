@@ -1,24 +1,13 @@
 from uuid import uuid4
 
-from nest import config
 from nest.database.core import engine
 from nest.database.utils import (
     get_session_context,
     reset_session_context,
     set_session_context,
 )
-from sqlalchemy.ext.asyncio import (
-    AsyncSession,
-    async_scoped_session,
-    create_async_engine,
-)
+from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session
 from sqlalchemy.orm import sessionmaker
-
-# async def session() -> AsyncSession:
-#     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
-#
-#     async with async_session() as _session:
-#         yield _session
 
 async_session_factory = sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False

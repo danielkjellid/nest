@@ -4,7 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from nest import config
 from nest.api.v1 import v1_router
-from nest.database import init_db
 from nest.middlewares import SQLAlchemyMiddleware
 
 
@@ -27,8 +26,7 @@ def init_middlewares() -> list[Middleware]:
     return middlewares
 
 
-async def create_app() -> FastAPI:
-    await init_db()
+def create_app() -> FastAPI:
     app_ = FastAPI(
         title="Nest",
         description="Nest API",
@@ -39,6 +37,7 @@ async def create_app() -> FastAPI:
         middleware=init_middlewares(),
     )
     init_routers(app_=app_)
+    print(config.ENVIRONMENT)
 
     return app_
 

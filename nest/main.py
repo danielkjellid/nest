@@ -14,7 +14,7 @@ from nest import config
 )
 @click.option("--debug", type=click.BOOL, is_flag=True, default=False)
 def main(env: str, debug: bool) -> None:
-    os.environ["ENV"] = env
+    os.environ["ENVIRONMENT"] = env
     os.environ["DEBUG"] = str(debug)
     uvicorn.run(
         app="app:app",
