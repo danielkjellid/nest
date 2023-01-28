@@ -1,3 +1,4 @@
+from typing import Any, Callable
 from uuid import uuid4
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session
@@ -20,9 +21,9 @@ session = async_scoped_session(
 )
 
 
-def offline_session(func):
+def offline_session(func: Callable[..., Any]) -> Callable[..., Any]:
     """
-    We set the normal sesssion through a middleware, however, it does not
+    We set the normal session through a middleware, however, it does not
     go through middleware in tests or background tasks, so an offline
     session is needed to provision access to the database.
 
@@ -34,7 +35,7 @@ def offline_session(func):
             ...
     """
 
-    async def _offline_session(*args, **kwargs):
+    async def _offline_session(*args: Any, **kwargs: Any) -> None:
         session_id = str(uuid4())
         context = set_session_context(session_id=session_id)
 

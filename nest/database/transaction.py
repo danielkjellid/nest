@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Any
+from typing import Any, Callable
 
 from nest.database.sessions import session
 
@@ -16,9 +16,9 @@ class Transactional:
              session.add(User(email="user@example.com"))
     """
 
-    def __call__(self, func):
+    def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
-        async def _transactional(*args: Any, **kwargs: Any):
+        async def _transactional(*args: Any, **kwargs: Any) -> Any:
             try:
                 result = await func(*args, **kwargs)
                 await session.commit()

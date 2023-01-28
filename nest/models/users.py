@@ -19,5 +19,5 @@ class UserSchema(BaseSchema):
     password = Column(String)
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"

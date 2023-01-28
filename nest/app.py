@@ -31,13 +31,11 @@ def create_app() -> FastAPI:
         title="Nest",
         description="Nest API",
         version="1.0.0",
-        # root_path="/api",
         docs_url=None if config.ENVIRONMENT == "production" else "/docs",
         redoc_url=None if config.ENVIRONMENT == "production" else "/redoc",
         middleware=init_middlewares(),
     )
     init_routers(app_=app_)
-    print(config.ENVIRONMENT)
 
     return app_
 
