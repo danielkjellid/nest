@@ -22,7 +22,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from nest.models.users import *
+from nest.models import *  # noqa
 
 target_metadata = Base.metadata
 
@@ -72,15 +72,14 @@ async def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    # connectable = AsyncEngine(
-    #     engine_from_config(
-    #         config.get_section(config.config_ini_section),
-    #         prefix="sqlalchemy.",
-    #         poolclass=pool.NullPool,
-    #         future=True,
-    #     )
-    # )
-    connectable = create_async_engine(settings.DATABASE_URL, poolclass=pool.NullPool)
+    connectable = AsyncEngine(
+        engine_from_config(
+            config.get_section(config.config_ini_section),
+            prefix="sqlalchemy.",
+            poolclass=pool.NullPool,
+            future=True,
+        )
+    )
 
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
