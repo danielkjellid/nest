@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
 

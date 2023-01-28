@@ -1,7 +1,8 @@
 from typing import Any
 
-from nest.database.utils import resolve_table_name
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
+
+from nest.database.utils import resolve_table_name
 
 
 class CustomBase:

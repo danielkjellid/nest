@@ -1,7 +1,7 @@
-from nest.database import Base
-from nest.models.base import BaseSchema
 from pydantic import BaseModel
-from sqlalchemy import BigInteger, Column, String
+from sqlalchemy import Column, String
+
+from nest.models.base import BaseSchema
 
 
 class UserModel(BaseModel):
