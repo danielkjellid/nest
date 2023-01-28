@@ -1,0 +1,79 @@
+name: CI
+
+on: push
+
+env:
+  COLUMNS: 120
+
+jobs:
+  python-lint:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "black"
+            check: black aria --check --config=pyproject.toml
+          - name: "ruff"
+            check: ruff
+          - name: "mypy"
+            check: mypy aria
+    name: ${{ matrix.name }}
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup project
+        uses: ./.github/actions/setup
+      - name: Run ${{ matrix.name }}
+        run:  poetry run ${{ matrix.check }}
+
+  python-tests:
+    name: tests
+    runs-on: ubuntu-20.04
+    services:
+      postgres:
+        image: postgres:14
+        ports:
+          - 5433/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          POSTGRES_DB: nest
+          POSTGRES_USER: nest
+          POSTGRES_PASSWORD: nest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup project
+        uses: ./.github/actions/setup
+      - name: Run tests
+        run: poetry run pytest
+        env:
+          DATABASE_URL: postgresql+asyncpg://nest:nest@localhost:${{ job.services.postgres.ports[5433] }}/nest
+          # PostgreSQL's configuration, used by psql
+          PGHOST: localhost
+          PGUSER: nest
+          PGPASSWORD: nest
+          PGDATABASE: nest
+          PGPORT: ${{ job.services.postgres.ports[5433] }}
+
+  python-missing-init:
+    name: missing __init__.py files
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: check for missing __init__.py files
+        uses: ljodal/python-actions/check-for-missing-init@feature/check-for-missing-init
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          paths: nest
+
+  ci-done:
+    # Gather job which deploy workflow can wait on.
+    name: CI done
+    needs:
+    - python-lint
+    - python-tests
+    - python-missing-init
+    runs-on: ubuntu-20.04
+    steps:
+      - run: echo "CI done!"
