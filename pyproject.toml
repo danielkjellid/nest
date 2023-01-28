@@ -59,6 +59,41 @@ init_typed = true
 warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 
+########
+# Ruff #
+########
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "revisions",
+]
+select = [
+    # Regular flake8 rules
+    "C", "E", "F", "W",
+    # flake8-bugbear rules
+    "B",
+    "I",
+    # Pylint rules
+    "PLC", "PLE", "PLR", "PLW",
+     "RUF",
+]
+ignore = [
+    # C408: Unnecessary <dict/list/tuple> call - rewrite as a literal
+    "C408",
+    # B905: zip() without explicit strict,
+    "B905",
+    # E501: Leave line-length stuff for black to deal with
+    "E501",
+    # Disable magic value comparison. They're perfectly valid in tests and quite a few
+    "PLR2004",
+]
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "parents"
+
 ##########
 # Pytest #
 ##########
