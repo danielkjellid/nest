@@ -1,11 +1,6 @@
 from fastapi import APIRouter
 
-# from .users import user_router
-from .users import users_router
-
-# def init_v1_routers(router: APIRouter) -> list[APIRouter]:
-#     return [user_router]
-#     # router.include_router(user_router, prefix="/users", tags=["Users"])
+from nest.api.v1.users import users_router
 
 
 v1_router = APIRouter(prefix="/v1")
