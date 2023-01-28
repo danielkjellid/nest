@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from nest.database import Base
 from sqlalchemy import BigInteger, Column, DateTime
+
+from nest.database import Base
 
 
 class BaseSchema(Base):
