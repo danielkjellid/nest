@@ -13,11 +13,11 @@ jobs:
       matrix:
         include:
           - name: "black"
-            check: black aria --check --config=pyproject.toml
+            check: black nest --check --config=pyproject.toml
           - name: "ruff"
-            check: ruff
+            check: ruff nest
           - name: "mypy"
-            check: mypy aria
+            check: mypy nest
     name: ${{ matrix.name }}
     steps:
       - name: Checkout project
