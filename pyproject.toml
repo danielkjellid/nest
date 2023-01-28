@@ -42,7 +42,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.black]
 target-version = ['py39']
 include = '\.pyi?$'
-extend-exclude = 'migrations'
+extend-exclude = 'revisions'
 safe = true
 
 ########
