@@ -5,11 +5,11 @@ https://gist.github.com/nymous/f138c7f06062b7c43c060bf03759c29e
 
 import logging
 import sys
+from types import TracebackType
+from typing import Any, Type
 
 import structlog
 from structlog.types import EventDict, Processor
-from typing import Any, Type
-from types import TracebackType
 
 
 # https://github.com/hynek/structlog/issues/35#issuecomment-591321744
