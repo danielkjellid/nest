@@ -1,5 +1,4 @@
 import logging
-import os
 
 from starlette.config import Config
 from starlette.datastructures import Secret
@@ -14,31 +13,31 @@ ENVIRONMENT = config("ENVIRONMENT", default="local")
 # Logging #
 ###########
 
-LOG_LEVEL = config("LOG_LEVEL", default="warning")
-LOG_OUTPUT_JSON = config("LOG_OUTPUT_JSON", default=True)
-LOG_SQLALCHEMY = config("LOG_SQLALCHEMY", default=False)
+LOG_LEVEL: str = config("LOG_LEVEL", default="warning")
+LOG_OUTPUT_JSON: bool = config("LOG_OUTPUT_JSON", default=True)
+LOG_SQLALCHEMY: bool = config("LOG_SQLALCHEMY", default=False)
 
 ##################
 # Authentication #
 ##################
 
 NEST_ENCRYPTION_KEY = config("NEST_ENCRYPTION_KEY", cast=Secret, default="supersecret")
-NEST_JWT_AUDIENCE = config("NEST_JWT_AUDIENCE", default=None)
-NEST_JWT_SECRET_KEY = config("NEST_JWT_SECRET_KEY", default=None)
-NEST_JWT_ALG = config("NEST_JWT_ALG", default="HS256")
-NEST_JWT_EXP = config("NEST_JWT_EXP", cast=int, default=14 * 24 * 60 * 60)
+NEST_JWT_AUDIENCE: str | None = config("NEST_JWT_AUDIENCE", default=None)
+NEST_JWT_SECRET_KEY: str | None = config("NEST_JWT_SECRET_KEY", default=None)
+NEST_JWT_ALG: str = config("NEST_JWT_ALG", default="HS256")
+NEST_JWT_EXP: int = config("NEST_JWT_EXP", cast=int, default=14 * 24 * 60 * 60)
 
 ##########
 # Sentry #
 ##########
 
-SENTRY_ENABLED = config("SENTRY_ENABLED", default="")
-SENTRY_DSN = config("SENTRY_DSN", default="")
+SENTRY_ENABLED: bool = config("SENTRY_ENABLED", default=False)
+SENTRY_DSN: str = config("SENTRY_DSN", default="")
 
 ############
 # Database #
 ############
 
-DATABASE_URL = config(
+DATABASE_URL: str = config(
     "DATABASE_URL", default="postgresql+asyncpg://nest:nest@localhost:5433/nest"
 )
