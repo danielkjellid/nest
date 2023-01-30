@@ -1,6 +1,7 @@
 import logging
 import os
-
+import structlog.types
+from structlog.types import Processor
 from starlette.config import Config
 from starlette.datastructures import Secret
 
@@ -8,7 +9,7 @@ log = logging.getLogger(__name__)
 
 config = Config("../.env")
 
-LOG_LEVEL: int = config("LOG_LEVEL", default=logging.WARNING)
+LOG_LEVEL: int = config("LOG_LEVEL", default="warning")
 ENVIRONMENT = config("ENVIRONMENT", default="local")
 
 ##################

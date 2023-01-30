@@ -53,6 +53,21 @@ files = [
 ]
 
 [[package]]
+name = "asgi-correlation-id"
+version = "3.2.1"
+description = "Middleware correlating project logs to individual requests"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "asgi_correlation_id-3.2.1-py3-none-any.whl", hash = "sha256:ba8b7dc67403183ce77721f8c48fcb6aee92f3b246026f7dde0230323f343663"},
+    {file = "asgi_correlation_id-3.2.1.tar.gz", hash = "sha256:c2370cbf3a71dd33dd4f067495ba87d0afdbb45b5256f1d05362e3a20d4efe60"},
+]
+
+[package.dependencies]
+starlette = ">=0.18"
+
+[[package]]
 name = "asttokens"
 version = "2.2.1"
 description = "Annotate AST trees with source code positions"
@@ -1308,6 +1323,24 @@ anyio = ">=3.4.0,<5"
 full = ["httpx (>=0.22.0)", "itsdangerous", "jinja2", "python-multipart", "pyyaml"]
 
 [[package]]
+name = "structlog"
+version = "22.3.0"
+description = "Structured Logging for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "structlog-22.3.0-py3-none-any.whl", hash = "sha256:b403f344f902b220648fa9f286a23c0cc5439a5844d271fec40562dbadbc70ad"},
+    {file = "structlog-22.3.0.tar.gz", hash = "sha256:e7509391f215e4afb88b1b80fa3ea074be57a5a17d794bd436a5c949da023333"},
+]
+
+[package.extras]
+dev = ["structlog[docs,tests,typing]"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-mermaid", "twisted"]
+tests = ["coverage[toml]", "freezegun (>=0.2.8)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=0.17)", "simplejson"]
+typing = ["mypy", "rich", "twisted"]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -1381,4 +1414,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10.5"
-content-hash = "f7ba0ddd474f3eaba7f3bce7c6e4d12de0a5fa90b8c9f7779dede4b7d7d21b80"
+content-hash = "2bd203b7f2c16409994995e8bd60ffd60f6f390716f336177ad0eea0aa12e092"

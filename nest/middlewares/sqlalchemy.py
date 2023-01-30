@@ -8,7 +8,7 @@ from nest.database.utils import reset_session_context, set_session_context
 
 class SQLAlchemyMiddleware:
     """
-    Middle to initialize async database session.
+    Middleware to initialize async database session.
     """
 
     def __init__(self, app: ASGIApp) -> None:
