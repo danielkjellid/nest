@@ -6,7 +6,7 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 from uvicorn.protocols.utils import get_path_with_query_string
-
+from typing import Any, Callable
 from nest import config
 from nest.logging_utils import setup_logging
 
@@ -23,7 +23,9 @@ class LoggingMiddleware(BaseHTTPMiddleware):
     def __init__(self, app: ASGIApp) -> None:
         super().__init__(app)
 
-    async def dispatch(self, request: Request, call_next):
+    async def dispatch(
+        self, request: Request, call_next: Callable[..., Any]
+    ) -> Response:
         structlog.contextvars.clear_contextvars()
         request_id = correlation_id.get()
         structlog.contextvars.bind_contextvars(request_id=request_id)
@@ -43,8 +45,8 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             process_time = time.perf_counter_ns() - start_time
             status_code = response.status_code
             url = get_path_with_query_string(request.scope)
-            client_host = request.client.host
-            client_port = request.client.port
+            client_host = getattr(request.client, "host", None)
+            client_port = getattr(request.client, "port", None)
             http_method = request.method
             http_version = request.scope["http_version"]
             # Recreate the Uvicorn access log format, but add all parameters as structured information
