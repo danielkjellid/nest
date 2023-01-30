@@ -8,10 +8,12 @@ import sys
 
 import structlog
 from structlog.types import EventDict, Processor
+from typing import Any, Type
+from types import TracebackType
 
 
 # https://github.com/hynek/structlog/issues/35#issuecomment-591321744
-def rename_event_key(_, __, event_dict: EventDict) -> EventDict:
+def rename_event_key(_: Any, __: Any, event_dict: EventDict) -> EventDict:
     """
     Log entries keep the text message in the `event` field, but Datadog
     uses the `message` field. This processor moves the value from one field to
@@ -22,7 +24,7 @@ def rename_event_key(_, __, event_dict: EventDict) -> EventDict:
     return event_dict
 
 
-def drop_color_message_key(_, __, event_dict: EventDict) -> EventDict:
+def drop_color_message_key(_: Any, __: Any, event_dict: EventDict) -> EventDict:
     """
     Uvicorn logs the message a second time in the extra `color_message`, but we don't
     need it. This processor drops the key from the event dict if it exists.
@@ -31,7 +33,7 @@ def drop_color_message_key(_, __, event_dict: EventDict) -> EventDict:
     return event_dict
 
 
-def setup_logging(json_logs: bool = False, log_level: str = "INFO"):
+def setup_logging(json_logs: bool = False, log_level: str = "INFO") -> None:
     timestamper = structlog.processors.TimeStamper(fmt="iso")
 
     shared_processors: list[Processor] = [
@@ -102,13 +104,19 @@ def setup_logging(json_logs: bool = False, log_level: str = "INFO"):
     logging.getLogger("uvicorn.access").handlers.clear()
     logging.getLogger("uvicorn.access").propagate = False
 
-    def handle_exception(exc_type, exc_value, exc_traceback):
+    def handle_exception(
+        exc_type: Type[BaseException],
+        exc_value: BaseException,
+        exc_traceback: TracebackType | None,
+    ) -> None:
         """
         Log any uncaught exception instead of letting it be printed by Python
         (but leave KeyboardInterrupt untouched to allow users to Ctrl+C to stop)
         See https://stackoverflow.com/a/16993115/3641865
         """
-        if issubclass(exc_type, KeyboardInterrupt):
+        if all(
+            val is not None for val in (exc_type, exc_value, exc_traceback)
+        ) and issubclass(exc_type, KeyboardInterrupt):
             sys.__excepthook__(exc_type, exc_value, exc_traceback)
             return
 
