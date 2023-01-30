@@ -8,9 +8,15 @@ log = logging.getLogger(__name__)
 
 config = Config("../.env")
 
+ENVIRONMENT = config("ENVIRONMENT", default="local")
+
+###########
+# Logging #
+###########
+
 LOG_LEVEL = config("LOG_LEVEL", default="warning")
 LOG_OUTPUT_JSON = config("LOG_OUTPUT_JSON", default=True)
-ENVIRONMENT = config("ENVIRONMENT", default="local")
+LOG_SQLALCHEMY = config("LOG_SQLALCHEMY", default=False)
 
 ##################
 # Authentication #
@@ -35,17 +41,4 @@ SENTRY_DSN = config("SENTRY_DSN", default="")
 
 DATABASE_URL = config(
     "DATABASE_URL", default="postgresql+asyncpg://nest:nest@localhost:5433/nest"
-)
-
-###########
-# Alembic #
-###########
-
-ALEMBIC_REVISION_PATH = config(
-    "ALEMBIC_REVISION_PATH",
-    default=f"{os.path.dirname(os.path.realpath(__file__))}/database/revisions/",
-)
-ALEMBIC_INI_PATH = config(
-    "ALEMBIC_INI_PATH",
-    default=f"{os.path.dirname(os.path.realpath(__file__))}/alembic.ini",
 )

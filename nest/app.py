@@ -6,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from nest import config
 from nest.api.v1 import v1_router
 
-# from nest.database.core import db
 from nest.middlewares import LoggingMiddleware, SQLAlchemyMiddleware
 
 
