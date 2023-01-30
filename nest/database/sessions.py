@@ -4,7 +4,6 @@ from uuid import uuid4
 from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session
 from sqlalchemy.orm import sessionmaker
 
-from nest.database.base import Base
 from nest.database.core import engine
 from nest.database.utils import (
     get_session_context,
