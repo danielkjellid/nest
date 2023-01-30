@@ -1,10 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
+from asgi_correlation_id import CorrelationIdMiddleware
 
+# from nest.database.core import db
+from nest.database.sessions import db
 from nest import config
 from nest.api.v1 import v1_router
-from nest.middlewares import SQLAlchemyMiddleware
+from nest.middlewares import SQLAlchemyMiddleware, LoggingMiddleware
 
 
 def init_routers(app_: FastAPI) -> None:
@@ -21,6 +24,8 @@ def init_middlewares() -> list[Middleware]:
             allow_headers=["*"],
         ),
         Middleware(SQLAlchemyMiddleware),
+        Middleware(LoggingMiddleware),
+        Middleware(CorrelationIdMiddleware),
     ]
 
     return middlewares
