@@ -1,4 +1,5 @@
 import time
+from typing import Any, Callable
 
 import structlog
 from asgi_correlation_id import correlation_id
@@ -6,11 +7,11 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.types import ASGIApp
 from uvicorn.protocols.utils import get_path_with_query_string
-from typing import Any, Callable
+
 from nest import config
 from nest.logging_utils import setup_logging
 
-setup_logging(json_logs=False, log_level=config.LOG_LEVEL)  # TODO: Fix json logs bool
+setup_logging(json_logs=config.LOG_OUTPUT_JSON, log_level=config.LOG_LEVEL)
 
 access_logger = structlog.stdlib.get_logger("api.access")
 

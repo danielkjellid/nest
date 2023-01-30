@@ -9,6 +9,7 @@ log = logging.getLogger(__name__)
 config = Config("../.env")
 
 LOG_LEVEL = config("LOG_LEVEL", default="warning")
+LOG_OUTPUT_JSON = config("LOG_OUTPUT_JSON", default=True)
 ENVIRONMENT = config("ENVIRONMENT", default="local")
 
 ##################
