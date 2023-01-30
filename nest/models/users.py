@@ -4,7 +4,7 @@ from sqlalchemy import Column, String
 from nest.models.base import BaseSchema
 
 
-class UserModel(BaseModel):
+class UserRecord(BaseModel):
     id: int
     email: str
     first_name: str
@@ -12,7 +12,7 @@ class UserModel(BaseModel):
     full_name: str
 
 
-class UserSchema(BaseSchema):
+class User(BaseSchema):
     email = Column(String, nullable=False, unique=True, index=True)
     first_name = Column(String)
     last_name = Column(String)

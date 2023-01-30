@@ -1,11 +1,9 @@
 from fastapi_utils.cbv import cbv
 from fastapi_utils.inferring_router import InferringRouter
 from pydantic import BaseModel
-from sqlalchemy import select
-import asyncio
-from nest.models import UserModel, UserSchema
-from nest.database import session, Transactional, offline_session
-from nest.database.sessions import db
+
+from nest.database import session
+from nest.models import User
 
 users_router = InferringRouter()
 
@@ -17,9 +15,6 @@ class UsersApi:
 
     @users_router.get("/")
     async def test(self) -> TestOutput:
-        query = select(UserSchema)
-        res = await session.execute(query)
-        print(res.scalars().all())
         return self.TestOutput(id=1)
 
     class UserCreateInput(BaseModel):
@@ -31,7 +26,7 @@ class UsersApi:
     @users_router.post("/create/", response_model=None)
     async def create(self, payload: UserCreateInput) -> None:
         session.add(
-            UserSchema(
+            User(
                 email=payload.email,
                 first_name=payload.first_name,
                 last_name=payload.last_name,
@@ -39,4 +34,3 @@ class UsersApi:
             )
         )
         await session.commit()
-        # await db.commit()
