@@ -5,3 +5,5 @@
 .mypy_cache
 .pytest_cache
 node_modules
+nest/__pycache__/**
+.DS_Store
