@@ -11,7 +11,8 @@ class CustomBase:
 
     @declared_attr
     def __tablename__(self) -> str:
-        return resolve_table_name(self.__class__.__name__)
+        module = self.__module__.rsplit(".")[-1]
+        return resolve_table_name(f"{module}{self.__name__}")
 
     def dict(self) -> dict[Any, Any]:
         """

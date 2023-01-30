@@ -1,13 +1,14 @@
-from starlette.types import ASGIApp, Receive, Scope, Send
-from asgi_correlation_id import correlation_id
-from nest import config
-import structlog
-from fastapi import Response, Request
-from nest.logging_utils import setup_logging
 import time
-from uvicorn.protocols.utils import get_path_with_query_string
-from starlette.middleware.base import BaseHTTPMiddleware
 
+import structlog
+from asgi_correlation_id import correlation_id
+from fastapi import Request, Response
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.types import ASGIApp
+from uvicorn.protocols.utils import get_path_with_query_string
+
+from nest import config
+from nest.logging_utils import setup_logging
 
 setup_logging(json_logs=False, log_level=config.LOG_LEVEL)  # TODO: Fix json logs bool
 
@@ -60,4 +61,4 @@ class LoggingMiddleware(BaseHTTPMiddleware):
                 duration=process_time,
             )
             response.headers["X-Process-Time"] = str(process_time / 10**9)
-            return response
+            return response  # noqa

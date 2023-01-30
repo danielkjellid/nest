@@ -9,6 +9,7 @@ import sys
 import structlog
 from structlog.types import EventDict, Processor
 
+
 # https://github.com/hynek/structlog/issues/35#issuecomment-591321744
 def rename_event_key(_, __, event_dict: EventDict) -> EventDict:
     """
@@ -53,8 +54,8 @@ def setup_logging(json_logs: bool = False, log_level: str = "INFO"):
         shared_processors.append(structlog.processors.format_exc_info)
 
     structlog.configure(
-        processors=shared_processors
-        + [
+        processors=[
+            *shared_processors,
             # Prepare event dict for `ProcessorFormatter`.
             structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
         ],

@@ -1,7 +1,6 @@
 import logging
 import os
-import structlog.types
-from structlog.types import Processor
+
 from starlette.config import Config
 from starlette.datastructures import Secret
 
