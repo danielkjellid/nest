@@ -12,20 +12,41 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: "black"
+          - name: 'black'
             check: black nest --check --config=pyproject.toml
-          - name: "ruff"
+          - name: 'ruff'
             check: ruff nest
-          - name: "mypy"
+          - name: 'mypy'
             check: mypy nest
     name: ${{ matrix.name }}
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
       - name: Setup project
-        uses: ./.github/actions/setup
+        uses: ./.github/actions/setup-python
       - name: Run ${{ matrix.name }}
-        run:  poetry run ${{ matrix.check }}
+        run: poetry run ${{ matrix.check }}
+
+  frontend-lint:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'eslint'
+            check: 'eslint:check'
+          - name: 'prettier'
+            check: 'prettier:check'
+          - name: 'import-sort'
+            check: 'import-sort:check'
+    name: ${{ matrix.name }}
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup project
+        uses: ./.github/actions/setup-node
+      - name: Run ${{ matrix.name }}
+        run: yarn run ${{ matrix.check }}
 
   python-tests:
     name: tests
@@ -44,7 +65,7 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
       - name: Setup project
-        uses: ./.github/actions/setup
+        uses: ./.github/actions/setup-python
       - name: Run tests
         run: poetry run pytest
         env:
@@ -71,9 +92,10 @@ jobs:
     # Gather job which deploy workflow can wait on.
     name: CI done
     needs:
-    - python-lint
-    - python-tests
-    - python-missing-init
+      - python-lint
+      - python-tests
+      - python-missing-init
+      - frontend-lint
     runs-on: ubuntu-20.04
     steps:
       - run: echo "CI done!"
