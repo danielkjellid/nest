@@ -1,0 +1,28 @@
+name: Setup node project
+description: Setup node project and install dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Setup node
+      id: setup-node
+      uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'yarn'
+        cache-dependency-path: 'yarn.lock'
+
+    - name: Cache node modules
+      id: cache-node-modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/node
+        key: node${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+        restore-keys: |
+          node-${{ runner.os }}-
+
+    - name: Install node dependencies
+      id: install-node-dependencies
+      shell: bash
+      run: yarn install --frozen-lockfile
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
