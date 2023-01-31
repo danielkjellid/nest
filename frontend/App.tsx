@@ -1,20 +1,14 @@
-import { Layout, Menu, theme } from "antd";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import React, { useState } from "react";
+import { Layout, Menu, theme } from 'antd'
+import { MenuFoldOutlined, MenuUnfoldOutlined, UploadOutlined } from '@ant-design/icons'
+import React, { useState } from 'react'
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Footer, Sider, Content } = Layout
 
 function App() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false)
   const {
     token: { colorBgContainer },
-  } = theme.useToken();
+  } = theme.useToken()
 
   return (
     <Layout className="min-h-screen">
@@ -24,26 +18,23 @@ function App() {
           theme="dark"
           mode="inline"
           items={[
-            { key: 1, icon: <UploadOutlined />, label: "nav 1" },
-            { key: 2, icon: <UploadOutlined />, label: "nav 2" },
+            { key: 1, icon: <UploadOutlined />, label: 'nav 1' },
+            { key: 2, icon: <UploadOutlined />, label: 'nav 2' },
           ]}
         />
       </Sider>
       <Layout>
         <Header style={{ background: colorBgContainer }}>
-          {React.createElement(
-            collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-            {
-              className: "trigger",
-              onClick: () => setCollapsed(!collapsed),
-            }
-          )}
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: 'trigger',
+            onClick: () => setCollapsed(!collapsed),
+          })}
         </Header>
         <Content>Content</Content>
         <Footer>Footer</Footer>
       </Layout>
     </Layout>
-  );
+  )
 }
 
-export default App;
+export default App
