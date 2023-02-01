@@ -1,16 +1,22 @@
 from typing import Any
-
-from sqlalchemy import Column, DateTime, func
+from datetime import datetime
+from sqlalchemy import Column, DateTime, Integer
 from sqlalchemy.ext.declarative import declared_attr
 
 
-class TimestampMixin:
-    @staticmethod
-    @declared_attr
-    def created_at() -> Any:
-        return Column(DateTime, default=func.now(), nullable=False)
+class PrimaryKeyMixin:
+    id = Column(
+        Integer,
+        primary_key=True,
+        autoincrement=True,
+        index=True,
+        nullable=False,
+        unique=True,
+    )
 
-    @staticmethod
-    @declared_attr
-    def updated_at() -> Any:
-        return Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
+
+class TimestampMixin:
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True
+    )
