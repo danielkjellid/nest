@@ -1,52 +1,43 @@
-from typing import Any, Callable
-from uuid import uuid4
-
-from sqlalchemy.ext.asyncio import AsyncSession, async_scoped_session
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    AsyncEngine,
+)
 from sqlalchemy.orm import sessionmaker
 
 from nest.database.core import engine
-from nest.database.utils import (
-    get_session_context,
-    reset_session_context,
-    set_session_context,
-)
+from .base import Base
 
 async_session_factory = sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False
 )
 
-session = async_scoped_session(
-    session_factory=async_session_factory,
-    scopefunc=get_session_context,
-)
+
+class AsyncDatabaseSession:
+    def __init__(self) -> None:
+        self._engine: AsyncEngine = None
+        self._session: AsyncSession = None
+
+    def __getattr__(self, name: str) -> None:
+        return getattr(self._session, name)
+
+    def init(self):
+        self._engine: AsyncEngine = engine
+        self._session: AsyncSession = sessionmaker(
+            self._engine, class_=AsyncSession, expire_on_commit=False
+        )()
+
+    async def create_all(self):
+        async with self._engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+
+    async def drop_all(self):
+        async with self._engine.begin() as conn:
+            await conn.run_sync(Base.metadata.drop_all)
+
+    async def dispose(self):
+        await self.drop_all()
+        self.close()
+        self._engine.dispose()
 
 
-def offline_session(func: Callable[..., Any]) -> Callable[..., Any]:
-    """
-    We set the normal session through a middleware, however, it does not
-    go through middleware in tests or background tasks, so an offline
-    session is needed to provision access to the database.
-
-    Example:
-        from nest.database import offline_session
-
-       @offline_session
-       def test_something():
-            session.add(...)
-            session.commit()
-    """
-
-    async def _offline_session(*args: Any, **kwargs: Any) -> None:
-        session_id = str(uuid4())
-        context = set_session_context(session_id=session_id)
-
-        try:
-            await func(*args, **kwargs)
-        except Exception as exc:
-            await session.rollback()
-            raise exc
-        finally:
-            await session.remove()
-            reset_session_context(context=context)
-
-    return _offline_session
+session = AsyncDatabaseSession()

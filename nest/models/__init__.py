@@ -1,16 +1,16 @@
 from nest.models.users import User, UserSchema
 from nest.models.tokens import (
-    # OutstandingToken,
+    OutstandingToken,
     OutstandingTokenSchema,
-    # BlacklistedToken,
+    BlacklistedToken,
     BlacklistedTokenSchema,
 )
 
 __all__ = [
     "User",
     "UserSchema",
-    # "OutstandingToken",
+    "OutstandingToken",
     "OutstandingTokenSchema",
-    # "BlacklistedToken",
+    "BlacklistedToken",
     "BlacklistedTokenSchema",
 ]

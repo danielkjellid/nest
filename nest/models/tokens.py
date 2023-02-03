@@ -12,7 +12,7 @@ class OutstandingTokenSchema(BaseModel):
     jti: str
     token: str
     created_at: datetime
-    expired_at: datetime
+    expires_at: datetime
 
     class Config:
         orm_mode = True
@@ -29,7 +29,7 @@ class OutstandingToken(Base, PrimaryKeyMixin):
     jti = Column(String, unique=True)
     token = Column(String)
     created_at = Column(DateTime, nullable=True, default=datetime.utcnow)
-    expired_at = Column(DateTime)
+    expires_at = Column(DateTime)
 
     user = relationship(User, backref="tokens")
 

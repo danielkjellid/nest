@@ -2,6 +2,7 @@ import logging
 
 from starlette.config import Config
 from starlette.datastructures import Secret
+from datetime import timedelta
 
 log = logging.getLogger(__name__)
 
@@ -22,10 +23,11 @@ LOG_SQLALCHEMY: bool = config("LOG_SQLALCHEMY", default=False)
 ##################
 
 NEST_ENCRYPTION_KEY = config("NEST_ENCRYPTION_KEY", cast=Secret, default="supersecret")
-NEST_JWT_AUDIENCE: str | None = config("NEST_JWT_AUDIENCE", default=None)
+NEST_JWT_ISSUER: str = config("NEST_JWT_ISSUER", default="nest")
 NEST_JWT_SECRET_KEY: str | None = config("NEST_JWT_SECRET_KEY", default=None)
 NEST_JWT_ALG: str = config("NEST_JWT_ALG", default="HS256")
-NEST_JWT_EXP: int = config("NEST_JWT_EXP", cast=int, default=14 * 24 * 60 * 60)
+NEST_JWT_ACCESS_EXP = config("NEST_JWT_ACCESS_EXP", default=timedelta(days=1))
+NEST_JWT_REFRESH_EXP = config("NEST_JWT_REFRESH_EXP", default=timedelta(days=30))
 
 ##########
 # Sentry #

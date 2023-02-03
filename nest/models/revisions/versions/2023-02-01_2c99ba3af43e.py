@@ -1,8 +1,8 @@
 """Add initial user and auth models
 
-Revision ID: 0321d83e76f0
+Revision ID: 2c99ba3af43e
 Revises: 
-Create Date: 2023-02-01 11:08:36.902745
+Create Date: 2023-02-01 11:28:08.064559
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = "0321d83e76f0"
+revision = "2c99ba3af43e"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -42,7 +42,7 @@ def upgrade() -> None:
         sa.Column("jti", sa.String(), nullable=True),
         sa.Column("token", sa.String(), nullable=True),
         sa.Column("created_at", sa.DateTime(), nullable=True),
-        sa.Column("expired_at", sa.DateTime(), nullable=True),
+        sa.Column("expires_at", sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(
             ["user_id"], ["users_user.id"], ondelete="SET NULL"
         ),

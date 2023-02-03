@@ -203,6 +203,18 @@ jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
+name = "certifi"
+version = "2022.12.7"
+description = "Python package for providing Mozilla's CA Bundle."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
+    {file = "certifi-2022.12.7.tar.gz", hash = "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3"},
+]
+
+[[package]]
 name = "click"
 version = "8.1.3"
 description = "Composable command line interface toolkit"
@@ -295,6 +307,31 @@ tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.1
 
 [package.extras]
 toml = ["tomli"]
+
+[[package]]
+name = "databases"
+version = "0.7.0"
+description = "Async database support for Python."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "databases-0.7.0-py3-none-any.whl", hash = "sha256:cf5da4b8a3e3cd038c459529725ebb64931cbbb7a091102664f20ef8f6cefd0d"},
+    {file = "databases-0.7.0.tar.gz", hash = "sha256:ea2d419d3d2eb80595b7ceb8f282056f080af62efe2fb9bcd83562f93ec4b674"},
+]
+
+[package.dependencies]
+sqlalchemy = ">=1.4.42,<1.5"
+
+[package.extras]
+aiomysql = ["aiomysql"]
+aiopg = ["aiopg"]
+aiosqlite = ["aiosqlite"]
+asyncmy = ["asyncmy"]
+asyncpg = ["asyncpg"]
+mysql = ["aiomysql"]
+postgresql = ["asyncpg"]
+sqlite = ["aiosqlite"]
 
 [[package]]
 name = "decorator"
@@ -477,6 +514,52 @@ files = [
     {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
     {file = "h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
 ]
+
+[[package]]
+name = "httpcore"
+version = "0.16.3"
+description = "A minimal low-level HTTP client."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "httpcore-0.16.3-py3-none-any.whl", hash = "sha256:da1fb708784a938aa084bde4feb8317056c55037247c787bd7e19eb2c2949dc0"},
+    {file = "httpcore-0.16.3.tar.gz", hash = "sha256:c5d6f04e2fc530f39e0c077e6a30caa53f1451096120f1f38b954afd0b17c0cb"},
+]
+
+[package.dependencies]
+anyio = ">=3.0,<5.0"
+certifi = "*"
+h11 = ">=0.13,<0.15"
+sniffio = ">=1.0.0,<2.0.0"
+
+[package.extras]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (>=1.0.0,<2.0.0)"]
+
+[[package]]
+name = "httpx"
+version = "0.23.3"
+description = "The next generation HTTP client."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "httpx-0.23.3-py3-none-any.whl", hash = "sha256:a211fcce9b1254ea24f0cd6af9869b3d29aba40154e947d2a07bb499b3e310d6"},
+    {file = "httpx-0.23.3.tar.gz", hash = "sha256:9818458eb565bb54898ccb9b8b251a28785dd4a55afbc23d0eb410754fe7d0f9"},
+]
+
+[package.dependencies]
+certifi = "*"
+httpcore = ">=0.15.0,<0.17.0"
+rfc3986 = {version = ">=1.3,<2", extras = ["idna2008"]}
+sniffio = "*"
+
+[package.extras]
+brotli = ["brotli", "brotlicffi"]
+cli = ["click (>=8.0.0,<9.0.0)", "pygments (>=2.0.0,<3.0.0)", "rich (>=10,<13)"]
+http2 = ["h2 (>=3,<5)"]
+socks = ["socksio (>=1.0.0,<2.0.0)"]
 
 [[package]]
 name = "idna"
@@ -775,6 +858,24 @@ qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
 testing = ["docopt", "pytest (<6.0.0)"]
 
 [[package]]
+name = "passlib"
+version = "1.7.4"
+description = "comprehensive password hashing framework supporting over 30 schemes"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "passlib-1.7.4-py2.py3-none-any.whl", hash = "sha256:aa6bca462b8d8bda89c70b382f0c298a20b5560af6cbfa2dce410c0a2fb669f1"},
+    {file = "passlib-1.7.4.tar.gz", hash = "sha256:defd50f72b65c5402ab2c573830a6978e5f202ad0d984793c8dde2c4152ebe04"},
+]
+
+[package.extras]
+argon2 = ["argon2-cffi (>=18.2.0)"]
+bcrypt = ["bcrypt (>=3.1.0)"]
+build-docs = ["cloud-sptheme (>=1.10.1)", "sphinx (>=1.6)", "sphinxcontrib-fulltoc (>=1.2.0)"]
+totp = ["cryptography"]
+
+[[package]]
 name = "pathspec"
 version = "0.10.3"
 description = "Utility library for gitignore style pattern matching of file paths."
@@ -979,6 +1080,24 @@ files = [
 plugins = ["importlib-metadata"]
 
 [[package]]
+name = "pyjwt"
+version = "2.6.0"
+description = "JSON Web Token implementation in Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "PyJWT-2.6.0-py3-none-any.whl", hash = "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"},
+    {file = "PyJWT-2.6.0.tar.gz", hash = "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd"},
+]
+
+[package.extras]
+crypto = ["cryptography (>=3.4.0)"]
+dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
+tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
+
+[[package]]
 name = "pytest"
 version = "7.2.1"
 description = "pytest: simple powerful testing with Python"
@@ -1001,6 +1120,25 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 
 [package.extras]
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
+
+[[package]]
+name = "pytest-asyncio"
+version = "0.20.3"
+description = "Pytest support for asyncio"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pytest-asyncio-0.20.3.tar.gz", hash = "sha256:83cbf01169ce3e8eb71c6c278ccb0574d1a7a3bb8eaaf5e50e0ad342afb33b36"},
+    {file = "pytest_asyncio-0.20.3-py3-none-any.whl", hash = "sha256:f129998b209d04fcc65c96fc85c11e5316738358909a8399e93be553d7656442"},
+]
+
+[package.dependencies]
+pytest = ">=6.1.0"
+
+[package.extras]
+docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1.0)"]
+testing = ["coverage (>=6.2)", "flaky (>=3.5.0)", "hypothesis (>=5.7.1)", "mypy (>=0.931)", "pytest-trio (>=0.7.0)"]
 
 [[package]]
 name = "pytest-cov"
@@ -1123,6 +1261,24 @@ files = [
 
 [package.extras]
 cli = ["click (>=5.0)"]
+
+[[package]]
+name = "rfc3986"
+version = "1.5.0"
+description = "Validating URI References per RFC 3986"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "rfc3986-1.5.0-py2.py3-none-any.whl", hash = "sha256:a86d6e1f5b1dc238b218b012df0aa79409667bb209e58da56d0b94704e712a97"},
+    {file = "rfc3986-1.5.0.tar.gz", hash = "sha256:270aaf10d87d0d4e095063c65bf3ddbc6ee3d0b226328ce21e036f946e421835"},
+]
+
+[package.dependencies]
+idna = {version = "*", optional = true, markers = "extra == \"idna2008\""}
+
+[package.extras]
+idna2008 = ["idna"]
 
 [[package]]
 name = "rich"
@@ -1414,4 +1570,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10.5"
-content-hash = "2bd203b7f2c16409994995e8bd60ffd60f6f390716f336177ad0eea0aa12e092"
+content-hash = "3ac2659ab1d29b1f279880471e5cf12e3daabfd2d2d2f1d0b989697d473a9425"

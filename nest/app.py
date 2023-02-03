@@ -2,10 +2,10 @@ from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import FastAPI
 from fastapi.middleware import Middleware
 from fastapi.middleware.cors import CORSMiddleware
-
 from nest import config
 from nest.api.v1 import v1_router
-from nest.middlewares import LoggingMiddleware, SQLAlchemyMiddleware
+from nest.middlewares import LoggingMiddleware
+from nest.database import session
 
 
 def init_routers(app_: FastAPI) -> None:
@@ -21,7 +21,6 @@ def init_middlewares() -> list[Middleware]:
             allow_methods=["*"],
             allow_headers=["*"],
         ),
-        Middleware(SQLAlchemyMiddleware),
         Middleware(LoggingMiddleware),
         Middleware(CorrelationIdMiddleware),
     ]
@@ -30,6 +29,8 @@ def init_middlewares() -> list[Middleware]:
 
 
 def create_app() -> FastAPI:
+    session.init()
+
     app_ = FastAPI(
         title="Nest",
         description="Nest API",
@@ -44,3 +45,13 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+
+
+@app.on_event("startup")
+async def startup():
+    await session.create_all()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await session.close()
