@@ -18,7 +18,7 @@ psycopg2 = "^2.9.5"
 greenlet = "^2.0.2"
 ipython = "^8.9.0"
 structlog = "^22.3.0"
-asgi-correlation-id = "^3.2.1"
+asgi-correlation-id = "^4.1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"
