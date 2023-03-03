@@ -5,6 +5,7 @@ from django.db import models
 from typing import Any
 from django.contrib.auth.models import BaseUserManager
 from .base import BaseQuerySet, BaseModel
+from django.contrib import admin
 
 
 class UserQuerySet(BaseQuerySet["User"]):
@@ -35,16 +36,31 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         max_length=255,
         unique=False,
     )
-    is_active = models.BooleanField()
-    is_superuser = models.BooleanField()
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
 
-    objects = UserManager.from_queryset(UserQuerySet)
+    objects = UserManager.from_queryset(UserQuerySet)()
 
     class Meta:
         verbose_name = "user"
         verbose_name_plural = "users"
 
+    class Admin:
+        list_display = (
+            "first_name",
+            "last_name",
+            "email",
+            "is_staff",
+            "is_superuser",
+            "is_active",
+        )
+
     def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
