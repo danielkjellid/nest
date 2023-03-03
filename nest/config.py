@@ -1,5 +1,5 @@
 import logging
-
+import os
 from starlette.config import Config
 from starlette.datastructures import Secret
 from datetime import timedelta
@@ -42,4 +42,8 @@ SENTRY_DSN: str = config("SENTRY_DSN", default="")
 
 DATABASE_URL: str = config(
     "DATABASE_URL", default="postgresql+asyncpg://nest:nest@localhost:5433/nest"
+)
+ALEMBIC_INI_PATH: str = f"{os.path.dirname(os.path.realpath(__file__))}/alembic.ini"
+ALEMBIC_REVISIONS_PATH: str = (
+    f"{os.path.dirname(os.path.realpath(__file__))}/models/revisions"
 )

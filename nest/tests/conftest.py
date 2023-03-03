@@ -1,5 +1,5 @@
 import asyncio
-
+from pytest_alembic import set_up_empty_test_db
 import pytest
 import pytest_asyncio
 from sqlalchemy import event
@@ -9,7 +9,6 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 from nest.database.sessions import AsyncDatabaseSession
 
 import sqlalchemy
-from nest import config
 from typing import Generator
 
 
@@ -93,11 +92,6 @@ def _assert_num_queries(
     pass
 
 
-@pytest.fixture(autouse=True)
-def set_test_db():
-    config.DATABASE_URL = "postgresql+asyncpg://nest:nest@localhost:5433/nest_test"
-
-
 @pytest.fixture(scope="session")
 def event_loop(request) -> Generator:
     loop = asyncio.get_event_loop_policy().new_event_loop()
@@ -111,12 +105,20 @@ async def async_client():
         yield client
 
 
+@pytest.fixture(scope="session")
+def alembic_engine():
+    set_up_empty_test_db()
+
+
 @pytest_asyncio.fixture(scope="function")
 async def async_session() -> AsyncSession:
-    session = AsyncDatabaseSession()
+    session = AsyncDatabaseSession(
+        db_url="postgresql+asyncpg://nest:nest@localhost:5434/nest_test"
+    )
     session.init()
-    session.create_all()
-
+    await session.create_all()
+    await session.apply_revisions()
+    print("HEEEEELOOOOOO")
     yield session
 
     session.dispose()

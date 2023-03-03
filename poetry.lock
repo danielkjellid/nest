@@ -309,31 +309,6 @@ tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.1
 toml = ["tomli"]
 
 [[package]]
-name = "databases"
-version = "0.7.0"
-description = "Async database support for Python."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "databases-0.7.0-py3-none-any.whl", hash = "sha256:cf5da4b8a3e3cd038c459529725ebb64931cbbb7a091102664f20ef8f6cefd0d"},
-    {file = "databases-0.7.0.tar.gz", hash = "sha256:ea2d419d3d2eb80595b7ceb8f282056f080af62efe2fb9bcd83562f93ec4b674"},
-]
-
-[package.dependencies]
-sqlalchemy = ">=1.4.42,<1.5"
-
-[package.extras]
-aiomysql = ["aiomysql"]
-aiopg = ["aiopg"]
-aiosqlite = ["aiosqlite"]
-asyncmy = ["asyncmy"]
-asyncpg = ["asyncpg"]
-mysql = ["aiomysql"]
-postgresql = ["asyncpg"]
-sqlite = ["aiosqlite"]
-
-[[package]]
 name = "decorator"
 version = "5.1.1"
 description = "Decorators for Humans"
@@ -1122,6 +1097,23 @@ tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "pygments (>=2.7.2)", "requests", "xmlschema"]
 
 [[package]]
+name = "pytest-alembic"
+version = "0.9.1"
+description = "A pytest plugin for verifying alembic migrations."
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4"
+files = [
+    {file = "pytest-alembic-0.9.1.tar.gz", hash = "sha256:7fc60e31019bcddc6ffe4c5d079ad066cae69d5204bf9844b4a206112284e7f6"},
+    {file = "pytest_alembic-0.9.1-py3-none-any.whl", hash = "sha256:7458b3422d17dcb869f483f6f6cad9261e86ecca754de2dcb468760a812aaab3"},
+]
+
+[package.dependencies]
+alembic = "*"
+pytest = ">=6.0"
+sqlalchemy = "*"
+
+[[package]]
 name = "pytest-asyncio"
 version = "0.20.3"
 description = "Pytest support for asyncio"
@@ -1570,4 +1562,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10.5"
-content-hash = "3ac2659ab1d29b1f279880471e5cf12e3daabfd2d2d2f1d0b989697d473a9425"
+content-hash = "6deb0fd33a57e0e363152a6e2db640f0ae4c90ec304f514d254fbe6df94f9afa"
