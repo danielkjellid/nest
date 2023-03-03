@@ -67,6 +67,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "nest.middlewares.GenericLoggingMiddleware",
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -88,7 +89,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = ["ninja"]
 
-PROJECT_APPS = ["nest.models"]
+PROJECT_APPS = ["nest"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
@@ -117,11 +118,31 @@ AWS_S3_BUCKET_NAME_STATIC = env.str("AWS_S3_BUCKET_NAME_STATIC", default="dev")
 AWS_S3_ENDPOINT_URL_STATIC = AWS_ENDPOINT_URL
 AWS_S3_KEY_PREFIX_STATIC = "static"
 
+#############
+# Templates #
+#############
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [str(BASE_DIR / "public/templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
 ##################
 # AUTHENTICATION #
 ##################
 
-AUTH_USER_MODEL = "models.User"
+AUTH_USER_MODEL = "nest.User"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
