@@ -1,11 +1,15 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from typing import Any
 
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.db import models
 
-from typing import Any
-from django.contrib.auth.models import BaseUserManager
-from .base import BaseQuerySet, BaseModel
 from nest.enums import AvatarColors
+
+from .base import BaseModel, BaseQuerySet
 
 
 class UserQuerySet(BaseQuerySet["User"]):

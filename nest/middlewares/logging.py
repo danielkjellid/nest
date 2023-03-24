@@ -1,8 +1,7 @@
 from typing import Callable
 
-from django.http import HttpRequest
-
 import structlog
+from django.http import HttpRequest
 
 logger = structlog.get_logger(__name__)
 
@@ -18,6 +17,6 @@ class GenericLoggingMiddleware:
             logger.bind(user_id=request.user.id)
 
         if hasattr(request, "auth"):
-            logger.bind(user_id=request.auth.id)  # type: ignore
+            logger.bind(user_id=request.auth.id)
 
         return self.get_response(request)

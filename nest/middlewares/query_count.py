@@ -1,9 +1,8 @@
+import structlog
 from django.conf import settings
 from django.db import connection
 from django.http import HttpRequest, HttpResponse
 from django.utils.deprecation import MiddlewareMixin
-
-import structlog
 
 logger = structlog.get_logger(__name__)
 

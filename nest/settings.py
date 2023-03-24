@@ -1,7 +1,8 @@
 import warnings
+from pathlib import Path
+
 import environ
 import structlog
-from pathlib import Path
 
 ###############
 # Environment #
@@ -199,7 +200,7 @@ QUERY_COUNT_WARNING_THRESHOLD = 25
 QUERY_DURATION_WARNING_THRESHOLD = 300  # in ms
 
 if DEBUG:
-    MIDDLEWARE = ["nest.middlewares.QueryCountWarningMiddleware"] + MIDDLEWARE
+    MIDDLEWARE = ["nest.middlewares.QueryCountWarningMiddleware", *MIDDLEWARE]
 
 ###########
 # Logging #

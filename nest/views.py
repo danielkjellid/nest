@@ -1,9 +1,10 @@
-from django.views import View
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
-from django.conf import settings
-from typing import Any
 import json
+from typing import Any
+
+from django.conf import settings
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
+from django.views import View
 
 
 class FrontendView(View):

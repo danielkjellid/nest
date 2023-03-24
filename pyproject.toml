@@ -31,6 +31,7 @@ pytest-cov = "^4.0.0"
 pytest-mock = "^3.10.0"
 pytest-lazy-fixture = "^0.6.3"
 pytest-xdist = "^3.1.0"
+django-stubs = "^1.16.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -52,7 +53,7 @@ safe = true
 
 [tool.mypy]
 python_version = "3.10"
-plugins = ["pydantic.mypy"]
+plugins = ["pydantic.mypy", "mypy_django_plugin.main"]
 follow_imports = "normal"
 ignore_missing_imports = true
 strict = true
@@ -64,6 +65,9 @@ init_forbid_extra = true
 init_typed = true
 warn_required_dynamic_aliases = true
 warn_untyped_fields = true
+
+[tool.django-stubs]
+django_settings_module = "nest.settings"
 
 ########
 # Ruff #

@@ -1,11 +1,12 @@
 from typing import Any
-from nest.records import UserRecord
+
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import validate_email
+
 from nest.exceptions import ApplicationError
 from nest.models import User
-from django.core.validators import validate_email
-from django.contrib.auth.password_validation import validate_password
-
-from django.core.exceptions import ValidationError as DjangoValidationError
+from nest.records import UserRecord
 
 
 class UserService:

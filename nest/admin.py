@@ -1,17 +1,24 @@
+from typing import TypeVar
+
 from django.apps import apps
 from django.contrib import admin
+from django.contrib.admin.sites import AdminSite
+from django.db.models import Model as DjangoModel
 
 models = apps.get_models()
 
+M = TypeVar("M", bound=DjangoModel)
+A = TypeVar("A", bound=AdminSite)
 
-class ListAdminMixin(object):
-    def __init__(self, model, admin_site):
+
+class ListAdminMixin:
+    def __init__(self, django_model: M, admin_site: A) -> None:
         try:
-            self.list_display = model.ADMIN_LIST_DISPLAY
+            self.list_display = django_model.ADMIN_LIST_DISPLAY  # type: ignore
         except AttributeError:
-            self.list_display = [field.name for field in model._meta.fields]
+            self.list_display = [field.name for field in django_model._meta.fields]
 
-        super(ListAdminMixin, self).__init__(model, admin_site)
+        super().__init__(django_model, admin_site)  # type: ignore
 
 
 for model in models:

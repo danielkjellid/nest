@@ -371,6 +371,46 @@ libcloud = ["apache-libcloud"]
 sftp = ["paramiko (>=1.10.0)"]
 
 [[package]]
+name = "django-stubs"
+version = "1.16.0"
+description = "Mypy stubs for Django"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "django-stubs-1.16.0.tar.gz", hash = "sha256:1bd96207576cd220221a0e615f0259f13d453d515a80f576c1246e0fb547f561"},
+    {file = "django_stubs-1.16.0-py3-none-any.whl", hash = "sha256:c95f948e2bfc565f3147e969ff361ef033841a0b8a51cac974a6cc6d0486732c"},
+]
+
+[package.dependencies]
+django = "*"
+django-stubs-ext = ">=0.8.0"
+mypy = ">=0.980"
+tomli = "*"
+types-pytz = "*"
+types-PyYAML = "*"
+typing-extensions = "*"
+
+[package.extras]
+compatible-mypy = ["mypy (>=1.1.1,<1.2)"]
+
+[[package]]
+name = "django-stubs-ext"
+version = "0.8.0"
+description = "Monkey-patching and extensions for django-stubs"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "django-stubs-ext-0.8.0.tar.gz", hash = "sha256:9a9ba9e2808737949de96a0fce8b054f12d38e461011d77ebc074ffe8c43dfcb"},
+    {file = "django_stubs_ext-0.8.0-py3-none-any.whl", hash = "sha256:a454d349d19c26d6c50c4c6dbc1e8af4a9cda4ce1dc4104e3dd4c0330510cc56"},
+]
+
+[package.dependencies]
+django = "*"
+typing-extensions = "*"
+
+[[package]]
 name = "django-vite"
 version = "2.0.2"
 description = "Integration of ViteJS in a Django project."
@@ -1181,6 +1221,30 @@ docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["argcomplete (>=2.0)", "pre-commit", "pytest", "pytest-mock"]
 
 [[package]]
+name = "types-pytz"
+version = "2022.7.1.2"
+description = "Typing stubs for pytz"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-pytz-2022.7.1.2.tar.gz", hash = "sha256:487d3e8e9f4071eec8081746d53fa982bbc05812e719dcbf2ebf3d55a1a4cd28"},
+    {file = "types_pytz-2022.7.1.2-py3-none-any.whl", hash = "sha256:40ca448a928d566f7d44ddfde0066e384f7ffbd4da2778e42a4570eaca572446"},
+]
+
+[[package]]
+name = "types-pyyaml"
+version = "6.0.12.8"
+description = "Typing stubs for PyYAML"
+category = "dev"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-PyYAML-6.0.12.8.tar.gz", hash = "sha256:19304869a89d49af00be681e7b267414df213f4eb89634c4495fa62e8f942b9f"},
+    {file = "types_PyYAML-6.0.12.8-py3-none-any.whl", hash = "sha256:5314a4b2580999b2ea06b2e5f9a7763d860d6e09cdf21c0e9561daa9cbd60178"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.4.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -1236,4 +1300,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10.5"
-content-hash = "ba7f326930c93758768ce8408e30e49319f542b58b218c9e3f7a54a6f4fe2756"
+content-hash = "01bd9c6af5fd46c6c76583804892096510c2ab5e9217ff82fd1bdd33187bf64e"

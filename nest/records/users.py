@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from pydantic import BaseModel
+
 from nest.models import User
 
 
@@ -12,7 +15,7 @@ class UserRecord(BaseModel):
     is_superuser: bool
 
     @classmethod
-    def from_user(cls, user: User):
+    def from_user(cls, user: User) -> UserRecord:
         return cls(
             id=user.id,
             email=user.email,
