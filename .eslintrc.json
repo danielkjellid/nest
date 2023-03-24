@@ -20,6 +20,10 @@
         "react",
         "@typescript-eslint"
     ],
+    "ignorePatterns": [
+        "nest/**/*.html",
+        "static/"
+    ],
     "rules": {
         "indent": [
             "error",

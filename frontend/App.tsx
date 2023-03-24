@@ -5,13 +5,13 @@ import React, { useState } from 'react'
 const { Header, Footer, Sider, Content } = Layout
 
 interface AppProps {
-    test: number
+  test: number
 }
 
 declare global {
-    interface Window {
-        initialProps: AppProps;
-    }
+  interface Window {
+    initialProps: AppProps
+  }
 }
 
 function App(props: AppProps) {
