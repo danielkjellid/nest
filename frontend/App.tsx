@@ -4,11 +4,23 @@ import React, { useState } from 'react'
 
 const { Header, Footer, Sider, Content } = Layout
 
-function App() {
+interface AppProps {
+    test: number
+}
+
+declare global {
+    interface Window {
+        initialProps: AppProps;
+    }
+}
+
+function App(props: AppProps) {
   const [collapsed, setCollapsed] = useState(false)
   const {
     token: { colorBgContainer },
   } = theme.useToken()
+
+  console.log(props)
 
   return (
     <Layout className="min-h-screen">
