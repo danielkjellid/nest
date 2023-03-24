@@ -7,7 +7,7 @@ models = apps.get_models()
 class ListAdminMixin(object):
     def __init__(self, model, admin_site):
         try:
-            self.list_display = model.Admin.list_display
+            self.list_display = model.ADMIN_LIST_DISPLAY
         except AttributeError:
             self.list_display = [field.name for field in model._meta.fields]
 
