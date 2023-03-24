@@ -1,5 +1,4 @@
 import warnings
-from datetime import timedelta
 import environ
 import structlog
 from pathlib import Path
@@ -183,12 +182,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
-NEST_JWT_ISSUER = "nest"
-NEST_JWT_SIGNING_KEY = SECRET_KEY
-NEST_JWT_ALG = env.str("NEST_JWT_ALG", default="HS256")
-NEST_JWT_ACCESS_TOKEN_EXP = timedelta(hours=2)
-NEST_JWT_REFRESH_TOKEN_EXP = timedelta(days=30)
 
 #############
 # Databases #
