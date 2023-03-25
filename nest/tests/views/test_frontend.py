@@ -1,7 +1,8 @@
+import json
+from unittest.mock import ANY
+
 from django.test import Client
 from django.urls import reverse
-from unittest.mock import ANY
-import json
 
 
 class TestViewFrontend:
