@@ -146,7 +146,7 @@ else:
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [str(APP_DIR / "templates")],
+        "DIRS": [str(APP_DIR / "templates"), str(APP_DIR / "views" / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

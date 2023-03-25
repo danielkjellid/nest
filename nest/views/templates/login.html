@@ -1,0 +1,11 @@
+{% extends 'react-base.html' %}
+
+{% block body %}
+    <script>
+        window.csrfToken = "{{ csrf_token|safe }}";
+
+        {% if form.errors %}
+            window.loginErrors = {{ form.errors.get_json_data|safe }}.__all__;
+        {% endif %}
+    </script>
+{% endblock %}

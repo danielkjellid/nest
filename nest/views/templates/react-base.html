@@ -1,0 +1,28 @@
+{% load django_vite %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Nest</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        {% if DJANGO_VITE_DEV_MODE %}
+            <script type="module">
+                import RefreshRuntime from 'http://{{ DJANGO_VITE_DEV_SERVER_HOST }}:{{ DJANGO_VITE_DEV_SERVER_PORT }}/static/@react-refresh'
+                RefreshRuntime.injectIntoGlobalHook(window)
+                window.$RefreshReg$ = () => {}
+                window.$RefreshSig$ = () => (type) => type
+                window.__vite_plugin_react_preamble_installed__ = true
+            </script>
+        {% endif %}
+
+        {% vite_hmr_client %}
+        {% vite_asset INDEX_PATH %}
+    </head>
+    <body>
+        <div id="root" class="root-container" />
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
