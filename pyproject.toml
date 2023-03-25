@@ -6,7 +6,7 @@ authors = ["Daniel Kjellid <daniel.kjellid@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "~3.10.5"
+python = "~3.11.1"
 psycopg2 = "^2.9.5"
 ipython = "^8.8.0"
 structlog = "^22.3.0"
