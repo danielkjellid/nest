@@ -63,7 +63,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
             main: {
               color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.dark[8],
               backgroundColor:
-                theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+                theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
             },
           })}
         >
