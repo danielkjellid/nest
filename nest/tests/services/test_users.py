@@ -1,14 +1,14 @@
 import pytest
 
-from nest.services import UserService
-from nest.models import User
 from nest.exceptions import ApplicationError
+from nest.models import User
+from nest.services import UserService
 
 pytestmark = pytest.mark.django_db
 
 
 class TestServicesUsers:
-    def test_user_create(self, django_assert_num_queries, unprivileged_user):
+    def test_user_create(self, django_assert_num_queries, unprivileged_user) -> None:
         """
         Test that the "create" service creates a user.
         """

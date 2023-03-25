@@ -71,6 +71,10 @@ warn_untyped_fields = true
 [tool.django-stubs]
 django_settings_module = "nest.settings"
 
+[[tool.mypy.overrides]]
+module = "nest.tests.*"
+ignore_errors = true
+
 ########
 # Ruff #
 ########
