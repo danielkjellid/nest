@@ -46,7 +46,7 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup-node
       - name: Run ${{ matrix.name }}
-        run: yarn run ${{ matrix.check }}
+        run: npm run ${{ matrix.check }}
 
   python-tests:
     name: tests

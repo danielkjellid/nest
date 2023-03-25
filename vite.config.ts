@@ -19,24 +19,8 @@ export default defineConfig(() => {
       sourcemap: true,
       rollupOptions: {
         input: {
-          main: './frontend/index.tsx',
+          main: './frontend/apps/index.tsx',
         },
-      },
-    },
-    css: {
-      postcss: {
-        plugins: [
-          {
-            postcssPlugin: 'internal:charset-removal',
-            AtRule: {
-              charset: (atRule) => {
-                if (atRule.name === 'charset') {
-                  atRule.remove()
-                }
-              },
-            },
-          },
-        ],
       },
     },
   }

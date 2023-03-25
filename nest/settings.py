@@ -146,7 +146,7 @@ else:
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [str(APP_DIR / "templates")],
+        "DIRS": [str(APP_DIR / "views" / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -183,6 +183,10 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "login"
 
 #############
 # Databases #
@@ -279,7 +283,7 @@ LOGGING = {
 #####################
 
 try:
-    import django_extensions  # noqa: 401 # pylint: disable=unused-import
+    import django_extensions  # noqa: 401
 except ImportError:
     DJANGO_EXTENSIONS_INSTALLED = False
 else:
@@ -287,3 +291,21 @@ else:
 
 if DJANGO_EXTENSIONS_INSTALLED:
     INSTALLED_APPS += ["django_extensions"]
+
+##################
+# Django Toolbar #
+##################
+
+DJANGO_DEBUG_TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR_ENABLED", default=True)
+
+try:
+    import debug_toolbar  # noqa: 401
+except ImportError:
+    DJANGO_DEBUG_TOOLBAR_INSTALLED = False
+else:
+    DJANGO_DEBUG_TOOLBAR_INSTALLED = True
+
+if DEBUG and DJANGO_DEBUG_TOOLBAR_INSTALLED and DJANGO_DEBUG_TOOLBAR_ENABLED:
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+    INSTALLED_APPS += ["debug_toolbar"]
+    INTERNAL_IPS = ["127.0.0.1"]
