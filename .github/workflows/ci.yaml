@@ -69,7 +69,7 @@ jobs:
       - name: Run tests
         run: poetry run pytest
         env:
-          DATABASE_URL: postgresql+asyncpg://nest:nest@localhost:${{ job.services.postgres.ports[5433] }}/nest
+          DATABASE_URL: postgresql://nest:nest@localhost:${{ job.services.postgres.ports[5433] }}/nest
           # PostgreSQL's configuration, used by psql
           PGHOST: localhost
           PGUSER: nest
