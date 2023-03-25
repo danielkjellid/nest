@@ -23,9 +23,9 @@ def create_user_with_permissions(django_user_model):
     def _make_user(perms, email="testuser@example.com", **defaults):
         user = django_user_model.objects.update_or_create(
             email=email,
-            password="supersecretpassword",
             **defaults,
         )[0]
+        user.set_password("supersecretpassword")
 
         parsed_perms: list[Permission] = []
 
