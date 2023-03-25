@@ -4,6 +4,7 @@ on: push
 
 env:
   COLUMNS: 120
+  DJANGO_SETTINGS_MODULE: nest.settings
 
 jobs:
   python-lint:
