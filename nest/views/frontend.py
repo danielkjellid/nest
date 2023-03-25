@@ -1,10 +1,11 @@
 from .base import ReactView
 from typing import Any
 from django.http import HttpRequest
+from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 
 
-class FrontendView(ReactView):
+class FrontendView(LoginRequiredMixin, ReactView):
     template_name = "frontend.html"
     index_path = "frontend/apps/index.tsx"
 
