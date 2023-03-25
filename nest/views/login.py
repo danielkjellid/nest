@@ -1,6 +1,8 @@
-from .base import ReactView
-from django.contrib.auth.views import LoginView as DjangoLoginView
 from typing import Any
+
+from django.contrib.auth.views import LoginView as DjangoLoginView
+
+from .base import ReactView
 
 
 class LoginView(DjangoLoginView, ReactView):

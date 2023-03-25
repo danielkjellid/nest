@@ -1,4 +1,3 @@
-import json
 from typing import Any
 
 from django.conf import settings
@@ -23,7 +22,6 @@ class ReactView(View):
             "INDEX_PATH": self.index_path,
         }
 
-    @staticmethod
     def get_additional_context(self, request: HttpRequest) -> dict[str, Any]:
         """
         Context to send to view. Should be implemented per class inheriting this class.

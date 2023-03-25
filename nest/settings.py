@@ -283,7 +283,7 @@ LOGGING = {
 #####################
 
 try:
-    import django_extensions  # noqa: 401 # pylint: disable=unused-import
+    import django_extensions  # noqa: 401
 except ImportError:
     DJANGO_EXTENSIONS_INSTALLED = False
 else:
@@ -299,7 +299,7 @@ if DJANGO_EXTENSIONS_INSTALLED:
 DJANGO_DEBUG_TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR_ENABLED", default=True)
 
 try:
-    import debug_toolbar
+    import debug_toolbar  # noqa: 401
 except ImportError:
     DJANGO_DEBUG_TOOLBAR_INSTALLED = False
 else:
