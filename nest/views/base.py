@@ -12,14 +12,18 @@ class ReactView(View):
     """
 
     template_name: str
-    index_path: str
+    frontend_app: str
 
     def get_base_context(self) -> dict[str, Any]:
+        """
+        Get the base context required to serve the correct frontend app.
+        """
+
         return {
             "DJANGO_VITE_DEV_MODE": settings.DJANGO_VITE_DEV_MODE,
             "DJANGO_VITE_DEV_SERVER_HOST": settings.DJANGO_VITE_DEV_SERVER_HOST,
             "DJANGO_VITE_DEV_SERVER_PORT": settings.DJANGO_VITE_DEV_SERVER_PORT,
-            "INDEX_PATH": self.index_path,
+            "FRONTEND_APP": self.frontend_app,
         }
 
     def get_additional_context(self, request: HttpRequest) -> dict[str, Any]:
@@ -37,6 +41,9 @@ class ReactView(View):
         return self.template_name
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        """
+        Populate template with appropriate context and serve the template.
+        """
         context = {**self.get_base_context(), **self.get_additional_context(request)}
         template = self.get_template(request)
         return render(request, template, context)

@@ -9,7 +9,7 @@ from .base import ReactView
 
 class FrontendView(LoginRequiredMixin, ReactView):
     template_name = "frontend.html"
-    index_path = "frontend/apps/index.tsx"
+    frontend_app = "frontend/apps/index.tsx"
 
     @staticmethod
     def get_initial_props(request: HttpRequest) -> dict[str, Any]:

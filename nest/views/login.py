@@ -7,7 +7,7 @@ from .base import ReactView
 
 class LoginView(DjangoLoginView, ReactView):
     template_name = "login.html"
-    index_path = "frontend/apps/login/index.tsx"
+    frontend_app = "frontend/apps/login/index.tsx"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         django_view_context = super().get_context_data(**kwargs)
