@@ -10,14 +10,14 @@ runs:
       with:
         node-version-file: '.nvmrc'
         cache: 'yarn'
-        cache-dependency-path: 'yarn.lock'
+        cache-dependency-path: 'package-lock.json'
 
     - name: Cache node modules
       id: cache-node-modules
       uses: actions/cache@v3
       with:
         path: ~/.cache/node
-        key: node${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+        key: node${{ runner.os }}-${{ hashFiles('package-lock.json') }}
         restore-keys: |
           node-${{ runner.os }}-
 
