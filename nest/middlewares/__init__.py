@@ -1,4 +1,4 @@
-from nest.middlewares.logging import LoggingMiddleware
-from nest.middlewares.sqlalchemy import SQLAlchemyMiddleware
+from .logging import GenericLoggingMiddleware
+from .query_count import QueryCountWarningMiddleware
 
-__all__ = ["SQLAlchemyMiddleware", "LoggingMiddleware"]
+__all__ = ["GenericLoggingMiddleware", "QueryCountWarningMiddleware"]

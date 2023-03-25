@@ -1,3 +1,3 @@
-from nest.models.users import User, UserRecord
+from .users import User
 
-__all__ = ["User", "UserRecord"]
+__all__ = ["User"]

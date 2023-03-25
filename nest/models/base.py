@@ -1,24 +1,22 @@
-from datetime import datetime
+from typing import TypeVar
 
-from sqlalchemy import BigInteger, Column, DateTime
+from django.db import models
 
-from nest.database import Base
+T = TypeVar("T", bound=models.Model)
 
 
-class BaseSchema(Base):
+class BaseQuerySet(models.QuerySet[T]):
+    ...
+
+
+class BaseModel(models.Model):
     """
-    Base schema storing the most important fields to be used in other models.
+    Keep track of created time and modified time in models.
     """
 
-    __abstract__ = True
+    created_at = models.DateTimeField("created time", auto_now_add=True)
+    updated_at = models.DateTimeField("modified time", auto_now=True)
 
-    id = Column(
-        BigInteger,
-        primary_key=True,
-        autoincrement=True,
-        index=True,
-        nullable=False,
-        unique=True,
-    )
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(DateTime, nullable=True, default=None, onupdate=datetime.utcnow)
+    class Meta:
+        app_label = "nest"
+        abstract = True
