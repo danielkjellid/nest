@@ -11,5 +11,5 @@ class FrontendView(ReactView):
     def get_initial_props(self, request: HttpRequest) -> dict[str, Any]:
         return {"test": 11}
 
-    def get_context(self, request: HttpRequest) -> dict[str, Any]:
+    def get_additional_context(self, request: HttpRequest) -> dict[str, Any]:
         return {"initial_props": json.dumps(self.get_initial_props(request), indent=4)}
