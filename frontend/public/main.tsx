@@ -1,6 +1,6 @@
 import '../assets/index.css'
 
-import App from '../App'
+import App from '../apps/App'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
