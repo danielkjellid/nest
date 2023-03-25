@@ -55,7 +55,7 @@ jobs:
       postgres:
         image: postgres:14
         ports:
-          - 5433/tcp
+          - 5432/tcp
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
         env:
           POSTGRES_DB: nest
@@ -69,13 +69,13 @@ jobs:
       - name: Run tests
         run: poetry run pytest
         env:
-          DATABASE_URL: postgresql://nest:nest@localhost:${{ job.services.postgres.ports[5433] }}/nest
+          DATABASE_URL: postgresql://nest:nest@localhost:${{ job.services.postgres.ports[5432] }}/nest
           # PostgreSQL's configuration, used by psql
           PGHOST: localhost
           PGUSER: nest
           PGPASSWORD: nest
           PGDATABASE: nest
-          PGPORT: ${{ job.services.postgres.ports[5433] }}
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
 
   python-missing-init:
     name: missing __init__.py files
