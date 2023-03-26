@@ -1,23 +1,39 @@
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CommonContextType, CommonProvider } from '../state/CommonProvider'
-import React, { useState } from 'react'
+import { MenuContextType, MenuProvider } from '../state/MenuProvider'
+import React, { Suspense, useMemo, useState } from 'react'
 
 import BaseApp from './BaseApp'
 import Header from '../components/Header'
 import Navbar from '../components/Navbar'
+import apps from './apps'
+
+interface AppProps extends CommonContextType, MenuContextType {}
 
 declare global {
   interface Window {
-    initialProps: CommonContextType
+    initialProps: AppProps
   }
 }
 
-function MainAppInner(props: CommonContextType) {
-  console.log(props)
-  return <div className="h-screen border-2 border-dashed border-gray-200 rounded-md"></div>
+function MainAppInner() {
+  const reactRoutes = useMemo(() => {
+    return apps.map(({ element, key, ...restProps }) => {
+      const Component = React.lazy(element as any)
+      return <Route key={key} {...restProps} element={<Component />} />
+    })
+  }, [])
+
+  return (
+    <Suspense fallback={<div />}>
+      <Routes>{reactRoutes}</Routes>
+    </Suspense>
+  )
 }
 
-function MainApp(props: CommonContextType) {
-  const { currentUser, availableHomes } = props
+function MainApp(props: AppProps) {
+  console.log(props)
+  const { currentUser, availableHomes, config, menu } = props
   /**********
    ** Home **
    **********/
@@ -43,15 +59,19 @@ function MainApp(props: CommonContextType) {
 
   return (
     <CommonProvider
-      config={props.config}
-      currentUser={props.currentUser}
+      config={config}
+      currentUser={currentUser}
       currentHome={currentHome}
       availableHomes={availableHomes}
       setCurrentHome={setCurrentHome}
     >
-      <BaseApp navbar={<Navbar />} header={<Header />}>
-        <MainAppInner {...props} />
-      </BaseApp>
+      <MenuProvider menu={menu}>
+        <BrowserRouter>
+          <BaseApp navbar={<Navbar />} header={<Header />}>
+            <MainAppInner />
+          </BaseApp>
+        </BrowserRouter>
+      </MenuProvider>
     </CommonProvider>
   )
 }

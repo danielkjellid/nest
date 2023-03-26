@@ -8,10 +8,13 @@ import {
   rem,
 } from '@mantine/core'
 import { IconHome, IconLogout, IconNews, IconSettings, IconShoppingCart } from '@tabler/icons-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import Logo from '../Logo'
 import React from 'react'
+import apps from '../../apps/apps'
 import cx from 'classnames'
+import { useMenu } from '../../state/MenuProvider'
 
 const navContent = [
   { icon: IconHome, label: 'Home' },
@@ -45,7 +48,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface NavbarLinkProps {
-  icon: React.FC<any>
+  icon: any
   label: string
   active?: boolean
   onClick?(): void
@@ -61,21 +64,35 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
         })}
         onClick={onClick}
       >
-        <Icon className="h-8 w-8" />
+        <Icon className="w-8 h-8" />
       </UnstyledButton>
     </Tooltip>
   )
 }
 
 function Navbar() {
-  const items = navContent.map((link, index) => (
-    <NavbarLink
-      {...link}
-      key={link.label}
-      active={index === 1}
-      onClick={() => console.log('clicked')}
-    />
-  ))
+  const { menu } = useMenu()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const items = menu.map((menuItem) => {
+    const correspondingApp = apps.find((app) => app.key === menuItem.key)
+
+    if (!correspondingApp) {
+      return
+    }
+
+    const { icon, path } = correspondingApp
+    return (
+      <NavbarLink
+        key={menuItem.key}
+        label={menuItem.title}
+        active={location.pathname === path}
+        icon={() => icon}
+        onClick={() => navigate(path)}
+      />
+    )
+  })
 
   return (
     <MNavbar width={{ base: 80 }} p="md">
