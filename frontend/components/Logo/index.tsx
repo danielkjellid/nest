@@ -6,7 +6,7 @@ interface LogoProps {
 
 function Logo({ className }: LogoProps) {
   return (
-    <div className={`mx-auto ${className}`}>
+    <div className={className}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
         <g clipPath="url(#a)">
           <rect width="100%" height="100%" fill="#7950F2" rx="8" />

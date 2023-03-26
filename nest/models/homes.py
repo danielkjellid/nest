@@ -11,11 +11,6 @@ _HomeManager = models.Manager.from_queryset(HomeQuerySet)
 
 
 class Home(BaseModel):
-    avatar_color = models.CharField(
-        max_length=8,
-        unique=False,
-        choices=AvatarColors.choices,
-    )
     street_address = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=10)
     zip_place = models.CharField(max_length=50)

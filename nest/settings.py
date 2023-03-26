@@ -70,10 +70,6 @@ MIDDLEWARE = [
     "nest.middlewares.GenericLoggingMiddleware",
 ]
 
-MIDDLEWARE_CLASSES = [
-    "django.middleware.locale.LocaleMiddleware",
-]
-
 ########
 # Apps #
 ########
