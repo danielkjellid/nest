@@ -1,28 +1,11 @@
-import {
-  Center,
-  Navbar as MNavbar,
-  Stack,
-  Tooltip,
-  UnstyledButton,
-  createStyles,
-  rem,
-} from '@mantine/core'
-import { IconHome, IconLogout, IconNews, IconSettings, IconShoppingCart } from '@tabler/icons-react'
+import { IconLogout, TablerIconsProps } from '@tabler/icons-react'
+import { Navbar as MNavbar, Stack, Tooltip, UnstyledButton, createStyles } from '@mantine/core'
+import React, { JSXElementConstructor } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import Logo from '../Logo'
-import React from 'react'
 import apps from '../../apps/apps'
 import cx from 'classnames'
 import { useMenu } from '../../state/MenuProvider'
-
-const navContent = [
-  { icon: IconHome, label: 'Home' },
-  { icon: IconShoppingCart, label: 'Products' },
-  { icon: IconNews, label: 'Recipes' },
-  { icon: IconSettings, label: 'Settings' },
-  { icon: 'IconSettings', label: 'Test' },
-]
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -48,7 +31,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface NavbarLinkProps {
-  icon: any
+  icon: JSXElementConstructor<TablerIconsProps>
   label: string
   active?: boolean
   onClick?(): void

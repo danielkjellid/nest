@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { CommonContextType, CommonProvider } from '../state/CommonProvider'
 import { MenuContextType, MenuProvider } from '../state/MenuProvider'
 import React, { Suspense, useMemo, useState } from 'react'
@@ -19,7 +19,7 @@ declare global {
 function MainAppInner() {
   const reactRoutes = useMemo(() => {
     return apps.map(({ element, key, ...restProps }) => {
-      const Component = React.lazy(element as any)
+      const Component = React.lazy(element)
       return <Route key={key} {...restProps} element={<Component />} />
     })
   }, [])
@@ -40,19 +40,12 @@ function MainApp(props: AppProps) {
 
   let home: CommonContextType['currentHome']
 
-  // if (currentUser.home) {
-  //   home = currentUser.home
-  // } else if (!currentUser.home && availableHomes.length) {
-  //   home = availableHomes.sort((a, b) => a.id - b.id)[0]
-  // } else {
-  //   home = null
-  //   // TODO: redirect/show empty state - no homes assigned
-  // }
-
   if (currentUser.home) {
     home = currentUser.home
-  } else {
+  } else if (!currentUser.home && availableHomes.length) {
     home = availableHomes.sort((a, b) => a.id - b.id)[0]
+  } else {
+    home = null
   }
 
   const [currentHome, setCurrentHome] = useState<CommonContextType['currentHome']>(home)

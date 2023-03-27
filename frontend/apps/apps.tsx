@@ -1,11 +1,4 @@
-import {
-  Icon,
-  IconHome,
-  IconNews,
-  IconSettings,
-  IconShoppingCart,
-  IconUsers,
-} from '@tabler/icons-react'
+import { IconHome, IconNews, IconSettings, IconShoppingCart, IconUsers } from '@tabler/icons-react'
 
 import React from 'react'
 

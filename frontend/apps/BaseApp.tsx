@@ -51,7 +51,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
         withNormalizeCSS
         theme={{
           colorScheme,
-          primaryColor: 'violet',
+          primaryColor: 'green',
           fontFamily: 'Inter, sans-serif;',
         }}
       >

@@ -28,7 +28,7 @@ interface Config {
 export interface CommonContextType {
   config: Config
   currentUser: User
-  currentHome: Home
+  currentHome: Home | null
   availableHomes: Home[]
   setCurrentHome(home: Home): void
 }

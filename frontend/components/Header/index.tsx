@@ -41,7 +41,7 @@ function Header() {
       >
         <Logo className="h-12 w-12" />
         {currentHome &&
-          (availableHomes.length ? (
+          (availableHomes.length > 1 ? (
             <Menu shadow="md">
               <Menu.Target>
                 <UnstyledButton>
