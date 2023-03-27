@@ -1,6 +1,7 @@
 from pydantic import BaseModel
-from .users import UserRecord
+
 from .homes import HomeRecord
+from .users import UserRecord
 
 
 class CoreMenuItemRecord(BaseModel):

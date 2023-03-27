@@ -1,6 +1,6 @@
-from .base import BaseModel, BaseQuerySet
 from django.db import models
-from nest.enums import AvatarColors
+
+from .base import BaseModel, BaseQuerySet
 
 
 class HomeQuerySet(BaseQuerySet["Home"]):

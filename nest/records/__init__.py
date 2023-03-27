@@ -1,6 +1,6 @@
-from .users import UserRecord
+from .core import CoreConfigRecord, CoreInitialPropsRecord, CoreMenuItemRecord
 from .homes import HomeRecord
-from .core import CoreInitialPropsRecord, CoreConfigRecord, CoreMenuItemRecord
+from .users import UserRecord
 
 __all__ = [
     "UserRecord",

@@ -1,5 +1,9 @@
 from __future__ import annotations
+
+from decimal import Decimal
+
 from pydantic import BaseModel
+
 from nest.models import Home
 
 
@@ -8,7 +12,7 @@ class HomeRecord(BaseModel):
     address: str
     num_residents: int
     num_weeks_recipe_rotation: int
-    weekly_budget: float
+    weekly_budget: Decimal
     is_active: bool
 
     @classmethod

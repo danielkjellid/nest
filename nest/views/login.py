@@ -1,9 +1,10 @@
 from typing import Any
 
-from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import redirect
-from django.http import HttpResponseRedirect
+
 from .base import ReactView
 
 
@@ -21,7 +22,7 @@ class LoginView(UserPassesTestMixin, DjangoLoginView, ReactView):
             return False
         return True
 
-    def handle_no_permission(self) -> HttpResponseRedirect:
+    def handle_no_permission(self) -> HttpResponsePermanentRedirect:  # type: ignore
         """
         Redirect authenticated users to front page.
         """

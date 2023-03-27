@@ -1,16 +1,16 @@
 from django.http import HttpRequest
-from nest.records import (
-    CoreInitialPropsRecord,
-    UserRecord,
-    CoreConfigRecord,
-    CoreMenuItemRecord,
-)
-from nest.menu import MENU
-from nest.models import User
-from typing import Any
 from pydantic import BaseModel
-from nest.exceptions import ApplicationError
+
+from nest.menu import MENU
+from nest.records import (
+    CoreConfigRecord,
+    CoreInitialPropsRecord,
+    CoreMenuItemRecord,
+    UserRecord,
+)
+
 from .homes import HomeSelector
+from .users import UserSelector
 
 
 class MenuItem(BaseModel):
@@ -23,13 +23,13 @@ class CoreSelector:
     ...
 
     @classmethod
-    def initial_props(cls, request: HttpRequest) -> CoreInitialPropsRecord:
+    def initial_props(cls, request: HttpRequest) -> CoreInitialPropsRecord | None:
 
         if not request.user or not request.user.is_authenticated:
             return None
 
         user = request.user
-        menu = cls.menu_for_user(user=user)
+        menu = cls.menu_for_user(user_id=user.id)
         user_record = UserRecord.from_user(user=user)
         available_homes = HomeSelector.for_user(user_id=user.id)
 
@@ -41,22 +41,10 @@ class CoreSelector:
         )
 
     @classmethod
-    def menu_for_user(
-        cls, user: User | None = None, user_id: int | None = None
-    ) -> list[MenuItem]:
-        user_obj: User
+    def menu_for_user(cls, user_id: int) -> list[CoreMenuItemRecord]:
+        user = UserSelector.get_user(pk=user_id)
 
-        if user:
-            user_obj = user
-        elif user_id:
-            try:
-                user_obj = User.objects.get(id=user_id)
-            except User.DoesNotExist:
-                raise ApplicationError(message="User does not exist.")
-        else:
-            raise RuntimeError("Either user or user_id must be defined.")
-
-        if user_obj.is_staff:
+        if user.is_staff:
             return [CoreMenuItemRecord(**item.dict()) for item in MENU]
 
         # Filter out admin items.

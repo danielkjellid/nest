@@ -1,5 +1,5 @@
 from typing import Final
-from nest.records import CoreMenuItemRecord
+
 from pydantic import BaseModel
 
 
@@ -10,7 +10,7 @@ class MenuItem(BaseModel):
     require_admin: bool
 
 
-MENU: Final[list[CoreMenuItemRecord]] = [
+MENU: Final[list[MenuItem]] = [
     MenuItem(key="plans", title="Meal plans", end=True, require_admin=False),
     MenuItem(key="products", title="Products", end=True, require_admin=False),
     MenuItem(key="recipes", title="Recipes", end=True, require_admin=False),

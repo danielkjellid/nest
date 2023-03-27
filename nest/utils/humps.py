@@ -9,7 +9,7 @@ UNDERSCORE_RE = re.compile(r"(?<=[^\-_\s])[\-_\s]+[^\-_\s]")
 
 
 class HumpsUtil:
-    def __init__(self):
+    def __init__(self) -> None:
         ...
 
     @classmethod

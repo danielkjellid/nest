@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from pydantic import BaseModel
-from .homes import HomeRecord
+
 from nest.models import User
+
+from .homes import HomeRecord
 
 
 class UserRecord(BaseModel):
@@ -12,6 +14,7 @@ class UserRecord(BaseModel):
     last_name: str
     full_name: str
     is_active: bool
+    is_staff: bool
     is_superuser: bool
     home: HomeRecord | None
 
@@ -24,6 +27,7 @@ class UserRecord(BaseModel):
             last_name=user.last_name,
             full_name=user.full_name,
             is_active=user.is_active,
+            is_staff=user.is_staff,
             is_superuser=user.is_superuser,
-            home=HomeRecord.from_home(user.home),
+            home=HomeRecord.from_home(user.home) if user.home else None,
         )

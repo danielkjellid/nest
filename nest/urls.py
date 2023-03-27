@@ -1,8 +1,8 @@
+from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
 
 from nest.views import FrontendView, LoginView
-from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
