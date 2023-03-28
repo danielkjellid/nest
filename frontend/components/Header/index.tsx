@@ -4,7 +4,7 @@ import ColorSchemeSwitch from '../ColorSchemeSwitch'
 import Logo from '../Logo'
 import React from 'react'
 import cx from 'classnames'
-import { useCommonContext } from '../../state/CommonProvider'
+import { useCommonContext } from '../../contexts/CommonProvider'
 
 interface HomeItemProps {
   address: string

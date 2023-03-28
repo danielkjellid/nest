@@ -3,9 +3,9 @@ import { Navbar as MNavbar, Stack, Tooltip, UnstyledButton, createStyles } from 
 import React, { JSXElementConstructor } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import apps from '../../apps/apps'
+import apps from '../../apps/config'
 import cx from 'classnames'
-import { useMenu } from '../../state/MenuProvider'
+import { useMenu } from '../../contexts/MenuProvider'
 
 const useStyles = createStyles((theme) => ({
   link: {

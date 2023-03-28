@@ -41,7 +41,7 @@ class TestViewFrontend:
             "DJANGO_VITE_DEV_MODE": ANY,
             "DJANGO_VITE_DEV_SERVER_HOST": ANY,
             "DJANGO_VITE_DEV_SERVER_PORT": ANY,
-            "FRONTEND_APP": "frontend/apps/index.tsx",
+            "FRONTEND_APP": "frontend/index.tsx",
             "initial_props": ANY,  # Value is tested in selector.
         }
 

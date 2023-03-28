@@ -1,6 +1,6 @@
 import Empty from '../../components/Empty'
 import React from 'react'
-import { useCommonContext } from '../../state/CommonProvider'
+import { useCommonContext } from '../../contexts/CommonProvider'
 
 function PlansApp() {
   const { currentHome, availableHomes } = useCommonContext()

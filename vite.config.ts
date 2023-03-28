@@ -19,7 +19,7 @@ export default defineConfig(() => {
       sourcemap: true,
       rollupOptions: {
         input: {
-          main: './frontend/apps/index.tsx',
+          main: './frontend/index.tsx',
         },
       },
     },

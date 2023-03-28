@@ -13,7 +13,7 @@ from .base import ReactView
 
 class FrontendView(LoginRequiredMixin, ReactView):
     template_name = "frontend.html"
-    frontend_app = "frontend/apps/index.tsx"
+    frontend_app = "frontend/index.tsx"
 
     def get_additional_context(self, request: HttpRequest) -> dict[str, Any]:
         props = CoreSelector.initial_props(request=request)

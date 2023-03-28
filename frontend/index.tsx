@@ -1,8 +1,8 @@
 // eslint-disable-next-line
 import 'vite/modulepreload-polyfill'
-import '../assets/index.css'
+import './assets/index.css'
 
-import App from './App'
+import App from './Main'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 

@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import React, { useEffect } from 'react'
 
-import BaseApp from '../BaseApp'
+import BaseApp from '../../components/BaseApp/BaseApp'
 import ColorSchemeSwitch from '../../components/ColorSchemeSwitch'
 import Logo from '../../components/Logo'
 import { notifications } from '@mantine/notifications'
