@@ -1,12 +1,12 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { CommonContextType, CommonProvider } from '../state/CommonProvider'
-import { MenuContextType, MenuProvider } from '../state/MenuProvider'
+import { CommonContextType, CommonProvider } from './contexts/CommonProvider'
+import { MenuContextType, MenuProvider } from './contexts/MenuProvider'
 import React, { Suspense, useMemo, useState } from 'react'
 
-import BaseApp from './BaseApp'
-import Header from '../components/Header'
-import Navbar from '../components/Navbar'
-import apps from './apps'
+import BaseApp from './components/BaseApp/BaseApp'
+import Header from './components/Header'
+import Navbar from './components/Navbar'
+import apps from './apps/config'
 
 interface AppProps extends CommonContextType, MenuContextType {}
 
@@ -32,7 +32,6 @@ function MainAppInner() {
 }
 
 function MainApp(props: AppProps) {
-  console.log(props)
   const { currentUser, availableHomes, config, menu } = props
   /**********
    ** Home **

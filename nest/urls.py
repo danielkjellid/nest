@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 from nest.views import FrontendView, LoginView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("login/", LoginView.as_view(), name="login"),
-    path("", FrontendView.as_view(), name="index"),
+    re_path("", FrontendView.as_view(), name="index"),
 ]
 
 

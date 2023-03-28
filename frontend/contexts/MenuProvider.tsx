@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react'
 
-interface MenuItem {
+export interface MenuItem {
   key: string
   title: string
   end: boolean

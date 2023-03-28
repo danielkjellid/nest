@@ -50,7 +50,7 @@ jobs:
         run: npm run ${{ matrix.check }}
 
   python-tests:
-    name: tests
+    name: python tests
     runs-on: ubuntu-20.04
     services:
       postgres:
@@ -77,6 +77,19 @@ jobs:
           PGPASSWORD: nest
           PGDATABASE: nest
           PGPORT: ${{ job.services.postgres.ports[5432] }}
+
+  frontend-tests:
+    name: frontend tests
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup project
+        uses: ./.github/actions/setup-node
+      - name: Run tests
+        run: npm test
 
   python-missing-init:
     name: missing __init__.py files

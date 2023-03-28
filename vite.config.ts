@@ -19,8 +19,27 @@ export default defineConfig(() => {
       sourcemap: true,
       rollupOptions: {
         input: {
-          main: './frontend/apps/index.tsx',
+          main: './frontend/index.tsx',
         },
+      },
+    },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './frontend/tests/setup.ts',
+      include: [
+        '**/__tests__/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+        '**/__snapshots__/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+        '**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+      ],
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/.{idea,git,cache,output,temp}/**',
+        '**/{rollup,vite,vitest,tailwind,postcss}.config.*',
+      ],
+      coverage: {
+        reporter: ['text', 'json', 'html'],
       },
     },
   }
