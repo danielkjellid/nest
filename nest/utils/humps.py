@@ -9,9 +9,6 @@ UNDERSCORE_RE = re.compile(r"(?<=[^\-_\s])[\-_\s]+[^\-_\s]")
 
 
 class HumpsUtil:
-    def __init__(self) -> None:
-        ...
-
     @classmethod
     def camelize(
         cls, str_or_iter: str | list[Any] | dict[str, Any]

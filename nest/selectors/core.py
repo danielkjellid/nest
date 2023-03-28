@@ -41,7 +41,7 @@ class CoreSelector:
         """
 
         # If a user is staff, pass all menu items without filtering.
-        if user.is_staff:
+        if user.is_staff or user.is_superuser:
             return [CoreMenuItemRecord(**item.dict()) for item in MENU]
 
         # Filter out admin items for "normal" users.
