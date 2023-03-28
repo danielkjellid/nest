@@ -1,6 +1,6 @@
 from nest.models import Home
 from nest.records import HomeRecord, UserRecord
-
+from django.db.models import Q
 from .users import UserSelector
 
 
@@ -22,21 +22,14 @@ class HomeSelector:
         Get all available homes for a specific user.
         """
 
+        # Return all homes in the app for staff users.
         if user.is_staff or user.is_superuser:
             return cls.all_homes()
 
-        records = []
-        available_homes_for_user = Home.objects.filter(
-            is_active=True, users__in=[user.id]
+        # Get home set as primary and all available homes.
+        available_homes_for_user = Home.objects.active().filter(
+            Q(users__in=[user.id]) | Q(user=user.id)
         )
-        records.extend(
-            [HomeRecord.from_home(home) for home in available_homes_for_user]
-        )
-
-        if user.home:
-            primary_home_record = user.home
-            # Avoid adding the primary home multiple times.
-            if primary_home_record not in records:
-                records.append(primary_home_record)
+        records = [HomeRecord.from_home(home) for home in available_homes_for_user]
 
         return records

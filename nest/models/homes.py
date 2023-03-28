@@ -1,10 +1,12 @@
+from __future__ import annotations
 from django.db import models
 
 from .base import BaseModel, BaseQuerySet
 
 
 class HomeQuerySet(BaseQuerySet["Home"]):
-    pass
+    def active(self) -> HomeQuerySet:
+        return self.filter(is_active=True)
 
 
 _HomeManager = models.Manager.from_queryset(HomeQuerySet)
