@@ -1,30 +1,35 @@
 from nest.models import Home
-from nest.records import HomeRecord
+from nest.records import HomeRecord, UserRecord
 
 from .users import UserSelector
 
 
 class HomeSelector:
-    def __init__(self) -> None:
-        ...
-
     @classmethod
     def all_homes(cls) -> list[HomeRecord]:
+        """
+        Get all homes regardless of active state.
+        """
+
         homes = Home.objects.all().prefetch_related("users")
         records = [HomeRecord.from_home(home) for home in homes]
 
         return records
 
     @classmethod
-    def for_user(cls, user_id: int) -> list[HomeRecord]:
-        user = UserSelector.get_user(pk=user_id)
+    def user_homes(cls, user: UserRecord) -> list[HomeRecord]:
+        """
+        Get all available homes for a specific user.
+        """
 
         if user.is_staff or user.is_superuser:
             return cls.all_homes()
 
         records = []
-        available_homes = Home.objects.filter(is_active=True, user=user_id)
-        records.extend([HomeRecord.from_home(home) for home in available_homes])
+        available_homes_for_user = Home.objects.filter(is_active=True, user=user.id)
+        records.extend(
+            [HomeRecord.from_home(home) for home in available_homes_for_user]
+        )
 
         if user.home:
             primary_home_record = user.home

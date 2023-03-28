@@ -4,9 +4,6 @@ from nest.records import UserRecord
 
 
 class UserSelector:
-    def __init__(self) -> None:
-        ...
-
     @classmethod
     def get_user(cls, pk: int) -> UserRecord:
         """

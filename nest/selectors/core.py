@@ -1,5 +1,4 @@
 from django.http import HttpRequest
-from pydantic import BaseModel
 
 from nest.menu import MENU
 from nest.records import (
@@ -10,44 +9,41 @@ from nest.records import (
 )
 
 from .homes import HomeSelector
-from .users import UserSelector
-
-
-class MenuItem(BaseModel):
-    key: str
-    title: str
-    end: bool
 
 
 class CoreSelector:
-    ...
-
     @classmethod
     def initial_props(cls, request: HttpRequest) -> CoreInitialPropsRecord | None:
+        """
+        Create a structure for passing down initial props on page load.
+        """
 
+        # Props content is largely based on a request user context.
         if not request.user or not request.user.is_authenticated:
             return None
 
-        user = request.user
-        menu = cls.menu_for_user(user_id=user.id)
-        user_record = UserRecord.from_user(user=user)
-        available_homes = HomeSelector.for_user(user_id=user.id)
+        user = UserRecord.from_user(user=request.user)
+        menu = cls.user_menu(user=user)
+        available_homes = HomeSelector.user_homes(user=user)
 
         return CoreInitialPropsRecord(
             menu=menu,
             config=CoreConfigRecord(is_production=False),
-            current_user=user_record,
+            current_user=user,
             available_homes=available_homes,
         )
 
     @classmethod
-    def menu_for_user(cls, user_id: int) -> list[CoreMenuItemRecord]:
-        user = UserSelector.get_user(pk=user_id)
+    def user_menu(cls, user: UserRecord) -> list[CoreMenuItemRecord]:
+        """
+        Get the menu items for a specific user based on provided record.
+        """
 
+        # If a user is staff, pass all menu items without filtering.
         if user.is_staff:
             return [CoreMenuItemRecord(**item.dict()) for item in MENU]
 
-        # Filter out admin items.
+        # Filter out admin items for "normal" users.
         return [
             CoreMenuItemRecord(**item.dict()) for item in MENU if not item.require_admin
         ]
