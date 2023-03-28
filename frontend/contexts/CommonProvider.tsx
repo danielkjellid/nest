@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react'
 
-interface Home {
+export interface Home {
   id: number
   address: string
   numResidents: number
@@ -9,7 +9,7 @@ interface Home {
   isActive: boolean
 }
 
-interface User {
+export interface User {
   id: number
   email: string
   firstName: string
@@ -21,7 +21,7 @@ interface User {
   home?: Home
 }
 
-interface Config {
+export interface Config {
   isProduction: boolean
 }
 
