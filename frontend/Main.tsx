@@ -32,7 +32,6 @@ function MainAppInner() {
 }
 
 function MainApp(props: AppProps) {
-  console.log(props)
   const { currentUser, availableHomes, config, menu } = props
   /**********
    ** Home **

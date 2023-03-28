@@ -23,5 +23,13 @@ export default defineConfig(() => {
         },
       },
     },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './frontend/tests/setup.ts',
+      coverage: {
+        reporter: ['text', 'json', 'html'],
+      },
+    },
   }
 })

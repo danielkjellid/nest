@@ -14,7 +14,10 @@
     "import-sort:check": "import-sort --list-different \"frontend/**/*.{js,jsx,ts,tsx}\"",
     "import-sort:fix": "import-sort --write \"frontend/**/*.{js,jsx,ts,tsx}\"",
     "lint": "npm run prettier:check && yarn run eslint:check",
-    "lint:fix": "npm run prettier:fix && npm run eslint:fix"
+    "lint:fix": "npm run prettier:fix && npm run eslint:fix",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -32,11 +35,16 @@
     "react-router-dom": "6.8.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
+    "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "@vitejs/plugin-react": "^3.0.0",
+    "@vitest/ui": "^0.29.8",
     "autoprefixer": "^10.4.13",
     "eslint": "8.22.0",
     "eslint-config-prettier": "^8.6.0",
@@ -44,6 +52,7 @@
     "eslint-plugin-react": "^7.32.2",
     "import-sort-cli": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
+    "jsdom": "^21.1.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
     "react-refresh": "^0.14.0",
