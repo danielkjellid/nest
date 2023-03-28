@@ -23,7 +23,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
    ********************/
 
   // Append Mantine css last to not interfere/overwrite tailwind styles.
-  const emotionCache = createEmotionCache({ key: 'mantine', prepend: false })
+  const emotionCache = createEmotionCache({ key: 'mantine', prepend: true })
 
   /******************
    ** Color scheme **
@@ -51,7 +51,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
         withNormalizeCSS
         theme={{
           colorScheme,
-          primaryColor: 'violet',
+          primaryColor: 'green',
           fontFamily: 'Inter, sans-serif;',
         }}
       >
@@ -63,7 +63,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
             main: {
               color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.dark[8],
               backgroundColor:
-                theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+                theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
             },
           })}
         >

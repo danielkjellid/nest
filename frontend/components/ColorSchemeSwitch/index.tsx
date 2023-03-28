@@ -19,8 +19,8 @@ function ColorSchemeSwitch({ size }: ColorSchemeSwitchProps) {
       checked={colorScheme === 'dark'}
       onChange={() => toggleColorScheme()}
       size={size}
-      onLabel={<IconSun className="h-12" color={theme.white} />}
-      offLabel={<IconMoon className="h-12" color={theme.colors.gray[6]} />}
+      onLabel={<IconSun className="h-5 w-5" color={theme.white} />}
+      offLabel={<IconMoon className="h-5 w-5" color={theme.colors.gray[6]} />}
     />
   )
 }

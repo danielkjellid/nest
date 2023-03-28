@@ -10,8 +10,9 @@ import {
 } from '@mantine/core'
 import React, { useEffect } from 'react'
 
-import ColorSchemeSwitch from '../components/ColorSchemeSwitch'
-import Logo from '../components/Logo'
+import BaseApp from '../BaseApp'
+import ColorSchemeSwitch from '../../components/ColorSchemeSwitch'
+import Logo from '../../components/Logo'
 import { notifications } from '@mantine/notifications'
 import { useForm } from '@mantine/form'
 
@@ -27,7 +28,7 @@ interface LoginFormValues {
   password: string
 }
 
-function LoginApp() {
+function LoginAppInner() {
   /**********
    ** Form **
    **********/
@@ -56,7 +57,7 @@ function LoginApp() {
         <Stack>
           <Center>
             <Stack>
-              <Logo className="h-16 w-16" />
+              <Logo className="h-16 w-16 mx-auto" />
               <Title order={2}>Sign in to your account</Title>
             </Stack>
           </Center>
@@ -85,6 +86,14 @@ function LoginApp() {
         </Stack>
       </Container>
     </>
+  )
+}
+
+function LoginApp() {
+  return (
+    <BaseApp appShellClassName="fixed inset-0">
+      <LoginAppInner />
+    </BaseApp>
   )
 }
 

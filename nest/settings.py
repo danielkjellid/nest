@@ -24,6 +24,9 @@ APP_DIR = Path(__file__).parent.resolve()
 DEBUG = env.bool("DEBUG", default=False)
 
 ENVIRONMENT = env.str("ENVIRONMENT", default="local")
+IS_PRODUCTION = env.bool(
+    "IS_PRODUCTION", default=(not ENVIRONMENT == "local" and not DEBUG)
+)
 
 #################
 # Django basics #
@@ -68,10 +71,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "nest.middlewares.GenericLoggingMiddleware",
-]
-
-MIDDLEWARE_CLASSES = [
-    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ########
@@ -231,7 +230,6 @@ structlog.configure(
         structlog.processors.format_exc_info,
         structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
     ],
-    context_class=structlog.threadlocal.wrap_dict(dict),
     logger_factory=structlog.stdlib.LoggerFactory(),
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,

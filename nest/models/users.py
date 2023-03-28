@@ -45,6 +45,14 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         unique=False,
         choices=AvatarColors.choices,
     )
+    home = models.OneToOneField(
+        "Home",
+        related_name="user",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
+    homes = models.ManyToManyField("Home", related_name="users", blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

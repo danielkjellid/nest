@@ -4,6 +4,8 @@ from pydantic import BaseModel
 
 from nest.models import User
 
+from .homes import HomeRecord
+
 
 class UserRecord(BaseModel):
     id: int
@@ -12,7 +14,9 @@ class UserRecord(BaseModel):
     last_name: str
     full_name: str
     is_active: bool
+    is_staff: bool
     is_superuser: bool
+    home: HomeRecord | None
 
     @classmethod
     def from_user(cls, user: User) -> UserRecord:
@@ -23,5 +27,7 @@ class UserRecord(BaseModel):
             last_name=user.last_name,
             full_name=user.full_name,
             is_active=user.is_active,
+            is_staff=user.is_staff,
             is_superuser=user.is_superuser,
+            home=HomeRecord.from_home(user.home) if user.home else None,
         )

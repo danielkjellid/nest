@@ -106,6 +106,8 @@ ignore = [
     # Disable magic value comparison. They're perfectly valid in tests and quite a few
     "PLR2004",
 ]
+[tool.ruff.pylint]
+max-args = 10
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "parents"

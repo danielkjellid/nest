@@ -54,20 +54,32 @@ def anonymous_user():
 
 @pytest.fixture
 def unprivileged_user(create_user_with_permissions):
-    return create_user_with_permissions([], email="unprivileged_user@example.com")
+    return create_user_with_permissions(
+        [],
+        first_name="Unprivileged",
+        last_name="User",
+        email="unprivileged_user@example.com",
+    )
 
 
 @pytest.fixture
 def unprivileged_staff_user(create_user_with_permissions):
     return create_user_with_permissions(
-        [], email="unprivileged_staff_user@example.com", is_staff=True
+        [],
+        first_name="Unprivileged Staff",
+        last_name="User",
+        email="unprivileged_staff_user@example.com",
+        is_staff=True,
     )
 
 
 @pytest.fixture
 def privileged_user(create_user_with_permissions, test_permissions):
     return create_user_with_permissions(
-        test_permissions, email="privileged_user@example.com"
+        test_permissions,
+        first_name="Privileged",
+        last_name="User",
+        email="privileged_user@example.com",
     )
 
 
@@ -75,12 +87,21 @@ def privileged_user(create_user_with_permissions, test_permissions):
 def privileged_staff_user(create_user_with_permissions, test_permissions):
 
     return create_user_with_permissions(
-        test_permissions, email="privileged_staff_user@example.com", is_staff=True
+        test_permissions,
+        first_name="Privileged Staff",
+        last_name="User",
+        email="privileged_staff_user@example.com",
+        is_staff=True,
     )
 
 
 @pytest.fixture
 def superuser(create_user_with_permissions):
     return create_user_with_permissions(
-        [], email="superuser@example.com", is_superuser=True, is_staff=True
+        [],
+        first_name="Super",
+        last_name="User",
+        email="superuser@example.com",
+        is_superuser=True,
+        is_staff=True,
     )
