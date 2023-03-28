@@ -9,6 +9,7 @@ from nest.records import (
 )
 
 from .homes import HomeSelector
+from django.conf import settings
 
 
 class CoreSelector:
@@ -28,7 +29,7 @@ class CoreSelector:
 
         return CoreInitialPropsRecord(
             menu=menu,
-            config=CoreConfigRecord(is_production=False),
+            config=CoreConfigRecord(is_production=settings.IS_PRODUCTION),
             current_user=user,
             available_homes=available_homes,
         )

@@ -24,6 +24,9 @@ APP_DIR = Path(__file__).parent.resolve()
 DEBUG = env.bool("DEBUG", default=False)
 
 ENVIRONMENT = env.str("ENVIRONMENT", default="local")
+IS_PRODUCTION = env.bool(
+    "IS_PRODUCTION", default=(not ENVIRONMENT == "local" and not DEBUG)
+)
 
 #################
 # Django basics #
