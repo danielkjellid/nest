@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import HttpRequest
 
 from nest.menu import MENU
@@ -9,7 +10,6 @@ from nest.records import (
 )
 
 from .homes import HomeSelector
-from django.conf import settings
 
 
 class CoreSelector:

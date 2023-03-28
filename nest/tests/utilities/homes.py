@@ -1,4 +1,5 @@
 from decimal import Decimal
+
 from nest.models import Home
 
 
@@ -8,7 +9,7 @@ def create_home(
     zip_place="Nowhere",
     num_residents: int = 2,
     num_weeks_recipe_rotation: int = 2,
-    weekly_budget: Decimal = Decimal("1000"),
+    weekly_budget: str = "1000.00",
     is_active: bool = True,
 ) -> Home:
     home, _created = Home.objects.get_or_create(
@@ -17,7 +18,7 @@ def create_home(
         zip_place=zip_place,
         num_residents=num_residents,
         num_weeks_recipe_rotation=num_weeks_recipe_rotation,
-        weekly_budget=weekly_budget,
+        weekly_budget=Decimal(weekly_budget),
         is_active=is_active,
     )
     return home

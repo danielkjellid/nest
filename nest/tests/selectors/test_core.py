@@ -1,14 +1,15 @@
+import pytest
 from django.test.client import RequestFactory
-from nest.selectors import CoreSelector
+
 from nest.records import (
+    CoreConfigRecord,
     CoreInitialPropsRecord,
     CoreMenuItemRecord,
-    CoreConfigRecord,
-    UserRecord,
     HomeRecord,
+    UserRecord,
 )
+from nest.selectors import CoreSelector
 from nest.tests.utilities import create_home, create_user
-import pytest
 
 pytestmark = pytest.mark.django_db
 

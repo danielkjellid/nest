@@ -1,7 +1,7 @@
+from django.db.models import Q
+
 from nest.models import Home
 from nest.records import HomeRecord, UserRecord
-from django.db.models import Q
-from .users import UserSelector
 
 
 class HomeSelector:

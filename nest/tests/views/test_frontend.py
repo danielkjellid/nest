@@ -1,4 +1,3 @@
-import json
 from unittest.mock import ANY
 
 from django.test import Client

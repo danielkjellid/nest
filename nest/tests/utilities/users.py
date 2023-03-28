@@ -1,4 +1,5 @@
-from nest.models import User, Home
+from nest.models import Home, User
+
 from .homes import create_home
 
 
