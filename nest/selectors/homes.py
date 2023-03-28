@@ -11,7 +11,7 @@ class HomeSelector:
         Get all homes regardless of active state.
         """
 
-        homes = Home.objects.all().prefetch_related("users")
+        homes = Home.objects.all()
         records = [HomeRecord.from_home(home) for home in homes]
 
         return records
@@ -26,7 +26,9 @@ class HomeSelector:
             return cls.all_homes()
 
         records = []
-        available_homes_for_user = Home.objects.filter(is_active=True, user=user.id)
+        available_homes_for_user = Home.objects.filter(
+            is_active=True, users__in=[user.id]
+        )
         records.extend(
             [HomeRecord.from_home(home) for home in available_homes_for_user]
         )

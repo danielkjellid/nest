@@ -43,7 +43,7 @@ class TestViewFrontend:
             "DJANGO_VITE_DEV_SERVER_HOST": ANY,
             "DJANGO_VITE_DEV_SERVER_PORT": ANY,
             "FRONTEND_APP": "frontend/apps/index.tsx",
-            "initial_props": json.dumps({"test": 11}, indent=4),
+            "initial_props": ANY,  # Value is tested in selector.
         }
 
         # Extract and flatten context properties.

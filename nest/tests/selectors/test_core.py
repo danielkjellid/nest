@@ -8,6 +8,9 @@ from nest.records import (
     HomeRecord,
 )
 from nest.tests.utilities import create_home, create_user
+import pytest
+
+pytestmark = pytest.mark.django_db
 
 
 class TestCoreSelector:
