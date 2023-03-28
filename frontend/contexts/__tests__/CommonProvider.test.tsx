@@ -1,7 +1,9 @@
+import { CommonProvider, useCommonContext } from '../CommonProvider'
 import { describe, expect, it, test } from 'vitest'
 
+import React from 'react'
+import { createCommonContextTestData } from './utils'
 import { renderHook } from '@testing-library/react'
-import { useCommonContext } from '../CommonProvider'
 
 describe('CommonContext context', () => {
   it('should throw an error if used outside provider', () => {
@@ -9,5 +11,26 @@ describe('CommonContext context', () => {
       const { result } = renderHook(() => useCommonContext())
       expect(result.current).rejects.toBe(0)
     })
+  })
+
+  it('should respond gracefully when used inside provider', () => {
+    const { config, currentHome, currentUser, availableHomes } = createCommonContextTestData()
+    const wrapper = ({ children }: { children: React.ReactNode }) => {
+      return (
+        <CommonProvider
+          config={config}
+          currentHome={currentHome}
+          currentUser={currentUser}
+          availableHomes={availableHomes}
+          setCurrentHome={() => console.log('set home')}
+        >
+          {children}
+        </CommonProvider>
+      )
+    }
+
+    const { result } = renderHook(() => useCommonContext(), { wrapper })
+
+    expect(result.current).toStrictEqual({ config, currentHome, currentUser, availableHomes })
   })
 })
