@@ -12,9 +12,9 @@ class UserSelector:
         Note: this performs an additional lookup to home to populate the record, so do
         not use this in a loop.
         """
-        try:
-            user = User.objects.get(id=pk)
-        except User.DoesNotExist as exc:
-            raise ApplicationError(message="User does not exist.") from exc
+        user = User.objects.filter(id=pk).select_related("home").first()
+
+        if not user:
+            raise ApplicationError(message="User does not exist.")
 
         return UserRecord.from_user(user)
