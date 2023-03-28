@@ -8,9 +8,6 @@ class UserSelector:
     def get_user(cls, pk: int) -> UserRecord:
         """
         Get a user instance.
-
-        Note: this performs an additional lookup to home to populate the record, so do
-        not use this in a loop.
         """
         user = User.objects.filter(id=pk).select_related("home").first()
 
