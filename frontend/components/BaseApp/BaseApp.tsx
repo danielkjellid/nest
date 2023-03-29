@@ -53,6 +53,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
           colorScheme,
           primaryColor: 'green',
           fontFamily: 'Inter, sans-serif;',
+          loader: 'dots',
         }}
       >
         <AppShell

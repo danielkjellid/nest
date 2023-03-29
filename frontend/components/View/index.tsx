@@ -16,17 +16,15 @@ interface ViewProps<THooks extends object, ComponentProps extends object> {
   component: React.ComponentType<{ data: HooksResult<THooks> } & ComponentProps> | null
   componentProps: Omit<ComponentProps, 'data'>
   results: THooks
-  inline?: boolean
   loadingProps?: LoadingProps
   initialLoadOnly?: boolean
-  errorProps?: ErrorProps
+  errorProps: ErrorProps
 }
 
 function View<THooks extends object, ComponentProps extends object>({
   component: Component,
   componentProps,
   results,
-  inline,
   loadingProps,
   errorProps,
   initialLoadOnly = false,
@@ -65,11 +63,11 @@ function View<THooks extends object, ComponentProps extends object>({
   }, [initialRunRef])
 
   if (error) {
-    return <Error inline={inline} {...errorProps} />
+    return <Error {...errorProps} />
   }
 
   if (loading && allowLoading) {
-    return <Loading inline={inline} {...loadingProps} />
+    return <Loading {...loadingProps} />
   }
 
   if (dataLoaded && Component) {

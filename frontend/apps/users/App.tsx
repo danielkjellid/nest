@@ -41,14 +41,15 @@ function UsersAppInner({ data }: UsersAppInnerProps) {
 }
 
 function UsersApp() {
-  const users = useFetch(urls.test())
+  const users = useFetch<TestResponse>(urls.test())
 
   return (
     <View<object, UsersAppInnerProps>
       component={UsersAppInner}
       results={{ users }}
       componentProps={{}}
-      loadingProps={{ description: 'Testing' }}
+      loadingProps={{ description: 'Loading users...' }}
+      errorProps={{ description: 'There was an error getting users. Please try again.' }}
     />
   )
 }
