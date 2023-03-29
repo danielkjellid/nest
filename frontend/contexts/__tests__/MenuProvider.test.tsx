@@ -1,5 +1,5 @@
 import { MenuProvider, useMenu } from '../MenuProvider'
-import { describe, expect, it, test } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import React from 'react'
 import { menuItemTestUtil } from './utils'
@@ -12,10 +12,14 @@ const menuData = [
 
 describe('MenuContext context', () => {
   it('should throw an error if used outside provider', () => {
-    test.fails('fail test', () => {
-      const { result } = renderHook(() => useMenu())
-      expect(result.current).rejects.toBe(0)
-    })
+    // Silence the stack trace by mocking the consoles error object.
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    expect(() => renderHook(() => useMenu())).toThrow(
+      Error(
+        'useMenu hook was called outside of context, make sure your app is wrapped with MenuProvider component'
+      )
+    )
   })
 
   it('should respond gracefully when used inside provider', () => {
