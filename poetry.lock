@@ -1030,14 +1030,14 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "pytest-pretty"
-version = "1.1.0"
+version = "1.1.1"
 description = "pytest plugin for printing summary data as I want it"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pytest_pretty-1.1.0-py3-none-any.whl", hash = "sha256:e7e63e0437694e5a7c557d99c81d6e29e0dcaab3b6b9dcb3ba23ddf3eebb5b42"},
-    {file = "pytest_pretty-1.1.0.tar.gz", hash = "sha256:425e116c1ed10ce67eeb688f22d1bcb91ca58a97986026bf42c0717da80740b3"},
+    {file = "pytest_pretty-1.1.1-py3-none-any.whl", hash = "sha256:22d19d319f2ce07d62ea64f487616d99433cae8530cd20813487bad8a7d5f088"},
+    {file = "pytest_pretty-1.1.1.tar.gz", hash = "sha256:dfabbeee334ff5e77f3f731623cd44f147b3db7001df8d9ef8ea1f54986b41e2"},
 ]
 
 [package.dependencies]
@@ -1313,5 +1313,5 @@ files = [
 
 [metadata]
 lock-version = "2.0"
-python-versions = "~3.11.1"
-content-hash = "8f6e5d359ea04effee5e10009bfbb3aa28872c14464629aff33b483b90dbacec"
+python-versions = "~3.11"
+content-hash = "88f28d181c083da2d2117db793787d49c2e3c89520b42f28abd92ae47e75678b"
