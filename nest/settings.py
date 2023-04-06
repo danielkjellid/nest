@@ -203,7 +203,7 @@ QUERY_COUNT_WARNING_THRESHOLD = 25
 QUERY_DURATION_WARNING_THRESHOLD = 300  # in ms
 
 if DEBUG:
-    MIDDLEWARE = ["nest.middlewares.QueryCountWarningMiddleware", *MIDDLEWARE]
+    MIDDLEWARE += ["nest.middlewares.QueryCountWarningMiddleware"]
 
 ###########
 # Logging #
@@ -276,6 +276,12 @@ LOGGING = {
     },
 }
 
+##################
+# OpenAPI Schema #
+##################
+
+OPENAPI_AUTO_GENERATE = env.str("OPENAPI_AUTO_GENERATE", default=DEBUG)
+
 #####################
 # Django Extensions #
 #####################
@@ -307,3 +313,4 @@ if DEBUG and DJANGO_DEBUG_TOOLBAR_INSTALLED and DJANGO_DEBUG_TOOLBAR_ENABLED:
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
     INSTALLED_APPS += ["debug_toolbar"]
     INTERNAL_IPS = ["127.0.0.1"]
+    # DEBUG_TOOLBAR_CONFIG = {"INSERT_BEFORE": "</main>"}

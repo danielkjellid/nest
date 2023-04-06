@@ -17,7 +17,8 @@
     "lint:fix": "npm run prettier:fix && npm run eslint:fix",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "openapi:generate": "node ./frontend/utils/generate-types.cjs"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -60,6 +61,7 @@
     "import-sort-cli": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "jsdom": "^21.1.1",
+    "openapi-typescript-codegen": "^0.23.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.3",
     "react-refresh": "^0.14.0",

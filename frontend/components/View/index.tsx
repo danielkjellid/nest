@@ -13,8 +13,8 @@ export type HooksResult<THooks extends object> = {
 }
 
 interface ViewProps<THooks extends object, ComponentProps extends object> {
-  component: React.ComponentType<{ data: HooksResult<THooks> } & ComponentProps> | null
-  componentProps: Omit<ComponentProps, 'data'>
+  component: React.ComponentType<{ results: HooksResult<THooks> } & ComponentProps> | null
+  componentProps: Omit<ComponentProps, 'results'>
   results: THooks
   loadingProps?: LoadingProps
   initialLoadOnly?: boolean
@@ -71,7 +71,9 @@ function View<THooks extends object, ComponentProps extends object>({
   }
 
   if (dataLoaded && Component) {
-    return <Component data={data as HooksResult<THooks>} {...(componentProps as ComponentProps)} />
+    return (
+      <Component results={data as HooksResult<THooks>} {...(componentProps as ComponentProps)} />
+    )
   }
 
   return null

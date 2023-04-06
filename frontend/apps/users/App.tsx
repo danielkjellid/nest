@@ -1,39 +1,43 @@
-import { MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
+/* eslint-disable react/prop-types */
+import { Button, Menu, Title } from '@mantine/core'
+import { UserList, UserListAPIResponse } from '../../types/generated/dist'
 
+import { IconEye } from '@tabler/icons-react'
 import React from 'react'
+import Table from '../../components/Table'
 import View from '../../components/View'
 import urls from './urls'
 import { useFetch } from '../../hooks/fetcher'
 
-interface TestResponse {
-  id: number
-}
 interface UsersAppInnerProps {
-  data?: TestResponse
+  results: { users: UserListAPIResponse }
 }
 
-function UsersAppInner({ data }: UsersAppInnerProps) {
+function UsersAppInner({ results }: UsersAppInnerProps) {
+  const { users } = results
+
   return (
-    <div>
-      <p>{JSON.stringify(data)}</p>
-      <MantineReactTable
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Title>Users</Title>
+        <Button>Add user</Button>
+      </div>
+
+      <Table<UserList>
+        rowIdentifier="id"
         columns={[
-          { header: 'id', accessorKey: 'id' },
-          { header: 'name', accessorKey: 'name' },
-          { header: 'home', accessorKey: 'home' },
-          { header: 'active', accessorKey: 'active' },
-          { header: 'staff', accessorKey: 'staff' },
-          { header: 'actions', accessorKey: 'actions' },
+          { header: 'Id', accessorKey: 'id', size: 20, enableEditing: false },
+          { header: 'Name', accessorKey: 'fullName' },
+          { header: 'Email', accessorKey: 'email' },
+          { header: 'Home', accessorKey: 'home.address' },
+          { header: 'Active', accessorKey: 'isActive', options: { isBoolean: true } },
+          { header: 'Staff', accessorKey: 'isStaff', options: { isBoolean: true } },
         ]}
-        data={[
-          {
-            id: 1,
-            name: 'Daniel',
-            home: 'Vitaminveien 22',
-            active: true,
-            staff: true,
-            actions: '',
-          },
+        data={users.data || []}
+        actionMenuItems={({ row }) => [
+          <Menu.Item key={2} icon={<IconEye />} onClick={() => console.info('Hijack')}>
+            Hijack
+          </Menu.Item>,
         ]}
       />
     </div>
@@ -41,7 +45,7 @@ function UsersAppInner({ data }: UsersAppInnerProps) {
 }
 
 function UsersApp() {
-  const users = useFetch<TestResponse>(urls.test())
+  const users = useFetch<UserListAPIResponse>(urls.test())
 
   return (
     <View<object, UsersAppInnerProps>

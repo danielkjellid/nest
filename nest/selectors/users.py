@@ -15,3 +15,12 @@ class UserSelector:
             raise ApplicationError(message="User does not exist.")
 
         return UserRecord.from_user(user)
+
+    @classmethod
+    def all_users(cls) -> list[UserRecord]:
+        """
+        Get a list of all users.
+        """
+
+        users = User.objects.all().select_related("home")
+        return [UserRecord.from_user(user) for user in users]

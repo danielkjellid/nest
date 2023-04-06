@@ -45,9 +45,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
         unique=False,
         choices=AvatarColors.choices,
     )
-    home = models.OneToOneField(
+    home = models.ForeignKey(
         "Home",
-        related_name="user",
+        related_name="residents",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,

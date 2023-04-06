@@ -35,7 +35,7 @@ async function getter<T>(url: string, options: RequestOptions = {}): Promise<T> 
     headers: { ...options.headers },
   })
 
-  const data = await response.json()
+  const data = await response.text()
 
   if (!response.ok) {
     const error = new RequestError(
@@ -46,7 +46,9 @@ async function getter<T>(url: string, options: RequestOptions = {}): Promise<T> 
     throw error
   }
 
-  return data as T
+  const jsonData = data ? JSON.parse(data) : null
+
+  return jsonData as T
 }
 
 const setter =

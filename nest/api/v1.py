@@ -1,15 +1,28 @@
-from ninja import NinjaAPI
-from django.contrib.admin.views.decorators import staff_member_required
-from ninja.security import django_auth
+from django.http import HttpRequest, HttpResponse
 
+from .responses import APIResponse
+from nest.exceptions import ApplicationError
+from .base import NestAPI
 from nest.endpoints.users import router
+from nest.endpoints.example import router as example_router
 
-api = NinjaAPI(
-    title="Nest API",
-    version="1.0.0",
-    docs_decorator=staff_member_required,
-    auth=django_auth,
-    csrf=True,
-)
+api = NestAPI()
 
 api.add_router("/users/", router)
+api.add_router("/example/", example_router)
+
+
+@api.exception_handler(ApplicationError)
+def application_error_handler(
+    request: HttpRequest, exc: ApplicationError
+) -> HttpResponse:
+
+    """
+    Exception handler for application errors.
+    """
+
+    return api.create_response(
+        request,
+        APIResponse(status="error", message=exc.message, data=exc.extra or None),
+        status=exc.status_code,
+    )
