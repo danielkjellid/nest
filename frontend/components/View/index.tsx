@@ -33,7 +33,9 @@ function View<THooks extends object, ComponentProps extends object>({
    ** Error **
    ***********/
 
-  const error = Object.values(results).some((result) => typeof result.error !== 'undefined')
+  const error = Object.values(results).some(
+    (result) => result && typeof result.error !== 'undefined'
+  )
 
   /**********
    ** Data **

@@ -45,7 +45,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/NoneTypeAPIResponse"
+                                    "$ref": "#/components/schemas/APIResponse"
                                 }
                             }
                         }
@@ -183,8 +183,8 @@
                     "status"
                 ]
             },
-            "NoneTypeAPIResponse": {
-                "title": "NoneTypeAPIResponse",
+            "APIResponse": {
+                "title": "APIResponse",
                 "type": "object",
                 "properties": {
                     "status": {

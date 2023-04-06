@@ -3,10 +3,11 @@ import { IconCircleCheckFilled, IconCircleXFilled } from '@tabler/icons-react'
 import {
   MRT_ColumnDef,
   MRT_RowSelectionState,
+  MRT_Updater,
   MantineReactTable,
   MantineReactTableProps,
 } from 'mantine-react-table'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import { Box } from '@mantine/core'
 
@@ -25,13 +26,15 @@ interface TableProps<TData extends object> {
   columns: Column[]
   data: TData[]
   actionMenuItems?: MantineReactTableProps['renderRowActionMenuItems']
-  onRowSelectionChange?: (selection: MRT_RowSelectionState) => void
+  rowSelection: MRT_RowSelectionState
+  onRowSelectionChange?: (selection: MRT_Updater<MRT_RowSelectionState>) => void
 }
 
 function Table<TData extends object>({
   data,
   rowIdentifier,
   actionMenuItems,
+  rowSelection,
   onRowSelectionChange,
   columns,
 }: TableProps<TData>) {
@@ -73,13 +76,18 @@ function Table<TData extends object>({
   }
 
   const columnDefs = useMemo(() => getColumnDefinitions(columns), [columns])
-  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({})
 
   useEffect(() => {
     if (onRowSelectionChange) {
       onRowSelectionChange(rowSelection)
     }
   }, [rowSelection, onRowSelectionChange])
+
+  const setRowSelection = (selection: MRT_Updater<MRT_RowSelectionState>) => {
+    if (onRowSelectionChange) {
+      onRowSelectionChange(selection)
+    }
+  }
 
   return (
     <MantineReactTable
@@ -97,7 +105,9 @@ function Table<TData extends object>({
       positionGlobalFilter="left"
       enableFullScreenToggle={false}
       // Selection
-      enableRowSelection={typeof onRowSelectionChange !== undefined}
+      enableRowSelection={
+        typeof rowSelection !== undefined && typeof onRowSelectionChange !== undefined
+      }
       onRowSelectionChange={setRowSelection}
       // Actions
       enableRowActions

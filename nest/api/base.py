@@ -66,7 +66,12 @@ class NestAPI(NinjaAPI):
 
             # Split the key accordingly and formate as "SchemaAPIResponse".
             split_key: list[str] = list(filter(None, key.replace(".", "_").split("_")))
-            formatted_key = f"{split_key[-1]}{split_key[0]}"
+            print(split_key)
+
+            if len(split_key) > 2 and split_key[-1] != "NoneType":
+                formatted_key = f"{split_key[-1]}{split_key[0]}"
+            else:
+                formatted_key = "APIResponse"
 
             component_schemas[formatted_key] = component_schemas.pop(key)
             component_schemas[formatted_key]["title"] = formatted_key

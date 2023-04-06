@@ -4,8 +4,7 @@ import { Getter, RequestOptions, Setter } from './types'
 
 import { decamelize } from 'humps'
 
-const csrfTokenMeta = document.querySelector('meta[name=csrf-token]')
-const csrfToken = (csrfTokenMeta && csrfTokenMeta.getAttribute('value')) as string
+const csrfToken = window.csrfToken
 
 export class RequestError extends Error {
   public response?: Response & {
