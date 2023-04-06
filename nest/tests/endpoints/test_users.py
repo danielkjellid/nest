@@ -1,4 +1,5 @@
 import pytest
+
 from nest.endpoints.users.user_list import user_list_api
 
 pytestmark = pytest.mark.django_db

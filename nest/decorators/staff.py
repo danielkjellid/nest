@@ -1,5 +1,6 @@
-from typing import Any, Callable
 import functools
+from typing import Any, Callable
+
 from nest.exceptions import ApplicationError
 
 

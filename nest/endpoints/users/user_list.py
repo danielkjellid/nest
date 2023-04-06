@@ -1,9 +1,8 @@
-from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest
 from ninja import Schema
-from nest.decorators import staff_required
 
 from nest.api.responses import APIResponse
+from nest.decorators import staff_required
 from nest.selectors import UserSelector
 
 from .router import router
