@@ -10,4 +10,4 @@ class TestSchema(Schema):
 
 @router.get("/", response={200: APIResponse[TestSchema]})
 def example_api(request: HttpRequest):
-    return APIResponse(status="success", data={"id": 1})
+    return APIResponse(status="success", data=TestSchema(id=1))
