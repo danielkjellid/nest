@@ -1,5 +1,5 @@
 const urls = {
-  list: () => 'http://localhost:8000/api/v1/users/',
+  list: () => '/api/v1/users/',
 }
 
 export default urls
