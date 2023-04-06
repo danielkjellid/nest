@@ -7,15 +7,12 @@ export interface RequestOptions extends RequestInit {
   noContentTypeHeader?: boolean
 }
 
-// OperationQuery
 export type RequestQuery = Record<string, number | boolean | string>
 
 type URLType = string | null
 type URLFunction = () => URLType
-// URLInterface
 export type URL = URLFunction | URLType
 
-// QueryHookOptions
 export interface RequestHookOptions<TData, TQuery> {
   getter?: Getter
   query?: Partial<TQuery>
@@ -26,7 +23,6 @@ export interface LazyRequestHookOptions {
   setter?: Setter
 }
 
-// QueryResult
 export interface RequestResult<TData> {
   data: TData | undefined
   error?: RequestError
