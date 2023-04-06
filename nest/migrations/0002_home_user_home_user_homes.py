@@ -49,11 +49,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="user",
             name="home",
-            field=models.OneToOneField(
+            field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                related_name="user",
+                related_name="residents",
                 to="nest.home",
             ),
         ),

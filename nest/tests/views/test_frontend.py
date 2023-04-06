@@ -7,12 +7,12 @@ from django.urls import reverse
 class TestViewFrontend:
     path = reverse("index")
 
-    def test_frontend_view_restricted(self, unprivileged_user) -> None:
+    def test_frontend_view_restricted(self, user_fixture) -> None:
         """
         Test that the frontend view is only accessible to authenticated users.
         """
 
-        user = unprivileged_user
+        user = user_fixture
         client = Client(enforce_csrf_checks=True)
         response = client.get(self.path, follow=True)
 
@@ -26,12 +26,12 @@ class TestViewFrontend:
         assert res.status_code == 200
         assert res.redirect_chain == []  # Redirect chain should now be [].
 
-    def test_frontend_view_context(self, unprivileged_user) -> None:
+    def test_frontend_view_context(self, user_fixture) -> None:
         """
         Test that part of the context return is as expected.
         """
 
-        user = unprivileged_user
+        user = user_fixture
         client = Client(enforce_csrf_checks=True)
         client.login(username=user.email, password="supersecretpassword")
         response = client.get(self.path, follow=True)

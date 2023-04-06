@@ -8,7 +8,7 @@ pytestmark = pytest.mark.django_db
 
 
 class TestServicesUsers:
-    def test_user_create(self, django_assert_num_queries, unprivileged_user) -> None:
+    def test_user_create(self, django_assert_num_queries, user_fixture) -> None:
         """
         Test that the "create" service creates a user.
         """
@@ -40,7 +40,7 @@ class TestServicesUsers:
 
         with pytest.raises(ApplicationError):
             # Test user already exists
-            existing_user = unprivileged_user
+            existing_user = user_fixture
             UserService.create(
                 email=existing_user.email,
                 password="supersecret",

@@ -203,7 +203,7 @@ QUERY_COUNT_WARNING_THRESHOLD = 25
 QUERY_DURATION_WARNING_THRESHOLD = 300  # in ms
 
 if DEBUG:
-    MIDDLEWARE = ["nest.middlewares.QueryCountWarningMiddleware", *MIDDLEWARE]
+    MIDDLEWARE += ["nest.middlewares.QueryCountWarningMiddleware"]
 
 ###########
 # Logging #
@@ -275,6 +275,12 @@ LOGGING = {
         },
     },
 }
+
+##################
+# OpenAPI Schema #
+##################
+
+OPENAPI_AUTO_GENERATE = env.str("OPENAPI_AUTO_GENERATE", default=DEBUG)
 
 #####################
 # Django Extensions #

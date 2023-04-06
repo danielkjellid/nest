@@ -1,5 +1,8 @@
 import pytest
 from django.contrib.auth.models import AnonymousUser, Permission
+from django.test import Client
+
+TEST_PASSWORD = "supersecretpassword"
 
 ###############
 # Permissions #
@@ -25,7 +28,7 @@ def create_user_with_permissions(django_user_model):
             email=email,
             **defaults,
         )[0]
-        user.set_password("supersecretpassword")
+        user.set_password(TEST_PASSWORD)
 
         parsed_perms: list[Permission] = []
 
@@ -48,60 +51,65 @@ def create_user_with_permissions(django_user_model):
 
 
 @pytest.fixture
-def anonymous_user():
+def anonymous_user_fixture():
     return AnonymousUser()
 
 
 @pytest.fixture
-def unprivileged_user(create_user_with_permissions):
+def user_fixture(create_user_with_permissions, test_permissions):
     return create_user_with_permissions(
-        [],
-        first_name="Unprivileged",
-        last_name="User",
-        email="unprivileged_user@example.com",
+        test_permissions,
+        first_name="User",
+        last_name="Fixture",
+        email="user@example.com",
     )
 
 
 @pytest.fixture
-def unprivileged_staff_user(create_user_with_permissions):
+def staff_user_fixture(create_user_with_permissions, test_permissions):
+
     return create_user_with_permissions(
-        [],
-        first_name="Unprivileged Staff",
-        last_name="User",
-        email="unprivileged_staff_user@example.com",
+        test_permissions,
+        first_name="Staff User",
+        last_name="Fixture",
+        email="staff_user@example.com",
         is_staff=True,
     )
 
 
 @pytest.fixture
-def privileged_user(create_user_with_permissions, test_permissions):
-    return create_user_with_permissions(
-        test_permissions,
-        first_name="Privileged",
-        last_name="User",
-        email="privileged_user@example.com",
-    )
-
-
-@pytest.fixture
-def privileged_staff_user(create_user_with_permissions, test_permissions):
-
-    return create_user_with_permissions(
-        test_permissions,
-        first_name="Privileged Staff",
-        last_name="User",
-        email="privileged_staff_user@example.com",
-        is_staff=True,
-    )
-
-
-@pytest.fixture
-def superuser(create_user_with_permissions):
+def superuser_fixture(create_user_with_permissions):
     return create_user_with_permissions(
         [],
-        first_name="Super",
-        last_name="User",
+        first_name="Super User",
+        last_name="Fixture",
         email="superuser@example.com",
         is_superuser=True,
         is_staff=True,
     )
+
+
+@pytest.fixture
+def anonymous_client_fixture():
+    return Client()
+
+
+@pytest.fixture
+def authenticated_client(user_fixture):
+    client = Client()
+    client.login(username=user_fixture.email, password=TEST_PASSWORD)
+    return client
+
+
+@pytest.fixture
+def authenticated_staff_client(staff_user_fixture):
+    client = Client()
+    client.login(username=staff_user_fixture.email, password=TEST_PASSWORD)
+    return client
+
+
+@pytest.fixture
+def authenticated_superuser_client(superuser_fixture):
+    client = Client()
+    client.login(username=superuser_fixture.email, password=TEST_PASSWORD)
+    return client

@@ -9,7 +9,7 @@ exports[`Test PageApp app > empty state matches snapshot 1`] = `
       class="mantine-15ha46x text-center space-y-2"
     >
       <svg
-        class="mantine-a2g2hu h-12 w-12"
+        class="h-12 w-12"
         fill="none"
         height="24"
         stroke="currentColor"

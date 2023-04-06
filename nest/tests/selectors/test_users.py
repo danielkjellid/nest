@@ -2,7 +2,7 @@ import pytest
 
 from nest.exceptions import ApplicationError
 from nest.selectors import UserSelector
-from nest.tests.utilities import create_user
+from nest.tests.utilities import create_home, create_user
 
 pytestmark = pytest.mark.django_db
 
@@ -22,3 +22,17 @@ class TestUserSelector:
 
         with pytest.raises(ApplicationError):
             UserSelector.get_user(pk=999)
+
+    def test_all_users(self, django_assert_num_queries):
+        """
+        Test that the all_users selector correctly retrieves all users in the app within
+        query limits.
+        """
+        create_user(first_name="User 1", home=create_home(street_address="Address 1"))
+        create_user(first_name="User 2", home=create_home(street_address="Address 2"))
+        create_user(first_name="User 3", home=create_home(street_address="Address 3"))
+
+        with django_assert_num_queries(1):
+            users = UserSelector.all_users()
+
+        assert len(users) == 3

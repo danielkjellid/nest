@@ -15,9 +15,7 @@ pytestmark = pytest.mark.django_db
 
 
 class TestCoreSelector:
-    def test_initial_props(
-        self, django_assert_num_queries, settings, unprivileged_user
-    ):
+    def test_initial_props(self, django_assert_num_queries, settings):
         """
         Test that the initial props selector returns expected output within query
         limits.
@@ -45,7 +43,7 @@ class TestCoreSelector:
             available_homes=[HomeRecord.from_home(home)],
         )
 
-    def test_user_menu(self, django_assert_num_queries, unprivileged_user):
+    def test_user_menu(self, django_assert_num_queries):
         """
         Test that the user menu selector returns expected output within query
         limits.

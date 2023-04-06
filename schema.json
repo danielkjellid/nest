@@ -1,0 +1,141 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Nest API",
+        "version": "1.0.0",
+        "description": ""
+    },
+    "paths": {
+        "/api/v1/users/": {
+            "get": {
+                "operationId": "nest_endpoints_users_user_list_user_list_api",
+                "summary": "User List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserListAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UserListHome": {
+                "title": "UserListHome",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "address": {
+                        "title": "Address",
+                        "type": "string"
+                    },
+                    "isActive": {
+                        "title": "Is Active",
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "id",
+                    "address",
+                    "is_active"
+                ]
+            },
+            "UserList": {
+                "title": "UserList",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "type": "string"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string"
+                    },
+                    "isActive": {
+                        "title": "Is Active",
+                        "type": "boolean"
+                    },
+                    "isStaff": {
+                        "title": "Is Staff",
+                        "type": "boolean"
+                    },
+                    "isSuperuser": {
+                        "title": "Is Superuser",
+                        "type": "boolean"
+                    },
+                    "home": {
+                        "$ref": "#/components/schemas/UserListHome"
+                    }
+                },
+                "required": [
+                    "id",
+                    "email",
+                    "full_name",
+                    "is_active",
+                    "is_staff",
+                    "is_superuser"
+                ]
+            },
+            "UserListAPIResponse": {
+                "title": "UserListAPIResponse",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserList"
+                        }
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "SessionAuth": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "sessionid"
+            }
+        }
+    },
+    "servers": null
+}

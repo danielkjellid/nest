@@ -1,5 +1,5 @@
 import { CommonProvider, useCommonContext } from '../CommonProvider'
-import { describe, expect, it, test } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import React from 'react'
 import { createCommonContextTestData } from './utils'
@@ -7,10 +7,14 @@ import { renderHook } from '@testing-library/react'
 
 describe('CommonContext context', () => {
   it('should throw an error if used outside provider', () => {
-    test.fails('fail test', () => {
-      const { result } = renderHook(() => useCommonContext())
-      expect(result.current).rejects.toBe(0)
-    })
+    // Silence the stack trace by mocking the consoles error object.
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    expect(() => renderHook(() => useCommonContext())).toThrow(
+      Error(
+        'useCommonContext hook was called outside of context, make sure your app is wrapped with CommonProvider component'
+      )
+    )
   })
 
   it('should respond gracefully when used inside provider', () => {
