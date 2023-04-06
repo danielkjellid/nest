@@ -28,7 +28,7 @@ class HomeSelector:
 
         # Get home set as primary and all available homes.
         available_homes_for_user = Home.objects.active().filter(
-            Q(users__in=[user.id]) | Q(user=user.id)
+            Q(users__in=[user.id]) | Q(residents=user.id)
         )
         records = [HomeRecord.from_home(home) for home in available_homes_for_user]
 

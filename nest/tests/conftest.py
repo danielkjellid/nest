@@ -1,5 +1,8 @@
 import pytest
 from django.contrib.auth.models import AnonymousUser, Permission
+from django.test import Client
+
+TEST_PASSWORD = "supersecretpassword"
 
 ###############
 # Permissions #
@@ -25,7 +28,7 @@ def create_user_with_permissions(django_user_model):
             email=email,
             **defaults,
         )[0]
-        user.set_password("supersecretpassword")
+        user.set_password(TEST_PASSWORD)
 
         parsed_perms: list[Permission] = []
 
@@ -105,3 +108,29 @@ def superuser(create_user_with_permissions):
         is_superuser=True,
         is_staff=True,
     )
+
+
+@pytest.fixture
+def anonymous_client_fixture():
+    return Client()
+
+
+@pytest.fixture
+def authenticated_client(privileged_user):
+    client = Client()
+    client.login(username=unprivileged_user.email, password=TEST_PASSWORD)
+    return client
+
+
+@pytest.fixture
+def authenticated_staff_client(privileged_staff_user):
+    client = Client()
+    client.login(username=privileged_staff_user.email, password=TEST_PASSWORD)
+    return client
+
+
+@pytest.fixture
+def authenticated_superuser_client(superuser):
+    client = Client()
+    client.login(username=superuser.email, password=TEST_PASSWORD)
+    return client
