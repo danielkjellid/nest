@@ -1,8 +1,10 @@
 from typing import Any
-from nest.models import User
-from hijack import signals
-from django.http import HttpRequest
+
 import structlog
+from django.http import HttpRequest
+from hijack import signals
+
+from nest.models import User
 
 logger = structlog.getLogger()
 
