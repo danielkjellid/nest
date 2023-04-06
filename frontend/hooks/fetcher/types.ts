@@ -22,12 +22,12 @@ export interface RequestHookOptions<TData, TQuery> {
   data?: TData
 }
 
-export interface LazyRequestHookOptions<TData, TQuery> {
+export interface LazyRequestHookOptions {
   setter?: Setter
 }
 
 // QueryResult
-export interface RequestResult<TData, TQuery> {
+export interface RequestResult<TData> {
   data: TData | undefined
   error?: RequestError
   loading: boolean
@@ -42,16 +42,16 @@ export interface PendingLazyRequestResult {
   called: false
 }
 
-export type LazyRequestResult<TData, TQuery> =
+export type LazyRequestResult<TData> =
   | PendingLazyRequestResult
-  | Omit<RequestResult<TData, TQuery>, 'reload'>
+  | Omit<RequestResult<TData>, 'reload'>
 
 export interface LazyRequestOptions<TData, TQuery> {
   query?: Partial<TQuery>
   data?: TData
 }
 
-export type RequestTuple<TData, TQuery, TResponseData> = [
-  (url: string, options?: LazyRequestResult<TData, TQuery>) => Promise<TResponseData | undefined>,
-  LazyRequestResult<TResponseData, TQuery>
+export type RequestTuple<TData, TResponseData> = [
+  (url: string, options?: LazyRequestResult<TData>) => Promise<TResponseData | undefined>,
+  LazyRequestResult<TResponseData>
 ]

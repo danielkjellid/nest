@@ -17,7 +17,6 @@ function ColorSchemeSwitch({ size }: ColorSchemeSwitchProps) {
   return (
     <Switch
       checked={colorScheme === 'dark'}
-      className="cursor-pointer"
       onChange={() => toggleColorScheme()}
       size={size}
       onLabel={<IconSun className="h-5 w-5" color={theme.white} />}

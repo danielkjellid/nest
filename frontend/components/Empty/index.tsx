@@ -1,5 +1,3 @@
-import { Text, Title, createStyles } from '@mantine/core'
-
 import { IconMoodSad } from '@tabler/icons-react'
 import PageState from '../PageState'
 import React from 'react'

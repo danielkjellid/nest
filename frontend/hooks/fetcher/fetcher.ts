@@ -34,9 +34,12 @@ import { v4 as uuid } from 'uuid'
 export const useFetch = <TData = any, TQuery = RequestQuery>(
   url: URL,
   options: RequestHookOptions<TData, TQuery> = {}
-): RequestResult<TData, TQuery> => {
+): RequestResult<TData> => {
   const { getter = performGet, query } = options
-  const { data, error, mutate, isValidating } = useSWR<TData, RequestError>(url, getter)
+  const { data, error, mutate, isValidating } = useSWR<TData, RequestError>(
+    url + makeQuery(query),
+    getter
+  )
 
   const loading = useMemo<boolean>(
     () => !data && !error && isValidating,
@@ -64,8 +67,8 @@ export const useFetch = <TData = any, TQuery = RequestQuery>(
  * update(urls.detail(1), { name: 'Updated name' });
  */
 export const useLazyFetch = <TData = any, TQuery = RequestQuery, TResponseData = TData>(
-  baseOptions: LazyRequestHookOptions<TData, TQuery> = {}
-): RequestTuple<TData, TQuery, TResponseData> => {
+  baseOptions: LazyRequestHookOptions = {}
+): RequestTuple<TData, TResponseData> => {
   const { setter = performPost } = baseOptions
   const called = useRef<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)

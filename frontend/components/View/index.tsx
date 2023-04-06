@@ -7,7 +7,7 @@ import { LoadingProps } from './Loading'
 import { RequestResult } from '../../hooks/fetcher'
 
 export type HooksResult<THooks extends object> = {
-  [k in keyof THooks]: THooks[k] extends RequestResult<unknown, unknown>
+  [k in keyof THooks]: THooks[k] extends RequestResult<unknown>
     ? NonNullable<THooks[k]['data']>
     : never
 }
