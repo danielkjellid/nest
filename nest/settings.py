@@ -277,6 +277,13 @@ LOGGING = {
     },
 }
 
+##########
+# Hijack #
+##########
+
+HIJACK_PERMISSION_CHECK = "hijack.permissions.superusers_and_staff"
+HIJACK_INSERT_BEFORE = None
+
 ##################
 # OpenAPI Schema #
 ##################

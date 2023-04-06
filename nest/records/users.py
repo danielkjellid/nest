@@ -16,10 +16,13 @@ class UserRecord(BaseModel):
     is_active: bool
     is_staff: bool
     is_superuser: bool
+    is_hijacked: bool = False
     home: HomeRecord | None
 
     @classmethod
     def from_user(cls, user: User) -> UserRecord:
+        is_hijacked = getattr(user, "is_hijacked", False)
+
         return cls(
             id=user.id,
             email=user.email,
@@ -29,5 +32,6 @@ class UserRecord(BaseModel):
             is_active=user.is_active,
             is_staff=user.is_staff,
             is_superuser=user.is_superuser,
+            is_hijacked=is_hijacked,
             home=HomeRecord.from_home(user.home) if user.home else None,
         )

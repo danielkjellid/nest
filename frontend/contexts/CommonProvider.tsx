@@ -18,6 +18,7 @@ export interface User {
   isActive: boolean
   isStaff: boolean
   isSuperuser: boolean
+  isHijacked: boolean
   home?: Home
 }
 

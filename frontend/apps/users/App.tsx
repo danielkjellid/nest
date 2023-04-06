@@ -8,6 +8,7 @@ import { MRT_RowSelectionState } from 'mantine-react-table'
 import Table from '../../components/Table'
 import View from '../../components/View'
 import urls from './urls'
+import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
 
 interface UsersAppInnerProps {
@@ -16,6 +17,7 @@ interface UsersAppInnerProps {
 
 function UsersAppInner({ results }: UsersAppInnerProps) {
   const { users } = results
+  const { currentUser } = useCommonContext()
   const [selectedRows, setSelectedRows] = useState<MRT_RowSelectionState>({})
 
   return (
@@ -46,9 +48,25 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
         data={users.data || []}
         onRowSelectionChange={setSelectedRows}
         actionMenuItems={({ row }) => [
-          <Menu.Item key={1} icon={<IconEye />} onClick={() => console.info(row.id)}>
-            Hijack
-          </Menu.Item>,
+          <>
+            <form action="/hijack/acquire/" method="post">
+              <input name="csrfmiddlewaretoken" type="hidden" value={window.csrfToken} />
+              <input type="hidden" name="user_pk" value={row.id} />
+              <Menu.Item
+                key={1}
+                icon={<IconEye />}
+                type="submit"
+                disabled={
+                  currentUser.id.toString() === row.id.toString() ||
+                  (!currentUser.isSuperuser &&
+                    users.data?.find((user) => user.id.toString() === row.id.toString())
+                      ?.isSuperuser)
+                }
+              >
+                Hijack
+              </Menu.Item>
+            </form>
+          </>,
         ]}
       />
     </div>
