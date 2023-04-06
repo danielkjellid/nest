@@ -1,16 +1,19 @@
-from ninja import NinjaAPI
-from ninja.security import django_auth
-from .parsers import CamelCaseParser
-from .renderers import CamelCaseRenderer
-from django.contrib.admin.views.decorators import staff_member_required
-from ninja.openapi.schema import OpenAPISchema
-from nest.utils import HumpsUtil
 import re
 from typing import Any, Iterable
 
+from django.contrib.admin.views.decorators import staff_member_required
+from ninja import NinjaAPI
+from ninja.openapi.schema import OpenAPISchema
+from ninja.security import django_auth
+
+from nest.utils import HumpsUtil
+
+from .parsers import CamelCaseParser
+from .renderers import CamelCaseRenderer
+
 
 class NestAPI(NinjaAPI):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             title="Nest API",
             version="1.0.0",
@@ -23,10 +26,10 @@ class NestAPI(NinjaAPI):
 
     def _update_openapi_schema_reference(
         self,
-        data: str | dict[str, Any] | OpenAPISchema | Iterable,
+        data: str | dict[str, Any] | OpenAPISchema | Iterable[Any],
         ref: str,
         updated_ref: str,
-    ):
+    ) -> Any:
         """
         Update a reference in the schema by recursive search and repalce.
         """
@@ -45,14 +48,14 @@ class NestAPI(NinjaAPI):
         else:
             return data
 
-    def _convert_openapi_schema_responses(self, schema: OpenAPISchema):
+    def _convert_openapi_schema_responses(self, schema: OpenAPISchema) -> OpenAPISchema:
         """
         Convert APIResponse generic type keys to an actual readable format as
         the automatic compiler struggles with generics.
         """
         component_schemas = schema["components"]["schemas"]
 
-        for key, value in component_schemas.copy().items():
+        for key, _value in component_schemas.copy().items():
             # Filter out keys with APIResponse prefix
             match = re.search("APIResponse", key)
 
@@ -62,7 +65,7 @@ class NestAPI(NinjaAPI):
                 continue
 
             # Split the key accordingly and formate as "SchemaAPIResponse".
-            split_key = list(filter(None, key.replace(".", "_").split("_")))
+            split_key: list[str] = list(filter(None, key.replace(".", "_").split("_")))
             formatted_key = f"{split_key[-1]}{split_key[0]}"
 
             component_schemas[formatted_key] = component_schemas.pop(key)
@@ -77,7 +80,7 @@ class NestAPI(NinjaAPI):
         return schema
 
     @staticmethod
-    def _convert_openapi_schema_to_camel_case(schema: OpenAPISchema):
+    def _convert_openapi_schema_to_camel_case(schema: OpenAPISchema) -> OpenAPISchema:
         """
         Convert schema components values to camelCase.
         """

@@ -8,7 +8,7 @@
     "paths": {
         "/api/v1/users/": {
             "get": {
-                "operationId": "nest_endpoints_users_endpoint_user_list_api",
+                "operationId": "nest_endpoints_users_user_list_user_list_api",
                 "summary": "User List Api",
                 "parameters": [],
                 "responses": {
@@ -25,33 +25,6 @@
                 },
                 "tags": [
                     "Users"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/example/": {
-            "get": {
-                "operationId": "nest_endpoints_example_endpoint_example_api",
-                "summary": "Example Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TestSchemaAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Example"
                 ],
                 "security": [
                     {
@@ -127,19 +100,6 @@
                     "is_superuser"
                 ]
             },
-            "TestSchema": {
-                "title": "TestSchema",
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    }
-                },
-                "required": [
-                    "id"
-                ]
-            },
             "UserListAPIResponse": {
                 "title": "UserListAPIResponse",
                 "type": "object",
@@ -162,30 +122,6 @@
                         "items": {
                             "$ref": "#/components/schemas/UserList"
                         }
-                    }
-                },
-                "required": [
-                    "status"
-                ]
-            },
-            "TestSchemaAPIResponse": {
-                "title": "TestSchemaAPIResponse",
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string"
-                    },
-                    "data": {
-                        "$ref": "#/components/schemas/TestSchema"
                     }
                 },
                 "required": [

@@ -1,8 +1,9 @@
 from typing import Any
-from django.http import HttpRequest
-import orjson
 
+import orjson
+from django.http import HttpRequest
 from ninja.parser import Parser
+
 from nest.utils import HumpsUtil
 
 

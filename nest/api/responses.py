@@ -1,8 +1,8 @@
-from pydantic.generics import GenericModel
-from ninja import Schema
-from typing import Literal, TypeVar, Generic
+from typing import Generic, Literal, TypeVar
 
-T = TypeVar("T", bound=list[Schema] | Schema)
+from pydantic.generics import GenericModel
+
+T = TypeVar("T")
 
 
 class APIResponse(GenericModel, Generic[T]):

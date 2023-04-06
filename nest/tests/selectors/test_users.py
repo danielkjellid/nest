@@ -22,3 +22,6 @@ class TestUserSelector:
 
         with pytest.raises(ApplicationError):
             UserSelector.get_user(pk=999)
+
+    def test_all_users(self, django_assert_num_queries):
+        raise AssertionError()

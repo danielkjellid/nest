@@ -1,6 +1,5 @@
-from django.http import HttpRequest
-
 import orjson
+from django.http import HttpRequest
 
 from nest.api.parsers import CamelCaseParser
 

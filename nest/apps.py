@@ -1,8 +1,9 @@
+from pathlib import Path
+
+import structlog
 from django.apps import AppConfig
 from django.conf import settings
 from django.core.management import call_command
-from pathlib import Path
-import structlog
 
 logger = structlog.getLogger()
 

@@ -1,9 +1,11 @@
-from ninja import Schema
-from .router import router
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest
-from nest.selectors import UserSelector
+from ninja import Schema
+
 from nest.api.responses import APIResponse
-from nest.exceptions import ApplicationError
+from nest.selectors import UserSelector
+
+from .router import router
 
 
 class UserListHome(Schema):
@@ -23,7 +25,8 @@ class UserList(Schema):
 
 
 @router.get("/", response={200: APIResponse[list[UserList]]})
-def user_list_api(request: HttpRequest):
+@staff_member_required
+def user_list_api(request: HttpRequest) -> APIResponse[list[UserList]]:
     users = UserSelector.all_users()
     data = [UserList(**user.dict()) for user in users]
 
