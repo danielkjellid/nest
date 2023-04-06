@@ -1,14 +1,19 @@
 import {
+  Alert,
   AppShell,
   ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
+  Text,
+  UnstyledButton,
   createEmotionCache,
 } from '@mantine/core'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 
+import { IconInfoCircle } from '@tabler/icons-react'
 import { Notifications } from '@mantine/notifications'
 import React from 'react'
+import { useCommonContext } from '../../contexts/CommonProvider'
 
 interface BaseAppProps {
   appShellClassName?: string
@@ -43,6 +48,12 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
 
   useHotkeys([['mod+J', () => toggleColorScheme()]])
 
+  /**********
+   ** User **
+   **********/
+
+  const { currentUser } = useCommonContext()
+
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider
@@ -69,7 +80,28 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
           })}
         >
           <Notifications />
-          {children}
+          <div className="space-y-5">
+            {currentUser.isHijacked && (
+              <Alert
+                color="orange"
+                title="User hijacked"
+                icon={<IconInfoCircle className="h-5 w-5" />}
+              >
+                <div className="flex items-center justify-between">
+                  You&apos;re currently working on behalf of {currentUser.fullName}.
+                  <form action="/hijack/release/" method="post">
+                    <input name="csrfmiddlewaretoken" type="hidden" value={window.csrfToken} />
+                    <UnstyledButton type="submit">
+                      <Text fz="sm" fw="bold" color="orange">
+                        Release
+                      </Text>
+                    </UnstyledButton>
+                  </form>
+                </div>
+              </Alert>
+            )}
+            <div>{children}</div>
+          </div>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>

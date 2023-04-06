@@ -71,6 +71,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "nest.middlewares.GenericLoggingMiddleware",
+    "hijack.middleware.HijackUserMiddleware",
 ]
 
 ########
@@ -86,7 +87,7 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["django_s3_storage", "django_vite", "ninja"]
+THIRD_PARTY_APPS = ["django_s3_storage", "django_vite", "hijack", "ninja"]
 
 PROJECT_APPS = ["nest"]
 
@@ -275,6 +276,13 @@ LOGGING = {
         },
     },
 }
+
+##########
+# Hijack #
+##########
+
+HIJACK_PERMISSION_CHECK = "hijack.permissions.superusers_and_staff"
+HIJACK_INSERT_BEFORE = None
 
 ##################
 # OpenAPI Schema #

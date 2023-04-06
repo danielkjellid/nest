@@ -13,6 +13,8 @@ class NestConfig(AppConfig):
     name = "nest"
 
     def ready(self) -> None:
+        import nest.signals  # noqa
+
         if not getattr(settings, "OPENAPI_AUTO_GENERATE", False):
             return
 

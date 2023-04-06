@@ -14,6 +14,7 @@ if "debug_toolbar" in settings.INSTALLED_APPS:
 
 urlpatterns += [
     path("admin/", admin.site.urls),
+    path("hijack/", include("hijack.urls")),
     path("login/", LoginView.as_view(), name="login"),
     path("api/v1/", api_v1.urls),
     re_path("", FrontendView.as_view(), name="index"),

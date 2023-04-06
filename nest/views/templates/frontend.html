@@ -2,6 +2,7 @@
 
 {% block body %}
     <script type="application/javascript">
+        window.csrfToken = "{{ csrf_token|safe }}";
         window.initialProps = {{ initial_props|safe }};
      </script>
 {% endblock %}
