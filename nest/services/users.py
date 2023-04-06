@@ -36,6 +36,21 @@ class UserService:
 
         return UserRecord.from_user(new_user)
 
+    @classmethod
+    def toggle_active(cls, user_ids: list[int]) -> None:
+        """
+        Toggle a user's active state.
+        """
+
+        users = User.objects.filter(id__in=user_ids)
+        users_to_update = []
+
+        for user in users:
+            user.is_active = not user.is_active
+            users_to_update.append(user)
+
+        User.objects.bulk_update(users_to_update, fields=["is_active"])
+
     @staticmethod
     def _validate_email_and_password(
         email: str, password: str | None, password2: str | None

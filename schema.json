@@ -8,8 +8,8 @@
     "paths": {
         "/api/v1/users/": {
             "get": {
-                "operationId": "nest_endpoints_users_user_list_user_list_api",
-                "summary": "User List Api",
+                "operationId": "nest_endpoints_users_users_list_users_list_api",
+                "summary": "Users List Api",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -23,9 +23,48 @@
                         }
                     }
                 },
+                "description": "Get a list of all users registered in the application.",
                 "tags": [
                     "Users"
                 ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users/toggle-active/": {
+            "post": {
+                "operationId": "nest_endpoints_users_users_toggle_active_users_toggle_active_api",
+                "summary": "Users Toggle Active Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NoneTypeAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Toggle a single user's, or a list of users', active state.",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UsersToggleActive"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "SessionAuth": []
@@ -100,6 +139,22 @@
                     "is_superuser"
                 ]
             },
+            "UsersToggleActive": {
+                "title": "UsersToggleActive",
+                "type": "object",
+                "properties": {
+                    "userIds": {
+                        "title": "User Ids",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "required": [
+                    "user_ids"
+                ]
+            },
             "UserListAPIResponse": {
                 "title": "UserListAPIResponse",
                 "type": "object",
@@ -126,6 +181,32 @@
                 },
                 "required": [
                     "status"
+                ]
+            },
+            "NoneTypeAPIResponse": {
+                "title": "NoneTypeAPIResponse",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "null"
+                    }
+                },
+                "required": [
+                    "status",
+                    "data"
                 ]
             }
         },
