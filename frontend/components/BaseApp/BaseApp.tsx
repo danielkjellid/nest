@@ -88,7 +88,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
                 icon={<IconInfoCircle className="h-5 w-5" />}
               >
                 <div className="flex items-center justify-between">
-                  You&apos;re currently working on behalf of {currentUser.fullName}
+                  You&apos;re currently working on behalf of {currentUser.fullName}.
                   <form action="/hijack/release/" method="post">
                     <input name="csrfmiddlewaretoken" type="hidden" value={window.csrfToken} />
                     <UnstyledButton type="submit">
