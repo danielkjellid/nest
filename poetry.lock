@@ -323,6 +323,24 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-hijack"
+version = "3.3.0"
+description = "django-hijack allows superusers to hijack (=login as) and work on behalf of another user."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-hijack-3.3.0.tar.gz", hash = "sha256:795cd0087596a21c9bf641fa5cf1787f4edf144e16a423014afbcf2838e8e124"},
+    {file = "django_hijack-3.3.0-py3-none-any.whl", hash = "sha256:976ae3bc7e9db0bcb5f5b85a58fba98f5ff1d7a6e92e1b65854289cc79a351d4"},
+]
+
+[package.dependencies]
+django = ">=2.2"
+
+[package.extras]
+test = ["pytest", "pytest-cov", "pytest-django"]
+
+[[package]]
 name = "django-ninja"
 version = "0.21.0"
 description = "Django Ninja - Fast Django REST framework"
@@ -1373,4 +1391,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11.1"
-content-hash = "51afb7776e7e7154058f8047989e8a5f64a5f001210aff129a0ef2e1442f5697"
+content-hash = "c0d1e4f8516c0492f9e2253af95c666b8353068a8c4aeb3875cea6e4e6cfcedf"
