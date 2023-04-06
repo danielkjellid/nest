@@ -313,4 +313,3 @@ if DEBUG and DJANGO_DEBUG_TOOLBAR_INSTALLED and DJANGO_DEBUG_TOOLBAR_ENABLED:
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
     INSTALLED_APPS += ["debug_toolbar"]
     INTERNAL_IPS = ["127.0.0.1"]
-    # DEBUG_TOOLBAR_CONFIG = {"INSERT_BEFORE": "</main>"}
