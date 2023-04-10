@@ -221,7 +221,7 @@ class BaseHTTPClient:
             backoff_factor=backoff,
             status_forcelist=status_forcelist,
         )
-        adapter = HTTPAdapter(max_retries=retries)
+        adapter = HTTPAdapter(max_retries=retry)
         session.mount("http://", adapter)
         session.mount("https://", adapter)
 
