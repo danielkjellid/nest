@@ -1,7 +1,8 @@
 import pytest
-from nest.clients.base import BaseHTTPClient
 from pydantic import BaseModel
 from pydantic.error_wrappers import ValidationError as PydanticValidationError
+
+from nest.clients.base import BaseHTTPClient
 
 
 class TestClientBaseHTTPClient:

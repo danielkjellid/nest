@@ -1,13 +1,11 @@
 import functools
-import json
 import threading
 import uuid
-from typing import Any, ClassVar, TypeVar
+from typing import Any, ClassVar, Type, TypeVar
 
 import requests
-from pydantic import BaseModel
-
 import structlog
+from pydantic import BaseModel
 from requests import Response, Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -37,14 +35,14 @@ class BaseHTTPClient:
 
     class RequestError(RuntimeError):
         """
-        Exception raised if an API call fails and we should not retry the request.
+        Exception raised if an API call fails, and we should not retry the request.
         """
 
-        def __init__(self, status_code: int, body: Any) -> None:
+        def __init__(self, *, status_code: int, body: Any) -> None:
             super().__init__(status_code, body)
 
         @property
-        def status_code(self) -> int:
+        def status_code(self) -> Any:
             return self.args[0]
 
         @property
@@ -65,7 +63,7 @@ class BaseHTTPClient:
         self._session = requests.Session()
 
     @classmethod
-    def init(cls):
+    def init(cls) -> Any:
         """
         Create a singleton instance.
         """
@@ -85,7 +83,7 @@ class BaseHTTPClient:
         return instance
 
     @classmethod
-    def clear(cls):
+    def clear(cls) -> None:
         """
         Delete the singleton instance.
         """
@@ -100,7 +98,7 @@ class BaseHTTPClient:
 
     @classmethod
     def serialize_response(
-        cls, serializer_cls: T_BASE_MODEL, response: Response
+        cls, serializer_cls: Type[T_BASE_MODEL], response: Response
     ) -> T_BASE_MODEL:
         """
         Performs the mundane task of verifying that the response retrieved adders to
@@ -108,7 +106,7 @@ class BaseHTTPClient:
         doesn't, that the model populated with data if it does.
         """
 
-        serializer = serializer_cls(**response.json())
+        serializer: T_BASE_MODEL = serializer_cls(**response.json())
         return serializer
 
     def parse_response_error(self, *, response: Response) -> None:
@@ -148,7 +146,7 @@ class BaseHTTPClient:
             headers = {}
 
         if status_codes is None:
-            status_codes = range(200, 300)
+            status_codes = tuple(range(200, 300))
 
         # Add auth token to request.
         auth_token = instance.get_auth_token()

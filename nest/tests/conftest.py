@@ -1,8 +1,9 @@
 import pytest
+import requests_mock
 from django.contrib.auth.models import AnonymousUser, Permission
 from django.test import Client
+
 from nest.clients.base import BaseHTTPClient
-import requests_mock
 
 TEST_PASSWORD = "supersecretpassword"
 
