@@ -21,7 +21,7 @@ class BaseHTTPClient:
     name: str = "base"
 
     # Authentication
-    auth_token_prefix: str = "Token"
+    auth_token_prefix: str | None = "Token"
     auth_token: str | None = None
 
     # Meta
@@ -98,7 +98,7 @@ class BaseHTTPClient:
 
     @classmethod
     def serialize_response(
-        cls, serializer_cls: Type[T_BASE_MODEL], response: Response
+        cls, serializer_cls: Type[T_BASE_MODEL], response: Response | None
     ) -> T_BASE_MODEL:
         """
         Performs the mundane task of verifying that the response retrieved adders to
@@ -106,7 +106,7 @@ class BaseHTTPClient:
         doesn't, that the model populated with data if it does.
         """
 
-        serializer: T_BASE_MODEL = serializer_cls(**response.json())
+        serializer: T_BASE_MODEL = serializer_cls(**response.json() if response else {})
         return serializer
 
     def parse_response_error(self, *, response: Response) -> None:
@@ -148,12 +148,13 @@ class BaseHTTPClient:
         if status_codes is None:
             status_codes = tuple(range(200, 300))
 
-        # Add auth token to request.
-        auth_token = instance.get_auth_token()
-        if auth_token:
-            headers.update(
-                {"Authorization": f"{instance.auth_token_prefix} {auth_token}"}
-            )
+        if cls.auth_token_prefix is not None:
+            # Add auth token to request.
+            auth_token = instance.get_auth_token()
+            if auth_token:
+                headers.update(
+                    {"Authorization": f"{instance.auth_token_prefix} {auth_token}"}
+                )
 
         if not instance.enabled:
             logger.warning(

@@ -1,5 +1,6 @@
 from .core import CoreConfigRecord, CoreInitialPropsRecord, CoreMenuItemRecord
 from .homes import HomeRecord
+from .oda import OdaProductDetailRecord
 from .users import UserRecord
 
 __all__ = [
@@ -8,4 +9,5 @@ __all__ = [
     "CoreInitialPropsRecord",
     "CoreConfigRecord",
     "CoreMenuItemRecord",
+    "OdaProductDetailRecord",
 ]
