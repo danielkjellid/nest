@@ -1,12 +1,10 @@
-from typing import Any
-
 from nest.clients import OdaClient
-from nest.models import Product
-from django.db.models import Q
 from nest.records import OdaProductDetailRecord, ProductRecord
-from nest.selectors import UnitSelector
+from nest.selectors import UnitSelector, ProductSelector
 from nest.exceptions import ApplicationError
 import structlog
+from nest.models import Product
+from typing import Any
 
 logger = structlog.getLogger()
 
@@ -14,16 +12,6 @@ logger = structlog.getLogger()
 class ProductService:
     def __init__(self) -> None:
         ...
-
-    @classmethod
-    def get_product(
-        cls, pk: int | None = None, oda_id: int | None = None
-    ) -> ProductRecord:
-        """
-        Get a specific product instance.
-        """
-        product = cls._get_product(pk=pk, oda_id=oda_id)
-        return ProductRecord.from_product(product)
 
     @classmethod
     def update_or_create_product(
@@ -80,27 +68,10 @@ class ProductService:
         )
 
         if product_image:
-            product = cls._get_product(pk=product_record.id)
+            product = ProductSelector._get_product(pk=product_record.id)
             product.thumbnail.save("thumbnail.jpg", product_image)
 
         return ProductRecord.from_product(product)
-
-    @classmethod
-    def _get_product(cls, pk: int | None = None, oda_id: int | None = None) -> Product:
-        """
-        Get a product instance. Caution: this returns a model instance, and not a
-        record, and should therefore not be used directly. Use get_product(...) instead.
-        """
-        product = (
-            Product.objects.filter(Q(id=pk) | Q(oda_id=oda_id))
-            .select_related("unit")
-            .first()
-        )
-
-        if not product:
-            raise ApplicationError(message="Product does not exist.")
-
-        return product
 
     @staticmethod
     def _validate_oda_response(response_record: OdaProductDetailRecord):
