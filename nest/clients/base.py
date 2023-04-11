@@ -98,7 +98,7 @@ class BaseHTTPClient:
 
     @classmethod
     def serialize_response(
-        cls, serializer_cls: Type[T_BASE_MODEL], response: Response
+        cls, serializer_cls: Type[T_BASE_MODEL], response: Response | None
     ) -> T_BASE_MODEL:
         """
         Performs the mundane task of verifying that the response retrieved adders to
@@ -106,7 +106,7 @@ class BaseHTTPClient:
         doesn't, that the model populated with data if it does.
         """
 
-        serializer: T_BASE_MODEL = serializer_cls(**response.json())
+        serializer: T_BASE_MODEL = serializer_cls(**response.json() if response else {})
         return serializer
 
     def parse_response_error(self, *, response: Response) -> None:

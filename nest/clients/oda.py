@@ -1,9 +1,11 @@
-from .base import BaseHTTPClient
-from django.conf import settings
-from nest.records import OdaProductDetailRecord
-from pydantic.error_wrappers import ValidationError as PydanticValidationError
-from nest.exceptions import ApplicationError
 import structlog
+from django.conf import settings
+from pydantic.error_wrappers import ValidationError as PydanticValidationError
+
+from nest.exceptions import ApplicationError
+from nest.records import OdaProductDetailRecord
+
+from .base import BaseHTTPClient
 
 logger = structlog.getLogger()
 
@@ -19,13 +21,9 @@ class OdaClient(BaseHTTPClient):
     headers = {"X-Client-Token": auth_token}
 
     @classmethod
-    def get(cls, url: str):
-        return super().get(url, headers=cls.headers)
-
-    @classmethod
     def get_product(cls, product_id: int) -> OdaProductDetailRecord:
         try:
-            response = cls.get(f"/products/{product_id}/")
+            response = cls.get(f"/products/{product_id}/", headers=cls.headers)
             product_record = cls.serialize_response(
                 serializer_cls=OdaProductDetailRecord, response=response
             )
@@ -34,7 +32,7 @@ class OdaClient(BaseHTTPClient):
             logger.error(
                 "Failed to serialize product with OdaProductDetailRecord",
                 serializer=OdaProductDetailRecord,
-                status_code=response.status_code,
+                status_code=response.status_code if response else None,
             )
             raise ApplicationError(
                 message="Failed to serialize product with OdaProductDetailRecord",
@@ -48,4 +46,4 @@ class OdaClient(BaseHTTPClient):
             raise ApplicationError(
                 message="Request to product endpoint failed",
                 status_code=rexc.status_code,
-            )
+            ) from rexc

@@ -2,9 +2,7 @@ from typing import Any
 
 
 class ApplicationError(Exception):
-    def __init__(
-        self, message: Any, extra: dict[str, str] | None = None, status_code: int = 400
-    ):
+    def __init__(self, message: Any, extra: Any | None = None, status_code: int = 400):
         super().__init__(message)
 
         self.message = message

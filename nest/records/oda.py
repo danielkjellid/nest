@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
 from decimal import Decimal
 from typing import Literal
+
+from pydantic import BaseModel, Field
 
 ##############
 # Categories #
