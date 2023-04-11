@@ -1,11 +1,13 @@
 import structlog
 from django.conf import settings
 from pydantic.error_wrappers import ValidationError as PydanticValidationError
-
+from urllib.request import urlopen
 from nest.exceptions import ApplicationError
 from nest.records import OdaProductDetailRecord
-
+from django.core.files import File
 from .base import BaseHTTPClient
+from tempfile import NamedTemporaryFile
+from typing import Any
 
 logger = structlog.getLogger()
 
@@ -23,6 +25,7 @@ class OdaClient(BaseHTTPClient):
     @classmethod
     def get_product(cls, product_id: int) -> OdaProductDetailRecord:
         try:
+            logger.info("Getting product from Oda", id=product_id)
             response = cls.get(f"/products/{product_id}/", headers=cls.headers)
             product_record = cls.serialize_response(
                 serializer_cls=OdaProductDetailRecord, response=response
@@ -47,3 +50,17 @@ class OdaClient(BaseHTTPClient):
                 message="Request to product endpoint failed",
                 status_code=rexc.status_code,
             ) from rexc
+
+    @classmethod
+    def get_image(cls, *, url: str, filename: str) -> File | None:
+        logger.info("Getting product image from Oda", url=url)
+
+        img_temp = NamedTemporaryFile(delete=True)
+        with urlopen(url) as uo:
+            if uo.status != 200:
+                return None
+
+            img_temp.write(uo.read())
+            img_temp.flush()
+
+        return File(img_temp, filename)

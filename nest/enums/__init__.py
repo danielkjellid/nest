@@ -1,4 +1,4 @@
 from .avatars import AvatarColors
-from .units import Unit
+from .units import UnitType
 
-__all__ = ["AvatarColors", "Unit"]
+__all__ = ["AvatarColors", "UnitType"]

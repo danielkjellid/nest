@@ -1,7 +1,7 @@
 from .homes import Home
-from .users import User
-from .units import Unit
 from .products import Product
+from .units import Unit
+from .users import User
 
 __all__ = [
     "Home",

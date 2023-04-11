@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import os
+
 from django.db import models
 
 from .base import BaseModel, BaseQuerySet
@@ -37,17 +39,24 @@ class Product(BaseModel):
         null=True,
     )
     oda_url = models.CharField(max_length=255, blank=True, null=True)
-    oda_id = models.PositiveBigIntegerField()
+    oda_id = models.PositiveBigIntegerField(blank=True, null=True, unique=True)
     is_available = models.BooleanField(default=True)
     thumbnail = models.ImageField(
         upload_to=get_product_upload_path,
         blank=True,
         null=True,
     )
-    gtin = models.CharField(max_length=14)
+    gtin = models.CharField(max_length=14, null=True, blank=True)
     supplier = models.CharField(max_length=50)
 
-    ADMIN_LIST_DISPLAY = ["name", "gross_price", "unit", "oda_id", "oda_url"]
+    ADMIN_LIST_DISPLAY = [
+        "name",
+        "gross_price",
+        "unit",
+        "oda_id",
+        "oda_url",
+        "is_available",
+    ]
 
     class Meta:
         verbose_name = "product"

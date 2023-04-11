@@ -74,7 +74,7 @@ export function BaseAppCore({ appShellClassName, navbar, header, children }: Bas
           })}
         >
           <Notifications />
-          {children}
+          <div className="h-full">{children}</div>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>
@@ -96,7 +96,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
 
   return (
     <BaseAppCore appShellClassName={appShellClassName} navbar={navbar} header={header}>
-      <div className="space-y-5">
+      <div className="space-y-5 h-full">
         {currentUser.isHijacked && (
           <Alert color="orange" title="User hijacked" icon={<IconInfoCircle className="h-5 w-5" />}>
             <div className="flex items-center justify-between">
@@ -112,7 +112,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
             </div>
           </Alert>
         )}
-        <div>{children}</div>
+        <div className="h-full">{children}</div>
       </div>
     </BaseAppCore>
   )

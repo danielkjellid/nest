@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from django.db import models
-from nest.enums import Unit
+
+from nest.enums import UnitType
+
 from .base import BaseModel, BaseQuerySet
 
 
@@ -12,12 +15,13 @@ _UnitManager = models.Manager.from_queryset(UnitQuerySet)
 
 
 class Unit(BaseModel):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     name_pluralized = models.CharField(max_length=30, null=True)
-    abbreviation = models.CharField(max_length=30)
-    unit_type = models.CharField(max_length=30, choices=Unit.choices)
+    abbreviation = models.CharField(max_length=30, unique=True)
+    unit_type = models.CharField(max_length=30, choices=UnitType.choices)
     base_factor = models.DecimalField(default=1, max_digits=10, decimal_places=2)
     is_base_unit = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=False)
 
     objects = _UnitManager()
 

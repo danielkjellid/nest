@@ -203,7 +203,7 @@ class BaseHTTPClient:
     @classmethod
     def create_retry_session(
         cls,
-        session: Session,
+        session: Session | None,
         retries: int = 1,
         backoff: float = 0.4,
         status_forcelist: tuple[int, ...] = (502, 503, 504),
