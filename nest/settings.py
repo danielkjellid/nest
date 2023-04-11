@@ -290,6 +290,14 @@ HIJACK_INSERT_BEFORE = None
 
 OPENAPI_AUTO_GENERATE = env.str("OPENAPI_AUTO_GENERATE", default=DEBUG)
 
+#######
+# Oda #
+#######
+
+ODA_SERVICE_ENABLED = env.bool("ODA_SERVICE_ENABLED", default=False)
+ODA_SERVICE_BASE_URL = env.str("ODA_SERVICE_BASE_URL", default="https://oda.com/api/v1")
+ODA_SERVICE_AUTH_TOKEN = env.str("ODA_SERVICE_AUTH_TOKEN", default="supersecrettoken")
+
 #####################
 # Django Extensions #
 #####################

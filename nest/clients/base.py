@@ -21,7 +21,7 @@ class BaseHTTPClient:
     name: str = "base"
 
     # Authentication
-    auth_token_prefix: str = "Token"
+    auth_token_prefix: str | None = "Token"
     auth_token: str | None = None
 
     # Meta
@@ -148,12 +148,13 @@ class BaseHTTPClient:
         if status_codes is None:
             status_codes = tuple(range(200, 300))
 
-        # Add auth token to request.
-        auth_token = instance.get_auth_token()
-        if auth_token:
-            headers.update(
-                {"Authorization": f"{instance.auth_token_prefix} {auth_token}"}
-            )
+        if cls.auth_token_prefix is not None:
+            # Add auth token to request.
+            auth_token = instance.get_auth_token()
+            if auth_token:
+                headers.update(
+                    {"Authorization": f"{instance.auth_token_prefix} {auth_token}"}
+                )
 
         if not instance.enabled:
             logger.warning(
