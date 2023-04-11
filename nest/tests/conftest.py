@@ -1,6 +1,9 @@
 import pytest
+import requests_mock
 from django.contrib.auth.models import AnonymousUser, Permission
 from django.test import Client
+
+from nest.clients.base import BaseHTTPClient
 
 TEST_PASSWORD = "supersecretpassword"
 
@@ -15,6 +18,11 @@ def test_permissions(request):
         return [request.param]
     except AttributeError:
         return []
+
+
+#########
+# Users #
+#########
 
 
 @pytest.fixture
@@ -89,6 +97,11 @@ def superuser_fixture(create_user_with_permissions):
     )
 
 
+###############
+# API Clients #
+###############
+
+
 @pytest.fixture
 def anonymous_client_fixture():
     return Client()
@@ -113,3 +126,24 @@ def authenticated_superuser_client(superuser_fixture):
     client = Client()
     client.login(username=superuser_fixture.email, password=TEST_PASSWORD)
     return client
+
+
+################
+# HTTP Clients #
+################
+
+
+@pytest.fixture
+def request_mock():
+    with requests_mock.mock() as m:
+        yield m
+
+
+@pytest.fixture
+def http_client(requests_mock):
+    class HTTPClient(BaseHTTPClient):
+        enabled = True
+        base_url = "http://127.0.0.1"
+        auth_token = "token"
+
+    return HTTPClient
