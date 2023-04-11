@@ -27,7 +27,7 @@ class TestClientBaseHTTPClient:
         mock_method = getattr(request_mock, method_name)
         mock_method("http://127.0.0.1/foo")
 
-        method = getattr(http_client, f"_{method_name}")
+        method = getattr(http_client, method_name)
         method("/foo", json=payload if add_payload else None)
 
         assert request_mock.call_count == 1
@@ -49,7 +49,7 @@ class TestClientBaseHTTPClient:
         request_mock.get("http://127.0.0.1/path", status_code=error_status_codes)
 
         with pytest.raises(BaseHTTPClient.RequestError):
-            http_client._get("/path")
+            http_client.get("/path")
 
     def test_serialize_response(self, http_client, request_mock):
         """
@@ -71,7 +71,7 @@ class TestClientBaseHTTPClient:
             "child": {"id": 2, "child_name": "Child"},
         }
         request_mock.get("http://127.0.0.1/valid", json=valid_payload)
-        response = http_client._get("/valid")
+        response = http_client.get("/valid")
         serialized_response = http_client.serialize_response(
             serializer_cls=TestModelParent, response=response
         )
@@ -82,7 +82,7 @@ class TestClientBaseHTTPClient:
 
         invalid_json = {"foo": "bar"}
         request_mock.get("http://127.0.0.1/invalid", json=invalid_json)
-        invalid_response = http_client._get("/invalid")
+        invalid_response = http_client.get("/invalid")
 
         with pytest.raises(PydanticValidationError):
             http_client.serialize_response(

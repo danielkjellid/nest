@@ -193,11 +193,11 @@ class BaseHTTPClient:
 
         return response
 
-    _get = functools.partialmethod(_request, method="GET")
-    _post = functools.partialmethod(_request, method="POST")
-    _put = functools.partialmethod(_request, method="PUT")
-    _patch = functools.partialmethod(_request, method="PATCH")
-    _delete = functools.partialmethod(_request, method="DELETE")
+    get = functools.partialmethod(_request, method="GET")
+    post = functools.partialmethod(_request, method="POST")
+    put = functools.partialmethod(_request, method="PUT")
+    patch = functools.partialmethod(_request, method="PATCH")
+    delete = functools.partialmethod(_request, method="DELETE")
 
     @classmethod
     def create_retry_session(
