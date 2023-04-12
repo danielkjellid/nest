@@ -118,6 +118,13 @@ def add_base_units(apps, schema_editor) -> None:
         ),
         # Volume
         Unit(
+            name="Milliliter",
+            abbreviation="ml",
+            unit_type="volume",
+            base_factor="1.00",
+            is_base_unit=True,
+        ),
+        Unit(
             name="Liter",
             abbreviation="l",
             unit_type="volume",

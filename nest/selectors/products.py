@@ -31,7 +31,8 @@ class ProductSelector:
     def _get_product(cls, pk: int | None = None, oda_id: int | None = None) -> Product:
         """
         Get a product instance. Caution: this returns a model instance, and not a
-        record, and should therefore not be used directly. Use get_product(...) instead.
+        record, and should therefore not be used directly. Use
+        ProductSelector.get_product(...) instead.
         """
         product = (
             Product.objects.filter(Q(id=pk) | Q(oda_id=oda_id))
