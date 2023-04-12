@@ -61,8 +61,9 @@ def create_product(
             "gtin": "01234567891234",
             "supplier": "Example supplier",
             "is_synced": is_synced,
-            "thumbnail": create_product_image(name="thumbnail"),
         },
     )
+
+    product.thumbnail.save("thumbnail.jpg", create_product_image(name="thumbnail"))
 
     return product

@@ -1,11 +1,186 @@
 import pytest
+from nest.tests.utilities import (
+    create_product,
+    next_oda_id,
+    get_unit,
+    get_oda_product_response_dict,
+)
+from nest.tests.utilities.products import create_product_image
+from decimal import Decimal
+from nest.models import Product
+from nest.services import ProductService
 
 pytestmark = pytest.mark.django_db
 
 
 class TestProductService:
-    def test_update_or_create_product(self, django_assert_num_queries):
-        assert False
+    def test_update_or_create_product_with_pk(self, django_assert_num_queries):
+        """
+        Test that the update_or_create_product creates or updates as expected.
+        """
+        unit = get_unit(abbreviation="g")
+        defaults = {
+            "oda_id": next_oda_id(),
+            "oda_url": "https://example.com/",
+            "name": "New example product",
+            "gross_price": Decimal("50.00"),
+            "gross_unit_price": Decimal("50.00"),
+            "unit_id": unit.id,
+            "unit_quantity": Decimal("1.00"),
+            "is_available": True,
+            "supplier": "Test supplier",
+        }
 
-    def test_import_from_oda(self, django_assert_num_queries):
-        assert False
+        assert Product.objects.all().count() == 0
+
+        with django_assert_num_queries(7):
+            ProductService.update_or_create_product(**defaults)
+
+        assert Product.objects.all().count() == 1
+
+        existing_product = create_product()
+        assert existing_product.name == "Test product"
+
+        defaults = {
+            "oda_id": existing_product.oda_id,
+            "oda_url": existing_product.oda_url,
+            "name": "Updated test product",
+            "gross_price": existing_product.gross_price,
+            "gross_unit_price": existing_product.gross_unit_price,
+            "unit_id": existing_product.unit_id,
+            "unit_quantity": existing_product.unit_quantity,
+            "is_available": existing_product.is_available,
+            "supplier": existing_product.supplier,
+        }
+
+        with django_assert_num_queries(5):
+            updated_product = ProductService.update_or_create_product(
+                pk=existing_product.id, **defaults
+            )
+
+        assert updated_product.id == existing_product.id
+        assert updated_product.name == "Updated test product"
+
+    def test_update_or_create_product_with_oda_id(self, django_assert_num_queries):
+        """ """
+        existing_product = create_product()
+        assert existing_product.name == "Test product"
+
+        defaults = {
+            "oda_url": existing_product.oda_url,
+            "name": "Updated test product",
+            "gross_price": existing_product.gross_price,
+            "gross_unit_price": existing_product.gross_unit_price,
+            "unit_id": existing_product.unit_id,
+            "unit_quantity": existing_product.unit_quantity,
+            "is_available": existing_product.is_available,
+            "supplier": existing_product.supplier,
+        }
+
+        with django_assert_num_queries(5):
+            updated_product = ProductService.update_or_create_product(
+                oda_id=existing_product.oda_id, **defaults
+            )
+
+        assert updated_product.id == existing_product.id
+        assert updated_product.name == "Updated test product"
+        assert updated_product.oda_id == existing_product.oda_id
+
+    def test_import_from_oda_excluded_from_sync(
+        self, django_assert_num_queries, request_mock, mocker
+    ):
+        """
+        Test that products marked as is_synced=False is returned early
+        without any updates.
+        """
+        product = create_product(is_synced=False)
+        product_response_request_mock = request_mock.get(
+            f"https://oda.com/api/v1/products/{product.oda_id}/",
+            json=get_oda_product_response_dict(id=product.oda_id),
+        )
+        product_image_response_request_mock = mocker.patch(
+            "nest.clients.oda.OdaClient.get_image",
+            return_value=create_product_image(name="test"),
+        )
+        _validate_oda_response_mock = mocker.patch(
+            "nest.services.products.ProductService._validate_oda_response"
+        )
+
+        with django_assert_num_queries(1):
+            imported_product = ProductService.import_from_oda(
+                oda_product_id=product.oda_id
+            )
+
+        assert imported_product is None
+
+        assert product_response_request_mock.call_count == 1
+        assert product_image_response_request_mock.call_count == 1
+        assert _validate_oda_response_mock.call_count == 1
+
+    def test_import_from_oda_new_product(
+        self, django_assert_num_queries, request_mock, mocker
+    ):
+        """
+        Test that the import_from_oda creates a new product if the product
+        does not already exist.
+        """
+
+        assert Product.objects.all().count() == 0
+
+        oda_id_mock = 3333
+
+        product_response_request_mock = request_mock.get(
+            f"https://oda.com/api/v1/products/{oda_id_mock}/",
+            json=get_oda_product_response_dict(id=oda_id_mock),
+        )
+        product_image_response_request_mock = mocker.patch(
+            "nest.clients.oda.OdaClient.get_image",
+            return_value=create_product_image(name="test"),
+        )
+        _validate_oda_response_mock = mocker.patch(
+            "nest.services.products.ProductService._validate_oda_response"
+        )
+
+        with django_assert_num_queries(11):
+            imported_product = ProductService.import_from_oda(
+                oda_product_id=oda_id_mock
+            )
+
+        assert Product.objects.all().count() == 1
+        assert Product.objects.all().first().oda_id == imported_product.oda_id
+
+        assert product_response_request_mock.call_count == 1
+        assert product_image_response_request_mock.call_count == 1
+        assert _validate_oda_response_mock.call_count == 1
+
+    def test_import_from_oda_existing_product(
+        self, django_assert_num_queries, request_mock, mocker
+    ):
+        product = create_product()
+        oda_response = get_oda_product_response_dict(id=product.oda_id)
+
+        product_response_request_mock = request_mock.get(
+            f"https://oda.com/api/v1/products/{product.oda_id}/",
+            json=oda_response,
+        )
+        product_image_response_request_mock = mocker.patch(
+            "nest.clients.oda.OdaClient.get_image",
+            return_value=create_product_image(name="test"),
+        )
+        _validate_oda_response_mock = mocker.patch(
+            "nest.services.products.ProductService._validate_oda_response"
+        )
+
+        with django_assert_num_queries(9):
+            imported_product = ProductService.import_from_oda(
+                oda_product_id=product.oda_id
+            )
+
+        assert imported_product.id == product.id
+        assert imported_product.name == oda_response["full_name"]
+        assert imported_product.oda_id == oda_response["id"]
+        assert imported_product.oda_id == product.oda_id
+
+        assert product_response_request_mock.call_count == 1
+        assert product_image_response_request_mock.call_count == 1
+        assert _validate_oda_response_mock.call_count == 1

@@ -66,6 +66,12 @@ class Product(BaseModel):
         verbose_name_plural = "products"
 
     @property
+    def full_name(self) -> str:
+        if self.unit_quantity is not None:
+            return f"{self.name}, {self.unit_quantity} {self.unit.abbreviation}"
+        return self.name
+
+    @property
     def last_synced_at(self) -> str | None:
         return (
             DateUtil.format_datetime(self.updated_at, with_seconds=True)

@@ -20,11 +20,22 @@ class ProductService:
         """
         Update or create a product.
         """
-        product, _created = Product.objects.update_or_create(
-            id=pk,
-            oda_id=oda_id,
-            defaults=kwargs,
-        )
+
+        if pk is None and oda_id is not None:
+            product, _created = Product.objects.update_or_create(
+                oda_id=oda_id,
+                defaults=kwargs,
+            )
+        else:
+            defaults = kwargs
+
+            if oda_id is not None:
+                defaults.update("oda_id", oda_id)
+
+            product, _created = Product.objects.update_or_create(
+                id=pk,
+                defaults=defaults,
+            )
 
         return ProductRecord.from_product(product)
 
@@ -34,7 +45,7 @@ class ProductService:
         Import a product from Oda based on the Oda product id.
         """
 
-        # Get product data and image from Oda API
+        # Get product data and image from Oda API.
         product_response = OdaClient.get_product(product_id=oda_product_id)
         product_image = OdaClient.get_image(
             url=product_response.images[0].thumbnail.url, filename="thumbnail.jpg"
@@ -49,7 +60,7 @@ class ProductService:
         try:
             product = ProductSelector.get_product(oda_id=product_response.id)
 
-            if getattr(product, "is_excluded_from_sync", False):
+            if not getattr(product, "is_synced", True):
                 return
         except ApplicationError:
             pass
