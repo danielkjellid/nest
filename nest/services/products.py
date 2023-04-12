@@ -43,6 +43,17 @@ class ProductService:
         # Validate that all required values are present.
         cls._validate_oda_response(response_record=product_response)
 
+        # Some products can be excluded from the sync, if so, we want to early return.
+        # The selector will throw an Application error if the product does not exit, so
+        # we deliberately catch it and ignore it here.
+        try:
+            product = ProductSelector.get_product(oda_id=product_response.id)
+
+            if getattr(product, "is_excluded_from_sync", False):
+                return
+        except ApplicationError:
+            pass
+
         # Get corresponding unit from product response
         unit = UnitSelector.get_unit_from_abbreviation(
             abbreviation=product_response.unit_price_quantity_abbreviation

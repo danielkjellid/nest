@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from decimal import Decimal
-
+from datetime import datetime
 from pydantic import BaseModel
 
 from nest.models import Product
@@ -19,6 +19,8 @@ class ProductRecord(BaseModel):
     oda_url: str | None
     oda_id: int | None
     is_available: bool
+    is_synced: bool
+    last_synced_at: str | None
     thumbnail_url: str | None
     gtin: str | None
     supplier: str
@@ -35,6 +37,8 @@ class ProductRecord(BaseModel):
             oda_id=product.oda_id,
             oda_url=product.oda_url,
             is_available=product.is_available,
+            is_synced=product.is_synced,
+            last_synced_at=product.last_synced_at,
             thumbnail_url=product.thumbnail.url if product.thumbnail else None,
             gtin=product.gtin,
             supplier=product.supplier,

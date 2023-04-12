@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 
 from django.db import models
-
+from nest.utils import DateUtil
 from .base import BaseModel, BaseQuerySet
 
 
@@ -48,6 +48,9 @@ class Product(BaseModel):
     )
     gtin = models.CharField(max_length=14, null=True, blank=True)
     supplier = models.CharField(max_length=50)
+    is_synced = models.BooleanField(
+        default=True, help_text="Product is kept in sync from Oda."
+    )
 
     ADMIN_LIST_DISPLAY = [
         "name",
@@ -61,3 +64,11 @@ class Product(BaseModel):
     class Meta:
         verbose_name = "product"
         verbose_name_plural = "products"
+
+    @property
+    def last_synced_at(self) -> str | None:
+        return (
+            DateUtil.format_datetime(self.updated_at, with_seconds=True)
+            if self.updated_at
+            else None
+        )

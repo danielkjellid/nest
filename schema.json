@@ -125,6 +125,18 @@
                     },
                     "unit": {
                         "$ref": "#/components/schemas/ProductListUnit"
+                    },
+                    "unitQuantity": {
+                        "title": "Unit Quantity",
+                        "type": "string"
+                    },
+                    "isSynced": {
+                        "title": "Is Synced",
+                        "type": "boolean"
+                    },
+                    "lastSyncedAt": {
+                        "title": "Last Synced At",
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -133,7 +145,8 @@
                     "supplier",
                     "is_available",
                     "gross_price",
-                    "unit"
+                    "unit",
+                    "is_synced"
                 ]
             },
             "UserListHome": {

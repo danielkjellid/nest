@@ -2,7 +2,6 @@ from django.http import HttpRequest
 
 from nest.api.responses import APIResponse
 from nest.selectors import ProductSelector
-
 from .router import router
 from ninja import Schema
 
@@ -23,6 +22,9 @@ class ProductList(Schema):
     gross_price: str
     gross_unit_price: str | None
     unit: ProductListUnit
+    unit_quantity: str | None
+    is_synced: bool
+    last_synced_at: str | None
 
 
 @router.get("/", response={200: APIResponse[list[ProductList]]})

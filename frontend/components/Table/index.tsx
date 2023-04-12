@@ -14,17 +14,18 @@ interface ColumnOptions {
   isBoolean?: boolean
 }
 
-type Column = Partial<MRT_ColumnDef> & {
+type Column<TData extends object> = Partial<MRT_ColumnDef<TData>> & {
   header: string
-  accessorKey: string
+  accessorKey?: string
   options?: ColumnOptions
+  Cell?: MRT_ColumnDef<TData>['Cell']
 }
 
 interface TableProps<TData extends object> {
   rowIdentifier: string
-  columns: Column[]
+  columns: Column<TData>[]
   data: TData[]
-  actionMenuItems?: MantineReactTableProps['renderRowActionMenuItems']
+  actionMenuItems?: MantineReactTableProps<TData>['renderRowActionMenuItems']
   onRowSelectionChange?: (selection: MRT_RowSelectionState) => void
 }
 
@@ -35,11 +36,11 @@ function Table<TData extends object>({
   onRowSelectionChange,
   columns,
 }: TableProps<TData>) {
-  const getColumnDefinitions = (cols: Column[]) => {
-    const columnDefinitions: MRT_ColumnDef[] = []
+  const getColumnDefinitions = (cols: Column<TData>[]) => {
+    const columnDefinitions: MRT_ColumnDef<TData>[] = []
 
     cols.map((column) => {
-      let columnDef: MRT_ColumnDef = { ...column }
+      let columnDef: MRT_ColumnDef<TData> = { ...column }
 
       if (column.options) {
         if (column.options.isBoolean) {
@@ -72,7 +73,7 @@ function Table<TData extends object>({
     return columnDefinitions
   }
 
-  const columnDefs = useMemo(() => getColumnDefinitions(columns), [columns])
+  const columnDefs = useMemo<MRT_ColumnDef<TData>[]>(() => getColumnDefinitions(columns), [columns])
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({})
 
   useEffect(() => {
@@ -89,6 +90,8 @@ function Table<TData extends object>({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       getRowId={(originalRow) => originalRow[rowIdentifier]}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       columns={columnDefs}
       data={data}
       // Editing and toggles
