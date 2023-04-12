@@ -1,5 +1,4 @@
 from tempfile import NamedTemporaryFile
-from typing import Any
 from urllib.request import urlopen
 
 import structlog
