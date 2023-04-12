@@ -102,6 +102,12 @@ units = [
 ]
 
 
-def get_unit(abbreviation: str = "kg") -> Unit:
+def create_units() -> None:
     Unit.objects.bulk_create(units, ignore_conflicts=True)
+
+
+def get_unit(abbreviation: str = "kg") -> Unit:
+    if Unit.objects.all().count() == 0:
+        create_units()
+
     return Unit.objects.get(abbreviation=abbreviation)
