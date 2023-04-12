@@ -105,7 +105,8 @@ class BaseHTTPClient:
         the expected structure, raising a pydantic.error_wrappers.ValidationError if it
         doesn't, that the model populated with data if it does.
         """
-
+        print(response)
+        print(type(response))
         serializer: T_BASE_MODEL = serializer_cls(**response.json() if response else {})
         return serializer
 
