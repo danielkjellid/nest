@@ -30,7 +30,7 @@ class ProductService:
             defaults = kwargs
 
             if oda_id is not None:
-                defaults.update("oda_id", oda_id)
+                defaults.update({"oda_id": oda_id})
 
             product, _created = Product.objects.update_or_create(
                 id=pk,
