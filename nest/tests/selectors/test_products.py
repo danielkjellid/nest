@@ -1,8 +1,9 @@
 import pytest
-from nest.records import ProductRecord
-from nest.tests.utilities import create_product
-from nest.selectors import ProductSelector
+
 from nest.exceptions import ApplicationError
+from nest.records import ProductRecord
+from nest.selectors import ProductSelector
+from nest.tests.utilities import create_product
 
 pytestmark = pytest.mark.django_db
 

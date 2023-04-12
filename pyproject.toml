@@ -81,6 +81,10 @@ django_settings_module = "nest.settings"
 module = "nest.tests.*"
 ignore_errors = true
 
+[[tool.mypy.overrides]]
+module = "nest.migrations.*"
+ignore_errors = true
+
 ########
 # Ruff #
 ########

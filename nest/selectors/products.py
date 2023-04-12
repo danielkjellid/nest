@@ -1,7 +1,8 @@
-from nest.models import Product
-from nest.exceptions import ApplicationError
-from nest.records import ProductRecord
 from django.db.models import Q
+
+from nest.exceptions import ApplicationError
+from nest.models import Product
+from nest.records import ProductRecord
 
 
 class ProductSelector:
@@ -19,7 +20,7 @@ class ProductSelector:
         return ProductRecord.from_product(product)
 
     @classmethod
-    def all_products(cls):
+    def all_products(cls) -> list[ProductRecord]:
         """
         Get a list of all products.
         """

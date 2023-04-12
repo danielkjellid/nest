@@ -1,8 +1,8 @@
 from .core import CoreSelector
 from .homes import HomeSelector
+from .products import ProductSelector
 from .units import UnitSelector
 from .users import UserSelector
-from .products import ProductSelector
 
 __all__ = [
     "CoreSelector",

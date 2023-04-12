@@ -1,14 +1,16 @@
-import pytest
-from nest.tests.utilities import (
-    create_product,
-    next_oda_id,
-    get_unit,
-    get_oda_product_response_dict,
-)
-from nest.tests.utilities.products import create_product_image
 from decimal import Decimal
+
+import pytest
+
 from nest.models import Product
 from nest.services import ProductService
+from nest.tests.utilities import (
+    create_product,
+    get_oda_product_response_dict,
+    get_unit,
+    next_oda_id,
+)
+from nest.tests.utilities.products import create_product_image
 
 pytestmark = pytest.mark.django_db
 

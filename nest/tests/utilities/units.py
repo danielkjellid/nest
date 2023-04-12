@@ -1,5 +1,5 @@
-from nest.models import Unit
 from nest.enums import UnitType
+from nest.models import Unit
 
 units = [
     Unit(

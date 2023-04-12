@@ -1,9 +1,12 @@
-from nest.models import Product, Unit
 from decimal import Decimal
-from .units import get_unit
-from django.core.files.images import ImageFile
 from io import BytesIO
+
+from django.core.files.images import ImageFile
 from PIL import Image
+
+from nest.models import Product, Unit
+
+from .units import get_unit
 
 
 def create_product_image(

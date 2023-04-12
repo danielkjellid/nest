@@ -1,7 +1,8 @@
 import pytest
-from nest.tests.utilities import create_units
-from nest.selectors import UnitSelector
+
 from nest.exceptions import ApplicationError
+from nest.selectors import UnitSelector
+from nest.tests.utilities import create_units
 
 pytestmark = pytest.mark.django_db
 

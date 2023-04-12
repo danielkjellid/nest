@@ -1,13 +1,16 @@
-import structlog
-from django.conf import settings
-from pydantic.error_wrappers import ValidationError as PydanticValidationError
-from urllib.request import urlopen
-from nest.exceptions import ApplicationError
-from nest.records import OdaProductDetailRecord
-from django.core.files import File
-from .base import BaseHTTPClient
 from tempfile import NamedTemporaryFile
 from typing import Any
+from urllib.request import urlopen
+
+import structlog
+from django.conf import settings
+from django.core.files import File
+from pydantic.error_wrappers import ValidationError as PydanticValidationError
+
+from nest.exceptions import ApplicationError
+from nest.records import OdaProductDetailRecord
+
+from .base import BaseHTTPClient
 
 logger = structlog.getLogger()
 
@@ -52,7 +55,7 @@ class OdaClient(BaseHTTPClient):
             ) from rexc
 
     @classmethod
-    def get_image(cls, *, url: str, filename: str) -> File | None:
+    def get_image(cls, *, url: str, filename: str) -> File | None:  # type: ignore
         logger.info("Getting product image from Oda", url=url)
 
         img_temp = NamedTemporaryFile(delete=True)

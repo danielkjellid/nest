@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 
-from nest.endpoints import users_endpoints, products_endpoints
+from nest.endpoints import products_endpoints, users_endpoints
 from nest.exceptions import ApplicationError
 
 from .base import NestAPI

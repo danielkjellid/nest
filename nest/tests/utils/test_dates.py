@@ -1,6 +1,8 @@
-import pytest
-from nest.utils import DateUtil
 from datetime import datetime
+
+import pytest
+
+from nest.utils import DateUtil
 
 DT = datetime(2020, 1, 1, 12, 30, 45)
 

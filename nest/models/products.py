@@ -3,7 +3,9 @@ from __future__ import annotations
 import os
 
 from django.db import models
+
 from nest.utils import DateUtil
+
 from .base import BaseModel, BaseQuerySet
 
 
@@ -15,7 +17,7 @@ _ProductManager = models.Manager.from_queryset(ProductQuerySet)
 
 
 class Product(BaseModel):
-    def get_product_upload_path(self, filename):
+    def get_product_upload_path(self, filename: str) -> str:
         name, extension = os.path.splitext(filename)
         return f"products/{self.id}/{name}{extension}"
 

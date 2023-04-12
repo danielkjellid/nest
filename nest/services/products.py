@@ -1,10 +1,12 @@
-from nest.clients import OdaClient
-from nest.records import OdaProductDetailRecord, ProductRecord
-from nest.selectors import UnitSelector, ProductSelector
-from nest.exceptions import ApplicationError
-import structlog
-from nest.models import Product
 from typing import Any
+
+import structlog
+
+from nest.clients import OdaClient
+from nest.exceptions import ApplicationError
+from nest.models import Product
+from nest.records import OdaProductDetailRecord, ProductRecord
+from nest.selectors import ProductSelector, UnitSelector
 
 logger = structlog.getLogger()
 
@@ -54,6 +56,8 @@ class ProductService:
         # Validate that all required values are present.
         cls._validate_oda_response(response_record=product_response)
 
+        product: Product | ProductRecord
+
         # Some products can be excluded from the sync, if so, we want to early return.
         # The selector will throw an Application error if the product does not exit, so
         # we deliberately catch it and ignore it here.
@@ -61,7 +65,7 @@ class ProductService:
             product = ProductSelector.get_product(oda_id=product_response.id)
 
             if not getattr(product, "is_synced", True):
-                return
+                return None
         except ApplicationError:
             pass
 
@@ -86,17 +90,19 @@ class ProductService:
         }
 
         product_record = cls.update_or_create_product(
-            oda_id=product_response.id, **defaults
+            pk=None, oda_id=product_response.id, **defaults
         )
 
         if product_image:
             product = ProductSelector._get_product(pk=product_record.id)
             product.thumbnail.save("thumbnail.jpg", product_image)
 
-        return ProductRecord.from_product(product)
+            return ProductRecord.from_product(product)
+
+        return product_record
 
     @staticmethod
-    def _validate_oda_response(response_record: OdaProductDetailRecord):
+    def _validate_oda_response(response_record: OdaProductDetailRecord) -> None:
         """
         Validate that required values from the Oda product response is present, and
         raise an exception if they're not.

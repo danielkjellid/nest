@@ -25,7 +25,7 @@ class UnitRecord(BaseModel):
             name=unit.name,
             name_pluralized=unit.name_pluralized,
             abbreviation=unit.abbreviation,
-            unit_type=unit.unit_type,
+            unit_type=UnitType(unit.unit_type),
             base_factor=unit.base_factor,
             is_base_unit=unit.is_base_unit,
             is_default=unit.is_default,
