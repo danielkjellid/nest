@@ -73,22 +73,6 @@ class DateUtil:
         return formatted
 
     @classmethod
-    def format_timezone(cls, value: datetime) -> str:
-        """
-        Format a timezone.
-
-        Default format:
-            (+02:00)
-        """
-
-        is_naive = value.tzinfo is None or value.tzinfo.utcoffset(value) is None
-        if is_naive:
-            return "(naive)"
-
-        formatted = value.strftime("%z")
-        return f"({formatted[:-2]}:{formatted[-2:]})"
-
-    @classmethod
     def format_datetime(
         cls,
         value: datetime,
@@ -98,7 +82,6 @@ class DateUtil:
         with_seconds: bool = False,
         with_decis: bool = False,
         with_millis: bool = False,
-        with_timezone: bool = False,
     ) -> str:
         """
         Format a datetime.
@@ -141,9 +124,5 @@ class DateUtil:
             with_millis=with_millis,
         )
         formatted = f"{formatted_date} {formatted_time}"
-
-        if with_timezone:
-            formatted_timezone = cls.format_timezone(value)
-            formatted = f"{formatted} {formatted_timezone}"
 
         return formatted
