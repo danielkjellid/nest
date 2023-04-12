@@ -6,6 +6,7 @@ import React from 'react'
 import Table from '../../components/Table'
 import View from '../../components/View'
 import urls from './urls'
+import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
 
 interface ProductsAppInnerProps {
@@ -14,6 +15,7 @@ interface ProductsAppInnerProps {
 
 function ProductsAppInner({ results }: ProductsAppInnerProps) {
   const { products } = results
+  const { currentUser } = useCommonContext()
 
   return (
     <div className="space-y-6">
@@ -69,6 +71,7 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
             </Menu.Item>
           </>,
         ]}
+        disableRowSelection={!currentUser.isStaff}
       />
     </div>
   )

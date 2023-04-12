@@ -26,6 +26,7 @@ interface TableProps<TData extends object> {
   columns: Column<TData>[]
   data: TData[]
   actionMenuItems?: MantineReactTableProps<TData>['renderRowActionMenuItems']
+  disableRowSelection?: boolean
   onRowSelectionChange?: (selection: MRT_RowSelectionState) => void
 }
 
@@ -33,6 +34,7 @@ function Table<TData extends object>({
   data,
   rowIdentifier,
   actionMenuItems,
+  disableRowSelection,
   onRowSelectionChange,
   columns,
 }: TableProps<TData>) {
@@ -100,7 +102,7 @@ function Table<TData extends object>({
       positionGlobalFilter="left"
       enableFullScreenToggle={false}
       // Selection
-      enableRowSelection={typeof onRowSelectionChange !== undefined}
+      enableRowSelection={!disableRowSelection && typeof onRowSelectionChange !== undefined}
       onRowSelectionChange={setRowSelection}
       // Actions
       enableRowActions
