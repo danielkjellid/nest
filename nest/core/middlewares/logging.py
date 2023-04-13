@@ -13,7 +13,7 @@ class GenericLoggingMiddleware:
     def __call__(self, request: HttpRequest) -> None:
         logger.new(path=request.path, method=request.method)
 
-        if hasattr(request, "user"):
+        if hasattr(request, "user") and hasattr(request.user, "id"):
             logger.bind(user_id=request.user.id)
 
         if hasattr(request, "auth"):
