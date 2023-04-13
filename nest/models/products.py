@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from decimal import Decimal
 
 from django.db import models
 
@@ -72,7 +73,7 @@ class Product(BaseModel):
         if self.unit_quantity is not None:
             return (
                 f"{self.name}, "
-                f"{self.unit_quantity.normalize()} {self.unit.abbreviation}"
+                f"{Decimal(self.unit_quantity).normalize()} {self.unit.abbreviation}"
             )
         return self.name
 
