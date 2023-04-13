@@ -75,7 +75,6 @@ def user_fixture(create_user_with_permissions, test_permissions):
 
 @pytest.fixture
 def staff_user_fixture(create_user_with_permissions, test_permissions):
-
     return create_user_with_permissions(
         test_permissions,
         first_name="Staff User",

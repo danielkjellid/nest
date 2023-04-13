@@ -7,7 +7,6 @@ import nest.models.products
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("nest", "0004_auto_20230411_1739"),
     ]

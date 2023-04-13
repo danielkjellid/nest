@@ -42,7 +42,6 @@ def create_product(
     is_available: bool = True,
     is_synced: bool = True,
 ) -> Product:
-
     if unit is None:
         unit = get_unit()
 
