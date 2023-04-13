@@ -70,7 +70,10 @@ class Product(BaseModel):
     @property
     def full_name(self) -> str:
         if self.unit_quantity is not None:
-            return f"{self.name}, {self.unit_quantity} {self.unit.abbreviation}"
+            return (
+                f"{self.name}, "
+                f"{self.unit_quantity.normalize()} {self.unit.abbreviation}"
+            )
         return self.name
 
     @property

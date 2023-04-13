@@ -26,6 +26,9 @@ class OdaClient(BaseHTTPClient):
 
     @classmethod
     def get_product(cls, product_id: int) -> OdaProductDetailRecord:
+        """
+        Get a Oda product from their API.
+        """
         try:
             logger.info("Getting product from Oda", id=product_id)
             response = cls.get(f"/products/{product_id}/", headers=cls.headers)
@@ -55,6 +58,10 @@ class OdaClient(BaseHTTPClient):
 
     @classmethod
     def get_image(cls, *, url: str, filename: str) -> File | None:  # type: ignore
+        """
+        Copy an image from an url and save it as a File object, which allows us to save
+        it directly in our model(s) as well.
+        """
         logger.info("Getting product image from Oda", url=url)
 
         img_temp = NamedTemporaryFile(delete=True)

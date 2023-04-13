@@ -28,13 +28,8 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
           { header: 'Id', accessorKey: 'id', size: 20 },
           {
             header: 'Product',
-            accessorFn: (row) => {
-              const suffix = row.unitQuantity
-                ? `, ${Math.trunc(Number(row.unitQuantity))} ${row.unit.abbreviation}`
-                : null
-              return `${row.name}${suffix}`
-            },
-            id: 'name',
+            accessorKey: 'fullName',
+            id: 'fullName',
             Cell: ({ row, renderedCellValue }) => (
               <div className="flex items-center space-x-3">
                 <img src={row.original.thumbnailUrl} className="object-cover h-8" />

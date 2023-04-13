@@ -14,7 +14,7 @@ class ProductListUnit(Schema):
 
 class ProductList(Schema):
     id: int
-    name: str
+    full_name: str
     supplier: str
     thumbnail_url: str | None
     is_available: bool

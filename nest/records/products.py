@@ -12,6 +12,7 @@ from .units import UnitRecord
 class ProductRecord(BaseModel):
     id: int
     name: str
+    full_name: str
     gross_price: Decimal
     gross_unit_price: Decimal | None
     unit: UnitRecord
@@ -30,6 +31,7 @@ class ProductRecord(BaseModel):
         return cls(
             id=product.id,
             name=product.name,
+            full_name=product.full_name,
             gross_price=product.gross_price,
             gross_unit_price=product.gross_unit_price,
             unit=UnitRecord.from_unit(product.unit),
