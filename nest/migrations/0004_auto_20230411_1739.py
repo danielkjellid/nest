@@ -210,7 +210,6 @@ def add_base_units(apps, schema_editor) -> None:
 
 
 class Migration(migrations.Migration):
-
     atomic = True
 
     dependencies = [
