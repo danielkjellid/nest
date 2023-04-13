@@ -106,7 +106,12 @@ class BaseHTTPClient:
         doesn't, that the model populated with data if it does.
         """
 
-        serializer: T_BASE_MODEL = serializer_cls(**response.json() if response else {})
+        if not response:
+            raise cls.RequestError(
+                status_code=400, body="Response to serialize is None"
+            )
+
+        serializer: T_BASE_MODEL = serializer_cls(**response.json())
         return serializer
 
     def parse_response_error(self, *, response: Response) -> None:

@@ -10,7 +10,7 @@ import {
 } from '@mantine/core'
 import React, { useEffect } from 'react'
 
-import BaseApp from '../../components/BaseApp/BaseApp'
+import { BaseAppCore } from '../../components/BaseApp/BaseApp'
 import ColorSchemeSwitch from '../../components/ColorSchemeSwitch'
 import Logo from '../../components/Logo'
 import { notifications } from '@mantine/notifications'
@@ -91,9 +91,9 @@ function LoginAppInner() {
 
 function LoginApp() {
   return (
-    <BaseApp appShellClassName="fixed inset-0">
+    <BaseAppCore appShellClassName="fixed inset-0">
       <LoginAppInner />
-    </BaseApp>
+    </BaseAppCore>
   )
 }
 

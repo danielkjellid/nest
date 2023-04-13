@@ -6,6 +6,34 @@
         "description": ""
     },
     "paths": {
+        "/api/v1/products/": {
+            "get": {
+                "operationId": "nest_endpoints_products_product_list_product_list_api",
+                "summary": "Product List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductListAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all products in the application.",
+                "tags": [
+                    "Products"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/users/": {
             "get": {
                 "operationId": "nest_endpoints_users_user_list_user_list_api",
@@ -23,6 +51,7 @@
                         }
                     }
                 },
+                "description": "Get a list of all users in the application.",
                 "tags": [
                     "Users"
                 ],
@@ -36,6 +65,90 @@
     },
     "components": {
         "schemas": {
+            "ProductListUnit": {
+                "title": "ProductListUnit",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "abbreviation"
+                ]
+            },
+            "ProductList": {
+                "title": "ProductList",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string"
+                    },
+                    "supplier": {
+                        "title": "Supplier",
+                        "type": "string"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string"
+                    },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string"
+                    },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "integer"
+                    },
+                    "grossPrice": {
+                        "title": "Gross Price",
+                        "type": "string"
+                    },
+                    "grossUnitPrice": {
+                        "title": "Gross Unit Price",
+                        "type": "string"
+                    },
+                    "unit": {
+                        "$ref": "#/components/schemas/ProductListUnit"
+                    },
+                    "unitQuantity": {
+                        "title": "Unit Quantity",
+                        "type": "string"
+                    },
+                    "isSynced": {
+                        "title": "Is Synced",
+                        "type": "boolean"
+                    },
+                    "lastSyncedAt": {
+                        "title": "Last Synced At",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "full_name",
+                    "supplier",
+                    "is_available",
+                    "gross_price",
+                    "unit",
+                    "is_synced"
+                ]
+            },
             "UserListHome": {
                 "title": "UserListHome",
                 "type": "object",
@@ -98,6 +211,34 @@
                     "is_active",
                     "is_staff",
                     "is_superuser"
+                ]
+            },
+            "ProductListAPIResponse": {
+                "title": "ProductListAPIResponse",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductList"
+                        }
+                    }
+                },
+                "required": [
+                    "status"
                 ]
             },
             "UserListAPIResponse": {

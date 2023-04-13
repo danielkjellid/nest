@@ -15,14 +15,14 @@ import { Notifications } from '@mantine/notifications'
 import React from 'react'
 import { useCommonContext } from '../../contexts/CommonProvider'
 
-interface BaseAppProps {
+interface BaseAppCoreProps {
   appShellClassName?: string
   navbar?: React.ReactElement
   header?: React.ReactElement
   children: React.ReactNode
 }
 
-function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) {
+export function BaseAppCore({ appShellClassName, navbar, header, children }: BaseAppCoreProps) {
   /********************
    ** Provider cache **
    ********************/
@@ -47,12 +47,6 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
    *************/
 
   useHotkeys([['mod+J', () => toggleColorScheme()]])
-
-  /**********
-   ** User **
-   **********/
-
-  const { currentUser } = useCommonContext()
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
@@ -80,31 +74,47 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
           })}
         >
           <Notifications />
-          <div className="space-y-5">
-            {currentUser.isHijacked && (
-              <Alert
-                color="orange"
-                title="User hijacked"
-                icon={<IconInfoCircle className="h-5 w-5" />}
-              >
-                <div className="flex items-center justify-between">
-                  You&apos;re currently working on behalf of {currentUser.fullName}.
-                  <form action="/hijack/release/" method="post">
-                    <input name="csrfmiddlewaretoken" type="hidden" value={window.csrfToken} />
-                    <UnstyledButton type="submit">
-                      <Text fz="sm" fw="bold" color="orange">
-                        Release
-                      </Text>
-                    </UnstyledButton>
-                  </form>
-                </div>
-              </Alert>
-            )}
-            <div>{children}</div>
-          </div>
+          <div className="h-full">{children}</div>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>
+  )
+}
+
+interface BaseAppProps {
+  appShellClassName?: string
+  navbar?: React.ReactElement
+  header?: React.ReactElement
+  children: React.ReactNode
+}
+function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) {
+  /**********
+   ** User **
+   **********/
+
+  const { currentUser } = useCommonContext()
+
+  return (
+    <BaseAppCore appShellClassName={appShellClassName} navbar={navbar} header={header}>
+      <div className="space-y-5 h-full">
+        {currentUser.isHijacked && (
+          <Alert color="orange" title="User hijacked" icon={<IconInfoCircle className="h-5 w-5" />}>
+            <div className="flex items-center justify-between">
+              You&apos;re currently working on behalf of {currentUser.fullName}.
+              <form action="/hijack/release/" method="post">
+                <input name="csrfmiddlewaretoken" type="hidden" value={window.csrfToken} />
+                <UnstyledButton type="submit">
+                  <Text fz="sm" fw="bold" color="orange">
+                    Release
+                  </Text>
+                </UnstyledButton>
+              </form>
+            </div>
+          </Alert>
+        )}
+        <div className="h-full">{children}</div>
+      </div>
+    </BaseAppCore>
   )
 }
 

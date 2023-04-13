@@ -147,3 +147,15 @@ def http_client(requests_mock):
         auth_token = "token"
 
     return HTTPClient
+
+
+###########
+# Storage #
+###########
+
+
+@pytest.fixture(autouse=True)
+def create_temp_storage(settings, tmp_path):
+    settings.DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    settings.MEDIA_ROOT = tmp_path
+    yield

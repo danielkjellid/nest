@@ -27,6 +27,10 @@ class UserList(Schema):
 @router.get("/", response={200: APIResponse[list[UserList]]})
 @staff_required
 def user_list_api(request: HttpRequest) -> APIResponse[list[UserList]]:
+    """
+    Get a list of all users in the application.
+    """
+
     users = UserSelector.all_users()
     data = [UserList(**user.dict()) for user in users]
 

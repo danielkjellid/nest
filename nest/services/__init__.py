@@ -1,3 +1,4 @@
+from .products import ProductService
 from .users import UserService
 
-__all__ = ["UserService"]
+__all__ = ["UserService", "ProductService"]

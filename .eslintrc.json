@@ -41,6 +41,7 @@
             "error",
             "never"
         ],
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "react/prop-types": "off" // https://github.com/TanStack/table/issues/1207
     }
 }

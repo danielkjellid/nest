@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 
-from nest.endpoints import users_endpoints
+from nest.endpoints import products_endpoints, users_endpoints
 from nest.exceptions import ApplicationError
 
 from .base import NestAPI
@@ -8,6 +8,7 @@ from .responses import APIResponse
 
 api = NestAPI()
 
+api.add_router("/products/", products_endpoints)
 api.add_router("/users/", users_endpoints)
 
 
