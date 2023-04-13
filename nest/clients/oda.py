@@ -25,14 +25,16 @@ class OdaClient(BaseHTTPClient):
     headers = {"X-Client-Token": auth_token}
 
     @classmethod
-    def get_product(cls, product_id: int) -> OdaProductDetailRecord:
+    def get_product(cls, product_id: int) -> OdaProductDetailRecord | None:
         try:
             logger.info("Getting product from Oda", id=product_id)
             response = cls.get(f"/products/{product_id}/", headers=cls.headers)
-            product_record = cls.serialize_response(
-                serializer_cls=OdaProductDetailRecord, response=response
-            )
-            return product_record
+
+            if response:
+                product_record = cls.serialize_response(
+                    serializer_cls=OdaProductDetailRecord, response=response
+                )
+                return product_record
         except PydanticValidationError as pexc:
             logger.error(
                 "Failed to serialize product with OdaProductDetailRecord",

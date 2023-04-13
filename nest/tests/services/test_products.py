@@ -10,6 +10,8 @@ from nest.tests.utilities import (
     get_unit,
     next_oda_id,
 )
+from nest.records import OdaProductDetailRecord
+from nest.clients import OdaClient
 from nest.tests.utilities.products import create_product_image
 
 pytestmark = pytest.mark.django_db
@@ -96,16 +98,20 @@ class TestProductService:
         without any updates.
         """
         product = create_product(is_synced=False)
-        product_response_request_mock = request_mock.get(
-            f"https://oda.com/api/v1/products/{product.oda_id}/",
-            json=get_oda_product_response_dict(id=product.oda_id),
+        product_response_request_mock = mocker.patch.object(
+            OdaClient,
+            "get_product",
+            return_value=OdaProductDetailRecord(
+                **get_oda_product_response_dict(id=product.oda_id)
+            ),
         )
-        product_image_response_request_mock = mocker.patch(
-            "nest.clients.oda.OdaClient.get_image",
+        product_image_response_request_mock = mocker.patch.object(
+            OdaClient,
+            "get_image",
             return_value=create_product_image(name="test"),
         )
-        _validate_oda_response_mock = mocker.patch(
-            "nest.services.products.ProductService._validate_oda_response"
+        _validate_oda_response_mock = mocker.patch.object(
+            ProductService, "_validate_oda_response"
         )
 
         with django_assert_num_queries(1):
@@ -131,16 +137,20 @@ class TestProductService:
 
         oda_id_mock = 3333
 
-        product_response_request_mock = request_mock.get(
-            f"https://oda.com/api/v1/products/{oda_id_mock}/",
-            json=get_oda_product_response_dict(id=oda_id_mock),
+        product_response_request_mock = mocker.patch.object(
+            OdaClient,
+            "get_product",
+            return_value=OdaProductDetailRecord(
+                **get_oda_product_response_dict(id=oda_id_mock)
+            ),
         )
-        product_image_response_request_mock = mocker.patch(
-            "nest.clients.oda.OdaClient.get_image",
+        product_image_response_request_mock = mocker.patch.object(
+            OdaClient,
+            "get_image",
             return_value=create_product_image(name="test"),
         )
-        _validate_oda_response_mock = mocker.patch(
-            "nest.services.products.ProductService._validate_oda_response"
+        _validate_oda_response_mock = mocker.patch.object(
+            ProductService, "_validate_oda_response"
         )
 
         with django_assert_num_queries(11):
@@ -156,21 +166,26 @@ class TestProductService:
         assert _validate_oda_response_mock.call_count == 1
 
     def test_import_from_oda_existing_product(
-        self, django_assert_num_queries, request_mock, mocker
+        self, django_assert_num_queries, request_mock, mocker, settings
     ):
-        product = create_product()
+        """
+        Test that importing an existing product updates the product.
+        """
+        product = create_product(name="Some product name")
         oda_response = get_oda_product_response_dict(id=product.oda_id)
 
-        product_response_request_mock = request_mock.get(
-            f"https://oda.com/api/v1/products/{product.oda_id}/",
-            json=oda_response,
+        product_response_request_mock = mocker.patch.object(
+            OdaClient,
+            "get_product",
+            return_value=OdaProductDetailRecord(**oda_response),
         )
-        product_image_response_request_mock = mocker.patch(
-            "nest.clients.oda.OdaClient.get_image",
+        product_image_response_request_mock = mocker.patch.object(
+            OdaClient,
+            "get_image",
             return_value=create_product_image(name="test"),
         )
-        _validate_oda_response_mock = mocker.patch(
-            "nest.services.products.ProductService._validate_oda_response"
+        _validate_oda_response_mock = mocker.patch.object(
+            ProductService, "_validate_oda_response"
         )
 
         with django_assert_num_queries(9):
@@ -179,7 +194,7 @@ class TestProductService:
             )
 
         assert imported_product.id == product.id
-        assert imported_product.name == oda_response["full_name"]
+        assert imported_product.name == "Møllerens Hvetemel Siktet"
         assert imported_product.oda_id == oda_response["id"]
         assert imported_product.oda_id == product.oda_id
 
