@@ -2,8 +2,8 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import URLPattern, URLResolver, include, path, re_path
 
-from nest.api import api_v1
-from nest.views import FrontendView, LoginView
+from nest.api.v1 import api as api_v1
+from nest.frontend.views import FrontendView, LoginView
 
 urlpatterns: list[URLPattern | URLResolver] = []
 

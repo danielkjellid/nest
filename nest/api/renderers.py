@@ -4,7 +4,7 @@ import orjson
 from django.http import HttpRequest
 from ninja.renderers import BaseRenderer
 
-from nest.utils import HumpsUtil
+from nest.core.utils.humps import HumpsUtil
 
 
 class CamelCaseRenderer(BaseRenderer):
