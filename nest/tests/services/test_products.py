@@ -2,7 +2,9 @@ from decimal import Decimal
 
 import pytest
 
+from nest.clients import OdaClient
 from nest.models import Product
+from nest.records import OdaProductDetailRecord
 from nest.services import ProductService
 from nest.tests.utilities import (
     create_product,
@@ -10,8 +12,6 @@ from nest.tests.utilities import (
     get_unit,
     next_oda_id,
 )
-from nest.records import OdaProductDetailRecord
-from nest.clients import OdaClient
 from nest.tests.utilities.products import create_product_image
 
 pytestmark = pytest.mark.django_db

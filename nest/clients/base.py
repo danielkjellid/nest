@@ -98,13 +98,18 @@ class BaseHTTPClient:
 
     @classmethod
     def serialize_response(
-        cls, serializer_cls: Type[T_BASE_MODEL], response: Response
+        cls, serializer_cls: Type[T_BASE_MODEL], response: Response | None
     ) -> T_BASE_MODEL:
         """
         Performs the mundane task of verifying that the response retrieved adders to
         the expected structure, raising a pydantic.error_wrappers.ValidationError if it
         doesn't, that the model populated with data if it does.
         """
+
+        if not response:
+            raise cls.RequestError(
+                status_code=400, body="Response to serialize is None"
+            )
 
         serializer: T_BASE_MODEL = serializer_cls(**response.json())
         return serializer
