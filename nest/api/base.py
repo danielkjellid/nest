@@ -6,7 +6,7 @@ from ninja import NinjaAPI
 from ninja.openapi.schema import OpenAPISchema
 from ninja.security import django_auth
 
-from nest.utils import HumpsUtil
+from nest.core.utils.humps import HumpsUtil
 
 from .parsers import CamelCaseParser
 from .renderers import CamelCaseRenderer

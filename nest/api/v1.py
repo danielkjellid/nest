@@ -1,15 +1,16 @@
 from django.http import HttpRequest, HttpResponse
 
-from nest.endpoints import products_endpoints, users_endpoints
-from nest.exceptions import ApplicationError
+from nest.core.exceptions import ApplicationError
+from nest.products.endpoints import products_router
+from nest.users.endpoints import users_router
 
 from .base import NestAPI
 from .responses import APIResponse
 
 api = NestAPI()
 
-api.add_router("/products/", products_endpoints)
-api.add_router("/users/", users_endpoints)
+api.add_router("/products/", products_router)
+api.add_router("/users/", users_router)
 
 
 @api.exception_handler(ApplicationError)

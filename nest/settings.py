@@ -70,7 +70,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "nest.middlewares.GenericLoggingMiddleware",
+    "nest.core.middlewares.GenericLoggingMiddleware",
     "hijack.middleware.HijackUserMiddleware",
 ]
 
@@ -89,7 +89,15 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = ["django_s3_storage", "django_vite", "hijack", "ninja"]
 
-PROJECT_APPS = ["nest"]
+PROJECT_APPS = [
+    "nest.api",
+    "nest.core",
+    "nest.frontend",
+    "nest.homes",
+    "nest.products",
+    "nest.units",
+    "nest.users",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
@@ -146,7 +154,7 @@ else:
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [str(APP_DIR / "views" / "templates")],
+        "DIRS": [str(APP_DIR / "frontend" / "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -163,7 +171,7 @@ TEMPLATES = [
 # AUTHENTICATION #
 ##################
 
-AUTH_USER_MODEL = "nest.User"
+AUTH_USER_MODEL = "users.User"
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
@@ -204,7 +212,7 @@ QUERY_COUNT_WARNING_THRESHOLD = 25
 QUERY_DURATION_WARNING_THRESHOLD = 300  # in ms
 
 if DEBUG:
-    MIDDLEWARE += ["nest.middlewares.QueryCountWarningMiddleware"]
+    MIDDLEWARE += ["nest.core.middlewares.QueryCountWarningMiddleware"]
 
 ###########
 # Logging #

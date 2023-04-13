@@ -57,7 +57,7 @@ lint: lint-backend lint-frontend | $(BASE) ; @
 	$Q
 
 .PHONY: lint-backend
-lint-backend: lint-ruff lint-mypy lint-black | $(BASE) ; @
+lint-backend: lint-mypy lint-ruff lint-black | $(BASE) ; @
 	$Q
 
 .PHONY: lint-frontend

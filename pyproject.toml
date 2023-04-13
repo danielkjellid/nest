@@ -78,11 +78,11 @@ warn_untyped_fields = true
 django_settings_module = "nest.settings"
 
 [[tool.mypy.overrides]]
-module = "nest.tests.*"
+module = "nest.*.tests.*"
 ignore_errors = true
 
 [[tool.mypy.overrides]]
-module = "nest.migrations.*"
+module = "nest.*.migrations.*"
 ignore_errors = true
 
 ########
@@ -94,7 +94,7 @@ exclude = [
     ".git",
     ".venv",
     "__pycache__",
-    "revisions",
+    "conftest.py"
 ]
 select = [
     # Regular flake8 rules
