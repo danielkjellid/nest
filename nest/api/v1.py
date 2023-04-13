@@ -16,7 +16,6 @@ api.add_router("/users/", users_endpoints)
 def application_error_handler(
     request: HttpRequest, exc: ApplicationError
 ) -> HttpResponse:
-
     """
     Exception handler for application errors.
     """
