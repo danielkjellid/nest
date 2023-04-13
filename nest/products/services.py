@@ -2,13 +2,14 @@ from typing import Any
 
 import structlog
 
-from nest.data_pools.providers.oda.clients import OdaClient
 from nest.core.exceptions import ApplicationError
+from nest.data_pools.providers.oda.clients import OdaClient
+from nest.data_pools.providers.oda.records import OdaProductDetailRecord
+from nest.units.selectors import UnitSelector
+
 from .models import Product
 from .records import ProductRecord
-from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from .selectors import ProductSelector
-from nest.units.selectors import UnitSelector
 
 logger = structlog.getLogger()
 

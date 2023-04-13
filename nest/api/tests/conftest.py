@@ -1,5 +1,6 @@
 import pytest
 from django.test import Client
+
 from nest.users.tests.conftest import *  # noqa
 
 

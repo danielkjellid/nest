@@ -4,9 +4,9 @@ from decimal import Decimal
 
 from pydantic import BaseModel
 
-from .models import Product
-
 from nest.units.records import UnitRecord
+
+from .models import Product
 
 
 class ProductRecord(BaseModel):

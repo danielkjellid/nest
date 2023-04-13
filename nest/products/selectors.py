@@ -1,6 +1,7 @@
 from django.db.models import Q
 
 from nest.core.exceptions import ApplicationError
+
 from .models import Product
 from .records import ProductRecord
 

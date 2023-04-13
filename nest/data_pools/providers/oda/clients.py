@@ -6,10 +6,10 @@ from django.conf import settings
 from django.core.files import File
 from pydantic.error_wrappers import ValidationError as PydanticValidationError
 
-from nest.core.exceptions import ApplicationError
-from .records import OdaProductDetailRecord
-
 from nest.core.clients import BaseHTTPClient
+from nest.core.exceptions import ApplicationError
+
+from .records import OdaProductDetailRecord
 
 logger = structlog.getLogger()
 

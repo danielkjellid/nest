@@ -6,7 +6,6 @@ from PIL import Image
 
 from nest.products.models import Product
 from nest.units.models import Unit
-
 from nest.units.tests.utils import get_unit
 
 

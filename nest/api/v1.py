@@ -1,9 +1,8 @@
 from django.http import HttpRequest, HttpResponse
-from django.utils.functional import lazy
 
+from nest.core.exceptions import ApplicationError
 from nest.products.endpoints import products_router
 from nest.users.endpoints import users_router
-from nest.core.exceptions import ApplicationError
 
 from .base import NestAPI
 from .responses import APIResponse

@@ -1,8 +1,8 @@
 from django.db import models
 
-from .enums import UnitType
-
 from nest.core.models import BaseModel
+
+from .enums import UnitType
 from .managers import UnitQuerySet
 
 _UnitManager = models.Manager.from_queryset(UnitQuerySet)

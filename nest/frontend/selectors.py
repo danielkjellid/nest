@@ -1,15 +1,15 @@
 from django.conf import settings
 from django.http import HttpRequest
 
-from .menu import MENU
 from nest.frontend.records import (
     CoreConfigRecord,
     CoreInitialPropsRecord,
     CoreMenuItemRecord,
 )
+from nest.homes.selectors import HomeSelector
 from nest.users.records import UserRecord
 
-from nest.homes.selectors import HomeSelector
+from .menu import MENU
 
 
 class CoreSelector:

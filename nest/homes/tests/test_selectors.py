@@ -1,9 +1,9 @@
 import pytest
 
 from nest.homes.records import HomeRecord
-from nest.users.records import UserRecord
 from nest.homes.selectors import HomeSelector
 from nest.homes.tests.utils import create_home
+from nest.users.records import UserRecord
 from nest.users.tests.utils import create_user
 
 pytestmark = pytest.mark.django_db

@@ -5,9 +5,9 @@ from decimal import Decimal
 
 from django.db import models
 
+from nest.core.models import BaseModel
 from nest.core.utils.dates import DateUtil
 
-from nest.core.models import BaseModel
 from .managers import ProductQuerySet
 
 _ProductManager = models.Manager.from_queryset(ProductQuerySet)

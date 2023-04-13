@@ -1,4 +1,5 @@
 from nest.core.exceptions import ApplicationError
+
 from .models import User
 from .records import UserRecord
 

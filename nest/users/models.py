@@ -4,9 +4,9 @@ from django.contrib.auth.models import (
 )
 from django.db import models
 
-from .enums import AvatarColors
-
 from nest.core.models import BaseModel
+
+from .enums import AvatarColors
 from .managers import UserManager, UserQuerySet
 
 

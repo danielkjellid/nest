@@ -1,5 +1,5 @@
 from django.http import HttpRequest
-from ninja import Schema, Router
+from ninja import Schema
 
 from nest.api.responses import APIResponse
 from nest.products.selectors import ProductSelector

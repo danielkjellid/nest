@@ -1,8 +1,9 @@
 from django.db.models import Q
 
 from nest.homes.models import Home
-from .records import HomeRecord
 from nest.users.records import UserRecord
+
+from .records import HomeRecord
 
 
 class HomeSelector:

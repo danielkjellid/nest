@@ -1,5 +1,7 @@
 from django.db import models
+
 from nest.core.models import BaseModel
+
 from .managers import HomeQuerySet
 
 _HomeManager = models.Manager.from_queryset(HomeQuerySet)

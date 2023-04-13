@@ -1,6 +1,7 @@
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from django.contrib.auth.models import BaseUserManager
+
 from nest.core.managers import BaseQuerySet
 
 if TYPE_CHECKING:

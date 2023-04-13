@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from nest.users.models import User
-
 from nest.homes.records import HomeRecord
+from nest.users.models import User
 
 
 class UserRecord(BaseModel):

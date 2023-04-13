@@ -3,16 +3,16 @@ from decimal import Decimal
 import pytest
 
 from nest.data_pools.providers.oda.clients import OdaClient
-from nest.products.models import Product
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
+from nest.data_pools.tests.oda.utils import get_oda_product_response_dict
+from nest.products.models import Product
 from nest.products.services import ProductService
 from nest.products.tests.utils import (
     create_product,
+    create_product_image,
     get_unit,
     next_oda_id,
-    create_product_image,
 )
-from nest.data_pools.tests.oda.utils import get_oda_product_response_dict
 
 pytestmark = pytest.mark.django_db
 

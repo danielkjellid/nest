@@ -1,7 +1,6 @@
-from nest.users.models import User
 from nest.homes.models import Home
-
 from nest.homes.tests.utils import create_home
+from nest.users.models import User
 
 
 def create_user(

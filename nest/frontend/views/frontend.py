@@ -5,9 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpRequest
 
-from ..selectors import CoreSelector
 from nest.core.utils.humps import HumpsUtil
 
+from ..selectors import CoreSelector
 from .base import ReactView
 
 
