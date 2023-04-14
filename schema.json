@@ -5,9 +5,515 @@
         "version": "1.0.0",
         "description": ""
     },
-    "paths": {},
+    "paths": {
+        "/api/v1/products/": {
+            "get": {
+                "operationId": "nest_products_endpoints_product_list_product_list_api",
+                "summary": "Product List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductListAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all products in the application.",
+                "tags": [
+                    "Products"
+                ]
+            }
+        },
+        "/api/v1/products/import/forms/": {
+            "get": {
+                "operationId": "nest_forms_api_view_form_api",
+                "summary": "Form Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FormRecord"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Products"
+                ]
+            }
+        },
+        "/api/v1/products/import/": {
+            "post": {
+                "operationId": "nest_forms_api_view_form_api",
+                "summary": "Form Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestSchemaOut"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Products"
+                ]
+            }
+        },
+        "/api/v1/users/": {
+            "get": {
+                "operationId": "nest_users_endpoints_user_list_user_list_api",
+                "summary": "User List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserListAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all users in the application.",
+                "tags": [
+                    "Users"
+                ]
+            }
+        }
+    },
     "components": {
-        "schemas": {}
+        "schemas": {
+            "ProductListUnit": {
+                "title": "ProductListUnit",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "abbreviation"
+                ]
+            },
+            "ProductList": {
+                "title": "ProductList",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string"
+                    },
+                    "supplier": {
+                        "title": "Supplier",
+                        "type": "string"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string"
+                    },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string"
+                    },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "integer"
+                    },
+                    "grossPrice": {
+                        "title": "Gross Price",
+                        "type": "string"
+                    },
+                    "grossUnitPrice": {
+                        "title": "Gross Unit Price",
+                        "type": "string"
+                    },
+                    "unit": {
+                        "$ref": "#/components/schemas/ProductListUnit"
+                    },
+                    "unitQuantity": {
+                        "title": "Unit Quantity",
+                        "type": "string"
+                    },
+                    "isSynced": {
+                        "title": "Is Synced",
+                        "type": "boolean"
+                    },
+                    "lastSyncedAt": {
+                        "title": "Last Synced At",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "full_name",
+                    "supplier",
+                    "is_available",
+                    "gross_price",
+                    "unit",
+                    "is_synced"
+                ]
+            },
+            "FormSectionRecord": {
+                "title": "FormSectionRecord",
+                "description": "A form section groups different parts (elements) of the form and adds them together\nin a section.\n\n* title:\n    The title of the section, renders a header in the section frontend, unless plain\n    is passed.\n\n* blocks:\n    A list of form blocks ids to include in the section.\n\n* columns:\n    Optionally divide the form into multiple columns, taking advantage of using\n    colspans adjusting width the width of certain elements. The colspan value itself\n    is set directly on the form block.\n\n* plain:\n    Render the blocks in an invisible section.",
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "blocks": {
+                        "title": "Blocks",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "columns": {
+                        "title": "Columns",
+                        "type": "integer"
+                    },
+                    "plain": {
+                        "title": "Plain",
+                        "default": false,
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "title",
+                    "blocks"
+                ]
+            },
+            "FormElementEnumRecord": {
+                "title": "FormElementEnumRecord",
+                "description": "A form block enum provides enum values to be used in a select.\n\n* name:\n    The display name of the enum property.\n\n* value:\n    The value to use.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    },
+                    "value": {
+                        "title": "Value",
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "name",
+                    "value"
+                ]
+            },
+            "FrontendElements": {
+                "title": "FrontendElements",
+                "description": "An enumeration.",
+                "enum": [
+                    "autocomplete",
+                    "checkbox",
+                    "chip",
+                    "colorInput",
+                    "fileInput",
+                    "multiselect",
+                    "numberInput",
+                    "passwordInput",
+                    "pinInput",
+                    "radio",
+                    "rating",
+                    "select",
+                    "slider",
+                    "switch",
+                    "textArea",
+                    "textInput"
+                ]
+            },
+            "FormElementRecord": {
+                "title": "FormElementRecord",
+                "description": "A form element is a html element used to build a form. Can for example be a\ncheckbox, input, etc.\n\n* id:\n    The id to use for the form block. Used to set the id on the element itself, but\n    also in the FormSectionRecord to group elements in sections.\n\n* title:\n    Title of element. What the element is visually identified by.\n\n* type:\n    Type of element value. Set by generated definition spec.\n\n* enum:\n    Enumeration values in the form of FormElementEnumRecord available to use.\n\n* parent:\n    As we support nested schemas, the spec generated creates reference values which\n    we need later when we're going to post the form. Will effectively result in a\n    key-value property where the key is the parent id and value is the schema as an\n    object.\n\n* default_value:\n    The default value to use to prefill/preselect a value in the element.\n\n* element:\n    The frontend element to render of type FrontendFormElements.\n\n* placeholder:\n    Placeholder value to pre-populate form element with.\n\n* help_text:\n    A str which can help guide the user or explain more about the value of the\n    element. Will appear as a text bellow the element.\n\n* hidden_label:\n    Set the label on top of the form element to only appear on screen readers.\n\n* col_span:\n    Column span of the element. Only valid if the element is part of a section with\n    defined amount of columns.",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string"
+                    },
+                    "enum": {
+                        "title": "Enum",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FormElementEnumRecord"
+                        }
+                    },
+                    "parent": {
+                        "title": "Parent",
+                        "type": "string"
+                    },
+                    "default": {
+                        "title": "Default",
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "boolean"
+                            }
+                        ]
+                    },
+                    "element": {
+                        "$ref": "#/components/schemas/FrontendElements"
+                    },
+                    "placeholder": {
+                        "title": "Placeholder",
+                        "type": "string"
+                    },
+                    "helpText": {
+                        "title": "Help Text",
+                        "type": "string"
+                    },
+                    "hiddenLabel": {
+                        "title": "Hidden Label",
+                        "default": false,
+                        "type": "boolean"
+                    },
+                    "colSpan": {
+                        "title": "Col Span",
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "FormRecord": {
+                "title": "FormRecord",
+                "description": "A form record represents a complete form.\n\n* key:\n    Effectively the \"id\" of the form.\n\n* is_multipart_form:\n    Convert the form to multipart before posting it to an endpoint.\n\n* expects_list:\n    Should be True if the endpoint in question expects a list of records instead of\n    a single record as payload. E.g. for bulk creation and so on.\n\n* required:\n    A list of form element ids that are required.\n\n* sections:\n    A list of form sections of type FormSectionRecord.\n\n* elements:\n    A list of all elements to render in the form.",
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "title": "Key",
+                        "type": "string"
+                    },
+                    "isMultipartForm": {
+                        "title": "Is Multipart Form",
+                        "default": false,
+                        "type": "boolean"
+                    },
+                    "expectsList": {
+                        "title": "Expects List",
+                        "default": false,
+                        "type": "boolean"
+                    },
+                    "required": {
+                        "title": "Required",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "sections": {
+                        "title": "Sections",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FormSectionRecord"
+                        }
+                    },
+                    "elements": {
+                        "title": "Elements",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FormElementRecord"
+                        }
+                    }
+                },
+                "required": [
+                    "key",
+                    "required",
+                    "sections",
+                    "elements"
+                ]
+            },
+            "TestSchemaOut": {
+                "title": "TestSchemaOut",
+                "type": "object",
+                "properties": {
+                    "test": {
+                        "title": "Test",
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "test"
+                ]
+            },
+            "UserListHome": {
+                "title": "UserListHome",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "address": {
+                        "title": "Address",
+                        "type": "string"
+                    },
+                    "isActive": {
+                        "title": "Is Active",
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "id",
+                    "address",
+                    "is_active"
+                ]
+            },
+            "UserList": {
+                "title": "UserList",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "type": "string"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string"
+                    },
+                    "isActive": {
+                        "title": "Is Active",
+                        "type": "boolean"
+                    },
+                    "isStaff": {
+                        "title": "Is Staff",
+                        "type": "boolean"
+                    },
+                    "isSuperuser": {
+                        "title": "Is Superuser",
+                        "type": "boolean"
+                    },
+                    "home": {
+                        "$ref": "#/components/schemas/UserListHome"
+                    }
+                },
+                "required": [
+                    "id",
+                    "email",
+                    "full_name",
+                    "is_active",
+                    "is_staff",
+                    "is_superuser"
+                ]
+            },
+            "ProductListAPIResponse": {
+                "title": "ProductListAPIResponse",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductList"
+                        }
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            },
+            "UserListAPIResponse": {
+                "title": "UserListAPIResponse",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserList"
+                        }
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            }
+        }
     },
     "servers": null
 }

@@ -1,5 +1,6 @@
 import warnings
 from pathlib import Path
+from nest.forms.elements import FrontendElements
 
 import environ
 import structlog
@@ -305,6 +306,23 @@ OPENAPI_AUTO_GENERATE = env.str("OPENAPI_AUTO_GENERATE", default=DEBUG)
 ODA_SERVICE_ENABLED = env.bool("ODA_SERVICE_ENABLED", default=False)
 ODA_SERVICE_BASE_URL = env.str("ODA_SERVICE_BASE_URL", default="https://oda.com/api/v1")
 ODA_SERVICE_AUTH_TOKEN = env.str("ODA_SERVICE_AUTH_TOKEN", default="supersecrettoken")
+
+#########
+# Forms #
+#########
+
+FORM_ELEMENT_MAPPING_DEFAULTS = {
+    "string": FrontendElements.TEXT_INPUT,
+    "text": FrontendElements.TEXT_INPUT,
+    "integer": FrontendElements.NUMBER_INPUT,
+    "boolean": FrontendElements.CHECKBOX,
+    "enum": FrontendElements.SELECT,
+    "array": FrontendElements.MULTISELECT,
+    "file": FrontendElements.FILE_INPUT,
+    "image": FrontendElements.FILE_INPUT,
+    "number": FrontendElements.NUMBER_INPUT,
+    "object": FrontendElements.NUMBER_INPUT,
+}
 
 #####################
 # Django Extensions #

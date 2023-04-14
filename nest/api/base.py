@@ -18,7 +18,7 @@ class NestAPI(NinjaAPI):
             title="Nest API",
             version="1.0.0",
             docs_decorator=staff_member_required,
-            auth=django_auth,
+            # auth=django_auth,
             csrf=True,
             renderer=CamelCaseRenderer(),
             parser=CamelCaseParser(),
