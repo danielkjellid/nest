@@ -1,32 +1,9 @@
 from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
-from .elements import FrontendElements
+from nest.frontend.elements import FrontendElements
+from pydantic.generics import GenericModel
+from typing import TypeVar, Generic
 
-
-class FormSectionRecord(BaseModel):
-    """
-    A form section groups different parts (elements) of the form and adds them together
-    in a section.
-
-    * title:
-        The title of the section, renders a header in the section frontend, unless plain
-        is passed.
-
-    * blocks:
-        A list of form blocks ids to include in the section.
-
-    * columns:
-        Optionally divide the form into multiple columns, taking advantage of using
-        colspans adjusting width the width of certain elements. The colspan value itself
-        is set directly on the form block.
-
-    * plain:
-        Render the blocks in an invisible section.
-    """
-
-    title: str
-    blocks: list[str]
-    columns: int | None = None
-    plain: bool | None = False
+T = TypeVar("T")
 
 
 class FormElementEnumRecord(BaseModel):
@@ -84,6 +61,10 @@ class FormElementRecord(BaseModel):
     * hidden_label:
         Set the label on top of the form element to only appear on screen readers.
 
+    * section:
+        A section groups different elements of the form and adds them together in a
+        section.
+
     * col_span:
         Column span of the element. Only valid if the element is part of a section with
         defined amount of columns.
@@ -99,10 +80,11 @@ class FormElementRecord(BaseModel):
     placeholder: str | None
     help_text: str | None
     hidden_label: bool | None = False
+    section: str | None = None
     col_span: int | None = None
 
 
-class FormRecord(BaseModel):
+class FormRecord(GenericModel, Generic[T]):
     """
     A form record represents a complete form.
 
@@ -130,5 +112,4 @@ class FormRecord(BaseModel):
     is_multipart_form: bool = False
     expects_list: bool = False
     required: list[str]
-    sections: list[FormSectionRecord]
     elements: list[FormElementRecord]

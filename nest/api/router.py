@@ -24,7 +24,7 @@ class Router(NinjaRouter):
                 ["GET"],
                 view_func=form_api,
                 view_func_kwargs={"form": form},
-                response={200: APIResponse[FormRecord]},
+                response={200: APIResponse[FormRecord[form]]},
                 summary=f"Generated form for payload {form.__name__}",
             )
 

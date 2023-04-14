@@ -1,6 +1,6 @@
 import warnings
 from pathlib import Path
-from nest.forms.elements import FrontendElements
+from nest.frontend.elements import FrontendElements
 
 import environ
 import structlog

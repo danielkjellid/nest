@@ -4,7 +4,6 @@ from .types import JSONSchemaProperties, JSONSchema
 from .helpers import is_list, is_pydantic_model, get_inner_list_type
 from .records import (
     FormRecord,
-    FormSectionRecord,
     FormElementRecord,
     FormElementEnumRecord,
 )
@@ -34,13 +33,11 @@ class FormUtil:
         *,
         schema: Schema,
         is_multipart_form: bool = False,
-        sections: list[FormSectionRecord] | None = None,
     ) -> FormRecord | None:
         """
         Create a JSON form based on a defined schema.
         """
 
-        sections = sections if sections is not None else []
         schema_type, schema_is_list = cls._validate_schema(schema=schema)
 
         if schema_type is None:
@@ -70,7 +67,6 @@ class FormUtil:
             is_multipart_form=is_multipart_form,
             expects_list=schema_is_list,
             required=required,
-            sections=sections,
             elements=elements,
         )
 

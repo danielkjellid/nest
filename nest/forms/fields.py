@@ -5,7 +5,7 @@ from pydantic.fields import FieldInfo, UndefinedType
 if TYPE_CHECKING:
     from pydantic.typing import AbstractSetIntStr, MappingIntStrAny, NoArgAnyCallable
 
-from .elements import FrontendElements
+from nest.frontend.elements import FrontendElements
 from .records import FormElementRecord
 
 Undefined = UndefinedType()
@@ -68,6 +68,7 @@ def FormField(
     help_text: str | None = None,
     hidden_label: bool = False,
     col_span: int = None,
+    section: str | None = None,
     **extra: Any,
 ) -> Any:
     field_info = FieldInfo(
@@ -101,6 +102,7 @@ def FormField(
         placeholder=placeholder,
         hidden_label=hidden_label,
         col_span=col_span,
+        section=section,
         **extra,
     )
     field_info._validate()
