@@ -29,32 +29,10 @@
                 ]
             }
         },
-        "/api/v1/products/import/forms/": {
-            "get": {
-                "operationId": "nest_forms_api_view_form_api",
-                "summary": "Form Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/FormRecord"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "Products"
-                ]
-            }
-        },
         "/api/v1/products/import/": {
             "post": {
-                "operationId": "nest_forms_api_view_form_api",
-                "summary": "Form Api",
+                "operationId": "nest_products_endpoints_product_import_product_import_api",
+                "summary": "Product Import Api",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -68,6 +46,39 @@
                         }
                     }
                 },
+                "tags": [
+                    "Products"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TestSchemaIn"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/api/v1/products/import/forms/": {
+            "get": {
+                "operationId": "nest_forms_api_view_form_api",
+                "summary": "Generated form for payload TestSchemaIn",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FormRecordAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Form API is a generic class which returns a generated form from passed schema.\nAccessible through the @router.add_form(...) decorator.",
                 "tags": [
                     "Products"
                 ]
@@ -181,6 +192,32 @@
                     "gross_price",
                     "unit",
                     "is_synced"
+                ]
+            },
+            "TestSchemaOut": {
+                "title": "TestSchemaOut",
+                "type": "object",
+                "properties": {
+                    "test": {
+                        "title": "Test",
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "test"
+                ]
+            },
+            "TestSchemaIn": {
+                "title": "TestSchemaIn",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id"
                 ]
             },
             "FormSectionRecord": {
@@ -380,19 +417,6 @@
                     "elements"
                 ]
             },
-            "TestSchemaOut": {
-                "title": "TestSchemaOut",
-                "type": "object",
-                "properties": {
-                    "test": {
-                        "title": "Test",
-                        "type": "integer"
-                    }
-                },
-                "required": [
-                    "test"
-                ]
-            },
             "UserListHome": {
                 "title": "UserListHome",
                 "type": "object",
@@ -479,6 +503,30 @@
                         "items": {
                             "$ref": "#/components/schemas/ProductList"
                         }
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            },
+            "FormRecordAPIResponse": {
+                "title": "FormRecordAPIResponse",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/FormRecord"
                     }
                 },
                 "required": [
