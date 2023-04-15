@@ -1,11 +1,8 @@
-from typing import Any, TypeVar
+from typing import Any
 
 from django.http import HttpRequest
-from ninja import Schema
 
 from .form import Form
-
-S = TypeVar("S", bound=Schema)
 
 
 def form_api(request: HttpRequest, **kwargs: Any) -> dict[str, Any]:
