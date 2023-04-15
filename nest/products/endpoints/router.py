@@ -1,3 +1,3 @@
-from ninja import Router
+from nest.api.router import Router
 
 router = Router(tags=["Products"])
