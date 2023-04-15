@@ -34,10 +34,7 @@ class Form:
         Create a JSON form based on a defined schema.
         """
 
-        schema_type_annotation = Schema
-        schema_type, schema_is_list = cls._validate_schema(
-            schema=schema_type_annotation
-        )
+        schema_type, schema_is_list = cls._validate_schema(schema=schema)
 
         if schema_type is None:
             return None
@@ -45,8 +42,7 @@ class Form:
         schema_definition = schema.schema()
 
         elements = cls._build_form_elements(
-            cls,  # type: ignore
-            schema_type_annotation=schema_type,
+            schema=schema,
             schema_properties=schema_definition["properties"],
             schema_definitions=schema_definition.get("definitions", None),
             parent=None,
@@ -54,14 +50,14 @@ class Form:
         schema_required = schema_definition.get("required", [])
         required = [HumpsUtil.camelize(key) for key in schema_required]
         blocks_with_defaults = [
-            element.id for element in elements if element.default is not None
+            element.id for element in elements if element.default_value is not None
         ]
 
         # Only exclude fields with default as None from the required list, and not all
         # fields with set defaults.
         required = required + blocks_with_defaults  # type: ignore
 
-        return FormRecord[None](
+        return FormRecord[schema](
             key=schema_definition["title"],
             is_multipart_form=is_multipart_form,
             expects_list=schema_is_list,
@@ -69,9 +65,10 @@ class Form:
             elements=elements,
         )
 
+    @classmethod
     def _build_form_elements(  # noqa
-        self,
-        schema_type_annotation: Type[Schema],
+        cls,
+        schema: Schema,
         schema_properties: JSONSchemaProperties,
         schema_definitions: dict[str, JSONSchema | JSONSchemaProperties] | None,
         parent: str | None = None,
@@ -85,7 +82,7 @@ class Form:
 
         for key, value in schema_properties.items():
             camelized_key: str = HumpsUtil.camelize(key)  # type: ignore
-            property_values: JSONSchemaProperties = self._extract_property_values(value)
+            property_values: JSONSchemaProperties = cls._extract_property_values(value)
             property_all_of_list = value.get("allOf", [])  # type: ignore
             property_value_ref = value.get("$ref", None)  # type: ignore
 
@@ -109,15 +106,15 @@ class Form:
                             break
 
                         # Replace values with values in the definition.
-                        property_values["title"] = camelized_key.title()
+                        property_values["title"] = key.title().replace("_", " ")
                         property_values["type"] = definition.get("type", None)
                         definition_enum = definition.get("enum", None)
                         definition_properties = definition.get("properties", None)
 
                         if definition_enum:
-                            field_type = schema_type_annotation.__fields__[key].type_
+                            field_type = schema.__fields__[key].type_
                             property_values["type"] = "enum"
-                            property_values["enum"] = self._format_enum_from_type(
+                            property_values["enum"] = cls._format_enum_from_type(
                                 typ=field_type
                             )
 
@@ -125,17 +122,17 @@ class Form:
                         # have a dict of its own properties. We want to flatten the
                         # form, and add these values, and remove the reference property.
                         if definition_properties:
-                            properties_form_blocks = self._build_form_elements(
-                                schema_type_annotation=schema_type_annotation,
+                            properties_form_blocks = cls._build_form_elements(
+                                schema=schema,
                                 schema_properties=definition_properties,  # type: ignore
                                 schema_definitions=None,
-                                parent=camelized_key,
+                                parent=key,
                             )
                             form_elements.extend(properties_form_blocks)
                             # Do not include reference object, so continue to the next
                             # iteration.
-                            raise self.SkipParentFormElementCreationException
-                except self.SkipParentFormElementCreationException:
+                            raise cls.SkipParentFormElementCreationException
+                except cls.SkipParentFormElementCreationException:
                     continue
 
             property_value_type = property_values.get("type", None)
@@ -167,20 +164,19 @@ class Form:
         return form_elements
 
     @staticmethod
-    def _validate_schema(schema: Type[Schema]) -> tuple[Type[Schema] | None, bool]:
+    def _validate_schema(schema: Schema) -> tuple[Type[Schema] | None, bool]:
         """
         Validate that passed schema is either a subclassed pydantic model, or a list of
         subclassed pydantic models.
         """
-        if is_list(type_annotation=schema):
-            inner_type, is_lst = get_inner_list_type(type_annotation=schema)
+        if is_list(obj=schema):
+            inner_type, is_lst = get_inner_list_type(obj=schema)
 
-            if is_pydantic_model(type_annotation=inner_type):
+            if is_pydantic_model(obj=inner_type):
                 schema_from_type = inner_type
                 return schema_from_type, is_lst
-
-        elif is_pydantic_model(type_annotation=schema):
-            schema_from_type = schema
+        elif is_pydantic_model(obj=schema):
+            schema_from_type = type(schema)
             return schema_from_type, False
 
         else:
@@ -190,7 +186,7 @@ class Form:
                 schema=schema,
                 is_list=False,
             )
-        return None, is_list(type_annotation=schema)
+        return None, is_list(obj=schema)
 
     @staticmethod
     def _format_enum_from_type(typ: Any) -> list[FormElementEnumRecord]:
@@ -222,7 +218,7 @@ class Form:
     @staticmethod
     def _extract_property_values(value: Any) -> JSONSchemaProperties:
         property_keys_schema_mapping = {
-            "default": "default",
+            "default_value": "default",
             "enum": "enum",
             "all_of": "allOf",
             "exclusive_maximum": "exclusiveMaximum",

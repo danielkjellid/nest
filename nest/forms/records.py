@@ -77,7 +77,7 @@ class FormElementRecord(BaseModel):
     type: str | None
     enum: list[FormElementEnumRecord] | None
     parent: str | None
-    default: StrictInt | StrictStr | StrictBool | None
+    default_value: StrictInt | StrictStr | StrictBool | None
     element: FrontendElements | None
     placeholder: str | None
     help_text: str | None

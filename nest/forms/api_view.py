@@ -16,4 +16,5 @@ def form_api(request: HttpRequest, **kwargs: Any) -> dict[str, Any]:
     form = Form.create_from_schema(
         schema=kwargs["form"], is_multipart_form=kwargs["is_multipart_form"]
     )
+    print(form)
     return {"status": "success", "data": form}

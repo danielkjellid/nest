@@ -6,7 +6,12 @@ from typing import TYPE_CHECKING, Any, Callable
 from pydantic.fields import FieldInfo, UndefinedType
 
 if TYPE_CHECKING:
-    from pydantic.typing import AbstractSetIntStr, MappingIntStrAny, NoArgAnyCallable
+    from pydantic import StrictBool, StrictInt, StrictStr
+    from pydantic.typing import (
+        AbstractSetIntStr,
+        MappingIntStrAny,
+        NoArgAnyCallable,
+    )
 
 from nest.frontend.elements import FrontendElements
 
@@ -68,6 +73,7 @@ def FormField(
     repr: bool = True,
     title: str | None = None,
     element: FrontendElements | None = None,
+    default_value: StrictBool | StrictInt | StrictStr | None = None,
     placeholder: str | None = None,
     help_text: str | None = None,
     hidden_label: bool = False,
@@ -103,6 +109,7 @@ def FormField(
         repr=repr,
         help_text=help_text,
         element=element,
+        default_value=default_value,
         placeholder=placeholder,
         hidden_label=hidden_label,
         col_span=col_span,

@@ -26,6 +26,11 @@
                 "description": "Get a list of all products in the application.",
                 "tags": [
                     "Products"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
                 ]
             }
         },
@@ -58,7 +63,12 @@
                         }
                     },
                     "required": true
-                }
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/products/import/forms/": {
@@ -81,6 +91,11 @@
                 "description": "Form API is a generic class which returns a generated form from passed schema.\nAccessible through the @router.add_form(...) decorator.",
                 "tags": [
                     "Products"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
                 ]
             }
         },
@@ -104,6 +119,11 @@
                 "description": "Get a list of all users in the application.",
                 "tags": [
                     "Users"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
                 ]
             }
         }
@@ -207,6 +227,19 @@
                     "test"
                 ]
             },
+            "AvatarColors": {
+                "title": "AvatarColors",
+                "description": "An enumeration.",
+                "enum": [
+                    "#F87171",
+                    "#FBBF24",
+                    "#34D399",
+                    "#60A5FA",
+                    "#A78BFA",
+                    "#F472B6"
+                ],
+                "type": "string"
+            },
             "TestSchemaIn": {
                 "title": "TestSchemaIn",
                 "type": "object",
@@ -215,15 +248,20 @@
                         "title": "Id",
                         "helpText": "Hello",
                         "element": null,
+                        "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
                         "type": "integer"
+                    },
+                    "color": {
+                        "$ref": "#/components/schemas/AvatarColors"
                     }
                 },
                 "required": [
-                    "id"
+                    "id",
+                    "color"
                 ]
             },
             "FormElementEnumRecord": {
@@ -305,8 +343,8 @@
                         "title": "Parent",
                         "type": "string"
                     },
-                    "default": {
-                        "title": "Default",
+                    "defaultValue": {
+                        "title": "Default Value",
                         "anyOf": [
                             {
                                 "type": "integer"
@@ -555,6 +593,13 @@
                 "required": [
                     "status"
                 ]
+            }
+        },
+        "securitySchemes": {
+            "SessionAuth": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "sessionid"
             }
         }
     },

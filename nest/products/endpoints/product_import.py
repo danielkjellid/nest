@@ -3,6 +3,7 @@ from ninja import Schema
 
 from nest.api.responses import APIResponse
 from nest.forms.fields import FormField
+from nest.users.enums import AvatarColors
 
 from .router import router
 
@@ -13,6 +14,7 @@ class TestSchemaOut(Schema):
 
 class TestSchemaIn(Schema):
     id: int = FormField(..., help_text="Hello")
+    color: AvatarColors
 
 
 @router.add_form("import/forms/", form=TestSchemaIn)
