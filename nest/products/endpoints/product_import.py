@@ -1,7 +1,10 @@
 from django.http import HttpRequest
 from ninja import Schema
-from .router import router
+
 from nest.forms.fields import FormField
+from nest.api.responses import APIResponse
+from pydantic import Field
+from .router import router
 
 
 class TestSchemaOut(Schema):
@@ -9,10 +12,12 @@ class TestSchemaOut(Schema):
 
 
 class TestSchemaIn(Schema):
-    id: int = FormField(...)
+    id: int = FormField(..., help_text="Hello")
 
 
 @router.add_form("import/forms/", form=TestSchemaIn)
-@router.post("import/", response={200: TestSchemaOut})
-def product_import_api(request: HttpRequest, payload: TestSchemaIn):
-    return TestSchemaOut(test=payload.id)
+@router.post("import/", response={200: APIResponse[TestSchemaOut]})
+def product_import_api(
+    request: HttpRequest, payload: TestSchemaIn
+) -> APIResponse[TestSchemaOut]:
+    return APIResponse(status="success", data=TestSchemaOut(test=payload.id))

@@ -4,7 +4,6 @@ from typing import Any, Iterable
 from django.contrib.admin.views.decorators import staff_member_required
 from ninja import NinjaAPI
 from ninja.openapi.schema import OpenAPISchema
-from ninja.security import django_auth
 
 from nest.core.utils.humps import HumpsUtil
 

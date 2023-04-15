@@ -1,34 +1,38 @@
-from typing import TYPE_CHECKING, Any, Optional, Union
+from __future__ import annotations
 import inspect
+from typing import TYPE_CHECKING, Any, Optional, Union, Callable
 from pydantic.fields import FieldInfo, UndefinedType
 
 if TYPE_CHECKING:
     from pydantic.typing import AbstractSetIntStr, MappingIntStrAny, NoArgAnyCallable
 
 from nest.frontend.elements import FrontendElements
+
 from .records import FormElementRecord
 
 Undefined = UndefinedType()
 
-element_record_field_kwargs = [key for key in FormElementRecord.__fields__.keys()]
+element_record_field_kwargs = list(FormElementRecord.__fields__.keys())
 
 
-def validate_element_record_fields_passed(func: Any):
+def validate_element_record_fields_passed(
+    func: Callable[..., Any]
+) -> Callable[..., Callable[..., Any]]:
     """
     Validate that all fields defined in FormElementRecord is available in the FormField
     function.
     """
 
-    def inner(*args, **kwargs):
+    def inner(*args: Any, **kwargs: Any) -> Any:
         acceptable_missing_param_keys = {"id", "type", "enum", "parent"}
         element_record_keys = (
             set(element_record_field_kwargs) - acceptable_missing_param_keys
         )
-        signature_param_keys = set(list(inspect.signature(func).parameters.keys()))
+        signature_param_keys = set(inspect.signature(func).parameters.keys())
 
         assert element_record_keys <= signature_param_keys, (
-            f"Some FormElementRecord fields are missing as parameters in FormField "
-            f"function."
+            "Some FormElementRecord fields are missing as parameters in FormField "
+            "function."
         )
         return func(*args, **kwargs)
 
@@ -39,35 +43,35 @@ def validate_element_record_fields_passed(func: Any):
 def FormField(
     default: Any = Undefined,
     *,
-    default_factory: Optional["NoArgAnyCallable"] = None,
-    alias: str = None,
-    description: str = None,
-    exclude: Union["AbstractSetIntStr", "MappingIntStrAny", Any] = None,
-    include: Union["AbstractSetIntStr", "MappingIntStrAny", Any] = None,
-    const: bool = None,
-    gt: float = None,
-    ge: float = None,
-    lt: float = None,
-    le: float = None,
-    multiple_of: float = None,
-    allow_inf_nan: bool = None,
-    max_digits: int = None,
-    decimal_places: int = None,
-    min_items: int = None,
-    max_items: int = None,
-    unique_items: bool = None,
-    min_length: int = None,
-    max_length: int = None,
+    default_factory: NoArgAnyCallable | None = None,
+    alias: str | None = None,
+    description: str | None = None,
+    exclude: AbstractSetIntStr | MappingIntStrAny | Any | None = None,
+    include: AbstractSetIntStr | MappingIntStrAny | Any | None = None,
+    const: bool | None = None,
+    gt: float | None = None,
+    ge: float | None = None,
+    lt: float | None = None,
+    le: float | None = None,
+    multiple_of: float | None = None,
+    allow_inf_nan: bool | None = None,
+    max_digits: int | None = None,
+    decimal_places: int | None = None,
+    min_items: int | None = None,
+    max_items: int | None = None,
+    unique_items: bool | None = None,
+    min_length: int | None = None,
+    max_length: int | None = None,
     allow_mutation: bool = True,
-    regex: str = None,
-    discriminator: str = None,
+    regex: str | None = None,
+    discriminator: str | None = None,
     repr: bool = True,
-    title: str = None,
-    element: FrontendElements = None,
-    placeholder: str = None,
+    title: str | None = None,
+    element: FrontendElements | None = None,
+    placeholder: str | None = None,
     help_text: str | None = None,
     hidden_label: bool = False,
-    col_span: int = None,
+    col_span: int | None = None,
     section: str | None = None,
     **extra: Any,
 ) -> Any:

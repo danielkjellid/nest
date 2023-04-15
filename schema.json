@@ -40,7 +40,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TestSchemaOut"
+                                    "$ref": "#/components/schemas/TestSchemaOutAPIResponse"
                                 }
                             }
                         }
@@ -213,7 +213,7 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "helpText": null,
+                        "helpText": "Hello",
                         "element": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -474,6 +474,30 @@
                         "items": {
                             "$ref": "#/components/schemas/ProductList"
                         }
+                    }
+                },
+                "required": [
+                    "status"
+                ]
+            },
+            "TestSchemaOutAPIResponse": {
+                "title": "TestSchemaOutAPIResponse",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/TestSchemaOut"
                     }
                 },
                 "required": [

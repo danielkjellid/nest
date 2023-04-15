@@ -22,4 +22,4 @@ def get_inner_list_type(*, type_annotation: type) -> tuple[type, bool]:
 
 
 def unwrap_item_type_from_list(*, type_annotation: type) -> type:
-    return typing.get_args(type_annotation)[0]
+    return typing.get_args(type_annotation)[0]  # type: ignore

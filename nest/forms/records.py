@@ -1,7 +1,9 @@
+from typing import Generic, TypeVar
+
 from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
-from nest.frontend.elements import FrontendElements
 from pydantic.generics import GenericModel
-from typing import TypeVar, Generic
+
+from nest.frontend.elements import FrontendElements
 
 T = TypeVar("T")
 

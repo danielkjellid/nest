@@ -1,30 +1,36 @@
-from ninja import Router as NinjaRouter, Schema
-from typing import Any, TypeVar
+from typing import Any, Callable, TypeVar, Type
+
+import structlog
+from ninja import Router as NinjaRouter
+from ninja import Schema
+from ninja.constants import NOT_SET
+
+from nest.api.responses import APIResponse
 from nest.forms.api_view import form_api
 from nest.forms.records import FormRecord
-from nest.api.responses import APIResponse
-from typing import Callable
-from ninja.constants import NOT_SET
+
 from .operation import PathView
-import structlog
 
 logger = structlog.getLogger()
 
-S = TypeVar("S", bound=Schema)
+S = TypeVar("S", bound=Type[Schema])
 
 
 class Router(NinjaRouter):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *, auth: Any = NOT_SET, tags: list[str] | None = None) -> None:
+        super().__init__(auth=auth, tags=tags)
+        self.path_operations: dict[str, PathView] = {}  # type: ignore
 
-    def add_form(self, path, form: S):
-        def decorator(func: Any):
+    def add_form(
+        self, path: str, form: S, is_multipart_form: bool = False
+    ) -> Callable[..., Callable[..., Any]]:
+        def decorator(func: Any) -> Callable[..., Any]:
             self.add_api_operation(
                 path,
                 ["GET"],
                 view_func=form_api,
-                view_func_kwargs={"form": form},
-                response={200: APIResponse[FormRecord[form]]},
+                view_func_kwargs={"form": form, "is_multipart_form": is_multipart_form},
+                response={200: APIResponse[FormRecord[form]]},  # type: ignore
                 summary=f"Generated form for payload {form.__name__}",
             )
 
@@ -36,7 +42,7 @@ class Router(NinjaRouter):
         self,
         path: str,
         methods: list[str],
-        view_func: Callable,
+        view_func: Callable[..., Any],
         *,
         view_func_kwargs: Any | None = None,
         auth: Any = NOT_SET,
@@ -82,5 +88,3 @@ class Router(NinjaRouter):
         )
         if self.api:
             path_view.set_api_instance(self.api, self)
-
-        return None

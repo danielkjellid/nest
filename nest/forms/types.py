@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import TypedDict, Any
+
+from typing import Any, TypedDict
 
 
 class JSONSchemaProperties(TypedDict, total=False):
@@ -38,14 +39,12 @@ class JSONSchemaProperties(TypedDict, total=False):
     # Custom:
     placeholder: str
     help_text: str
-    display_word_count: bool
     hidden_label: bool
     col_span: int
-    allow_set_primary_image: bool
-    allow_set_filter_image: bool
+    section: str
 
 
-class JSONSchema(TypedDict):
+class JSONSchema(TypedDict, total=False):
     title: str
     description: str
     type: str
