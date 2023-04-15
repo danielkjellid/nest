@@ -17,8 +17,8 @@ def is_pydantic_model(*, obj: typing.Any) -> bool:
 def get_inner_list_type(*, obj: typing.Any) -> tuple[type, bool]:
     is_lst = is_list(obj=obj)
     if is_lst:
-        type_annotation = unwrap_item_type_from_list(obj=obj)
-    return type_annotation, is_lst
+        obj = unwrap_item_type_from_list(obj=obj)
+    return obj, is_lst
 
 
 def unwrap_item_type_from_list(*, obj: typing.Any) -> type:
