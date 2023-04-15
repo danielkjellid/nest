@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, TypedDict
 
+from nest.frontend.elements import FrontendElements
+
 
 class JSONSchemaProperties(TypedDict, total=False):
     """
@@ -10,9 +12,8 @@ class JSONSchemaProperties(TypedDict, total=False):
     """
 
     title: str
-    type: str
+    type: str | None
     default: Any
-    format: str  # Indicates if the type has a special format, for instance 'binary'.
     description: str
     enum: list[Any]
     allOf: list[dict[str, str]]
@@ -37,6 +38,8 @@ class JSONSchemaProperties(TypedDict, total=False):
     pattern: str  # Requires field (str) match against a regex pattern string.
 
     # Custom:
+    parent: str | None
+    element: FrontendElements | None
     placeholder: str
     help_text: str
     hidden_label: bool

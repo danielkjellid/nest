@@ -1,4 +1,4 @@
-from typing import Any, Callable, TypeVar, Type
+from typing import Any, Callable, Type, TypeVar
 
 import structlog
 from ninja import Router as NinjaRouter

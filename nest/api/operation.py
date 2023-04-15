@@ -9,9 +9,6 @@ from django.http import HttpRequest
 from django.http.response import HttpResponseBase
 from ninja.constants import NOT_SET
 from ninja.operation import (
-    AsyncOperation as NinjaAsyncOperation,
-)
-from ninja.operation import (
     Operation as NinjaOperation,
 )
 from ninja.operation import (
