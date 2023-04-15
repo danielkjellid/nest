@@ -48,10 +48,10 @@ class Form:
             parent=None,
         )
         schema_required = schema_definition.get("required", [])
-        required = {HumpsUtil.camelize(key) for key in schema_required}
-        blocks_with_defaults = {
+        required = [HumpsUtil.camelize(key) for key in schema_required]
+        blocks_with_defaults = [
             element.id for element in elements if element.default_value is not None
-        }
+        ]
 
         # Only exclude fields with default as None from the required list, and not all
         # fields with set defaults.

@@ -1,7 +1,8 @@
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, Type, Any
 
 from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
 from pydantic.generics import GenericModel
+from pydantic.typing import display_as_type
 
 from nest.frontend.elements import FrontendElements
 
@@ -115,3 +116,9 @@ class FormRecord(GenericModel, Generic[T]):
     expects_list: bool = False
     required: list[str]
     elements: list[FormElementRecord]
+
+    @classmethod
+    def __concrete_name__(cls: Type[Any], params: tuple[Type[Any], ...]) -> str:
+        param_names = [display_as_type(param) for param in params]
+        params_component = ", ".join(param_names)
+        return f"{params_component}Form"

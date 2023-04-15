@@ -82,7 +82,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TestSchemaInAPIResponse"
+                                    "$ref": "#/components/schemas/TestSchemaInFormAPIResponse"
                                 }
                             }
                         }
@@ -386,8 +386,8 @@
                     "id"
                 ]
             },
-            "FormRecord_TestSchemaIn_": {
-                "title": "FormRecord[TestSchemaIn]",
+            "TestSchemaInForm": {
+                "title": "TestSchemaInForm",
                 "description": "A form record represents a complete form.\n\n* key:\n    Effectively the \"id\" of the form.\n\n* is_multipart_form:\n    Convert the form to multipart before posting it to an endpoint.\n\n* expects_list:\n    Should be True if the endpoint in question expects a list of records instead of\n    a single record as payload. E.g. for bulk creation and so on.\n\n* required:\n    A list of form element ids that are required.\n\n* sections:\n    A list of form sections of type FormSectionRecord.\n\n* elements:\n    A list of all elements to render in the form.",
                 "type": "object",
                 "properties": {
@@ -542,8 +542,8 @@
                     "status"
                 ]
             },
-            "TestSchemaInAPIResponse": {
-                "title": "TestSchemaInAPIResponse",
+            "TestSchemaInFormAPIResponse": {
+                "title": "TestSchemaInFormAPIResponse",
                 "type": "object",
                 "properties": {
                     "status": {
@@ -559,7 +559,7 @@
                         "type": "string"
                     },
                     "data": {
-                        "$ref": "#/components/schemas/FormRecord_TestSchemaIn_"
+                        "$ref": "#/components/schemas/TestSchemaInForm"
                     }
                 },
                 "required": [
