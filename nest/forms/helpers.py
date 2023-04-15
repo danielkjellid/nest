@@ -1,4 +1,5 @@
 import typing
+
 import pydantic
 
 
@@ -21,4 +22,4 @@ def get_inner_list_type(*, obj: typing.Any) -> tuple[type, bool]:
 
 
 def unwrap_item_type_from_list(*, obj: typing.Any) -> type:
-    return typing.get_args(type_annotation)[0]  # type: ignore
+    return typing.get_args(obj)[0]  # type: ignore

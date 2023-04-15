@@ -48,16 +48,16 @@ class Form:
             parent=None,
         )
         schema_required = schema_definition.get("required", [])
-        required = [HumpsUtil.camelize(key) for key in schema_required]
-        blocks_with_defaults = [
+        required = {HumpsUtil.camelize(key) for key in schema_required}
+        blocks_with_defaults = {
             element.id for element in elements if element.default_value is not None
-        ]
+        }
 
         # Only exclude fields with default as None from the required list, and not all
         # fields with set defaults.
         required = required + blocks_with_defaults  # type: ignore
 
-        return FormRecord[schema](
+        return FormRecord[schema](  # type: ignore
             key=schema_definition["title"],
             is_multipart_form=is_multipart_form,
             expects_list=schema_is_list,

@@ -1,11 +1,13 @@
+from unittest.mock import ANY
+
 from ninja import Schema
 from pydantic import BaseModel
-from nest.frontend.elements import FrontendElements
-from nest.forms.records import FormRecord, FormElementRecord, FormElementEnumRecord
-from nest.forms.form import Form
+
 from nest.forms.fields import FormField
+from nest.forms.form import Form
+from nest.forms.records import FormElementEnumRecord, FormElementRecord, FormRecord
+from nest.frontend.elements import FrontendElements
 from nest.units.enums import UnitType
-from unittest.mock import ANY
 
 
 class MyChildSchema(Schema):
@@ -133,13 +135,11 @@ class TestForm:
                 ),
             ],
         )
-        assert set(
-            [
-                "valChild",
-                "valStr",
-                "valListInt",
-                "valStrNone",
-                "valBool",
-                "valEnum",
-            ]
-        ) == set(form.required)
+        assert {
+            "valChild",
+            "valStr",
+            "valListInt",
+            "valStrNone",
+            "valBool",
+            "valEnum",
+        } == set(form.required)
