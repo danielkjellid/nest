@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar, Type, Any
+from typing import Any, Generic, Type, TypeVar
 
 from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
 from pydantic.generics import GenericModel
