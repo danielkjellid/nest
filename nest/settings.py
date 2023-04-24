@@ -4,7 +4,7 @@ from pathlib import Path
 import environ
 import structlog
 
-from nest.frontend.elements import FrontendElements
+from nest.frontend.components import FrontendComponents
 
 ###############
 # Environment #
@@ -312,17 +312,17 @@ ODA_SERVICE_AUTH_TOKEN = env.str("ODA_SERVICE_AUTH_TOKEN", default="supersecrett
 # Forms #
 #########
 
-FORM_ELEMENT_MAPPING_DEFAULTS = {
-    "string": FrontendElements.TEXT_INPUT,
-    "text": FrontendElements.TEXT_INPUT,
-    "integer": FrontendElements.NUMBER_INPUT,
-    "boolean": FrontendElements.CHECKBOX,
-    "enum": FrontendElements.SELECT,
-    "array": FrontendElements.MULTISELECT,
-    "file": FrontendElements.FILE_INPUT,
-    "image": FrontendElements.FILE_INPUT,
-    "number": FrontendElements.NUMBER_INPUT,
-    "object": FrontendElements.NUMBER_INPUT,
+FORM_COMPONENT_MAPPING_DEFAULTS = {
+    "string": FrontendComponents.TEXT_INPUT,
+    "text": FrontendComponents.TEXT_INPUT,
+    "integer": FrontendComponents.NUMBER_INPUT,
+    "boolean": FrontendComponents.CHECKBOX,
+    "enum": FrontendComponents.SELECT,
+    "array": FrontendComponents.MULTISELECT,
+    "file": FrontendComponents.FILE_INPUT,
+    "image": FrontendComponents.FILE_INPUT,
+    "number": FrontendComponents.NUMBER_INPUT,
+    "object": FrontendComponents.NUMBER_INPUT,
 }
 
 #####################

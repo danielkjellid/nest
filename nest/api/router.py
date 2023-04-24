@@ -1,4 +1,5 @@
-from typing import Any, Callable, Type, TypeVar
+import inspect
+from typing import Any, Callable, Type, TypeVar, get_type_hints
 
 import structlog
 from ninja import Router as NinjaRouter
@@ -6,8 +7,10 @@ from ninja import Schema
 from ninja.constants import NOT_SET
 
 from nest.api.responses import APIResponse
+from pydantic import create_model
 from nest.forms.api_view import form_api
 from nest.forms.records import FormRecord
+from nest.core.files import UploadedFile, UploadedImageFile
 
 from .operation import PathView
 
@@ -22,15 +25,41 @@ class Router(NinjaRouter):
         self.path_operations: dict[str, PathView] = {}  # type: ignore
 
     def add_form(
-        self, path: str, form: S, is_multipart_form: bool = False
+        self,
+        path: str,
+        form: S,
+        is_multipart_form: bool = False,
+        columns: int | None = 1,
     ) -> Callable[..., Callable[..., Any]]:
         def decorator(func: Any) -> Callable[..., Any]:
+            # endpoint_type_hints = get_type_hints(func).items()
+            # additional_form_fields = {}
+
+            # s = form
+            #
+            # for key, value in endpoint_type_hints:
+            #     if issubclass(value, UploadedFile):
+            #         additional_form_fields[key] = (UploadedFile, ...)
+            #
+            #     if issubclass(value, UploadedImageFile):
+            #         additional_form_fields[key] = (UploadedImageFile, ...)
+            #
+            # form_model = create_model(
+            #     form.__name__,
+            #     __base__=form,
+            #     **{key: value for key, value in additional_form_fields.items()},
+            # )
+
             self.add_api_operation(
                 path,
                 ["GET"],
                 view_func=form_api,
-                view_func_kwargs={"form": form, "is_multipart_form": is_multipart_form},
-                response={200: APIResponse[FormRecord[form]]},  # type: ignore
+                view_func_kwargs={
+                    "form": form,
+                    "is_multipart_form": is_multipart_form,
+                    "columns": columns,
+                },
+                response={200: APIResponse[FormRecord]},
                 summary=f"Generated form for payload {form.__name__}",
             )
 

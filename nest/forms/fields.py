@@ -13,7 +13,7 @@ if TYPE_CHECKING:
         NoArgAnyCallable,
     )
 
-from nest.frontend.elements import FrontendElements
+from nest.frontend.components import FrontendComponents
 
 from .records import FormElementRecord
 
@@ -72,7 +72,7 @@ def FormField(
     discriminator: str | None = None,
     repr: bool = True,
     title: str | None = None,
-    element: FrontendElements | None = None,
+    component: FrontendComponents | None = None,
     default_value: StrictBool | StrictInt | StrictStr | None = None,
     placeholder: str | None = None,
     help_text: str | None = None,
@@ -108,7 +108,7 @@ def FormField(
         discriminator=discriminator,
         repr=repr,
         help_text=help_text,
-        element=element,
+        component=component,
         default_value=default_value,
         placeholder=placeholder,
         hidden_label=hidden_label,

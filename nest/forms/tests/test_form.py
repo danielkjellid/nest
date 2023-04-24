@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from nest.forms.fields import FormField
 from nest.forms.form import Form
 from nest.forms.records import FormElementEnumRecord, FormElementRecord, FormRecord
-from nest.frontend.elements import FrontendElements
+from nest.frontend.components import FrontendComponents
 from nest.units.enums import UnitType
 
 
@@ -50,7 +50,7 @@ class TestForm:
                     enum=None,
                     parent=None,
                     default_value=None,
-                    element=FrontendElements.TEXT_INPUT,
+                    component=FrontendComponents.TEXT_INPUT,
                     placeholder=None,
                     help_text="Some random help text",
                     hidden_label=False,
@@ -64,7 +64,7 @@ class TestForm:
                     enum=None,
                     parent=None,
                     default_value=False,
-                    element=FrontendElements.CHECKBOX,
+                    component=FrontendComponents.CHECKBOX,
                     placeholder="Is bool",
                     help_text=None,
                     hidden_label=False,
@@ -84,7 +84,7 @@ class TestForm:
                     ],
                     parent=None,
                     default_value="weight",
-                    element=FrontendElements.SELECT,
+                    component=FrontendComponents.SELECT,
                     placeholder=None,
                     help_text=None,
                     hidden_label=False,
@@ -98,7 +98,7 @@ class TestForm:
                     enum=None,
                     parent=None,
                     default_value=None,
-                    element=FrontendElements.MULTISELECT,
+                    component=FrontendComponents.MULTISELECT,
                     placeholder=None,
                     help_text=None,
                     hidden_label=False,
@@ -112,7 +112,7 @@ class TestForm:
                     enum=None,
                     parent=None,
                     default_value=None,
-                    element=FrontendElements.TEXT_INPUT,
+                    component=FrontendComponents.TEXT_INPUT,
                     placeholder=None,
                     help_text="Optional str",
                     hidden_label=False,
@@ -126,7 +126,7 @@ class TestForm:
                     enum=None,
                     parent="val_child",
                     default_value=None,
-                    element=FrontendElements.NUMBER_INPUT,
+                    component=FrontendComponents.NUMBER_INPUT,
                     placeholder=None,
                     help_text=None,
                     hidden_label=False,

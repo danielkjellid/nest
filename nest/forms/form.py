@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Type
+from typing import Any, Type, Union, get_args, TypeVar
 
 import structlog
 from django.conf import settings
@@ -25,11 +25,8 @@ class Form:
 
     @classmethod
     def create_from_schema(
-        cls,
-        *,
-        schema: Schema,
-        is_multipart_form: bool = False,
-    ) -> FormRecord[None] | None:
+        cls, *, schema: Schema, is_multipart_form: bool = False, columns: int | None = 1
+    ) -> FormRecord | None:
         """
         Create a JSON form based on a defined schema.
         """
@@ -57,9 +54,10 @@ class Form:
         # fields with set defaults.
         required = required + blocks_with_defaults  # type: ignore
 
-        return FormRecord[schema](  # type: ignore
+        return FormRecord(
             key=schema_definition["title"],
             is_multipart_form=is_multipart_form,
+            columns=columns,
             expects_list=schema_is_list,
             required=required,  # type: ignore
             elements=elements,
@@ -83,7 +81,9 @@ class Form:
         for key, value in schema_properties.items():
             camelized_key: str = HumpsUtil.camelize(key)  # type: ignore
             property_values: JSONSchemaProperties = cls._extract_property_values(value)
+            property_info_list = []
             property_all_of_list = value.get("allOf", [])  # type: ignore
+            property_any_of_list = value.get("anyOf", [])
             property_value_ref = value.get("$ref", None)  # type: ignore
 
             if parent:
@@ -92,11 +92,29 @@ class Form:
             # If we find any reference values we want to add them to a list to later
             # iterate over them and add their definitions as form blocks.
             if property_value_ref:
-                property_all_of_list.append(value)
+                property_info_list.append(value)
 
-            if property_all_of_list and definitions:
+            for reference in property_all_of_list:
+                ref = reference.get("$ref", None)
+
+                if not ref:
+                    continue
+
+                if reference not in property_info_list:
+                    property_info_list.append(reference)
+
+            for reference in property_any_of_list:
+                ref = reference.get("$ref", None)
+
+                if not ref:
+                    continue
+
+                if reference not in property_info_list:
+                    property_info_list.append(reference)
+
+            if property_info_list and definitions:
                 try:
-                    for reference in property_all_of_list:
+                    for reference in property_info_list:
                         # Get the typename from the reference and find it in the
                         # definitions' dict.
                         definition_key = reference.get("$ref", "").rsplit("/", 1)[-1]
@@ -137,11 +155,11 @@ class Form:
 
             property_value_type = property_values.get("type", None)
             if (
-                not property_values.get("element", None)
+                not property_values.get("component", None)
                 and property_value_type
                 and isinstance(property_value_type, str)
             ):
-                property_values["element"] = settings.FORM_ELEMENT_MAPPING_DEFAULTS[
+                property_values["component"] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
                     property_value_type
                 ]
 
@@ -159,6 +177,7 @@ class Form:
                 property_values.pop(key_to_remove)  # type: ignore
 
             # Append element created to the elements array.
+            print(property_values)
             form_elements.append(FormElementRecord(id=camelized_key, **property_values))  # type: ignore
 
         return form_elements
@@ -195,22 +214,34 @@ class Form:
         of Django's human-readable labels where applicable.
         """
 
+        type_to_check = typ
+        typ_union = get_args(typ)
+
+        if typ_union:
+            type_to_check = next(
+                (item for item in typ_union if issubclass(item, Enum)), None
+            )
+
+            if not type_to_check:
+                raise ValueError("Not able to determine enum class in tuple.")
+
         # If passed enum is a django choices field, we can take advantaged
         # of the defined label.
-        if issubclass(typ, IntegerChoices | TextChoices):
+        if issubclass(type_to_check, IntegerChoices | TextChoices):
             formatted_label_values = [
-                FormElementEnumRecord(name=item.label, value=item.value) for item in typ
+                FormElementEnumRecord(label=item.label, value=item.value)
+                for item in type_to_check
             ]
-        elif issubclass(typ, Enum):
+        elif issubclass(type_to_check, Enum):
             formatted_label_values = [
                 FormElementEnumRecord(
-                    name=item.name.replace("_", " ").title(), value=item.value
+                    label=item.name.replace("_", " ").title(), value=item.value
                 )
-                for item in typ
+                for item in type_to_check
             ]
         else:
             formatted_label_values = [
-                FormElementEnumRecord(name=item, value=item) for item in typ
+                FormElementEnumRecord(label=item, value=item) for item in type_to_check
             ]
 
         return formatted_label_values
@@ -218,7 +249,6 @@ class Form:
     @staticmethod
     def _extract_property_values(value: Any) -> JSONSchemaProperties:
         property_keys_schema_mapping = {
-            "default_value": "default",
             "enum": "enum",
             "all_of": "allOf",
             "exclusive_maximum": "exclusiveMaximum",

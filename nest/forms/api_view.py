@@ -11,7 +11,8 @@ def form_api(request: HttpRequest, **kwargs: Any) -> dict[str, Any]:
     Accessible through the @router.add_form(...) decorator.
     """
     form = Form.create_from_schema(
-        schema=kwargs["form"], is_multipart_form=kwargs["is_multipart_form"]
+        schema=kwargs["form"],
+        is_multipart_form=kwargs["is_multipart_form"],
+        columns=kwargs["columns"],
     )
-    print(form)
     return {"status": "success", "data": form}

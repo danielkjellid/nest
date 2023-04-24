@@ -4,9 +4,7 @@ from pydantic import BaseModel, StrictBool, StrictInt, StrictStr
 from pydantic.generics import GenericModel
 from pydantic.typing import display_as_type
 
-from nest.frontend.elements import FrontendElements
-
-T = TypeVar("T")
+from nest.frontend.components import FrontendComponents
 
 
 class FormElementEnumRecord(BaseModel):
@@ -20,7 +18,7 @@ class FormElementEnumRecord(BaseModel):
         The value to use.
     """
 
-    name: str
+    label: str
     value: int | bool | str
 
 
@@ -51,8 +49,8 @@ class FormElementRecord(BaseModel):
     * default_value:
         The default value to use to prefill/preselect a value in the element.
 
-    * element:
-        The frontend element to render of type FrontendFormElements.
+    * component:
+        The frontend component to render of type FrontendComponents.
 
     * placeholder:
         Placeholder value to pre-populate form element with.
@@ -79,7 +77,7 @@ class FormElementRecord(BaseModel):
     enum: list[FormElementEnumRecord] | None
     parent: str | None
     default_value: StrictInt | StrictStr | StrictBool | None
-    element: FrontendElements | None
+    component: FrontendComponents | None
     placeholder: str | None
     help_text: str | None
     hidden_label: bool | None = False
@@ -87,7 +85,7 @@ class FormElementRecord(BaseModel):
     col_span: int | None = None
 
 
-class FormRecord(GenericModel, Generic[T]):
+class FormRecord(BaseModel):
     """
     A form record represents a complete form.
 
@@ -104,21 +102,13 @@ class FormRecord(GenericModel, Generic[T]):
     * required:
         A list of form element ids that are required.
 
-    * sections:
-        A list of form sections of type FormSectionRecord.
-
     * elements:
         A list of all elements to render in the form.
     """
 
     key: str
     is_multipart_form: bool = False
+    columns: int | None = 1
     expects_list: bool = False
     required: list[str]
     elements: list[FormElementRecord]
-
-    @classmethod
-    def __concrete_name__(cls: Type[Any], params: tuple[Type[Any], ...]) -> str:
-        param_names = [display_as_type(param) for param in params]
-        params_component = ", ".join(param_names)
-        return f"{params_component}Form"

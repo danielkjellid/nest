@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, TypedDict
 
-from nest.frontend.elements import FrontendElements
+from nest.frontend.components import FrontendComponents
 
 
 class JSONSchemaProperties(TypedDict, total=False):
@@ -39,7 +39,7 @@ class JSONSchemaProperties(TypedDict, total=False):
 
     # Custom:
     parent: str | None
-    element: FrontendElements | None
+    component: FrontendComponents | None
     placeholder: str
     help_text: str
     hidden_label: bool
