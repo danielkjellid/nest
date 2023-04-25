@@ -7,7 +7,7 @@ from django.db.models import IntegerChoices, TextChoices
 from ninja import Schema
 
 from nest.core.utils.humps import HumpsUtil
-
+from nest.frontend.components import FrontendComponents
 from .helpers import get_inner_list_type, is_list, is_pydantic_model
 from .records import (
     FormElementEnumRecord,
@@ -274,3 +274,14 @@ class Form:
 
             property_values[key] = value_to_append  # type: ignore
         return property_values
+
+    @classmethod
+    def get_component_from_type(cls, typ: str) -> FrontendComponents | None:
+        try:
+            return settings.FORM_COMPONENT_MAPPING_DEFAULTS[typ]
+        except KeyError:
+            return None
+
+    @classmethod
+    def get_enum_values(cls, e):
+        ...

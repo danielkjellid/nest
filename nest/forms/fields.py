@@ -14,7 +14,6 @@ if TYPE_CHECKING:
     )
 
 from nest.frontend.components import FrontendComponents
-
 from .records import FormElementRecord
 
 Undefined = UndefinedType()

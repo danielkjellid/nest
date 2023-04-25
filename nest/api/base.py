@@ -1,13 +1,15 @@
+import json
 import re
 from typing import Any, Iterable
+from django.core.serializers.json import DjangoJSONEncoder
 
 from django.contrib.admin.views.decorators import staff_member_required
 from ninja import NinjaAPI
 from ninja.openapi.schema import OpenAPISchema
 from ninja.security import django_auth
-
+from .openapi import get_schema
 from nest.core.utils.humps import HumpsUtil
-
+from django.conf import settings
 from .parsers import CamelCaseParser
 from .renderers import CamelCaseRenderer
 
@@ -93,8 +95,49 @@ class NestAPI(NinjaAPI):
         schema["components"] = components
         return schema
 
-    def get_openapi_schema(self, path_prefix: str | None = None) -> OpenAPISchema:
-        schema = super().get_openapi_schema(path_prefix=path_prefix)
-        schema = self._convert_openapi_schema_responses(schema=schema)
-        schema = self._convert_openapi_schema_to_camel_case(schema=schema)
+    @staticmethod
+    def _populate_request_body_with_form_data(schema: OpenAPISchema) -> OpenAPISchema:
+        schema_paths = schema["paths"]
+
+        try:
+            for path, _val in schema_paths.copy().items():
+                request_body_content = schema_paths[path]["post"]["requestBody"][
+                    "content"
+                ]
+                for form_type, form_schema in request_body_content.copy().items():
+                    properties = request_body_content[form_type]["schema"]["properties"]
+
+                    for property_key, property_value in properties.items():
+                        for key, value in property_value.items():
+                            if key == "component" and value is None:
+                                properties[property_key][
+                                    key
+                                ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
+                                    property_value["type"]
+                                ].value
+
+        except KeyError:
+            pass
+
+        schema["paths"] = schema_paths
         return schema
+
+        # for operation_key, operation_method in schema_paths.copy().items():
+        #     for method, value in operation_method.items():
+        #         for key, val in value.items():
+        #             if key == "requestBody":
+
+    # def get_openapi_schema(self, path_prefix: str | None = None) -> OpenAPISchema:
+    #     schema = super().get_openapi_schema(path_prefix=path_prefix)
+    #     schema = self._convert_openapi_schema_responses(schema=schema)
+    #     schema = self._convert_openapi_schema_to_camel_case(schema=schema)
+    #     schema = self._populate_request_body_with_form_data(schema=schema)
+    #     return schema
+
+    def get_openapi_schema(self, path_prefix: str | None = None) -> OpenAPISchema:
+        if path_prefix is None:
+            path_prefix = self.root_path
+        return get_schema(api=self, path_prefix=path_prefix)
+
+    def get_openapi_operation_id(self, operation: "Operation") -> str:
+        return operation.view_func.__name__

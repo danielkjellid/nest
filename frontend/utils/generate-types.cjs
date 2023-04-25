@@ -11,6 +11,9 @@ const generateTypesFromSchema = () => {
       input: JSON.parse(file.toString()),
       output: outputPath,
       exportCore: true,
+      exportModels: true,
+      exportServices: true,
+      exportSchemas: false,
       useOptions: true,
     })
   })
