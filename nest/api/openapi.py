@@ -3,13 +3,25 @@ from ninja.openapi.schema import (
     BODY_CONTENT_TYPES,
     merge_schemas,
     resolve_allOf,
+    flatten_properties,
 )
-from pydantic.schema import model_type_schema
+from pydantic.schema import model_type_schema, enum_process_schema
 from django.conf import settings
 from ninja import NinjaAPI
 from typing import Any, get_type_hints, get_args
 from enum import Enum
 from django.db.models import TextChoices, IntegerChoices
+
+MANUALLY_ADDED_SCHEMAS = []
+
+
+def add_to_openapi_schema(decorated_class: Any):
+    """
+    Decorator that can be used to manually add schemas, basemodels and enums to
+    generated openapi schema.
+    """
+    MANUALLY_ADDED_SCHEMAS.append(decorated_class)
+    return decorated_class
 
 
 def get_schema(api: NinjaAPI, path_prefix: str = "") -> OpenAPISchema:
@@ -106,3 +118,17 @@ class OpenAPISchema(OpenAPISchema):
         result["properties"] = result_properties
 
         return result, content_type
+
+    def _add_manually_added_schemas_to_schema(self):
+        for model_or_enum in MANUALLY_ADDED_SCHEMAS:
+            if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
+                schema = enum_process_schema(model_or_enum)
+            else:
+                schema = self._create_schema_from_model(
+                    model_or_enum, remove_level=False
+                )[0]
+            self.schemas.update(schema)
+
+    def get_components(self):
+        self._add_manually_added_schemas_to_schema()
+        return super().get_components()

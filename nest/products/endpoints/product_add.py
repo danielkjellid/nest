@@ -10,6 +10,7 @@ from nest.forms.fields import FormField
 from nest.core.files import UploadedFile
 from nest.forms.form import Form as NForm
 from nest.products.services import ProductService
+from nest.api.openapi import add_to_openapi_schema
 from .router import router
 
 forms = []
@@ -29,7 +30,7 @@ def create_form(decorated_class):
     return decorated_class
 
 
-@create_form
+# @add_to_openapi_schema
 class ProductAddIn(Schema):
     name: str = FormField(
         ...,
@@ -48,8 +49,10 @@ class ProductAddIn(Schema):
     is_available: bool = FormField(..., default_value=True)
 
 
+# @add_to_openapi_schema
 class ProductAddThumbnailIn(ProductAddIn):
     thumbnail: UploadedFile
+    test: str
 
 
 # @router.add_form(
@@ -62,7 +65,9 @@ class ProductAddThumbnailIn(ProductAddIn):
     response={200: APIResponse[None]},
     openapi_extra={
         "requestBody": {
-            "content": {"multipart/form-data": {"schema": {"title": "ProductAddIn"}}}
+            "content": {
+                "multipart/form-data": {"schema": {"title": "ProductAddInForm"}}
+            }
         }
     },
 )

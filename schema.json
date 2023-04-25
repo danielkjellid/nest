@@ -30,7 +30,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "title": "ProductAddIn",
+                                "title": "ProductAddInForm",
                                 "type": "object",
                                 "properties": {
                                     "name": {
@@ -176,7 +176,27 @@
                     "status",
                     "data"
                 ]
-            }
+            },
+            "title": "FrontendComponents",
+            "description": "An enumeration.",
+            "enum": [
+                "Autocomplete",
+                "Checkbox",
+                "Chip",
+                "ColorInput",
+                "FileInput",
+                "MultiSelect",
+                "NumberInput",
+                "PasswordInput",
+                "PinInput",
+                "Radio",
+                "Rating",
+                "Select",
+                "Slider",
+                "Switch",
+                "Textarea",
+                "TextInput"
+            ]
         },
         "securitySchemes": {
             "SessionAuth": {
