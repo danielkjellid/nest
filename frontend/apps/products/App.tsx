@@ -1,18 +1,9 @@
 import { Button, Title } from '@mantine/core'
-import {
-  ProductAddInForm,
-  ProductAddInFormAPIResponse,
-  ProductImportIn,
-  ProductImportInFormAPIResponse,
-  ProductImportOut,
-  ProductImportOutAPIResponse,
-  ProductListAPIResponse,
-  ProductsService,
-} from '../../types'
 import React, { useState } from 'react'
 
 import Form from '../../components/Form'
 import ProductAddDrawer from './components/ProductAddDrawer'
+import { ProductAddIn } from '../../types'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import View from '../../components/View'
 import { performPost } from '../../hooks/fetcher/http'
@@ -31,17 +22,10 @@ interface ProductsAppInnerProps {
 
 function ProductsAppInner({ results }: ProductsAppInnerProps) {
   // const { products, productImportForm, productAddForm } = results
-  const [opened, { open, close }] = useDisclosure(false)
-  const [productImportResponse, setProductImportResponse] = useState<ProductImportOut>()
+  const [opened, { open, close }] = useDisclosure(true)
+  // const [productImportResponse, setProductImportResponse] = useState<ProductImportOut>()
 
-  const form = useForm('ProductAddIn')
-
-  const testImport = async (id: number) => {
-    const res = await performPost<ProductImportOutAPIResponse>('/api/v1/products/import/', {
-      odaProductId: id,
-    })
-    setProductImportResponse(res.data)
-  }
+  const { elements, required, isMultipart, columns } = useForm('ProductAddIn')
 
   const obj = {
     name: 'Some name',
@@ -60,22 +44,27 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
         <Title>Products</Title>
       </div>
       {/* <ProductOverViewTable data={products.data || []} /> */}
-      <ProductAddDrawer opened={opened} onClose={close} />
+      <ProductAddDrawer opened={opened} onClose={close}>
+        <Form<ProductAddIn>
+          elements={elements}
+          required={required}
+          isMultipart={isMultipart}
+          columns={columns}
+          existingObj={obj}
+        />
+        <div>
+          <Button>Save</Button>
+        </div>
+      </ProductAddDrawer>
       <hr />
-      {/* <Form<any> form={form} /> */}
-      {/* <Form<ProductImportIn>
-        form={productImportForm.data}
-        elementOptions={{ odaProductId: { afterSlot: <Button>Import product</Button> } }}
+
+      <Form
+        elements={elements}
+        required={required}
+        isMultipart={isMultipart}
+        columns={columns}
+        existingObj={obj}
       />
-      {productImportResponse && JSON.stringify(productImportResponse)}
-      <hr />
-      <Form<ProductAddIn>
-        form={productAddForm.data}
-        // elementOptions={{ odaProductId: { afterSlot: <Button>Import product</Button> } }}
-        // onSubmit={(values) => testImport(values.odaProductId)}
-        // existingObj={obj}
-      /> */}
-      <p>{JSON.stringify(form)}</p>
     </div>
   )
 }

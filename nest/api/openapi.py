@@ -2,14 +2,14 @@ from ninja.openapi.schema import (
     OpenAPISchema,
     BODY_CONTENT_TYPES,
     merge_schemas,
-    resolve_allOf,
-    flatten_properties,
 )
-from pydantic.schema import model_type_schema, enum_process_schema
+from pydantic.schema import enum_process_schema
 from django.conf import settings
 from ninja import NinjaAPI
 from typing import Any, get_type_hints, get_args
 from enum import Enum
+from nest.core.files import UploadedFile, UploadedImageFile
+from nest.core.utils.humps import HumpsUtil
 from django.db.models import TextChoices, IntegerChoices
 
 MANUALLY_ADDED_SCHEMAS = []
@@ -82,14 +82,56 @@ class OpenAPISchema(OpenAPISchema):
 
         return enum_mapping
 
-    def _populate_request_body_form_properties(self):
-        ...
+    def _populate_request_body_form_properties(
+        self,
+        properties: dict[str, Any],
+        enum_mapping: dict[str, list[dict[str, str | int]]],
+    ):
+        props = properties.copy()
+
+        for property, property_value in props.items():
+            property_type = property_value.get("type", None)
+            for _key, _value in property_value.copy().items():
+                for mapping in enum_mapping:
+                    if mapping["field"] == property:
+                        props[property]["enum"] = mapping["enum"]
+                        props[property][
+                            "component"
+                        ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
+
+                if property_type and props[property].get("component", None) is None:
+                    props[property][
+                        "component"
+                    ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
+                        property_value["type"]
+                    ].value
+        return {"properties": HumpsUtil.camelize(props)}
+
+    @staticmethod
+    def _set_form_title_meta(models) -> dict[str, any]:
+        title_meta = {}
+
+        for model in models:
+            for key, value in get_type_hints(model).items():
+                if issubclass(value, UploadedFile | UploadedImageFile):
+                    continue
+
+                title_meta["title"] = f"{value.__name__}"
+
+                if hasattr(value, "FormMeta"):
+                    title_meta["columns"] = getattr(value.FormMeta, "columns", 1)
+
+        if not title_meta["title"]:
+            raise ValueError("Not able to decode form title from provided models.")
+
+        return title_meta
 
     def _create_multipart_schema_from_models(self, models) -> tuple[Any, str]:
         # We have File and Form or Body, so we need to use multipart (File)
+        schema = {}
         content_type = BODY_CONTENT_TYPES["file"]
+        enum_mapping = self._extract_enum_from_models(models=models)
 
-        # get the various schemas
         result = merge_schemas(
             [
                 self._create_schema_from_model(model, remove_level=False)[0]
@@ -97,36 +139,26 @@ class OpenAPISchema(OpenAPISchema):
             ]
         )
 
-        enum_mapping = self._extract_enum_from_models(models=models)
-        result_properties = result["properties"]
+        schema.update(self._set_form_title_meta(models=models))
+        schema.update(
+            self._populate_request_body_form_properties(
+                properties=result["properties"], enum_mapping=enum_mapping
+            )
+        )
+        schema.update(type="object", required=result["required"])
+        self.schemas.update({schema["title"]: schema})
 
-        for property, property_value in result_properties.copy().items():
-            property_type = property_value.get("type", None)
-            for key, value in property_value.copy().items():
-                if key == "component" and property_type:
-                    result_properties[property][
-                        key
-                    ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
-                        property_value["type"]
-                    ].value
-
-                for mapping in enum_mapping:
-                    if mapping["field"] == property:
-                        result_properties[property]["enum"] = mapping["enum"]
-
-        result["title"] = "MultiPartBodyParams"
-        result["properties"] = result_properties
-
-        return result, content_type
+        return {"$ref": f"#/components/schemas/{schema['title']}"}, content_type
 
     def _add_manually_added_schemas_to_schema(self):
         for model_or_enum in MANUALLY_ADDED_SCHEMAS:
             if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
-                schema = enum_process_schema(model_or_enum)
+                m_schema = enum_process_schema(model_or_enum)
             else:
-                schema = self._create_schema_from_model(
+                m_schema = self._create_schema_from_model(
                     model_or_enum, remove_level=False
                 )[0]
+            schema = {m_schema["title"]: HumpsUtil.camelize(m_schema)}
             self.schemas.update(schema)
 
     def get_components(self):

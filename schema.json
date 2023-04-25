@@ -17,7 +17,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/APIResponse_NoneType_"
+                                    "$ref": "#/components/schemas/APIResponse"
                                 }
                             }
                         }
@@ -30,112 +30,44 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "title": "ProductAddInForm",
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "title": "Name",
-                                        "help_text": "Plain name of product, should not include unit.",
-                                        "component": "TextInput",
-                                        "default_value": null,
-                                        "placeholder": null,
-                                        "hidden_label": false,
-                                        "col_span": null,
-                                        "section": null,
-                                        "type": "string"
-                                    },
-                                    "gross_price": {
-                                        "title": "Gross Price",
-                                        "help_text": "Gross price of product, including VAT.",
-                                        "component": "TextInput",
-                                        "default_value": null,
-                                        "placeholder": null,
-                                        "hidden_label": false,
-                                        "col_span": null,
-                                        "section": null,
-                                        "type": "string"
-                                    },
-                                    "unit": {
-                                        "title": "Unit",
-                                        "help_text": "Amount if product in selected unit type. E.g. 2 if 2 kg.",
-                                        "component": "TextInput",
-                                        "default_value": null,
-                                        "placeholder": null,
-                                        "hidden_label": false,
-                                        "col_span": 1,
-                                        "section": null,
-                                        "type": "string"
-                                    },
-                                    "unit_type": {
-                                        "title": "Unit Type",
-                                        "help_text": null,
-                                        "component": null,
-                                        "default_value": null,
-                                        "placeholder": null,
-                                        "hidden_label": false,
-                                        "col_span": 1,
-                                        "section": null,
-                                        "anyOf": [
-                                            {
-                                                "$ref": "#/components/schemas/UnitType"
-                                            },
-                                            {
-                                                "type": "string"
-                                            }
-                                        ],
-                                        "enum": [
-                                            {
-                                                "label": "Pieces",
-                                                "value": "pieces"
-                                            },
-                                            {
-                                                "label": "Weight",
-                                                "value": "weight"
-                                            },
-                                            {
-                                                "label": "Volume",
-                                                "value": "volume"
-                                            },
-                                            {
-                                                "label": "Length",
-                                                "value": "length"
-                                            },
-                                            {
-                                                "label": "Usage",
-                                                "value": "usage"
-                                            }
-                                        ]
-                                    },
-                                    "supplier": {
-                                        "title": "Supplier",
-                                        "type": "string"
-                                    },
-                                    "is_available": {
-                                        "title": "Is Available",
-                                        "help_text": null,
-                                        "component": "Checkbox",
-                                        "default_value": true,
-                                        "placeholder": null,
-                                        "hidden_label": false,
-                                        "col_span": null,
-                                        "section": null,
-                                        "type": "boolean"
-                                    },
-                                    "thumbnail": {
-                                        "title": "Thumbnail",
-                                        "type": "file",
-                                        "format": "binary",
-                                        "placeholder": "Upload thumbnail"
-                                    }
-                                },
-                                "required": [
-                                    "name",
-                                    "gross_price",
-                                    "unit",
-                                    "unit_type",
-                                    "supplier",
-                                    "is_available"
-                                ]
+                                "$ref": "#/components/schemas/ProductAddIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/products/test/": {
+            "post": {
+                "operationId": "product_test_api",
+                "summary": "Product Test Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Products"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TestSchema"
                             }
                         }
                     },
@@ -151,8 +83,8 @@
     },
     "components": {
         "schemas": {
-            "APIResponse_NoneType_": {
-                "title": "APIResponse[NoneType]",
+            "APIResponse": {
+                "title": "APIResponse",
                 "type": "object",
                 "properties": {
                     "status": {
@@ -177,26 +109,183 @@
                     "data"
                 ]
             },
-            "title": "FrontendComponents",
-            "description": "An enumeration.",
-            "enum": [
-                "Autocomplete",
-                "Checkbox",
-                "Chip",
-                "ColorInput",
-                "FileInput",
-                "MultiSelect",
-                "NumberInput",
-                "PasswordInput",
-                "PinInput",
-                "Radio",
-                "Rating",
-                "Select",
-                "Slider",
-                "Switch",
-                "Textarea",
-                "TextInput"
-            ]
+            "ProductAddIn": {
+                "title": "ProductAddIn",
+                "columns": 2,
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "helpText": "Plain name of product, should not include unit.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "type": "string"
+                    },
+                    "grossPrice": {
+                        "title": "Gross Price",
+                        "helpText": "Gross price of product, including VAT.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "type": "string"
+                    },
+                    "unit": {
+                        "title": "Unit",
+                        "helpText": "Amount if product in selected unit type. E.g. 2 if 2 kg.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "type": "string"
+                    },
+                    "unitType": {
+                        "title": "Unit Type",
+                        "helpText": null,
+                        "component": "Select",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/UnitType"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "enum": [
+                            {
+                                "label": "Pieces",
+                                "value": "pieces"
+                            },
+                            {
+                                "label": "Weight",
+                                "value": "weight"
+                            },
+                            {
+                                "label": "Volume",
+                                "value": "volume"
+                            },
+                            {
+                                "label": "Length",
+                                "value": "length"
+                            },
+                            {
+                                "label": "Usage",
+                                "value": "usage"
+                            }
+                        ]
+                    },
+                    "supplier": {
+                        "title": "Supplier",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "helpText": null,
+                        "component": "Checkbox",
+                        "defaultValue": true,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "type": "boolean"
+                    },
+                    "thumbnail": {
+                        "title": "Thumbnail",
+                        "type": "file",
+                        "format": "binary",
+                        "placeholder": "Upload thumbnail",
+                        "component": "FileInput"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "gross_price",
+                    "unit",
+                    "unit_type",
+                    "supplier",
+                    "is_available"
+                ]
+            },
+            "TestSchema": {
+                "title": "TestSchema",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "help_text": "Testing",
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "type": "string"
+                    },
+                    "name_lastname": {
+                        "title": "Name Lastname",
+                        "help_text": null,
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": "Test",
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name_lastname"
+                ]
+            },
+            "FrontendComponents": {
+                "title": "FrontendComponents",
+                "description": "An enumeration.",
+                "enum": [
+                    "Autocomplete",
+                    "Checkbox",
+                    "Chip",
+                    "ColorInput",
+                    "FileInput",
+                    "MultiSelect",
+                    "NumberInput",
+                    "PasswordInput",
+                    "PinInput",
+                    "Radio",
+                    "Rating",
+                    "Select",
+                    "Slider",
+                    "Switch",
+                    "Textarea",
+                    "TextInput"
+                ]
+            },
+            "UnitType": {
+                "title": "UnitType",
+                "description": "An enumeration.",
+                "enum": [
+                    "pieces",
+                    "weight",
+                    "volume",
+                    "length",
+                    "usage"
+                ],
+                "type": "string"
+            }
         },
         "securitySchemes": {
             "SessionAuth": {

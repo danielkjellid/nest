@@ -1,36 +1,17 @@
 import json
 
 from django.http import HttpRequest
-from ninja import Schema, Form, File, UploadedFile
-from django.core.serializers.json import DjangoJSONEncoder
+from ninja import Schema, Form, File
 
 from nest.api.responses import APIResponse
 from nest.units.enums import UnitType
 from nest.forms.fields import FormField
 from nest.core.files import UploadedFile
-from nest.forms.form import Form as NForm
 from nest.products.services import ProductService
 from nest.api.openapi import add_to_openapi_schema
 from .router import router
 
-forms = []
 
-
-def create_form(decorated_class):
-    init = decorated_class.__init__
-    print("called")
-
-    def __init__(self, *args, **kwargs):
-        init(self, *args, **kwargs)
-        self.__annotations__.update(
-            {"form": NForm.create_from_schema(schema=decorated_class)}
-        )
-
-    decorated_class.__init__ = __init__
-    return decorated_class
-
-
-# @add_to_openapi_schema
 class ProductAddIn(Schema):
     name: str = FormField(
         ...,
@@ -48,29 +29,11 @@ class ProductAddIn(Schema):
     supplier: str
     is_available: bool = FormField(..., default_value=True)
 
-
-# @add_to_openapi_schema
-class ProductAddThumbnailIn(ProductAddIn):
-    thumbnail: UploadedFile
-    test: str
+    class FormMeta:
+        columns = 2
 
 
-# @router.add_form(
-#     "add/form/", form=ProductAddThumbnailIn, is_multipart_form=True, columns=2
-# )
-
-
-@router.post(
-    "add/",
-    response={200: APIResponse[None]},
-    openapi_extra={
-        "requestBody": {
-            "content": {
-                "multipart/form-data": {"schema": {"title": "ProductAddInForm"}}
-            }
-        }
-    },
-)
+@router.post("add/", response={200: APIResponse[None]})
 def product_add_api(
     request: HttpRequest,
     payload: ProductAddIn = Form(...),

@@ -1,20 +1,5 @@
+import { FormElement } from '../../components/Form'
 import schema from '../../../schema.json'
-import { useState } from 'react'
-
-interface FormMeta {}
-
-const findFormByTitle = (obj: Record<string, any>, key: string): any => {
-  if (obj && typeof obj === 'object') {
-    for (const val of Object.values(obj)) {
-      if (val && val['title'] && val['title'] === key) {
-        return val
-      } else {
-        const found = findFormByTitle(val, key)
-        if (found) return found
-      }
-    }
-  }
-}
 
 const determineIsMultipart = (obj: Record<string, any>): any => {
   if (obj && typeof obj === 'object') {
@@ -29,14 +14,27 @@ const determineIsMultipart = (obj: Record<string, any>): any => {
   }
 }
 
-const useForm = (key: string) => {
-  const [isMultipart, setIsMultipart] = useState(determineIsMultipart(schema))
-  const [formMeta, setFormMeta] = useState({})
+interface FormComponent {
+  properties: FormElement
+  required: string[]
+  columns: number
+  isMultipart: boolean
+}
 
-  const formData = findFormByTitle(schema, key)
-  const form = formData.properties
+function useForm(key: string) {
+  const isMultipart = determineIsMultipart(schema)
 
-  return form
+  // console.log(Object.entries(schema.components.schemas).find(([k, v]) => k === key))
+  const formData = (schema as any).components.schemas[key] as FormComponent
+
+  const f = {
+    elements: formData.properties,
+    required: formData.required,
+    columns: formData.columns,
+    isMultipart,
+  }
+
+  return f
 }
 
 export { useForm }
