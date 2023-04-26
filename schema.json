@@ -30,7 +30,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductAddIn"
+                                "$ref": "#/components/schemas/FormParams"
                             }
                         }
                     },
@@ -85,7 +85,6 @@
         "schemas": {
             "APIResponse": {
                 "title": "APIResponse",
-                "type": "object",
                 "properties": {
                     "status": {
                         "title": "Status",
@@ -93,11 +92,13 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
@@ -107,11 +108,11 @@
                 "required": [
                     "status",
                     "data"
-                ]
+                ],
+                "type": "object"
             },
             "ProductAddIn": {
-                "title": "ProductAddIn",
-                "columns": 2,
+                "title": "FormParams",
                 "properties": {
                     "name": {
                         "title": "Name",
@@ -210,47 +211,48 @@
                         "component": "FileInput"
                     }
                 },
-                "type": "object",
                 "required": [
                     "name",
-                    "gross_price",
+                    "grossPrice",
                     "unit",
-                    "unit_type",
+                    "unitType",
                     "supplier",
-                    "is_available"
-                ]
+                    "isAvailable"
+                ],
+                "columns": 2,
+                "type": "object"
             },
             "TestSchema": {
                 "title": "TestSchema",
-                "type": "object",
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "help_text": "Testing",
-                        "component": null,
-                        "default_value": null,
+                        "helpText": "Testing",
+                        "component": "TextInput",
+                        "defaultValue": null,
                         "placeholder": null,
-                        "hidden_label": false,
-                        "col_span": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
                         "section": null,
                         "type": "string"
                     },
-                    "name_lastname": {
+                    "nameLastname": {
                         "title": "Name Lastname",
-                        "help_text": null,
-                        "component": null,
-                        "default_value": null,
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
                         "placeholder": "Test",
-                        "hidden_label": false,
-                        "col_span": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
                         "section": null,
                         "type": "string"
                     }
                 },
                 "required": [
                     "id",
-                    "name_lastname"
-                ]
+                    "nameLastname"
+                ],
+                "type": "object"
             },
             "FrontendComponents": {
                 "title": "FrontendComponents",

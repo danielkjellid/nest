@@ -16,7 +16,7 @@ import {
   TextInput,
   Textarea,
 } from '@mantine/core'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { FrontendComponents } from '../../types/'
 import { IconUpload } from '@tabler/icons-react'
@@ -35,15 +35,15 @@ interface FormElementOptions {
 
 interface FormElementObj {
   title: string
-  helpText: string | null
+  helpText?: string | null
   component: FrontendComponents
-  defaultValue: string | number | boolean | null
-  placeholder: string | null
-  hiddenLabel: boolean
-  colSpan: number | null
-  section: string | null
+  defaultValue?: string | number | boolean | null
+  placeholder?: string | null
+  hiddenLabel?: boolean
+  colSpan?: number | null
+  section?: string | null
   type: string
-  enum: FormEnum[]
+  enum?: FormEnum[]
 }
 
 export interface FormElement {
@@ -56,9 +56,9 @@ interface FormProps<T extends object> {
   required: string[]
   columns: number
   isMultipart: boolean
-  existingObj?: Partial<T>
-  errors?: Record<keyof T, string>
-  onChange?: (values: T) => void
+  data?: Partial<T> | null
+  errors?: Partial<Record<keyof T, string>> | null
+  onChange: (values: T) => void
 }
 
 const supportedComponents = {
@@ -93,7 +93,7 @@ function Form<T extends object>({
   required,
   columns,
   isMultipart,
-  existingObj,
+  data,
   errors,
   onChange,
 }: FormProps<T>) {
@@ -109,18 +109,14 @@ function Form<T extends object>({
     Object.entries(elements).map(([elementKey, element]) => {
       const elemId = elementKey as K
 
-      if (existingObj && existingObj[elemId] !== undefined) {
-        initialValues[elemId] = existingObj[elemId] as T[K]
+      if (data && data[elemId] !== undefined) {
+        initialValues[elemId] = data[elemId] as T[K]
       } else if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
-        initialValues[elemId] = (
-          element.defaultValue !== null ? element.defaultValue : false
-        ) as T[K]
+        initialValues[elemId] = (element.defaultValue ? element.defaultValue : false) as T[K]
       } else if (element.component === FrontendComponents.FILE_INPUT) {
-        initialValues[elemId] = (
-          element.defaultValue !== null ? element.defaultValue : null
-        ) as T[K]
+        initialValues[elemId] = (element.defaultValue ? element.defaultValue : null) as T[K]
       } else {
-        initialValues[elemId] = (element.defaultValue !== null ? element.defaultValue : '') as T[K]
+        initialValues[elemId] = (element.defaultValue ? element.defaultValue : '') as T[K]
       }
       return initialValues
     })
@@ -130,7 +126,7 @@ function Form<T extends object>({
   const [formValues, setFormValues] = useState<T>(getInitialFormValues())
 
   const handleInputChange = (
-    key: string,
+    key: K,
     eventOrValue: React.ChangeEvent<HTMLInputElement> | string | File | null
   ) => {
     let value
@@ -141,7 +137,7 @@ function Form<T extends object>({
       } else {
         const eventTarget = eventOrValue.currentTarget as HTMLInputElement
 
-        if (eventTarget.checked !== undefined) {
+        if (eventTarget.type === 'checkbox') {
           value = eventTarget.checked
         } else {
           value = eventTarget.value
@@ -152,13 +148,18 @@ function Form<T extends object>({
     }
 
     setFormValues({ ...formValues, [key]: value })
+    onChange({ ...formValues, [key]: value })
   }
 
-  const createCheckboxComponent = (elementKey: string, element: FormElementObj) => {
+  const createCheckboxComponent = (elementKey: K, element: FormElementObj) => {
+    if (!elementKey) {
+      return null
+    }
+
     const { title } = element
     return (
       <Checkbox
-        key={elementKey}
+        key={elementKey.toString()}
         label={title}
         checked={formValues[elementKey as K] as boolean}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -168,18 +169,13 @@ function Form<T extends object>({
     )
   }
 
-  const getErrorForElement = (elementId: string) => {
-    const errorForElement =
-      errors && Object.entries(errors).find(([key, value]) => key === elementId)
+  const getErrorForElement = (elementId: K) => {
+    const errorForElement = errors && errors[elementId]
 
-    return errorForElement ? errorForElement[1] : undefined
+    return errorForElement
   }
 
-  const createFormComponent = (
-    elementKey: string,
-    element: FormElementObj,
-    options?: FormEnum[]
-  ) => {
+  const createFormComponent = (elementKey: K, element: FormElementObj, options?: FormEnum[]) => {
     // The checkbox component uses slightly different properties than the other supported components.
     if (element.component === FrontendComponents.CHECKBOX) {
       return createCheckboxComponent(elementKey, element)
@@ -190,7 +186,7 @@ function Form<T extends object>({
       React.createElement(supportedComponents[element.component], {
         key: elementKey,
         placeholder: element.placeholder,
-        required: required.includes(elementKey),
+        required: required.includes(elementKey as string),
         label: !element.hiddenLabel ? element.title : undefined,
         'aria-label': element.hiddenLabel ? element.title : undefined,
         description: element.helpText,
@@ -207,6 +203,36 @@ function Form<T extends object>({
     )
   }
 
+  const resetForm = () => {
+    const values = {} as T
+    Object.entries(elements).map(([elementKey, element]) => {
+      const elemId = elementKey as K
+
+      if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
+        values[elemId] = (element.defaultValue ? element.defaultValue : false) as T[K]
+      } else if ((element as FormElementObj).component === FrontendComponents.FILE_INPUT) {
+        values[elemId] = (element.defaultValue ? element.defaultValue : null) as T[K]
+      } else {
+        console.log(elemId, element)
+        values[elemId] = (element.defaultValue ? element.defaultValue : '') as T[K]
+      }
+    })
+
+    setFormValues({ ...values })
+  }
+
+  // Back populate the set values to the parent.
+  useEffect(() => {
+    onChange(formValues)
+  }, [formValues])
+
+  useEffect(() => {
+    if (data === null) {
+      console.log('is called')
+      resetForm()
+    }
+  }, [data])
+
   return (
     <form encType={isMultipart ? 'multipart/form-data' : undefined}>
       <div className={`grid grid-cols-${columns ? columns : 1} gap-4 items-end`}>
@@ -221,14 +247,14 @@ function Form<T extends object>({
                 : undefined
 
               return (
-                <div key={key} className="flex items-end space-x-3 w-full">
+                <div key={key.toString()} className="flex items-end space-x-3 w-full">
                   {optionsForElem.beforeSlot}
-                  {createFormComponent(key, element, options)}
+                  {createFormComponent(key as K, element, options)}
                   {optionsForElem.afterSlot}
                 </div>
               )
             } else {
-              return createFormComponent(key, element, element.enum)
+              return createFormComponent(key as K, element, element.enum)
             }
           }
         })}

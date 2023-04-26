@@ -1,9 +1,9 @@
 import { Button, Title } from '@mantine/core'
-import React, { useState } from 'react'
+import { ProductAddIn, TestSchema } from '../../types'
+import React, { useEffect, useState } from 'react'
 
 import Form from '../../components/Form'
 import ProductAddDrawer from './components/ProductAddDrawer'
-import { ProductAddIn } from '../../types'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import View from '../../components/View'
 import { performPost } from '../../hooks/fetcher/http'
@@ -14,9 +14,9 @@ import { useForm } from '../../hooks/forms/useForm'
 
 interface ProductsAppInnerProps {
   results: {
-    products: ProductListAPIResponse
-    productImportForm: ProductImportInFormAPIResponse
-    productAddForm: ProductAddInFormAPIResponse
+    // products: ProductListAPIResponse
+    // productImportForm: ProductImportInFormAPIResponse
+    // productAddForm: ProductAddInFormAPIResponse
   }
 }
 
@@ -25,18 +25,18 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
   const [opened, { open, close }] = useDisclosure(true)
   // const [productImportResponse, setProductImportResponse] = useState<ProductImportOut>()
 
-  const { elements, required, isMultipart, columns } = useForm('ProductAddIn')
-
   const obj = {
     name: 'Some name',
     grossPrice: '1042',
     unitType: 'weight',
     unit: '2',
     isAvailable: true,
-    supplier: 'Some suplier',
+    supplier: 'Some supplier',
     odaId: '',
     odaUrl: '',
   }
+  const form = useForm<ProductAddIn>('ProductAddIn', obj)
+  const form2 = useForm<TestSchema>('TestSchema')
 
   return (
     <div className="space-y-6">
@@ -45,26 +45,12 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
       </div>
       {/* <ProductOverViewTable data={products.data || []} /> */}
       <ProductAddDrawer opened={opened} onClose={close}>
-        <Form<ProductAddIn>
-          elements={elements}
-          required={required}
-          isMultipart={isMultipart}
-          columns={columns}
-          existingObj={obj}
-        />
-        <div>
-          <Button>Save</Button>
-        </div>
+        <Form<ProductAddIn> {...form} />
+        {JSON.stringify(form.data)}
+        <hr />
+        <button onClick={() => form.resetForm()}>Reset</button>
       </ProductAddDrawer>
       <hr />
-
-      <Form
-        elements={elements}
-        required={required}
-        isMultipart={isMultipart}
-        columns={columns}
-        existingObj={obj}
-      />
     </div>
   )
 }

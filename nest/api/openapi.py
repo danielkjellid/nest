@@ -2,11 +2,15 @@ from ninja.openapi.schema import (
     OpenAPISchema,
     BODY_CONTENT_TYPES,
     merge_schemas,
+    REF_PREFIX,
 )
 from pydantic.schema import enum_process_schema
 from django.conf import settings
+from pydantic import BaseModel
+from pydantic.schema import model_schema
+import inspect
 from ninja import NinjaAPI
-from typing import Any, get_type_hints, get_args
+from typing import Any, Type, cast, get_type_hints, get_args, Union, Iterable
 from enum import Enum
 from nest.core.files import UploadedFile, UploadedImageFile
 from nest.core.utils.humps import HumpsUtil
@@ -38,15 +42,20 @@ class OpenAPISchema(OpenAPISchema):
         """
 
         type_to_check = typ
-        typ_union = get_args(typ)
+        args_iterable = get_args(typ)
 
-        if typ_union:
+        if args_iterable:
             type_to_check = next(
-                (item for item in typ_union if issubclass(item, Enum)), None
+                (
+                    item
+                    for item in args_iterable
+                    if inspect.isclass(item) and issubclass(item, Enum)
+                ),
+                None,
             )
 
             if not type_to_check:
-                raise ValueError("Not able to determine enum class in tuple.")
+                return None
 
         # If passed enum is a django choices field, we can take advantaged
         # of the defined label.
@@ -87,7 +96,7 @@ class OpenAPISchema(OpenAPISchema):
         properties: dict[str, Any],
         enum_mapping: dict[str, list[dict[str, str | int]]],
     ):
-        props = properties.copy()
+        props = self._convert_keys_to_camelcase(properties.copy())
 
         for property, property_value in props.items():
             property_type = property_value.get("type", None)
@@ -99,38 +108,101 @@ class OpenAPISchema(OpenAPISchema):
                             "component"
                         ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
 
-                if property_type and props[property].get("component", None) is None:
-                    props[property][
-                        "component"
-                    ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
-                        property_value["type"]
-                    ].value
-        return {"properties": HumpsUtil.camelize(props)}
+                if (
+                    property_type
+                    # and property_type != "null"
+                    and props[property].get("component", None) is None
+                ):
+                    try:
+                        props[property][
+                            "component"
+                        ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
+                            property_value["type"]
+                        ].value
+                    except KeyError:
+                        pass
+
+        return HumpsUtil.camelize(props)
+
+    def _convert_keys_to_camelcase(self, data: dict | list | None):
+        if isinstance(data, dict):
+            return {
+                key: self._convert_keys_to_camelcase(val) for key, val in data.items()
+            }
+        elif isinstance(data, list):
+            return [HumpsUtil.camelize(val) for val in data]
+        else:
+            return data
+
+    def _update_schema(self, models, schema):
+        # raise ValueError("i")
+        mapped_enums = self._extract_enum_from_models(models=models)
+        meta = self._set_schema_meta(models=models)
+
+        schema_title_key, schema_val = next(iter(schema.items()))
+        properties = schema_val.pop("properties", None)
+        required = schema_val.pop("required", None)
+
+        meta_title = meta.get("title", schema_title_key)
+
+        updated_schema = {
+            meta_title: {
+                "title": meta_title,
+                "properties": self._populate_request_body_form_properties(
+                    properties=properties, enum_mapping=mapped_enums
+                ),
+                "required": self._convert_keys_to_camelcase(required),
+                **meta,
+                **schema_val,
+            }
+        }
+
+        return updated_schema
 
     @staticmethod
-    def _set_form_title_meta(models) -> dict[str, any]:
-        title_meta = {}
+    def _set_schema_meta(models) -> dict[str, any]:
+        meta = {}
 
         for model in models:
             for key, value in get_type_hints(model).items():
                 if issubclass(value, UploadedFile | UploadedImageFile):
                     continue
 
-                title_meta["title"] = f"{value.__name__}"
+                meta["title"] = f"{value.__name__}"
 
                 if hasattr(value, "FormMeta"):
-                    title_meta["columns"] = getattr(value.FormMeta, "columns", 1)
+                    meta["columns"] = getattr(value.FormMeta, "columns", 1)
 
-        if not title_meta["title"]:
-            raise ValueError("Not able to decode form title from provided models.")
+        return meta
 
-        return title_meta
+    def _create_schema_from_model(
+        self, model, by_alias: bool = True, remove_level: bool = True
+    ):
+        if hasattr(model, "_flatten_map"):
+            schema = self._flatten_schema(model)
+        else:
+            schema = model_schema(
+                cast(Type[BaseModel], model), ref_prefix=REF_PREFIX, by_alias=by_alias
+            )
+
+        # move Schemas from definitions
+        if schema.get("definitions"):
+            definitions = schema.pop("definitions")
+            updated_schema = self._update_schema(schema=definitions, models=[model])
+            self.add_schema_definitions(updated_schema)
+
+        if remove_level and len(schema["properties"]) == 1:
+            name, details = list(schema["properties"].items())[0]
+
+            # ref = details["$ref"]
+            required = name in schema.get("required", {})
+            return details, required
+        else:
+            return schema, True
 
     def _create_multipart_schema_from_models(self, models) -> tuple[Any, str]:
         # We have File and Form or Body, so we need to use multipart (File)
-        schema = {}
         content_type = BODY_CONTENT_TYPES["file"]
-        enum_mapping = self._extract_enum_from_models(models=models)
 
         result = merge_schemas(
             [
@@ -139,25 +211,23 @@ class OpenAPISchema(OpenAPISchema):
             ]
         )
 
-        schema.update(self._set_form_title_meta(models=models))
-        schema.update(
-            self._populate_request_body_form_properties(
-                properties=result["properties"], enum_mapping=enum_mapping
-            )
+        schema = self._update_schema(
+            schema={result["title"]: {"title": result["title"], **result}},
+            models=models,
         )
-        schema.update(type="object", required=result["required"])
-        self.schemas.update({schema["title"]: schema})
+        self.add_schema_definitions(schema)
+        ref = {"$ref": f"#/components/schemas/{result['title']}"}
 
-        return {"$ref": f"#/components/schemas/{schema['title']}"}, content_type
+        return ref, content_type
 
     def _add_manually_added_schemas_to_schema(self):
         for model_or_enum in MANUALLY_ADDED_SCHEMAS:
             if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
                 m_schema = enum_process_schema(model_or_enum)
             else:
-                m_schema = self._create_schema_from_model(
-                    model_or_enum, remove_level=False
-                )[0]
+                m_schema = HumpsUtil.camelize(
+                    self._create_schema_from_model(model_or_enum, remove_level=False)[0]
+                )
             schema = {m_schema["title"]: HumpsUtil.camelize(m_schema)}
             self.schemas.update(schema)
 
