@@ -25,10 +25,12 @@ class OdaClient(BaseHTTPClient):
     headers = {"X-Client-Token": auth_token}
 
     @classmethod
-    def get_product(cls, product_id: int) -> OdaProductDetailRecord:
+    def get_product(cls, product_id: int | str) -> OdaProductDetailRecord:
         """
         Get an Oda product from their API.
         """
+        product_id = int(product_id)
+
         try:
             logger.info("Getting product from Oda", id=product_id)
             response = cls.get(f"/products/{product_id}/", headers=cls.headers)

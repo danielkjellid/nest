@@ -1,6 +1,9 @@
 from django.db.models import TextChoices
 
+from nest.api.openapi import add_to_openapi_schema
 
+
+@add_to_openapi_schema
 class UnitType(TextChoices):
     PIECES = "pieces", "Pieces"
     WEIGHT = "weight", "Weight"

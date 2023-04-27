@@ -10,7 +10,10 @@ const generateTypesFromSchema = () => {
     OpenAPI.generate({
       input: JSON.parse(file.toString()),
       output: outputPath,
-      exportCore: false,
+      exportCore: true,
+      exportModels: true,
+      exportServices: false,
+      exportSchemas: false,
       useOptions: true,
     })
   })

@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { Box } from '@mantine/core'
+import { useCommonContext } from '../../contexts/CommonProvider'
 
 interface ColumnOptions {
   isBoolean?: boolean
@@ -26,7 +27,6 @@ interface TableProps<TData extends object> {
   columns: Column<TData>[]
   data: TData[]
   actionMenuItems?: MantineReactTableProps<TData>['renderRowActionMenuItems']
-  disableRowSelection?: boolean
   onRowSelectionChange?: (selection: MRT_RowSelectionState) => void
 }
 
@@ -34,7 +34,6 @@ function Table<TData extends object>({
   data,
   rowIdentifier,
   actionMenuItems,
-  disableRowSelection,
   onRowSelectionChange,
   columns,
 }: TableProps<TData>) {
@@ -75,6 +74,7 @@ function Table<TData extends object>({
     return columnDefinitions
   }
 
+  const { currentUser } = useCommonContext()
   const columnDefs = useMemo<MRT_ColumnDef<TData>[]>(() => getColumnDefinitions(columns), [columns])
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({})
 
@@ -102,7 +102,7 @@ function Table<TData extends object>({
       positionGlobalFilter="left"
       enableFullScreenToggle={false}
       // Selection
-      enableRowSelection={!disableRowSelection && typeof onRowSelectionChange !== undefined}
+      enableRowSelection={currentUser.isStaff && typeof onRowSelectionChange !== undefined}
       onRowSelectionChange={setRowSelection}
       // Actions
       enableRowActions

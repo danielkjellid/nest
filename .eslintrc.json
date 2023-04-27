@@ -25,10 +25,6 @@
         "static/"
     ],
     "rules": {
-        "indent": [
-            "error",
-            2
-        ],
         "linebreak-style": [
             "error",
             "unix"
@@ -41,7 +37,9 @@
             "error",
             "never"
         ],
+        "indent": "off",
         "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
         "react/prop-types": "off" // https://github.com/TanStack/table/issues/1207
     }
 }

@@ -6,9 +6,46 @@
         "description": ""
     },
     "paths": {
+        "/api/v1/products/add/": {
+            "post": {
+                "operationId": "product_add_api",
+                "summary": "Product Add Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Products"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductAddIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/products/": {
             "get": {
-                "operationId": "nest_products_endpoints_product_list_product_list_api",
+                "operationId": "product_list_api",
                 "summary": "Product List Api",
                 "parameters": [],
                 "responses": {
@@ -36,7 +73,7 @@
         },
         "/api/v1/products/import/": {
             "post": {
-                "operationId": "nest_products_endpoints_product_import_product_import_api",
+                "operationId": "product_import_api",
                 "summary": "Product Import Api",
                 "parameters": [],
                 "responses": {
@@ -45,7 +82,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/TestSchemaOutAPIResponse"
+                                    "$ref": "#/components/schemas/ProductImportOutAPIResponse"
                                 }
                             }
                         }
@@ -58,7 +95,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TestSchemaIn"
+                                "$ref": "#/components/schemas/ProductImportIn"
                             }
                         }
                     },
@@ -71,37 +108,9 @@
                 ]
             }
         },
-        "/api/v1/products/import/forms/": {
-            "get": {
-                "operationId": "nest_forms_api_view_form_api",
-                "summary": "Generated form for payload TestSchemaIn",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/TestSchemaInFormAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Form API is a generic class which returns a generated form from passed schema.\nAccessible through the @router.add_form(...) decorator.",
-                "tags": [
-                    "Products"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/users/": {
             "get": {
-                "operationId": "nest_users_endpoints_user_list_user_list_api",
+                "operationId": "user_list_api",
                 "summary": "User List Api",
                 "parameters": [],
                 "responses": {
@@ -130,352 +139,411 @@
     },
     "components": {
         "schemas": {
-            "ProductListUnit": {
-                "title": "ProductListUnit",
-                "type": "object",
+            "APIResponse": {
+                "title": "APIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "null"
+                    }
+                },
+                "required": [
+                    "status",
+                    "data"
+                ],
+                "type": "object"
+            },
+            "ProductAddIn": {
+                "title": "ProductAddIn",
                 "properties": {
                     "name": {
                         "title": "Name",
+                        "help_text": "Plain name of product, should not include unit.",
+                        "component": "TextInput",
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
                         "type": "string"
+                    },
+                    "gross_price": {
+                        "title": "Gross Price",
+                        "help_text": "Gross price of product, including VAT.",
+                        "component": "TextInput",
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "type": "string"
+                    },
+                    "unit": {
+                        "title": "Unit",
+                        "help_text": "Amount if product in selected unit type. E.g. 2 if 2 kg.",
+                        "component": "TextInput",
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": 1,
+                        "section": null,
+                        "type": "string"
+                    },
+                    "unit_type": {
+                        "title": "Unit Type",
+                        "help_text": null,
+                        "component": "Select",
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": 1,
+                        "section": null,
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/UnitType"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
+                        "enum": [
+                            {
+                                "label": "Pieces",
+                                "value": "pieces"
+                            },
+                            {
+                                "label": "Weight",
+                                "value": "weight"
+                            },
+                            {
+                                "label": "Volume",
+                                "value": "volume"
+                            },
+                            {
+                                "label": "Length",
+                                "value": "length"
+                            },
+                            {
+                                "label": "Usage",
+                                "value": "usage"
+                            }
+                        ]
+                    },
+                    "supplier": {
+                        "title": "Supplier",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "is_available": {
+                        "title": "Is Available",
+                        "help_text": null,
+                        "component": "Checkbox",
+                        "default_value": true,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "type": "boolean"
+                    },
+                    "thumbnail": {
+                        "title": "Thumbnail",
+                        "type": "file",
+                        "format": "binary",
+                        "placeholder": "Upload thumbnail",
+                        "component": "FileInput"
+                    }
+                },
+                "required": [
+                    "name",
+                    "grossPrice",
+                    "unit",
+                    "unitType",
+                    "supplier",
+                    "isAvailable",
+                    "thumbnail"
+                ],
+                "columns": 2,
+                "type": "object"
+            },
+            "ProductListUnit": {
+                "title": "ProductListAPIResponse",
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "abbreviation": {
                         "title": "Abbreviation",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
                     "name",
                     "abbreviation"
-                ]
+                ],
+                "type": "object"
             },
             "ProductList": {
-                "title": "ProductList",
-                "type": "object",
+                "title": "ProductListAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "NumberInput"
                     },
-                    "fullName": {
+                    "full_name": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "supplier": {
                         "title": "Supplier",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "thumbnailUrl": {
+                    "thumbnail_url": {
                         "title": "Thumbnail Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "isAvailable": {
+                    "is_available": {
                         "title": "Is Available",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
-                    "odaUrl": {
+                    "oda_url": {
                         "title": "Oda Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "odaId": {
+                    "oda_id": {
                         "title": "Oda Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "NumberInput"
                     },
-                    "grossPrice": {
+                    "gross_price": {
                         "title": "Gross Price",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "grossUnitPrice": {
+                    "gross_unit_price": {
                         "title": "Gross Unit Price",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "unit": {
                         "$ref": "#/components/schemas/ProductListUnit"
                     },
-                    "unitQuantity": {
+                    "unit_quantity": {
                         "title": "Unit Quantity",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "isSynced": {
+                    "is_synced": {
                         "title": "Is Synced",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
-                    "lastSyncedAt": {
+                    "last_synced_at": {
                         "title": "Last Synced At",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
                     "id",
-                    "full_name",
+                    "fullName",
                     "supplier",
-                    "is_available",
-                    "gross_price",
+                    "isAvailable",
+                    "grossPrice",
                     "unit",
-                    "is_synced"
-                ]
+                    "isSynced"
+                ],
+                "type": "object"
             },
-            "TestSchemaOut": {
-                "title": "TestSchemaOut",
-                "type": "object",
+            "ProductListAPIResponse": {
+                "title": "ProductListAPIResponse",
                 "properties": {
-                    "test": {
-                        "title": "Test",
-                        "type": "integer"
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductList"
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
-                    "test"
-                ]
-            },
-            "AvatarColors": {
-                "title": "AvatarColors",
-                "description": "An enumeration.",
-                "enum": [
-                    "#F87171",
-                    "#FBBF24",
-                    "#34D399",
-                    "#60A5FA",
-                    "#A78BFA",
-                    "#F472B6"
+                    "status"
                 ],
-                "type": "string"
+                "type": "object"
             },
-            "TestSchemaIn": {
-                "title": "TestSchemaIn",
-                "type": "object",
+            "ProductImportOut": {
+                "title": "ProductImportOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "helpText": "Hello",
-                        "element": null,
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "NumberInput"
                     },
-                    "color": {
-                        "$ref": "#/components/schemas/AvatarColors"
-                    }
-                },
-                "required": [
-                    "id",
-                    "color"
-                ]
-            },
-            "FormElementEnumRecord": {
-                "title": "FormElementEnumRecord",
-                "description": "A form block enum provides enum values to be used in a select.\n\n* name:\n    The display name of the enum property.\n\n* value:\n    The value to use.",
-                "type": "object",
-                "properties": {
                     "name": {
                         "title": "Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "value": {
-                        "title": "Value",
-                        "anyOf": [
-                            {
-                                "type": "integer"
-                            },
-                            {
-                                "type": "boolean"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ]
+                    "oda_url": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "gross_price": {
+                        "title": "Gross Price",
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
+                    "id",
                     "name",
-                    "value"
-                ]
+                    "odaUrl",
+                    "grossPrice"
+                ],
+                "type": "object"
             },
-            "FrontendElements": {
-                "title": "FrontendElements",
-                "description": "An enumeration.",
-                "enum": [
-                    "autocomplete",
-                    "checkbox",
-                    "chip",
-                    "colorInput",
-                    "fileInput",
-                    "multiselect",
-                    "numberInput",
-                    "passwordInput",
-                    "pinInput",
-                    "radio",
-                    "rating",
-                    "select",
-                    "slider",
-                    "switch",
-                    "textArea",
-                    "textInput"
-                ]
-            },
-            "FormElementRecord": {
-                "title": "FormElementRecord",
-                "description": "A form element is a html element used to build a form. Can for example be a\ncheckbox, input, etc.\n\n* id:\n    The id to use for the form block. Used to set the id on the element itself, but\n    also in the FormSectionRecord to group elements in sections.\n\n* title:\n    Title of element. What the element is visually identified by.\n\n* type:\n    Type of element value. Set by generated definition spec.\n\n* enum:\n    Enumeration values in the form of FormElementEnumRecord available to use.\n\n* parent:\n    As we support nested schemas, the spec generated creates reference values which\n    we need later when we're going to post the form. Will effectively result in a\n    key-value property where the key is the parent id and value is the schema as an\n    object.\n\n* default_value:\n    The default value to use to prefill/preselect a value in the element.\n\n* element:\n    The frontend element to render of type FrontendFormElements.\n\n* placeholder:\n    Placeholder value to pre-populate form element with.\n\n* help_text:\n    A str which can help guide the user or explain more about the value of the\n    element. Will appear as a text bellow the element.\n\n* hidden_label:\n    Set the label on top of the form element to only appear on screen readers.\n\n* section:\n    A section groups different elements of the form and adds them together in a\n    section.\n\n* col_span:\n    Column span of the element. Only valid if the element is part of a section with\n    defined amount of columns.",
-                "type": "object",
+            "ProductImportOutAPIResponse": {
+                "title": "ProductImportOutAPIResponse",
                 "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "string"
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "type": {
-                        "title": "Type",
-                        "type": "string"
-                    },
-                    "enum": {
-                        "title": "Enum",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/FormElementEnumRecord"
-                        }
-                    },
-                    "parent": {
-                        "title": "Parent",
-                        "type": "string"
-                    },
-                    "defaultValue": {
-                        "title": "Default Value",
-                        "anyOf": [
-                            {
-                                "type": "integer"
-                            },
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "boolean"
-                            }
-                        ]
-                    },
-                    "element": {
-                        "$ref": "#/components/schemas/FrontendElements"
-                    },
-                    "placeholder": {
-                        "title": "Placeholder",
-                        "type": "string"
-                    },
-                    "helpText": {
-                        "title": "Help Text",
-                        "type": "string"
-                    },
-                    "hiddenLabel": {
-                        "title": "Hidden Label",
-                        "default": false,
-                        "type": "boolean"
-                    },
-                    "section": {
-                        "title": "Section",
-                        "type": "string"
-                    },
-                    "colSpan": {
-                        "title": "Col Span",
-                        "type": "integer"
+                    "data": {
+                        "$ref": "#/components/schemas/ProductImportOut"
                     }
                 },
                 "required": [
-                    "id"
-                ]
+                    "status"
+                ],
+                "type": "object"
             },
-            "TestSchemaInForm": {
-                "title": "TestSchemaInForm",
-                "description": "A form record represents a complete form.\n\n* key:\n    Effectively the \"id\" of the form.\n\n* is_multipart_form:\n    Convert the form to multipart before posting it to an endpoint.\n\n* expects_list:\n    Should be True if the endpoint in question expects a list of records instead of\n    a single record as payload. E.g. for bulk creation and so on.\n\n* required:\n    A list of form element ids that are required.\n\n* sections:\n    A list of form sections of type FormSectionRecord.\n\n* elements:\n    A list of all elements to render in the form.",
-                "type": "object",
+            "ProductImportIn": {
+                "title": "ProductImportIn",
                 "properties": {
-                    "key": {
-                        "title": "Key",
+                    "oda_product_id": {
+                        "title": "Oda Product Id",
+                        "help_text": "Product Id at Oda.",
+                        "component": "TextInput",
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
                         "type": "string"
-                    },
-                    "isMultipartForm": {
-                        "title": "Is Multipart Form",
-                        "default": false,
-                        "type": "boolean"
-                    },
-                    "expectsList": {
-                        "title": "Expects List",
-                        "default": false,
-                        "type": "boolean"
-                    },
-                    "required": {
-                        "title": "Required",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "elements": {
-                        "title": "Elements",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/FormElementRecord"
-                        }
                     }
                 },
                 "required": [
-                    "key",
-                    "required",
-                    "elements"
-                ]
+                    "odaProductId"
+                ],
+                "type": "object"
             },
             "UserListHome": {
-                "title": "UserListHome",
-                "type": "object",
+                "title": "UserListAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "NumberInput"
                     },
                     "address": {
                         "title": "Address",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "isActive": {
+                    "is_active": {
                         "title": "Is Active",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     }
                 },
                 "required": [
                     "id",
                     "address",
-                    "is_active"
-                ]
+                    "isActive"
+                ],
+                "type": "object"
             },
             "UserList": {
-                "title": "UserList",
-                "type": "object",
+                "title": "UserListAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "NumberInput"
                     },
                     "email": {
                         "title": "Email",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "fullName": {
+                    "full_name": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
-                    "isActive": {
+                    "is_active": {
                         "title": "Is Active",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
-                    "isStaff": {
+                    "is_staff": {
                         "title": "Is Staff",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
-                    "isSuperuser": {
+                    "is_superuser": {
                         "title": "Is Superuser",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "home": {
                         "$ref": "#/components/schemas/UserListHome"
@@ -484,91 +552,15 @@
                 "required": [
                     "id",
                     "email",
-                    "full_name",
-                    "is_active",
-                    "is_staff",
-                    "is_superuser"
-                ]
-            },
-            "ProductListAPIResponse": {
-                "title": "ProductListAPIResponse",
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductList"
-                        }
-                    }
-                },
-                "required": [
-                    "status"
-                ]
-            },
-            "TestSchemaOutAPIResponse": {
-                "title": "TestSchemaOutAPIResponse",
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string"
-                    },
-                    "data": {
-                        "$ref": "#/components/schemas/TestSchemaOut"
-                    }
-                },
-                "required": [
-                    "status"
-                ]
-            },
-            "TestSchemaInFormAPIResponse": {
-                "title": "TestSchemaInFormAPIResponse",
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string"
-                    },
-                    "data": {
-                        "$ref": "#/components/schemas/TestSchemaInForm"
-                    }
-                },
-                "required": [
-                    "status"
-                ]
+                    "fullName",
+                    "isActive",
+                    "isStaff",
+                    "isSuperuser"
+                ],
+                "type": "object"
             },
             "UserListAPIResponse": {
                 "title": "UserListAPIResponse",
-                "type": "object",
                 "properties": {
                     "status": {
                         "title": "Status",
@@ -576,23 +568,61 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/UserList"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
                     "status"
+                ],
+                "type": "object"
+            },
+            "FrontendComponents": {
+                "title": "FrontendComponents",
+                "description": "An enumeration.",
+                "enum": [
+                    "Autocomplete",
+                    "Checkbox",
+                    "Chip",
+                    "ColorInput",
+                    "FileInput",
+                    "MultiSelect",
+                    "NumberInput",
+                    "PasswordInput",
+                    "PinInput",
+                    "Radio",
+                    "Rating",
+                    "Select",
+                    "Slider",
+                    "Switch",
+                    "Textarea",
+                    "TextInput"
                 ]
+            },
+            "UnitType": {
+                "title": "UnitType",
+                "description": "An enumeration.",
+                "enum": [
+                    "pieces",
+                    "weight",
+                    "volume",
+                    "length",
+                    "usage"
+                ],
+                "type": "string"
             }
         },
         "securitySchemes": {

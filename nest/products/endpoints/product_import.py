@@ -1,25 +1,36 @@
 from django.http import HttpRequest
 from ninja import Schema
 
+from nest.api.fields import FormField
 from nest.api.responses import APIResponse
-from nest.forms.fields import FormField
-from nest.users.enums import AvatarColors
+from nest.data_pools.providers.oda.clients import OdaClient
 
 from .router import router
 
 
-class TestSchemaOut(Schema):
-    test: int
+class ProductImportOut(Schema):
+    id: int
+    name: str
+    oda_url: str
+    gross_price: str
 
 
-class TestSchemaIn(Schema):
-    id: int = FormField(..., help_text="Hello")
-    color: AvatarColors
+class ProductImportIn(Schema):
+    oda_product_id: str = FormField(..., help_text="Product Id at Oda.")
 
 
-@router.add_form("import/forms/", form=TestSchemaIn)
-@router.post("import/", response={200: APIResponse[TestSchemaOut]})
+@router.post("import/", response=APIResponse[ProductImportOut])
 def product_import_api(
-    request: HttpRequest, payload: TestSchemaIn
-) -> APIResponse[TestSchemaOut]:
-    return APIResponse(status="success", data=TestSchemaOut(test=payload.id))
+    request: HttpRequest, payload: ProductImportIn
+) -> APIResponse[ProductImportOut]:
+    response = OdaClient.get_product(product_id=payload.oda_product_id)
+
+    return APIResponse(
+        status="success",
+        data=ProductImportOut(
+            id=response.id,
+            name=response.full_name,
+            oda_url=response.front_url,
+            gross_price=response.gross_price,
+        ),
+    )
