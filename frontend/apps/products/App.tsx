@@ -1,61 +1,56 @@
-import { ProductAddIn, ProductListAPIResponse } from '../../types'
+import { ProductListAPIResponse, UnitListOutAPIResponse } from '../../types'
 
-import Form from '../../components/Form'
+import { Button } from '../../components/Button'
 import ProductAddDrawer from './components/ProductAddDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import React from 'react'
 import { Title } from '@mantine/core'
+import { UnitsProvider } from '../../contexts/UnitsProvider'
 import View from '../../components/View'
-import urls from './urls'
+import { urls } from '../urls'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../hooks/fetcher'
-import { useForm } from '../../hooks/forms'
 
 interface ProductsAppInnerProps {
   results: {
     products: ProductListAPIResponse
+    units: UnitListOutAPIResponse
   }
 }
 
 function ProductsAppInner({ results }: ProductsAppInnerProps) {
-  const { products } = results
+  const { products, units } = results
   const [opened, { open, close }] = useDisclosure(true)
 
-  const obj = {
-    name: 'Some name',
-    grossPrice: '1042',
-    unitType: 'weight',
-    unit: '2',
-    isAvailable: true,
-    supplier: 'Some supplier',
-    odaId: '',
-    odaUrl: '',
-  }
-
-  const form = useForm<ProductAddIn>({ key: 'ProductAddIn', existingObj: obj })
-
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Title>Products</Title>
+    <UnitsProvider units={units.data}>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Title>Products</Title>
+          <div className="flex items-center space-x-3">
+            <Button.Group>
+              <Button variant="default">Import from Oda</Button>
+              <Button variant="default" onClick={open}>
+                Add new
+              </Button>
+            </Button.Group>
+          </div>
+        </div>
+        <ProductOverViewTable data={products.data || []} />
+        <ProductAddDrawer opened={opened} onClose={close} />
       </div>
-      <ProductOverViewTable data={products.data || []} />
-      <button onClick={() => open()}>Open form</button>
-      <ProductAddDrawer opened={opened} onClose={close}>
-        <Form<ProductAddIn> {...form} />
-      </ProductAddDrawer>
-      <hr />
-    </div>
+    </UnitsProvider>
   )
 }
 
 function ProductsApp() {
-  const products = useFetch<ProductListAPIResponse>(urls.list())
+  const products = useFetch<ProductListAPIResponse>(urls.products.list())
+  const units = useFetch<UnitListOutAPIResponse>(urls.units.list())
 
   return (
     <View<object, ProductsAppInnerProps>
       component={ProductsAppInner}
-      results={{ products }}
+      results={{ products, units }}
       componentProps={{}}
       loadingProps={{ description: 'Loading products...' }}
       errorProps={{ description: 'There was an error getting products. Please try again.' }}

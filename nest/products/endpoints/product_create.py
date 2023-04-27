@@ -5,12 +5,12 @@ from nest.api.fields import FormField
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
 from nest.products.services import ProductService
-from nest.units.enums import UnitType
+from nest.frontend.components import FrontendComponents
 
 from .router import router
 
 
-class ProductAddIn(Schema):
+class ProductCreateIn(Schema):
     name: str = FormField(
         ...,
         help_text="Plain name of product, should not include unit.",
@@ -18,12 +18,18 @@ class ProductAddIn(Schema):
     gross_price: str = FormField(
         ..., help_text="Gross price of product, including VAT."
     )
-    unit: str = FormField(
+    unit_quantity: str = FormField(
         ...,
-        help_text="Amount if product in selected unit type. E.g. 2 if 2 kg.",
+        help_text="Amount in selected unit type. E.g. 2 if 2 kg.",
         col_span=1,
     )
-    unit_type: UnitType | str = FormField(..., col_span=1)
+    unit_id: str = FormField(
+        ...,
+        alias="unit",
+        help_text="What sort of unit is this?",
+        col_span=1,
+        component=FrontendComponents.SELECT.value,
+    )
     supplier: str
     is_available: bool = FormField(..., default_value=True)
 
@@ -31,11 +37,11 @@ class ProductAddIn(Schema):
         columns = 2
 
 
-@router.post("add/", response={200: APIResponse[None]})
-def product_add_api(
+@router.post("create/", response=APIResponse[None])
+def product_create_api(
     request: HttpRequest,
-    payload: ProductAddIn = Form(...),  # noqa
-    thumbnail: UploadedFile = File(...),  # noqa
+    payload: ProductCreateIn = Form(...),  # noqa
+    thumbnail: UploadedFile | None = File(None),  # noqa
 ) -> APIResponse[None]:
-    ProductService.update_or_create_product(**payload.dict())
+    ProductService.create_product(**payload.dict(), thumbnail=thumbnail)
     return APIResponse(status="success", data=None)

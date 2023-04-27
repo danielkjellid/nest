@@ -42,17 +42,15 @@ function ProductOverViewTable({ data }: ProductOverViewTableProps) {
       ]}
       data={data || []}
       actionMenuItems={({ row }) => [
-        <>
-          <Menu.Item
-            key={1}
-            component="a"
-            href={row.original.odaUrl}
-            target="_blank"
-            icon={<IconEye />}
-          >
-            View at Oda
-          </Menu.Item>
-        </>,
+        <Menu.Item
+          key={1}
+          component="a"
+          href={row.original.odaUrl}
+          target="_blank"
+          icon={<IconEye />}
+        >
+          View at Oda
+        </Menu.Item>,
       ]}
     />
   )

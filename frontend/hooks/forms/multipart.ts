@@ -47,5 +47,9 @@ export function buildMultipartForm<T extends object>(data: Partial<T>): FormData
     }
   })
 
+  for (const k of fd.entries()) {
+    console.log(k)
+  }
+
   return fd
 }
