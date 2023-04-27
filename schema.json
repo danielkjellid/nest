@@ -107,6 +107,34 @@
                     }
                 ]
             }
+        },
+        "/api/v1/users/": {
+            "get": {
+                "operationId": "user_list_api",
+                "summary": "User List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserListAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all users in the application.",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -454,6 +482,110 @@
                 },
                 "required": [
                     "odaProductId"
+                ],
+                "type": "object"
+            },
+            "UserListHome": {
+                "title": "UserListAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "NumberInput"
+                    },
+                    "address": {
+                        "title": "Address",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isActive": {
+                        "title": "Is Active",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    }
+                },
+                "required": [
+                    "id",
+                    "address",
+                    "isActive"
+                ],
+                "type": "object"
+            },
+            "UserList": {
+                "title": "UserListAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "NumberInput"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isActive": {
+                        "title": "Is Active",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isStaff": {
+                        "title": "Is Staff",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isSuperuser": {
+                        "title": "Is Superuser",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "home": {
+                        "$ref": "#/components/schemas/UserListHome"
+                    }
+                },
+                "required": [
+                    "id",
+                    "email",
+                    "fullName",
+                    "isActive",
+                    "isStaff",
+                    "isSuperuser"
+                ],
+                "type": "object"
+            },
+            "UserListAPIResponse": {
+                "title": "UserListAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserList"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
                 ],
                 "type": "object"
             },

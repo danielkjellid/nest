@@ -16,50 +16,11 @@ import {
   TextInput,
   Textarea,
 } from '@mantine/core'
+import { FormElement, FormElementObj, FormElementOptions, FormEnum } from './types'
 import React, { useEffect, useState } from 'react'
 
 import { FrontendComponents } from '../../types/'
 import { IconUpload } from '@tabler/icons-react'
-
-type FormEnum = { label: string; value: string }
-
-interface FormElementOptionsObj {
-  beforeSlot?: React.ReactNode
-  afterSlot?: React.ReactNode
-  options?: FormEnum[]
-}
-
-interface FormElementOptions {
-  [x: string]: FormElementOptionsObj
-}
-
-interface FormElementObj {
-  title: string
-  helpText?: string | null
-  component: FrontendComponents
-  defaultValue?: string | number | boolean | null
-  placeholder?: string | null
-  hiddenLabel?: boolean
-  colSpan?: number | null
-  section?: string | null
-  type: string
-  enum?: FormEnum[]
-}
-
-export interface FormElement {
-  [x: string]: FormElementObj
-}
-
-interface FormProps<T extends object> {
-  elements: FormElement
-  elementsOptions?: FormElementOptions
-  required: string[]
-  columns: number
-  isMultipart: boolean
-  data?: Partial<T> | null
-  errors?: Partial<Record<keyof T, string>> | null
-  onChange: (values: T) => void
-}
 
 const supportedComponents = {
   Autocomplete,
@@ -80,11 +41,23 @@ const supportedComponents = {
   NumberInput,
 }
 
+// Sanity check that the list of supportedComponents matches the components defined in the backend.
 for (const property in supportedComponents) {
   const supportedValues = Object.values(FrontendComponents)
   if (!supportedValues.includes(property as FrontendComponents)) {
     throw new Error('Component defined in supportedComponents is not a member of FrontendElements.')
   }
+}
+
+interface FormProps<T extends object> {
+  elements: FormElement
+  elementsOptions?: FormElementOptions
+  required: string[]
+  columns: number
+  isMultipart: boolean
+  data?: Partial<T> | null
+  errors?: Partial<Record<keyof T, string>> | null
+  onChange: (values: T) => void
 }
 
 function Form<T extends object>({
@@ -103,28 +76,55 @@ function Form<T extends object>({
     return null
   }
 
-  const getInitialFormValues = () => {
-    const initialValues = {} as T
+  /*******************************************
+   ** Values: defaults, initial and current **
+   *******************************************/
 
+  // We want to use controlled elements only, and therefore, we have to be a bit careful with
+  // what state we're setting the elements to. For checkboxes, we want to set a boolean, for
+  // the file input we want to set null, and for everything else we want to set an empty string.
+  const setDefaultFormValues = () => {
+    const values = {} as T
     Object.entries(elements).map(([elementKey, element]) => {
       const elemId = elementKey as K
 
-      if (data && data[elemId] !== undefined) {
-        initialValues[elemId] = data[elemId] as T[K]
-      } else if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
-        initialValues[elemId] = (element.defaultValue ? element.defaultValue : false) as T[K]
-      } else if (element.component === FrontendComponents.FILE_INPUT) {
-        initialValues[elemId] = (element.defaultValue ? element.defaultValue : null) as T[K]
+      if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
+        values[elemId] = (element.defaultValue ? element.defaultValue : false) as T[K]
+      } else if ((element as FormElementObj).component === FrontendComponents.FILE_INPUT) {
+        values[elemId] = (element.defaultValue ? element.defaultValue : null) as T[K]
       } else {
-        initialValues[elemId] = (element.defaultValue ? element.defaultValue : '') as T[K]
+        values[elemId] = (element.defaultValue ? element.defaultValue : '') as T[K]
       }
-      return initialValues
     })
+
+    return values
+  }
+
+  const getInitialFormValues = () => {
+    let initialValues = {} as T
+
+    Object.entries(elements).map(([elementKey, element]) => {
+      // If we have data passed, we want to set the initial values equal to that of the
+      // existing object. If not, just set the defaults for each element.
+      if (data && data[elementKey as K] !== undefined) {
+        initialValues[elementKey as K] = data[elementKey as K] as T[K]
+      } else {
+        initialValues = setDefaultFormValues()
+      }
+    })
+
     return initialValues
   }
 
+  // The formValues variable controls all state passed back and forth.
   const [formValues, setFormValues] = useState<T>(getInitialFormValues())
 
+  /*************************
+   ** Handle form changes **
+   *************************/
+
+  // Set the appropriate value based on type of element, with respect to supported
+  // values for special elements such as checkboxes and file inputs.
   const handleInputChange = (
     key: K,
     eventOrValue: React.ChangeEvent<HTMLInputElement> | string | File | null
@@ -151,6 +151,10 @@ function Form<T extends object>({
     onChange({ ...formValues, [key]: value })
   }
 
+  /**********************
+   ** Element creation **
+   **********************/
+
   const createCheckboxComponent = (elementKey: K, element: FormElementObj) => {
     if (!elementKey) {
       return null
@@ -167,12 +171,6 @@ function Form<T extends object>({
         }
       />
     )
-  }
-
-  const getErrorForElement = (elementId: K) => {
-    const errorForElement = errors && errors[elementId]
-
-    return errorForElement
   }
 
   const createFormComponent = (elementKey: K, element: FormElementObj, options?: FormEnum[]) => {
@@ -203,27 +201,34 @@ function Form<T extends object>({
     )
   }
 
+  /************
+   ** Errors **
+   ************/
+
+  const getErrorForElement = (elementId: K) => errors && errors[elementId]
+
+  /************
+   ** Resets **
+   ************/
+
+  // Reset form. This will communicate the change back to the parent as well because of the
+  // useEffect bellow firing.
   const resetForm = () => {
-    const values = {} as T
-    Object.entries(elements).map(([elementKey, element]) => {
-      const elemId = elementKey as K
-
-      if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
-        values[elemId] = (element.defaultValue ? element.defaultValue : false) as T[K]
-      } else if ((element as FormElementObj).component === FrontendComponents.FILE_INPUT) {
-        values[elemId] = (element.defaultValue ? element.defaultValue : null) as T[K]
-      } else {
-        console.log(elemId, element)
-        values[elemId] = (element.defaultValue ? element.defaultValue : '') as T[K]
-      }
-    })
-
+    const values = setDefaultFormValues()
     setFormValues({ ...values })
   }
 
+  /***********
+   ** Hooks **
+   ***********/
+
   // Back populate the set values to the parent.
   useEffect(() => {
-    onChange(formValues)
+    // We don't want to back populate if the errors object is present, because
+    // it would effectively remove the errors.
+    if (!errors) {
+      onChange(formValues)
+    }
   }, [formValues])
 
   useEffect(() => {

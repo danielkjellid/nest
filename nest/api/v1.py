@@ -10,7 +10,7 @@ from .responses import APIResponse
 api = NestAPI()
 
 api.add_router("/products/", products_router)
-# api.add_router("/users/", users_router)
+api.add_router("/users/", users_router)
 
 
 @api.exception_handler(ApplicationError)

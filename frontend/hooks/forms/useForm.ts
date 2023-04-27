@@ -1,4 +1,4 @@
-import { FormElement } from '../../components/Form'
+import { FormElement } from '../../components/Form/types'
 import humps from 'humps'
 import schema from '../../../schema.json'
 import { useState } from 'react'
@@ -78,7 +78,25 @@ function useForm<T extends object>({
     return data
   }
 
-  const onChange = (val: any) => setData(val)
+  const onChange = (val: Partial<T>) => {
+    if (data && errors) {
+      const updatedErrors = { ...errors }
+      Object.keys(val).map((valueKey) => {
+        const keyFromValue = valueKey as keyof T
+        if (
+          val[keyFromValue] &&
+          val[keyFromValue] !== data[keyFromValue] &&
+          errors[keyFromValue] !== undefined
+        ) {
+          delete updatedErrors[keyFromValue]
+        }
+      })
+
+      setErrors({ ...updatedErrors })
+    }
+
+    setData(val)
+  }
 
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>> | null>(null)
 
