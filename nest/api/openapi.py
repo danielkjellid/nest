@@ -286,7 +286,8 @@ class OpenAPISchema(NinjaOpenAPISchema):
         """
         For multipart/form schemas the title is automatically populated to FormParams,
         however, we want to use the actual schema payload name. We also allow for
-        multi-column forms, which is set through the subclass FormMeta on a ninja.Schema.
+        multi-column forms, which is set through the subclass FormMeta on a
+        ninja.Schema.
         """
         meta = {}
 
