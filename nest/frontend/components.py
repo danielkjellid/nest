@@ -1,4 +1,5 @@
 from enum import Enum
+
 from nest.api.openapi import add_to_openapi_schema
 
 

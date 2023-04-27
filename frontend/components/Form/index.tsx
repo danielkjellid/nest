@@ -103,7 +103,7 @@ function Form<T extends object>({
   const getInitialFormValues = () => {
     let initialValues = {} as T
 
-    Object.entries(elements).map(([elementKey, element]) => {
+    Object.keys(elements).map((elementKey) => {
       // If we have data passed, we want to set the initial values equal to that of the
       // existing object. If not, just set the defaults for each element.
       if (data && data[elementKey as K] !== undefined) {

@@ -1,6 +1,7 @@
-from typing import Generic, Literal, TypeVar, Any, Type
-from pydantic.typing import display_as_type
+from typing import Any, Generic, Literal, Type, TypeVar
+
 from pydantic.generics import GenericModel
+from pydantic.typing import display_as_type
 
 T = TypeVar("T")
 

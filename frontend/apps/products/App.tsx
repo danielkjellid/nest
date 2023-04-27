@@ -40,6 +40,7 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
         <Title>Products</Title>
       </div>
       <ProductOverViewTable data={products.data || []} />
+      <button onClick={() => open()}>Open form</button>
       <ProductAddDrawer opened={opened} onClose={close}>
         <Form<ProductAddIn> {...form} />
       </ProductAddDrawer>

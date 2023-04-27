@@ -172,45 +172,45 @@
                 "properties": {
                     "name": {
                         "title": "Name",
-                        "helpText": "Plain name of product, should not include unit.",
+                        "help_text": "Plain name of product, should not include unit.",
                         "component": "TextInput",
-                        "defaultValue": null,
+                        "default_value": null,
                         "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
+                        "hidden_label": false,
+                        "col_span": null,
                         "section": null,
                         "type": "string"
                     },
-                    "grossPrice": {
+                    "gross_price": {
                         "title": "Gross Price",
-                        "helpText": "Gross price of product, including VAT.",
+                        "help_text": "Gross price of product, including VAT.",
                         "component": "TextInput",
-                        "defaultValue": null,
+                        "default_value": null,
                         "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
+                        "hidden_label": false,
+                        "col_span": null,
                         "section": null,
                         "type": "string"
                     },
                     "unit": {
                         "title": "Unit",
-                        "helpText": "Amount if product in selected unit type. E.g. 2 if 2 kg.",
+                        "help_text": "Amount if product in selected unit type. E.g. 2 if 2 kg.",
                         "component": "TextInput",
-                        "defaultValue": null,
+                        "default_value": null,
                         "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": 1,
+                        "hidden_label": false,
+                        "col_span": 1,
                         "section": null,
                         "type": "string"
                     },
-                    "unitType": {
+                    "unit_type": {
                         "title": "Unit Type",
-                        "helpText": null,
+                        "help_text": null,
                         "component": "Select",
-                        "defaultValue": null,
+                        "default_value": null,
                         "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": 1,
+                        "hidden_label": false,
+                        "col_span": 1,
                         "section": null,
                         "anyOf": [
                             {
@@ -248,14 +248,14 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "isAvailable": {
+                    "is_available": {
                         "title": "Is Available",
-                        "helpText": null,
+                        "help_text": null,
                         "component": "Checkbox",
-                        "defaultValue": true,
+                        "default_value": true,
                         "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
+                        "hidden_label": false,
+                        "col_span": null,
                         "section": null,
                         "type": "boolean"
                     },
@@ -273,7 +273,8 @@
                     "unit",
                     "unitType",
                     "supplier",
-                    "isAvailable"
+                    "isAvailable",
+                    "thumbnail"
                 ],
                 "columns": 2,
                 "type": "object"
@@ -306,7 +307,7 @@
                         "type": "integer",
                         "component": "NumberInput"
                     },
-                    "fullName": {
+                    "full_name": {
                         "title": "Full Name",
                         "type": "string",
                         "component": "TextInput"
@@ -316,32 +317,32 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "thumbnailUrl": {
+                    "thumbnail_url": {
                         "title": "Thumbnail Url",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "isAvailable": {
+                    "is_available": {
                         "title": "Is Available",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "odaUrl": {
+                    "oda_url": {
                         "title": "Oda Url",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "odaId": {
+                    "oda_id": {
                         "title": "Oda Id",
                         "type": "integer",
                         "component": "NumberInput"
                     },
-                    "grossPrice": {
+                    "gross_price": {
                         "title": "Gross Price",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "grossUnitPrice": {
+                    "gross_unit_price": {
                         "title": "Gross Unit Price",
                         "type": "string",
                         "component": "TextInput"
@@ -349,17 +350,17 @@
                     "unit": {
                         "$ref": "#/components/schemas/ProductListUnit"
                     },
-                    "unitQuantity": {
+                    "unit_quantity": {
                         "title": "Unit Quantity",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "isSynced": {
+                    "is_synced": {
                         "title": "Is Synced",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "lastSyncedAt": {
+                    "last_synced_at": {
                         "title": "Last Synced At",
                         "type": "string",
                         "component": "TextInput"
@@ -420,12 +421,12 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "odaUrl": {
+                    "oda_url": {
                         "title": "Oda Url",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "grossPrice": {
+                    "gross_price": {
                         "title": "Gross Price",
                         "type": "string",
                         "component": "TextInput"
@@ -468,14 +469,14 @@
             "ProductImportIn": {
                 "title": "ProductImportIn",
                 "properties": {
-                    "odaProductId": {
+                    "oda_product_id": {
                         "title": "Oda Product Id",
-                        "helpText": "Product Id at Oda.",
+                        "help_text": "Product Id at Oda.",
                         "component": "TextInput",
-                        "defaultValue": null,
+                        "default_value": null,
                         "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
+                        "hidden_label": false,
+                        "col_span": null,
                         "section": null,
                         "type": "string"
                     }
@@ -498,7 +499,7 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "isActive": {
+                    "is_active": {
                         "title": "Is Active",
                         "type": "boolean",
                         "component": "Checkbox"
@@ -524,22 +525,22 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "fullName": {
+                    "full_name": {
                         "title": "Full Name",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "isActive": {
+                    "is_active": {
                         "title": "Is Active",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "isStaff": {
+                    "is_staff": {
                         "title": "Is Staff",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "isSuperuser": {
+                    "is_superuser": {
                         "title": "Is Superuser",
                         "type": "boolean",
                         "component": "Checkbox"

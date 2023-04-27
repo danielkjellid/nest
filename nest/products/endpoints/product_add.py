@@ -1,14 +1,12 @@
-import json
-
 from django.http import HttpRequest
-from ninja import Schema, Form, File
+from ninja import File, Form, Schema
 
-from nest.api.responses import APIResponse
-from nest.units.enums import UnitType
 from nest.api.fields import FormField
-from nest.core.files import UploadedFile
+from nest.api.files import UploadedFile
+from nest.api.responses import APIResponse
 from nest.products.services import ProductService
-from nest.api.openapi import add_to_openapi_schema
+from nest.units.enums import UnitType
+
 from .router import router
 
 
@@ -36,9 +34,8 @@ class ProductAddIn(Schema):
 @router.post("add/", response={200: APIResponse[None]})
 def product_add_api(
     request: HttpRequest,
-    payload: ProductAddIn = Form(...),
-    thumbnail: UploadedFile = File(None),
+    payload: ProductAddIn = Form(...),  # noqa
+    thumbnail: UploadedFile = File(...),  # noqa
 ) -> APIResponse[None]:
-    created_product = ProductService.update_or_create_product(**payload.dict())
-    print(created_product)
-    return APIResponse(status="success", data={})
+    ProductService.update_or_create_product(**payload.dict())
+    return APIResponse(status="success", data=None)

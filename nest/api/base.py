@@ -1,10 +1,18 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django.contrib.admin.views.decorators import staff_member_required
 from ninja import NinjaAPI
 from ninja.openapi.schema import OpenAPISchema
 from ninja.security import django_auth
+
 from .openapi import get_schema
 from .parsers import CamelCaseParser
 from .renderers import CamelCaseRenderer
+
+if TYPE_CHECKING:
+    from ninja.operation import Operation
 
 
 class NestAPI(NinjaAPI):
@@ -24,5 +32,6 @@ class NestAPI(NinjaAPI):
             path_prefix = self.root_path
         return get_schema(api=self, path_prefix=path_prefix)
 
-    def get_openapi_operation_id(self, operation: "Operation") -> str:
-        return operation.view_func.__name__
+    def get_openapi_operation_id(self, operation: Operation) -> str:
+        operation_id: str = operation.view_func.__name__
+        return operation_id
