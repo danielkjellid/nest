@@ -63,11 +63,7 @@ export const menuItemTestUtil = (
   end: end,
 })
 
-export const unitItemTestUtil = (
-  id = 1,
-  name = 'Gram',
-  displayName = 'Gram (g) '
-): UnitListOut => ({
+export const unitItemTestUtil = (id = 1, name = 'Gram', displayName = 'Gram (g)'): UnitListOut => ({
   id: id,
   name: name,
   displayName: displayName,

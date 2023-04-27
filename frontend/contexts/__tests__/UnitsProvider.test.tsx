@@ -5,7 +5,7 @@ import React from 'react'
 import { renderHook } from '@testing-library/react'
 import { unitItemTestUtil } from './utils'
 
-const unitsData = [unitItemTestUtil(), unitItemTestUtil(2, 'Kilograms', 'Kilograms (kg)')]
+const unitsData = [unitItemTestUtil(), unitItemTestUtil(2, 'Kilogram', 'Kilogram (kg)')]
 
 describe('UnitsContext context', () => {
   it('should throw an error if used outside provider', () => {
