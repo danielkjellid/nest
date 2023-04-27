@@ -1,8 +1,6 @@
 from .product_add import *  # noqa
-from .product_test import *
-
-# from .product_list import *  # noqa
-# from .product_import import *  # noqa
+from .product_list import *  # noqa
+from .product_import import *  # noqa
 
 from .router import router as products_router
 

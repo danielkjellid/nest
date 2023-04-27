@@ -15,6 +15,14 @@ class APIResponse(GenericModel, Generic[T]):
         param_names = [display_as_type(param) for param in params]
         params_component = ", ".join(param_names)
 
+        # Nested types, such as lists gets annotated like list[path.to.ActualType],
+        # as we only want the actual type, slice string appropriately and get it.
+        if "[" in params_component and "]" in params_component:
+            inner_type = params_component[
+                params_component.find("[") + 1 : params_component.find("]")
+            ]
+            params_component = inner_type.split(".")[-1]
+
         return (
             f"{params_component}APIResponse"
             if params_component != "NoneType"

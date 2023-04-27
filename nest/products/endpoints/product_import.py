@@ -3,8 +3,6 @@ from ninja import Schema
 
 from nest.api.responses import APIResponse
 from nest.forms.fields import FormField
-from nest.users.enums import AvatarColors
-from nest.frontend.components import FrontendComponents
 from nest.data_pools.providers.oda.clients import OdaClient
 from .router import router
 
@@ -20,8 +18,7 @@ class ProductImportIn(Schema):
     oda_product_id: str = FormField(..., help_text="Product Id at Oda.")
 
 
-@router.add_form("import/form/", form=ProductImportIn)
-@router.post("import/", response={200: APIResponse[ProductImportOut]})
+@router.post("import/", response=APIResponse[ProductImportOut])
 def product_import_api(
     request: HttpRequest, payload: ProductImportIn
 ) -> APIResponse[ProductImportOut]:

@@ -228,7 +228,6 @@ function Form<T extends object>({
 
   useEffect(() => {
     if (data === null) {
-      console.log('is called')
       resetForm()
     }
   }, [data])

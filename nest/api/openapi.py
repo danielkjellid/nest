@@ -135,29 +135,32 @@ class OpenAPISchema(OpenAPISchema):
             return data
 
     def _update_schema(self, models, schema):
-        # raise ValueError("i")
+        schemas = {}
+
         mapped_enums = self._extract_enum_from_models(models=models)
         meta = self._set_schema_meta(models=models)
 
-        schema_title_key, schema_val = next(iter(schema.items()))
-        properties = schema_val.pop("properties", None)
-        required = schema_val.pop("required", None)
+        for key, value in schema.copy().items():
+            properties = value.pop("properties", None)
+            required = value.pop("required", None)
+            schema_key = key if key != "FormParams" else meta.get("title", key)
 
-        meta_title = meta.get("title", schema_title_key)
+            value.pop("title")
 
-        updated_schema = {
-            meta_title: {
-                "title": meta_title,
-                "properties": self._populate_request_body_form_properties(
-                    properties=properties, enum_mapping=mapped_enums
-                ),
-                "required": self._convert_keys_to_camelcase(required),
-                **meta,
-                **schema_val,
+            updated_schema = {
+                schema_key: {
+                    "title": schema_key,
+                    "properties": self._populate_request_body_form_properties(
+                        properties=properties, enum_mapping=mapped_enums
+                    ),
+                    "required": self._convert_keys_to_camelcase(required),
+                    **meta,
+                    **value,
+                }
             }
-        }
+            schemas.update(updated_schema)
 
-        return updated_schema
+        return schemas
 
     @staticmethod
     def _set_schema_meta(models) -> dict[str, any]:
@@ -193,8 +196,6 @@ class OpenAPISchema(OpenAPISchema):
 
         if remove_level and len(schema["properties"]) == 1:
             name, details = list(schema["properties"].items())[0]
-
-            # ref = details["$ref"]
             required = name in schema.get("required", {})
             return details, required
         else:
@@ -216,7 +217,9 @@ class OpenAPISchema(OpenAPISchema):
             models=models,
         )
         self.add_schema_definitions(schema)
-        ref = {"$ref": f"#/components/schemas/{result['title']}"}
+
+        schema_title = next(iter(schema.keys()))
+        ref = {"$ref": f"#/components/schemas/{schema_title}"}
 
         return ref, content_type
 

@@ -1,16 +1,15 @@
-import { useMemo, useState } from 'react'
-
 import { FormElement } from '../../components/Form'
 import humps from 'humps'
 import schema from '../../../schema.json'
+import { useState } from 'react'
 
-const determineIsMultipart = (obj: Record<string, any>): any => {
+const determineIsMultipart = (obj: Record<string, any>, formKey: string): any => {
   if (obj && typeof obj === 'object') {
     for (const [key, value] of Object.entries(obj)) {
       if (key && key === 'multipart/form-data') {
-        return true
+        return value.schema.$ref.split('/').includes(formKey)
       } else {
-        const found = determineIsMultipart(value)
+        const found = determineIsMultipart(value, formKey)
         if (found !== undefined) return found as boolean
       }
     }
@@ -57,9 +56,15 @@ function buildMultipartForm<T extends object>(data: Partial<T>): FormData {
   return fd
 }
 
-function useForm<T extends object>(key: string, existingObj?: Partial<T>) {
+function useForm<T extends object>({
+  key,
+  existingObj,
+}: {
+  key: string
+  existingObj?: Partial<T>
+}) {
   const formFromSchema = (schema as any).components.schemas[key] as FormComponent
-  const isMultipart = determineIsMultipart(schema)
+  const isMultipart = determineIsMultipart(schema, key)
 
   const [data, setData] = useState<Partial<T> | null>(existingObj || ({} as T))
 

@@ -1,12 +1,11 @@
-import { Button, Title } from '@mantine/core'
-import { ProductAddIn, TestSchema } from '../../types'
-import React, { useEffect, useState } from 'react'
+import { ProductAddIn, ProductListAPIResponse } from '../../types'
 
 import Form from '../../components/Form'
 import ProductAddDrawer from './components/ProductAddDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
+import React from 'react'
+import { Title } from '@mantine/core'
 import View from '../../components/View'
-import { performPost } from '../../hooks/fetcher/http'
 import urls from './urls'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../hooks/fetcher'
@@ -14,16 +13,13 @@ import { useForm } from '../../hooks/forms/useForm'
 
 interface ProductsAppInnerProps {
   results: {
-    // products: ProductListAPIResponse
-    // productImportForm: ProductImportInFormAPIResponse
-    // productAddForm: ProductAddInFormAPIResponse
+    products: ProductListAPIResponse
   }
 }
 
 function ProductsAppInner({ results }: ProductsAppInnerProps) {
-  // const { products, productImportForm, productAddForm } = results
+  const { products } = results
   const [opened, { open, close }] = useDisclosure(true)
-  // const [productImportResponse, setProductImportResponse] = useState<ProductImportOut>()
 
   const obj = {
     name: 'Some name',
@@ -35,20 +31,17 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
     odaId: '',
     odaUrl: '',
   }
-  const form = useForm<ProductAddIn>('ProductAddIn', obj)
-  const form2 = useForm<TestSchema>('TestSchema')
+
+  const form = useForm<ProductAddIn>({ key: 'ProductAddIn', existingObj: obj })
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <Title>Products</Title>
       </div>
-      {/* <ProductOverViewTable data={products.data || []} /> */}
+      <ProductOverViewTable data={products.data || []} />
       <ProductAddDrawer opened={opened} onClose={close}>
         <Form<ProductAddIn> {...form} />
-        {JSON.stringify(form.data)}
-        <hr />
-        <button onClick={() => form.resetForm()}>Reset</button>
       </ProductAddDrawer>
       <hr />
     </div>
@@ -56,14 +49,12 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
 }
 
 function ProductsApp() {
-  // const products = useFetch<ProductListAPIResponse>(urls.list())
-  // const productAddForm = useFetch<FormRecordAPIResponse>(urls.productAddForm())
-  // const productImportForm = useFetch<FormRecordAPIResponse>(urls.productImportForm())
+  const products = useFetch<ProductListAPIResponse>(urls.list())
 
   return (
     <View<object, ProductsAppInnerProps>
       component={ProductsAppInner}
-      results={{}}
+      results={{ products }}
       componentProps={{}}
       loadingProps={{ description: 'Loading products...' }}
       errorProps={{ description: 'There was an error getting products. Please try again.' }}

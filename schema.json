@@ -30,7 +30,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/FormParams"
+                                "$ref": "#/components/schemas/ProductAddIn"
                             }
                         }
                     },
@@ -43,10 +43,10 @@
                 ]
             }
         },
-        "/api/v1/products/test/": {
-            "post": {
-                "operationId": "product_test_api",
-                "summary": "Product Test Api",
+        "/api/v1/products/": {
+            "get": {
+                "operationId": "product_list_api",
+                "summary": "Product List Api",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -54,7 +54,35 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
+                                    "$ref": "#/components/schemas/ProductListAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all products in the application.",
+                "tags": [
+                    "Products"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/products/import/": {
+            "post": {
+                "operationId": "product_import_api",
+                "summary": "Product Import Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductImportOutAPIResponse"
                                 }
                             }
                         }
@@ -67,7 +95,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/TestSchema"
+                                "$ref": "#/components/schemas/ProductImportIn"
                             }
                         }
                     },
@@ -112,7 +140,7 @@
                 "type": "object"
             },
             "ProductAddIn": {
-                "title": "FormParams",
+                "title": "ProductAddIn",
                 "properties": {
                     "name": {
                         "title": "Name",
@@ -222,12 +250,199 @@
                 "columns": 2,
                 "type": "object"
             },
-            "TestSchema": {
-                "title": "TestSchema",
+            "ProductListUnit": {
+                "title": "ProductListAPIResponse",
+                "properties": {
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "name",
+                    "abbreviation"
+                ],
+                "type": "object"
+            },
+            "ProductList": {
+                "title": "ProductListAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "helpText": "Testing",
+                        "type": "integer",
+                        "component": "NumberInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "supplier": {
+                        "title": "Supplier",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "integer",
+                        "component": "NumberInput"
+                    },
+                    "grossPrice": {
+                        "title": "Gross Price",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "grossUnitPrice": {
+                        "title": "Gross Unit Price",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "unit": {
+                        "$ref": "#/components/schemas/ProductListUnit"
+                    },
+                    "unitQuantity": {
+                        "title": "Unit Quantity",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isSynced": {
+                        "title": "Is Synced",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "lastSyncedAt": {
+                        "title": "Last Synced At",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "fullName",
+                    "supplier",
+                    "isAvailable",
+                    "grossPrice",
+                    "unit",
+                    "isSynced"
+                ],
+                "type": "object"
+            },
+            "ProductListAPIResponse": {
+                "title": "ProductListAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductList"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "ProductImportOut": {
+                "title": "ProductImportOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "NumberInput"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "grossPrice": {
+                        "title": "Gross Price",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "odaUrl",
+                    "grossPrice"
+                ],
+                "type": "object"
+            },
+            "ProductImportOutAPIResponse": {
+                "title": "ProductImportOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/ProductImportOut"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "ProductImportIn": {
+                "title": "ProductImportIn",
+                "properties": {
+                    "odaProductId": {
+                        "title": "Oda Product Id",
+                        "helpText": "Product Id at Oda.",
                         "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
@@ -235,22 +450,10 @@
                         "colSpan": null,
                         "section": null,
                         "type": "string"
-                    },
-                    "nameLastname": {
-                        "title": "Name Lastname",
-                        "helpText": null,
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": "Test",
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "type": "string"
                     }
                 },
                 "required": [
-                    "id",
-                    "nameLastname"
+                    "odaProductId"
                 ],
                 "type": "object"
             },
