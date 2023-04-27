@@ -5,7 +5,7 @@ from ninja import Schema, Form, File
 
 from nest.api.responses import APIResponse
 from nest.units.enums import UnitType
-from nest.forms.fields import FormField
+from nest.api.fields import FormField
 from nest.core.files import UploadedFile
 from nest.products.services import ProductService
 from nest.api.openapi import add_to_openapi_schema

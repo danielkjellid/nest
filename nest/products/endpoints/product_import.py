@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from ninja import Schema
 
 from nest.api.responses import APIResponse
-from nest.forms.fields import FormField
+from nest.api.fields import FormField
 from nest.data_pools.providers.oda.clients import OdaClient
 from .router import router
 
