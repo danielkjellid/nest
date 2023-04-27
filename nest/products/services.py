@@ -1,8 +1,9 @@
-from typing import Any
 from decimal import Decimal
+from typing import Any
+
 import structlog
-from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 from django.core.files.images import ImageFile
+from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 
 from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient

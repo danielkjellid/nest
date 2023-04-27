@@ -1,6 +1,7 @@
-from nest.core.exceptions import ApplicationError
-from django.db.models import Value, F, CharField
+from django.db.models import Value
 from django.db.models.functions import Concat
+
+from nest.core.exceptions import ApplicationError
 
 from .models import Unit
 from .records import UnitRecord

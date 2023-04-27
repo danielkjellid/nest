@@ -25,6 +25,7 @@ def product_list_api(request: HttpRequest) -> APIResponse[list[ProductListOut]]:
     """
     Get a list of all products in the application.
     """
-
     products = ProductSelector.all_products()
-    return APIResponse(status="success", data=products)
+    data = [ProductListOut(**product.dict()) for product in products]
+
+    return APIResponse(status="success", data=data)

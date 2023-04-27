@@ -4,9 +4,9 @@ from ninja import File, Form, Schema
 from nest.api.fields import FormField
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
-from nest.products.services import ProductService
-from nest.frontend.components import FrontendComponents
 from nest.core.decorators import staff_required
+from nest.frontend.components import FrontendComponents
+from nest.products.services import ProductService
 
 from .router import router
 

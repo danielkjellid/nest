@@ -80,7 +80,7 @@ class Product(BaseModel):
         return f"{self.gross_price}"
 
     @property
-    def is_oda_product(self) -> str:
+    def is_oda_product(self) -> bool:
         return self.oda_id is not None
 
     @property
