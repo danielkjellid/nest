@@ -12,7 +12,7 @@ const generateTypesFromSchema = () => {
       output: outputPath,
       exportCore: true,
       exportModels: true,
-      exportServices: true,
+      exportServices: false,
       exportSchemas: false,
       useOptions: true,
     })

@@ -9,7 +9,7 @@ import View from '../../components/View'
 import urls from './urls'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../hooks/fetcher'
-import { useForm } from '../../hooks/forms/useForm'
+import { useForm } from '../../hooks/forms'
 
 interface ProductsAppInnerProps {
   results: {
