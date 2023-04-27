@@ -4,7 +4,7 @@ import Form from '../../../../components/Form'
 import { ProductCreateIn } from '../../../../types'
 import React from 'react'
 import { performPost } from '../../../../hooks/fetcher/http'
-import urls from '../../urls'
+import { urls } from '../../../urls'
 import { useForm } from '../../../../hooks/forms'
 import { useUnits } from '../../../../contexts/UnitsProvider'
 
@@ -26,7 +26,7 @@ function ProductAddDrawer({ opened, onClose }: ProductAddDrawerProps) {
   const addProduct = async () => {
     try {
       form.setLoadingState('loading')
-      await performPost(urls.productCreate(), form.buildPayload())
+      await performPost(urls.products.create(), form.buildPayload())
       form.setLoadingState('success')
       close()
     } catch (e) {

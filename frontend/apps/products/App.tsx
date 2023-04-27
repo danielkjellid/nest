@@ -1,10 +1,10 @@
 import { ProductListOutAPIResponse, UnitListOutAPIResponse } from '../../types'
+import { Text, Title } from '@mantine/core'
 
 import { Button } from '../../components/Button'
 import ProductAddDrawer from './components/ProductAddDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import React from 'react'
-import { Title } from '@mantine/core'
 import { UnitsProvider } from '../../contexts/UnitsProvider'
 import View from '../../components/View'
 import { urls } from '../urls'
@@ -20,13 +20,13 @@ interface ProductsAppInnerProps {
 
 function ProductsAppInner({ results }: ProductsAppInnerProps) {
   const { products, units } = results
-  const [opened, { open, close }] = useDisclosure(true)
+  const [opened, { open, close }] = useDisclosure(false)
 
   return (
     <UnitsProvider units={units.data}>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <Title>Products</Title>
+          <Title weight={600}>Products</Title>
           <div className="flex items-center space-x-3">
             <Button.Group>
               <Button variant="default">Import from Oda</Button>
