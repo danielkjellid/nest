@@ -1,4 +1,4 @@
-import { ProductListAPIResponse, UnitListOutAPIResponse } from '../../types'
+import { ProductListOutAPIResponse, UnitListOutAPIResponse } from '../../types'
 
 import { Button } from '../../components/Button'
 import ProductAddDrawer from './components/ProductAddDrawer'
@@ -13,7 +13,7 @@ import { useFetch } from '../../hooks/fetcher'
 
 interface ProductsAppInnerProps {
   results: {
-    products: ProductListAPIResponse
+    products: ProductListOutAPIResponse
     units: UnitListOutAPIResponse
   }
 }
@@ -44,7 +44,7 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
 }
 
 function ProductsApp() {
-  const products = useFetch<ProductListAPIResponse>(urls.products.list())
+  const products = useFetch<ProductListOutAPIResponse>(urls.products.list())
   const units = useFetch<UnitListOutAPIResponse>(urls.units.list())
 
   return (

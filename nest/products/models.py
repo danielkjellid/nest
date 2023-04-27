@@ -74,6 +74,16 @@ class Product(BaseModel):
         return self.name
 
     @property
+    def pretty_price(self) -> str:
+        if self.unit is not None and self.gross_unit_price is not None:
+            return f"{self.gross_price} kr ({self.gross_unit_price} per {self.unit.abbreviation})"
+        return f"{self.gross_price}"
+
+    @property
+    def is_oda_product(self) -> str:
+        return self.oda_id is not None
+
+    @property
     def last_synced_at(self) -> str | None:
         return (
             DateUtil.format_datetime(self.updated_at, with_seconds=True)

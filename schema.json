@@ -54,7 +54,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductListAPIResponse"
+                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
                                 }
                             }
                         }
@@ -276,28 +276,8 @@
                 "columns": 2,
                 "type": "object"
             },
-            "ProductListUnit": {
-                "title": "ProductListAPIResponse",
-                "properties": {
-                    "name": {
-                        "title": "Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "abbreviation": {
-                        "title": "Abbreviation",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "name",
-                    "abbreviation"
-                ],
-                "type": "object"
-            },
-            "ProductList": {
-                "title": "ProductListAPIResponse",
+            "ProductListOut": {
+                "title": "ProductListOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
@@ -306,11 +286,6 @@
                     },
                     "fullName": {
                         "title": "Full Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "supplier": {
-                        "title": "Supplier",
                         "type": "string",
                         "component": "TextInput"
                     },
@@ -334,31 +309,23 @@
                         "type": "integer",
                         "component": "NumberInput"
                     },
-                    "grossPrice": {
-                        "title": "Gross Price",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "grossUnitPrice": {
-                        "title": "Gross Unit Price",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "unit": {
-                        "$ref": "#/components/schemas/ProductListUnit"
-                    },
-                    "unitQuantity": {
-                        "title": "Unit Quantity",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
                     "isSynced": {
                         "title": "Is Synced",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "lastSyncedAt": {
-                        "title": "Last Synced At",
+                    "gtin": {
+                        "title": "Gtin",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isOdaProduct": {
+                        "title": "Is Oda Product",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "prettyPrice": {
+                        "title": "Pretty Price",
                         "type": "string",
                         "component": "TextInput"
                     }
@@ -366,16 +333,15 @@
                 "required": [
                     "id",
                     "fullName",
-                    "supplier",
                     "isAvailable",
-                    "grossPrice",
-                    "unit",
-                    "isSynced"
+                    "isSynced",
+                    "isOdaProduct",
+                    "prettyPrice"
                 ],
                 "type": "object"
             },
-            "ProductListAPIResponse": {
-                "title": "ProductListAPIResponse",
+            "ProductListOutAPIResponse": {
+                "title": "ProductListOutAPIResponse",
                 "properties": {
                     "status": {
                         "title": "Status",
@@ -395,7 +361,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ProductList"
+                            "$ref": "#/components/schemas/ProductListOut"
                         },
                         "component": "MultiSelect"
                     }

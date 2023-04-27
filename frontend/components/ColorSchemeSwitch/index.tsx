@@ -1,27 +1,24 @@
+import { ActionIcon, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { IconMoon, IconSun } from '@tabler/icons-react'
-import { MantineSize, Switch, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 
 import React from 'react'
 
-interface ColorSchemeSwitchProps {
-  size: MantineSize
-}
-
-function ColorSchemeSwitch({ size }: ColorSchemeSwitchProps) {
+function ColorSchemeSwitch() {
   /****************************
    ** Theme and color scheme **
    ****************************/
+
   const theme = useMantineTheme()
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
 
   return (
-    <Switch
-      checked={colorScheme === 'dark'}
-      onChange={() => toggleColorScheme()}
-      size={size}
-      onLabel={<IconSun className="h-5 w-5" color={theme.white} />}
-      offLabel={<IconMoon className="h-5 w-5" color={theme.colors.gray[6]} />}
-    />
+    <ActionIcon size="lg" radius="md" variant="default" onClick={() => toggleColorScheme()}>
+      {colorScheme === 'dark' ? (
+        <IconSun color={theme.colors.gray[1]} stroke={1.5} className="h-5 w-5" />
+      ) : (
+        <IconMoon color={theme.colors.gray[7]} stroke={1.5} className="h-5 w-5" />
+      )}
+    </ActionIcon>
   )
 }
 

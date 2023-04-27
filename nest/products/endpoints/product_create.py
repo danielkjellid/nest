@@ -6,6 +6,7 @@ from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
 from nest.products.services import ProductService
 from nest.frontend.components import FrontendComponents
+from nest.core.decorators import staff_required
 
 from .router import router
 
@@ -38,6 +39,7 @@ class ProductCreateIn(Schema):
 
 
 @router.post("create/", response=APIResponse[None])
+@staff_required
 def product_create_api(
     request: HttpRequest,
     payload: ProductCreateIn = Form(...),  # noqa
