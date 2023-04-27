@@ -26,3 +26,8 @@ runs:
       shell: bash
       run: npm install
       if: steps.cache-node-modules.outputs.cache-hit != 'true'
+
+    - name: Generate types
+      id: generate-types
+      shell: bash
+      run: npm run openapi:generate
