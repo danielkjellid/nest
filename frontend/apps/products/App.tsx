@@ -1,10 +1,10 @@
 import { ProductListOutAPIResponse, UnitListOutAPIResponse } from '../../types'
-import { Text, Title } from '@mantine/core'
 
 import { Button } from '../../components/Button'
 import ProductAddDrawer from './components/ProductAddDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import React from 'react'
+import { Title } from '@mantine/core'
 import { UnitsProvider } from '../../contexts/UnitsProvider'
 import View from '../../components/View'
 import { urls } from '../urls'
@@ -29,7 +29,7 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
           <Title weight={600}>Products</Title>
           <div className="flex items-center space-x-3">
             <Button.Group>
-              <Button variant="default">Import from Oda</Button>
+              {/* <Button variant="default">Import from Oda</Button> */}
               <Button variant="default" onClick={open}>
                 Add new
               </Button>

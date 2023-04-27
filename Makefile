@@ -2,7 +2,7 @@ PACKAGE 		= nest
 BASE 				= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 POETRY      = poetry
-YARN				= yarn
+NPM 				= npm
 
 V 					= 0
 Q 					= $(if $(filter 1,$V),,@)
@@ -11,8 +11,7 @@ M 					= $(shell printf "\033[34;1m▶\033[0m")
 $(POETRY): ; $(info $(M) checking poetry...)
 	$Q
 
-$(YARN): ; $(info $(M) checking yarn...)
-	$Q
+$(NPM): ; $(info $(M) checking npm...)
 
 $(BASE): | $(POETRY) $(YARN) ; $(info $(M) checking project...)
 	$Q
@@ -61,7 +60,7 @@ lint-backend: lint-mypy lint-ruff lint-black | $(BASE) ; @
 	$Q
 
 .PHONY: lint-frontend
-lint-frontend: lint-import-sort lint-eslint lint-prettier | $(BASE) ; @
+lint-frontend: lint-import-sort lint-tsc lint-eslint lint-prettier | $(BASE) ; @
 	$Q
 
 .PHONY: lint-ruff
@@ -78,15 +77,19 @@ lint-black: ; $(info $(M) running black...) @
 
 .PHONY: lint-import-sort
 lint-import-sort: ; $(info $(M) running import-sort...) @
-	$Q cd $(BASE) && $(YARN) run import-sort:check
+	$Q cd $(BASE) && $(NPM) run import-sort:check
 
 .PHONY: lint-eslint
 lint-eslint: ; $(info $(M) running eslint...) @
-	$Q cd $(BASE) && $(YARN) run eslint:check
+	$Q cd $(BASE) && $(NPM) run eslint:check
 
 .PHONY: lint-prettier
 lint-prettier: ; $(info $(M) running prettier...) @
-	$Q cd $(BASE) && $(YARN) run prettier:check
+	$Q cd $(BASE) && $(NPM) run prettier:check
+
+.PHONY: lint-tsc
+lint-tsc: ; $(info $(M) running tsc...) @
+	$Q cd $(BASE) && $(NPM) run tsc:check
 
 # Fixers
 .PHONY: fix
@@ -111,12 +114,12 @@ fix-black: ; $(info $(M) running black with fix...) @
 
 .PHONY: fix-eslint
 fix-eslint: ; $(info $(M) running eslint with fix...) @
-	$Q cd $(BASE) && $(YARN) run eslint:fix
+	$Q cd $(BASE) && $(NPM) run eslint:fix
 
 .PHONY: fix-prettier
 fix-prettier: ; $(info $(M) running prettier with fix...) @
-	$Q cd $(BASE) && $(YARN) run prettier:fix
+	$Q cd $(BASE) && $(NPM) run prettier:fix
 
 .PHONY: fix-import-sort
 fix-import-sort: ; $(info $(M) running import-sort with fix...) @
-	$Q cd $(BASE) && $(YARN) run import-sort:fix
+	$Q cd $(BASE) && $(NPM) run import-sort:fix

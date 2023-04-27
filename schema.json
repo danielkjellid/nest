@@ -23,6 +23,7 @@
                         }
                     }
                 },
+                "description": "Create a normal product.",
                 "tags": [
                     "Products"
                 ],

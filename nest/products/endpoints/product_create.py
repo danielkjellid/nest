@@ -45,5 +45,9 @@ def product_create_api(
     payload: ProductCreateIn = Form(...),  # noqa
     thumbnail: UploadedFile | None = File(None),  # noqa
 ) -> APIResponse[None]:
+    """
+    Create a normal product.
+    """
+
     ProductService.create_product(**payload.dict(), thumbnail=thumbnail)
     return APIResponse(status="success", data=None)
