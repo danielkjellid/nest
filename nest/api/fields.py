@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import inspect
-from typing import TYPE_CHECKING, Any, Callable
+from typing import TYPE_CHECKING, Any
 
 from pydantic.fields import FieldInfo, UndefinedType
 
@@ -14,36 +13,10 @@ if TYPE_CHECKING:
     )
 
 from nest.frontend.components import FrontendComponents
-from .records import FormElementRecord
 
 Undefined = UndefinedType()
 
-element_record_field_kwargs = list(FormElementRecord.__fields__.keys())
 
-
-def validate_element_record_fields_passed(func: Callable[..., Any]) -> Any:
-    """
-    Validate that all fields defined in FormElementRecord is available in the FormField
-    function.
-    """
-
-    def inner(*args: Any, **kwargs: Any) -> Any:
-        acceptable_missing_param_keys = {"id", "type", "enum", "parent"}
-        element_record_keys = (
-            set(element_record_field_kwargs) - acceptable_missing_param_keys
-        )
-        signature_param_keys = set(inspect.signature(func).parameters.keys())
-
-        assert element_record_keys <= signature_param_keys, (
-            "Some FormElementRecord fields are missing as parameters in FormField "
-            "function."
-        )
-        return func(*args, **kwargs)
-
-    return inner
-
-
-@validate_element_record_fields_passed
 def FormField(
     default: Any = Undefined,
     *,
