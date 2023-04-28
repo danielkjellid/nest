@@ -12,10 +12,11 @@ class UnitSelector:
         ...
 
     @classmethod
-    def get_units(cls) -> list[UnitRecord]:
-        units = Unit.objects.all().annotate(
-            display_name=Concat("name", Value(" ("), "abbreviation", Value(")"))
-        )
+    def all_units(cls) -> list[UnitRecord]:
+        """
+        Get a list of all units.
+        """
+        units = Unit.objects.all()
 
         return [UnitRecord.from_unit(unit) for unit in units]
 

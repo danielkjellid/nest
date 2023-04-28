@@ -21,6 +21,10 @@ class Unit(BaseModel):
 
     ADMIN_LIST_DISPLAY = ["name", "unit_type", "base_factor", "is_base_unit"]
 
+    @property
+    def display_name(self) -> str:
+        return f"{self.name} ({self.abbreviation})"
+
     class Meta:
         verbose_name = "unit"
         verbose_name_plural = "units"

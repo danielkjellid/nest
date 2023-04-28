@@ -8,8 +8,16 @@ pytestmark = pytest.mark.django_db
 
 
 class TestUnitSelector:
-    def test_get_units(self):
-        assert False
+    def test_all_units(self, django_assert_num_queries):
+        """
+        Test that all_units selector returns all units available within query limits.
+        """
+        create_units()  # 26 units.
+
+        with django_assert_num_queries(1):
+            units = UnitSelector.all_units()
+
+        assert len(units) == 26
 
     def test_get_unit_from_abbreviation(self, django_assert_num_queries):
         """

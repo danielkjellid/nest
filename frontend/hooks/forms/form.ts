@@ -74,7 +74,6 @@ export function useForm<T extends object>({
     if (!data) return
 
     if (isMultipart) {
-      console.log('fires')
       return buildMultipartForm<T>(data)
     }
 

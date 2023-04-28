@@ -15,7 +15,7 @@ class UnitListOut(Schema):
 
 @router.get("/", response=APIResponse[list[UnitListOut]])
 def unit_list_api(request: HttpRequest) -> APIResponse[list[UnitListOut]]:
-    units = UnitSelector.get_units()
+    units = UnitSelector.all_units()
     data = [UnitListOut(**unit.dict()) for unit in units]
 
     return APIResponse(status="success", data=data)
