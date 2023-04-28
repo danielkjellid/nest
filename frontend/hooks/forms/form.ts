@@ -1,5 +1,6 @@
 import { buildMultipartForm, determineIsMultipart } from './multipart'
 
+import { ButtonProps } from '../../components/Button'
 import { FormElement } from '../../components/Form/types'
 import schema from '../../../schema.json'
 import { useState } from 'react'
@@ -44,6 +45,7 @@ export function useForm<T extends object>({
     }
 
     // Update the data as well.
+    setLoadingState('initial')
     setData(val)
   }
 
@@ -61,6 +63,7 @@ export function useForm<T extends object>({
   const resetForm = () => {
     if (data) setData(null)
     if (errors) setErrors(null)
+    setLoadingState('initial')
   }
 
   /*************
@@ -77,6 +80,12 @@ export function useForm<T extends object>({
     return data
   }
 
+  /*******************
+   ** Loading state **
+   *******************/
+
+  const [loadingState, setLoadingState] = useState<ButtonProps['loadingState']>('initial')
+
   /**********
    ** Misc **
    **********/
@@ -92,6 +101,8 @@ export function useForm<T extends object>({
     resetErrors,
     buildPayload,
     resetForm,
+    loadingState,
+    setLoadingState,
     elements: formFromSchema.properties,
     required: formFromSchema.required,
     columns: formFromSchema.columns,

@@ -266,7 +266,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
                     except KeyError:
                         pass
 
-        return props  # type: ignore
+        return HumpsUtil.camelize(props)  # type: ignore
 
     def _convert_keys_to_camelcase(self, data: dict[str, Any] | list[str]) -> Any:
         """
@@ -293,12 +293,24 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
         for model in models:
             for _key, value in get_type_hints(model).items():
-                if issubclass(value, UploadedFile | UploadedImageFile):
+                val = value
+                val_iterable = get_args(value)
+
+                if val_iterable:
+                    val = next(
+                        (item for item in val_iterable if inspect.isclass(item)),
+                        None,
+                    )
+
+                if not val:
                     continue
 
-                meta["title"] = f"{value.__name__}"
+                if issubclass(val, UploadedFile | UploadedImageFile):
+                    continue
 
-                if hasattr(value, "FormMeta"):
+                meta["title"] = f"{val.__name__}"
+
+                if hasattr(val, "FormMeta"):
                     meta["columns"] = getattr(value.FormMeta, "columns", 1)  # type: ignore
 
         return meta

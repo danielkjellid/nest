@@ -18,6 +18,50 @@ pytestmark = pytest.mark.django_db
 
 
 class TestProductService:
+    def test_create_product(self, django_assert_num_queries):
+        """
+        Test that create_product service successfully creates a product with expected
+        output.
+        """
+        unit = get_unit(abbreviation="kg")
+        assert Product.objects.count() == 0
+
+        fields = {
+            "gross_price": "140.20",
+            "unit_id": unit.id,
+            "unit_quantity": 2,
+            "supplier": "Awesome supplier",
+        }
+
+        with django_assert_num_queries(3):
+            product_no_thumbnail = ProductService.create_product(
+                name="Awesome product",
+                **fields,
+            )
+
+        assert Product.objects.count() == 1
+
+        assert product_no_thumbnail.name == "Awesome product"
+        assert product_no_thumbnail.gross_price == Decimal("140.20")
+        assert product_no_thumbnail.unit.id == unit.id
+        assert product_no_thumbnail.unit_quantity == 2
+        assert product_no_thumbnail.supplier == "Awesome supplier"
+        assert product_no_thumbnail.is_oda_product is False
+        assert product_no_thumbnail.gross_unit_price == Decimal("70.10")
+        assert product_no_thumbnail.thumbnail_url is None
+
+        with django_assert_num_queries(3):
+            product = ProductService.create_product(
+                name="Another awesome product",
+                thumbnail=create_product_image(name="thumb"),
+                **fields,
+            )
+
+        assert Product.objects.count() == 2
+
+        assert product.name == "Another awesome product"
+        assert product.thumbnail_url is not None
+
     def test_update_or_create_product_with_pk(self, django_assert_num_queries):
         """
         Test that the update_or_create_product creates or updates as expected.

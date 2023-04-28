@@ -1,6 +1,7 @@
 import { Config, Home, User } from '../CommonProvider'
 
 import { MenuItem } from '../MenuProvider'
+import { UnitListOut } from '../../types'
 
 const homeTestUtil = (
   id = 1,
@@ -26,6 +27,7 @@ const userTestUtil = (
   isActive = true,
   isStaff = false,
   isSuperuser = false,
+  isHijacked = false,
   home = undefined
 ): User => ({
   id: id,
@@ -37,6 +39,7 @@ const userTestUtil = (
   isStaff: isStaff,
   isSuperuser: isSuperuser,
   home: home,
+  isHijacked: isHijacked,
 })
 
 const configTestUtil = (isProduction = true): Config => ({
@@ -58,4 +61,10 @@ export const menuItemTestUtil = (
   key: key,
   title: title,
   end: end,
+})
+
+export const unitItemTestUtil = (id = 1, name = 'Gram', displayName = 'Gram (g)'): UnitListOut => ({
+  id: id,
+  name: name,
+  displayName: displayName,
 })

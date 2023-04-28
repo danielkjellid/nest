@@ -1,6 +1,9 @@
+from decimal import Decimal
 from typing import Any
 
 import structlog
+from django.core.files.images import ImageFile
+from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 
 from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
@@ -17,6 +20,38 @@ logger = structlog.getLogger()
 class ProductService:
     def __init__(self) -> None:
         ...
+
+    @classmethod
+    def create_product(
+        cls,
+        name: str,
+        gross_price: str,
+        unit_id: int | str,
+        unit_quantity: str,
+        supplier: str,
+        thumbnail: UploadedFile | InMemoryUploadedFile | ImageFile | None = None,
+        **additional_fields: Any,
+    ) -> ProductRecord:
+        additional_fields.pop("gross_unit_price", None)
+        gross_unit_price = Decimal(gross_price) / Decimal(unit_quantity)
+
+        product = Product(
+            name=name,
+            gross_price=Decimal(gross_price),
+            unit_id=unit_id,
+            unit_quantity=Decimal(unit_quantity),
+            supplier=supplier,
+            gross_unit_price=gross_unit_price.normalize(),
+            **additional_fields,
+        )
+
+        if thumbnail is not None:
+            product.thumbnail = thumbnail
+
+        product.full_clean()
+        product.save()
+
+        return ProductRecord.from_product(product)
 
     @classmethod
     def update_or_create_product(

@@ -6,10 +6,10 @@
         "description": ""
     },
     "paths": {
-        "/api/v1/products/add/": {
+        "/api/v1/products/create/": {
             "post": {
-                "operationId": "product_add_api",
-                "summary": "Product Add Api",
+                "operationId": "product_create_api",
+                "summary": "Product Create Api",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -23,6 +23,7 @@
                         }
                     }
                 },
+                "description": "Create a normal product.",
                 "tags": [
                     "Products"
                 ],
@@ -30,7 +31,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductAddIn"
+                                "$ref": "#/components/schemas/ProductCreateIn"
                             }
                         }
                     },
@@ -54,7 +55,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductListAPIResponse"
+                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
                                 }
                             }
                         }
@@ -101,6 +102,33 @@
                     },
                     "required": true
                 },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/units/": {
+            "get": {
+                "operationId": "unit_list_api",
+                "summary": "Unit List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnitListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Units"
+                ],
                 "security": [
                     {
                         "SessionAuth": []
@@ -167,95 +195,66 @@
                 ],
                 "type": "object"
             },
-            "ProductAddIn": {
-                "title": "ProductAddIn",
+            "ProductCreateIn": {
+                "title": "ProductCreateIn",
                 "properties": {
                     "name": {
                         "title": "Name",
-                        "help_text": "Plain name of product, should not include unit.",
+                        "helpText": "Plain name of product, should not include unit.",
                         "component": "TextInput",
-                        "default_value": null,
+                        "defaultValue": null,
                         "placeholder": null,
-                        "hidden_label": false,
-                        "col_span": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
                         "section": null,
                         "type": "string"
                     },
-                    "gross_price": {
+                    "grossPrice": {
                         "title": "Gross Price",
-                        "help_text": "Gross price of product, including VAT.",
+                        "helpText": "Gross price of product, including VAT.",
                         "component": "TextInput",
-                        "default_value": null,
+                        "defaultValue": null,
                         "placeholder": null,
-                        "hidden_label": false,
-                        "col_span": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "type": "string"
+                    },
+                    "unitQuantity": {
+                        "title": "Unit Quantity",
+                        "helpText": "Amount in selected unit type. E.g. 2 if 2 kg.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
                         "section": null,
                         "type": "string"
                     },
                     "unit": {
                         "title": "Unit",
-                        "help_text": "Amount if product in selected unit type. E.g. 2 if 2 kg.",
-                        "component": "TextInput",
-                        "default_value": null,
+                        "helpText": "What sort of unit is this?",
+                        "component": "Select",
+                        "defaultValue": null,
                         "placeholder": null,
-                        "hidden_label": false,
-                        "col_span": 1,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
                         "section": null,
                         "type": "string"
-                    },
-                    "unit_type": {
-                        "title": "Unit Type",
-                        "help_text": null,
-                        "component": "Select",
-                        "default_value": null,
-                        "placeholder": null,
-                        "hidden_label": false,
-                        "col_span": 1,
-                        "section": null,
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/UnitType"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "enum": [
-                            {
-                                "label": "Pieces",
-                                "value": "pieces"
-                            },
-                            {
-                                "label": "Weight",
-                                "value": "weight"
-                            },
-                            {
-                                "label": "Volume",
-                                "value": "volume"
-                            },
-                            {
-                                "label": "Length",
-                                "value": "length"
-                            },
-                            {
-                                "label": "Usage",
-                                "value": "usage"
-                            }
-                        ]
                     },
                     "supplier": {
                         "title": "Supplier",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "is_available": {
+                    "isAvailable": {
                         "title": "Is Available",
-                        "help_text": null,
+                        "helpText": null,
                         "component": "Checkbox",
-                        "default_value": true,
+                        "defaultValue": true,
                         "placeholder": null,
-                        "hidden_label": false,
-                        "col_span": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
                         "section": null,
                         "type": "boolean"
                     },
@@ -270,98 +269,64 @@
                 "required": [
                     "name",
                     "grossPrice",
+                    "unitQuantity",
                     "unit",
-                    "unitType",
                     "supplier",
-                    "isAvailable",
-                    "thumbnail"
+                    "isAvailable"
                 ],
                 "columns": 2,
                 "type": "object"
             },
-            "ProductListUnit": {
-                "title": "ProductListAPIResponse",
-                "properties": {
-                    "name": {
-                        "title": "Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "abbreviation": {
-                        "title": "Abbreviation",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "name",
-                    "abbreviation"
-                ],
-                "type": "object"
-            },
-            "ProductList": {
-                "title": "ProductListAPIResponse",
+            "ProductListOut": {
+                "title": "ProductListOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
                         "type": "integer",
                         "component": "NumberInput"
                     },
-                    "full_name": {
+                    "fullName": {
                         "title": "Full Name",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "supplier": {
-                        "title": "Supplier",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "thumbnail_url": {
+                    "thumbnailUrl": {
                         "title": "Thumbnail Url",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "is_available": {
+                    "isAvailable": {
                         "title": "Is Available",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "oda_url": {
+                    "odaUrl": {
                         "title": "Oda Url",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "oda_id": {
+                    "odaId": {
                         "title": "Oda Id",
                         "type": "integer",
                         "component": "NumberInput"
                     },
-                    "gross_price": {
-                        "title": "Gross Price",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "gross_unit_price": {
-                        "title": "Gross Unit Price",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "unit": {
-                        "$ref": "#/components/schemas/ProductListUnit"
-                    },
-                    "unit_quantity": {
-                        "title": "Unit Quantity",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "is_synced": {
+                    "isSynced": {
                         "title": "Is Synced",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "last_synced_at": {
-                        "title": "Last Synced At",
+                    "gtin": {
+                        "title": "Gtin",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isOdaProduct": {
+                        "title": "Is Oda Product",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "displayPrice": {
+                        "title": "Display Price",
                         "type": "string",
                         "component": "TextInput"
                     }
@@ -369,16 +334,15 @@
                 "required": [
                     "id",
                     "fullName",
-                    "supplier",
                     "isAvailable",
-                    "grossPrice",
-                    "unit",
-                    "isSynced"
+                    "isSynced",
+                    "isOdaProduct",
+                    "displayPrice"
                 ],
                 "type": "object"
             },
-            "ProductListAPIResponse": {
-                "title": "ProductListAPIResponse",
+            "ProductListOutAPIResponse": {
+                "title": "ProductListOutAPIResponse",
                 "properties": {
                     "status": {
                         "title": "Status",
@@ -398,7 +362,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ProductList"
+                            "$ref": "#/components/schemas/ProductListOut"
                         },
                         "component": "MultiSelect"
                     }
@@ -421,12 +385,12 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "oda_url": {
+                    "odaUrl": {
                         "title": "Oda Url",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "gross_price": {
+                    "grossPrice": {
                         "title": "Gross Price",
                         "type": "string",
                         "component": "TextInput"
@@ -469,20 +433,77 @@
             "ProductImportIn": {
                 "title": "ProductImportIn",
                 "properties": {
-                    "oda_product_id": {
+                    "odaProductId": {
                         "title": "Oda Product Id",
-                        "help_text": "Product Id at Oda.",
+                        "helpText": "Product Id at Oda.",
                         "component": "TextInput",
-                        "default_value": null,
+                        "defaultValue": null,
                         "placeholder": null,
-                        "hidden_label": false,
-                        "col_span": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
                         "section": null,
                         "type": "string"
                     }
                 },
                 "required": [
                     "odaProductId"
+                ],
+                "type": "object"
+            },
+            "UnitListOut": {
+                "title": "UnitListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "NumberInput"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "displayName": {
+                        "title": "Display Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "displayName"
+                ],
+                "type": "object"
+            },
+            "UnitListOutAPIResponse": {
+                "title": "UnitListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UnitListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
                 ],
                 "type": "object"
             },
@@ -499,7 +520,7 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "is_active": {
+                    "isActive": {
                         "title": "Is Active",
                         "type": "boolean",
                         "component": "Checkbox"
@@ -525,22 +546,22 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "full_name": {
+                    "fullName": {
                         "title": "Full Name",
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "is_active": {
+                    "isActive": {
                         "title": "Is Active",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "is_staff": {
+                    "isStaff": {
                         "title": "Is Staff",
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "is_superuser": {
+                    "isSuperuser": {
                         "title": "Is Superuser",
                         "type": "boolean",
                         "component": "Checkbox"

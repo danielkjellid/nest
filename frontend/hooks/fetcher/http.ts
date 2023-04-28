@@ -1,14 +1,16 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable indent */
 import { Getter, RequestOptions, Setter } from './types'
 
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable indent */
+import { APIResponse } from '../../types'
 import { decamelize } from 'humps'
+import { notifications } from '@mantine/notifications'
 
 const csrfToken = window.csrfToken
 
 export class RequestError extends Error {
   public response?: Response & {
-    data?: any
+    data?: APIResponse | any
   }
 
   constructor(message: string, response?: Response, data?: any) {
@@ -40,8 +42,13 @@ async function getter<T>(url: string, options: RequestOptions = {}): Promise<T> 
     const error = new RequestError(
       `Got a '${response.status} ${response.statusText}' response.`,
       response,
-      data
+      JSON.parse(data)
     )
+
+    if (error && error.response?.data?.message) {
+      const { message } = error.response.data
+      notifications.show({ message, color: 'red' })
+    }
     throw error
   }
 
@@ -52,13 +59,13 @@ async function getter<T>(url: string, options: RequestOptions = {}): Promise<T> 
 
 const setter =
   (method: string): Setter =>
-  <T>(url: string, data: unknown, options: RequestOptions = {}) =>
+  <T>(url: string, data: BodyInit | null | undefined, options: RequestOptions = {}) =>
     getter<T>(url, {
-      body: JSON.stringify(data),
+      body: data, // Can not be JSON.stringify(...) because of multipart.
       method,
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/json',
         'X-CSRFToken': csrfToken,
         ...options.headers,
       },

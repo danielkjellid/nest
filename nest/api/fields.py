@@ -12,8 +12,6 @@ if TYPE_CHECKING:
         NoArgAnyCallable,
     )
 
-from nest.frontend.components import FrontendComponents
-
 Undefined = UndefinedType()
 
 
@@ -44,7 +42,7 @@ def FormField(
     discriminator: str | None = None,
     repr: bool = True,
     title: str | None = None,
-    component: FrontendComponents | None = None,
+    component: str | None = None,
     default_value: StrictBool | StrictInt | StrictStr | None = None,
     placeholder: str | None = None,
     help_text: str | None = None,

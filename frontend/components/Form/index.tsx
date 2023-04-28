@@ -19,6 +19,7 @@ import {
 import { FormElement, FormElementObj, FormElementOptions, FormEnum } from './types'
 import React, { useEffect, useState } from 'react'
 
+import { ButtonProps } from '../Button'
 import { FrontendComponents } from '../../types/'
 import { IconUpload } from '@tabler/icons-react'
 
@@ -57,6 +58,7 @@ interface FormProps<T extends object> {
   isMultipart: boolean
   data?: Partial<T> | null
   errors?: Partial<Record<keyof T, string>> | null
+  loadingState?: ButtonProps['loadingState']
   onChange: (values: T) => void
 }
 
@@ -68,6 +70,7 @@ function Form<T extends object>({
   isMultipart,
   data,
   errors,
+  loadingState,
   onChange,
 }: FormProps<T>) {
   type K = keyof T
@@ -165,6 +168,7 @@ function Form<T extends object>({
       <Checkbox
         key={elementKey.toString()}
         label={title}
+        disabled={loadingState === 'loading'}
         checked={formValues[elementKey as K] as boolean}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           handleInputChange(elementKey, event)
@@ -191,6 +195,7 @@ function Form<T extends object>({
         data: options || [],
         error: getErrorForElement(elementKey),
         className: `w-full col-span-${element.colSpan ? element.colSpan : columns}`,
+        disabled: loadingState === 'loading',
         onChange: (e: any) => handleInputChange(elementKey, e),
         value: formValues[elementKey as K],
         icon:

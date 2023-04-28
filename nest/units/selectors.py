@@ -9,6 +9,15 @@ class UnitSelector:
         ...
 
     @classmethod
+    def all_units(cls) -> list[UnitRecord]:
+        """
+        Get a list of all units.
+        """
+        units = Unit.objects.all()
+
+        return [UnitRecord.from_unit(unit) for unit in units]
+
+    @classmethod
     def get_unit_from_abbreviation(cls, abbreviation: str) -> UnitRecord:
         """
         Get a unit based on its abbreviation.

@@ -59,7 +59,7 @@ function Header() {
           ) : (
             <HomeItem address={currentHome.address} isActive={currentHome.isActive} />
           ))}
-        <ColorSchemeSwitch size="md" />
+        <ColorSchemeSwitch />
       </Stack>
     </MHeader>
   )

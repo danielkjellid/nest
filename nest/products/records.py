@@ -25,6 +25,8 @@ class ProductRecord(BaseModel):
     thumbnail_url: str | None
     gtin: str | None
     supplier: str
+    display_price: str
+    is_oda_product: bool
 
     @classmethod
     def from_product(cls, product: Product) -> ProductRecord:
@@ -44,4 +46,6 @@ class ProductRecord(BaseModel):
             thumbnail_url=product.thumbnail.url if product.thumbnail else None,
             gtin=product.gtin,
             supplier=product.supplier,
+            is_oda_product=product.is_oda_product,
+            display_price=product.display_price,
         )

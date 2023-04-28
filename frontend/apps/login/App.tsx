@@ -50,7 +50,7 @@ function LoginAppInner() {
     <>
       <Container size="xs">
         <div className="absolute right-0 top-0 m-4">
-          <ColorSchemeSwitch size="lg" />
+          <ColorSchemeSwitch />
         </div>
       </Container>
       <Container className="min-h-screen items-center flex justify-center" size="xs">
