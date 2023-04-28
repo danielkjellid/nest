@@ -17,7 +17,7 @@ class ProductListOut(Schema):
     is_synced: bool
     gtin: str | None
     is_oda_product: bool
-    pretty_price: str
+    display_price: str
 
 
 @router.get("/", response=APIResponse[list[ProductListOut]])

@@ -25,7 +25,7 @@ class ProductRecord(BaseModel):
     thumbnail_url: str | None
     gtin: str | None
     supplier: str
-    pretty_price: str
+    display_price: str
     is_oda_product: bool
 
     @classmethod
@@ -47,5 +47,5 @@ class ProductRecord(BaseModel):
             gtin=product.gtin,
             supplier=product.supplier,
             is_oda_product=product.is_oda_product,
-            pretty_price=product.pretty_price,
+            display_price=product.display_price,
         )

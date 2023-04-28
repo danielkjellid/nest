@@ -325,8 +325,8 @@
                         "type": "boolean",
                         "component": "Checkbox"
                     },
-                    "prettyPrice": {
-                        "title": "Pretty Price",
+                    "displayPrice": {
+                        "title": "Display Price",
                         "type": "string",
                         "component": "TextInput"
                     }
@@ -337,7 +337,7 @@
                     "isAvailable",
                     "isSynced",
                     "isOdaProduct",
-                    "prettyPrice"
+                    "displayPrice"
                 ],
                 "type": "object"
             },

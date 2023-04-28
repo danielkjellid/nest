@@ -28,7 +28,7 @@ function ProductOverViewTable({ data }: ProductOverViewTableProps) {
         },
         {
           header: 'Gross price',
-          accessorKey: 'prettyPrice',
+          accessorKey: 'displayPrice',
           enableColumnFilter: false,
           enableFilterMatchHighlighting: false,
         },

@@ -74,7 +74,7 @@ class Product(BaseModel):
         return self.name
 
     @property
-    def pretty_price(self) -> str:
+    def display_price(self) -> str:
         if self.unit is not None and self.gross_unit_price is not None:
             return f"{self.gross_price} kr ({self.gross_unit_price} per {self.unit.abbreviation})"
         return f"{self.gross_price}"
