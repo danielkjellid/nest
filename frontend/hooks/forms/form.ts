@@ -81,9 +81,9 @@ export function useForm<T extends object>({
     return data
   }
 
-  /****************
-   ** Submission **
-   ****************/
+  /*******************
+   ** Loading state **
+   *******************/
 
   const [loadingState, setLoadingState] = useState<ButtonProps['loadingState']>('initial')
 

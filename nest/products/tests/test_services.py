@@ -18,6 +18,9 @@ pytestmark = pytest.mark.django_db
 
 
 class TestProductService:
+    def test_create_product(self):
+        assert False
+
     def test_update_or_create_product_with_pk(self, django_assert_num_queries):
         """
         Test that the update_or_create_product creates or updates as expected.

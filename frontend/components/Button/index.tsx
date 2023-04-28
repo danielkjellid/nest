@@ -9,6 +9,8 @@ export interface ButtonProps extends MButtonProps {
 }
 
 function Button({ loadingState, onClick, ...props }: ButtonProps) {
+  // We want to render the leftIcon based on loading state. Defaults to passed leftIcon
+  // prop if present.
   const renderIcon = () => {
     if (loadingState === 'error') {
       return <IconCircleX />

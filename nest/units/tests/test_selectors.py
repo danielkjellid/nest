@@ -8,6 +8,9 @@ pytestmark = pytest.mark.django_db
 
 
 class TestUnitSelector:
+    def test_get_units(self):
+        assert False
+
     def test_get_unit_from_abbreviation(self, django_assert_num_queries):
         """
         Test that the get_unit_from_abbreviation correctly retrieves the right unit,

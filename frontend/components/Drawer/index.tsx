@@ -24,17 +24,19 @@ function Drawer({ opened, title, children, actions, onClose }: DrawerProps) {
       position="right"
     >
       {children}
-      <div className="absolute bottom-0 right-0 left-0">
-        <Box
-          sx={(theme) => ({
-            backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1],
-          })}
-          className="p-4 w-full"
-        >
-          {actions}
-        </Box>
-      </div>
+      {actions && (
+        <div className="absolute bottom-0 right-0 left-0">
+          <Box
+            sx={(theme) => ({
+              backgroundColor:
+                theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1],
+            })}
+            className="p-4 w-full"
+          >
+            {actions}
+          </Box>
+        </div>
+      )}
     </MDrawer>
   )
 }
