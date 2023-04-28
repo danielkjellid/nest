@@ -1,7 +1,7 @@
 databases:
   - name: nest-db-prod
     region: frankfurt
-    plan: starter
+    plan: starter # 7usd/month
     databaseName: nest
     user: nest
     postgresMajorVersion: 14
@@ -9,7 +9,7 @@ databases:
 services:
   - type: web
     region: frankfurt
-    plan: starter
+    plan: starter # 7usd/month
     name: nest-web-prod
     env: docker
     dockerFilePath: ./Dockerfile
