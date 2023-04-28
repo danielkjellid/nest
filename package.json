@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build:development": "tsc && vite build",
+    "build:production": "NODE_ENV=production tsc && vite build",
     "preview": "vite preview",
     "prettier:check": "prettier --check \"frontend/**/*.{js,jsx,ts,tsx,css,json,md}\"",
     "prettier:fix": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx,css,json,md}\"",
