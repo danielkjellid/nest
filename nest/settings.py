@@ -2,7 +2,9 @@ import warnings
 from pathlib import Path
 
 import environ
+import sentry_sdk
 import structlog
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from nest.frontend.components import FrontendComponents
 
