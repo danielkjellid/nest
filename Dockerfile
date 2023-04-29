@@ -10,7 +10,7 @@ COPY .nvmrc package.json package-lock.json /app/
 RUN npm ci
 
 # Copy application files
-COPY tsconfig.json tsconfig.node.json vite.config.ts schema.json /app/
+COPY tsconfig.json tsconfig.node.json vite.config.ts /app/
 COPY frontend /app/frontend/
 
 RUN npm run build:production
