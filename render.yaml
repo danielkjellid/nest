@@ -12,7 +12,6 @@ services:
     plan: free # starter 7usd/month
     name: nest-web-prod
     env: docker
-    dockerFilePath: ./Dockerfile
     dockerCommand: ./docker-entrypoint.sh start
     autoDeploy: false
     envVars:
