@@ -63,7 +63,7 @@ RUN mkdir ./.ssh && chmod 700 ./.ssh
 COPY --chown=nest nest/ /app/nest/
 COPY --chown=nest cli/ /app/cli/
 
-COPY --chown=nest --from=nest-frontend /app/static/vite_output/ /app/static/vite_output/
+COPY --chown=nest --from=nest-frontend /app/static/vite_output/ /app/static/
 
 # Collect static files and migrate
 #RUN poetry run python manage.py collectstatic --noinput
