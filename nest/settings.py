@@ -143,6 +143,7 @@ if DEBUG:
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
 else:
+    STATIC_ROOT = "static"
     STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
     AWS_S3_BUCKET_AUTH_STATIC = False
     AWS_S3_BUCKET_NAME_STATIC = env.str("AWS_S3_BUCKET_NAME_STATIC", default="dev")
