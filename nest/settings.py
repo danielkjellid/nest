@@ -2,7 +2,9 @@ import warnings
 from pathlib import Path
 
 import environ
+import sentry_sdk
 import structlog
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from nest.frontend.components import FrontendComponents
 
@@ -307,6 +309,26 @@ OPENAPI_AUTO_GENERATE = env.str("OPENAPI_AUTO_GENERATE", default=DEBUG)
 ODA_SERVICE_ENABLED = env.bool("ODA_SERVICE_ENABLED", default=False)
 ODA_SERVICE_BASE_URL = env.str("ODA_SERVICE_BASE_URL", default="https://oda.com/api/v1")
 ODA_SERVICE_AUTH_TOKEN = env.str("ODA_SERVICE_AUTH_TOKEN", default="supersecrettoken")
+
+##########
+# Sentry #
+##########
+
+SENTRY_DSN = env.str("SENTRY_DSN", default=None)
+
+if SENTRY_DSN is not None:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=ENVIRONMENT,
+        integrations=[DjangoIntegration()],
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+    )
 
 #########
 # Forms #
