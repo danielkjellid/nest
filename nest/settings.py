@@ -136,14 +136,13 @@ AWS_S3_SIGNATURE_VERSION = None
 
 # Static files
 STATIC_URL = env.str("STATIC_URL", default="/static/")
+STATIC_ROOT = BASE_DIR / "static"
 # Because we service vite as a static asset, we cannot use minio for static files
 # locally
 if DEBUG:
-    STATIC_ROOT = BASE_DIR / "static"
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
     STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
 else:
-    STATIC_ROOT = "static"
     STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
     AWS_S3_BUCKET_AUTH_STATIC = False
     AWS_S3_BUCKET_NAME_STATIC = env.str("AWS_S3_BUCKET_NAME_STATIC", default="dev")
