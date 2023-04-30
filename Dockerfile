@@ -69,5 +69,5 @@ ENV DJANGO_VITE_DEV_MODE=False
 
 COPY --chown=nest docker-entrypoint.sh /app
 
-#RUN chmod +x docker-entrypoint.sh
-#ENTRYPOINT ["./docker-entrypoint.sh"]
+RUN chmod +x docker-entrypoint.sh
+ENTRYPOINT ["./docker-entrypoint.sh"]
