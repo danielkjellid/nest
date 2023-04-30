@@ -20,6 +20,7 @@ export default defineConfig(() => {
       rollupOptions: {
         input: {
           main: './frontend/index.tsx',
+          login: './frontend/apps/login/index.tsx'
         },
       },
     },
