@@ -53,7 +53,7 @@ RUN chown -R nest:nest /app
 USER nest
 WORKDIR /app
 
-COPY --chown=nest poetry.lock pyproject.toml poetry.toml manage.py .env.test db.sqlite3 /app/
+COPY --chown=nest poetry.lock pyproject.toml poetry.toml manage.py .env.test /app/
 RUN poetry install --no-root --only main --no-interaction --no-ansi
 
 # Render needs a .ssh folder to make ssh tunneling work.
