@@ -66,9 +66,6 @@ COPY --chown=nest cli/ /app/cli/
 RUN mkdir /app/static && chmod 700 /app/static
 COPY --chown=nest --from=nest-frontend /app/static/vite_output/ /app/static/vite_output/
 
-RUN poetry run python manage.py collectstatic --noinput
-#RUN poetry run python manage.py migrate
-
 ENV DJANGO_VITE_DEV_MODE=False
 
 COPY --chown=nest docker-entrypoint.sh /app
