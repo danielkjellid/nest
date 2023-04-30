@@ -1,3 +1,4 @@
+import re
 import warnings
 from pathlib import Path
 
@@ -40,7 +41,7 @@ SECRET_KEY = env.str("DJANGO_SECRET_KEY", default="supersecret-key")
 
 ROOT_URLCONF = "nest.urls"
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
 WSGI_APPLICATION = "nest.wsgi.application"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -75,6 +76,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "nest.core.middlewares.GenericLoggingMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "hijack.middleware.HijackUserMiddleware",
 ]
 
@@ -113,21 +115,20 @@ DJANGO_VITE_DEV_MODE = env.bool("DJANGO_VITE_DEV_MODE", default=True)
 DJANGO_VITE_DEV_SERVER_HOST = env.str(
     "DJANGO_VITE_DEV_SERVER_HOST", default="localhost"
 )
-DJANGO_VITE_DEV_SERVER_PORT = env.int("DJANGO_VITE_DEV_SERVER_PORT", default=9002)
-DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "vite_output"
+DJANGO_VITE_DEV_SERVER_PORT = env.int("DJANGO_VITE_DEV_SERVER_PORT", default=3000)
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 #########
 # Files #
 #########
 
+# Media
+MEDIA_URL = env.str("MEDIA_URL", default="/media/")
 DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
 AWS_REGION = env.str("AWS_REGION", default="local")
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="nest")
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="nesttestpassword")
 AWS_ENDPOINT_URL = env.str("AWS_ENDPOINT_URL", default="http://localhost:9000")
-
-# Media
-MEDIA_URL = env.str("MEDIA_URL", default="/media/")
 AWS_S3_ADDRESSING_STYLE = "auto"
 AWS_S3_BUCKET_AUTH = False
 AWS_S3_BUCKET_NAME = env.str("AWS_S3_BUCKET_NAME", default="dev")
@@ -139,17 +140,21 @@ AWS_S3_SIGNATURE_VERSION = None
 # Static files
 STATIC_URL = env.str("STATIC_URL", default="/static/")
 STATIC_ROOT = BASE_DIR / "static"
-# Because we service vite as a static asset, we cannot use minio for static files
-# locally
-if DEBUG:
-    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-    STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
-else:
-    STATICFILES_STORAGE = "django_s3_storage.storage.StaticS3Storage"
-    AWS_S3_BUCKET_AUTH_STATIC = False
-    AWS_S3_BUCKET_NAME_STATIC = env.str("AWS_S3_BUCKET_NAME_STATIC", default="dev")
-    AWS_S3_ENDPOINT_URL_STATIC = AWS_ENDPOINT_URL
-    AWS_S3_KEY_PREFIX_STATIC = "static"
+STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
+SERVE_STATICFILES = env.bool("SERVE_STATICFILES", default=False)
+
+if SERVE_STATICFILES:
+    # Vite generates files with 8 hash digits
+    # http://whitenoise.evans.io/en/stable/django.html#WHITENOISE_IMMUTABLE_FILE_TEST
+    def immutable_file_test(path: str, url: str) -> re.Match[str] | None:
+        # Match filename with 12 hex digits before the extension
+        # e.g. app.db8f2edc0c8a.js
+        return re.match(r"^.+\.[0-9a-f]{8,12}\..+$", url)
+
+    WHITENOISE_IMMUTABLE_FILE_TEST = immutable_file_test
+    MIDDLEWARE += ["whitenoise.middleware.WhiteNoiseMiddleware"]
 
 #############
 # Templates #

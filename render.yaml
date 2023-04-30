@@ -19,8 +19,12 @@ services:
         fromDatabase:
           name: nest-db-prod
           property: connectionString
+      - key: DEBUG
+        value: false
       - key: ENVIRONMENT
         value: production
       - key: WEB_CONCURRENCY
         value: 4
+      - key: SERVE_STATICFILES
+        value: true
 

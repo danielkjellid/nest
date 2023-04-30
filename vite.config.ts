@@ -1,25 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from 'tailwindcss'
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     base: '/static/',
     server: {
       host: '0.0.0.0',
-      port: 9002,
+      port: 3000,
       strictPort: true,
-      origin: 'http://localhost:9002',
     },
     build: {
-      outDir: './static/vite_output/',
+      outDir: './static/dist/',
       copyPublicDir: false,
       manifest: true,
       sourcemap: true,
       rollupOptions: {
         input: {
           main: './frontend/index.tsx',
+          login: './frontend/apps/login/index.tsx'
         },
       },
     },
@@ -40,6 +41,11 @@ export default defineConfig(() => {
       ],
       coverage: {
         reporter: ['text', 'json', 'html'],
+      },
+    },
+    css: {
+      postcss: {
+        plugins: [tailwindcss],
       },
     },
   }
