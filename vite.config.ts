@@ -13,7 +13,7 @@ export default defineConfig(() => {
       strictPort: true,
     },
     build: {
-      outDir: './static/vite_output/',
+      outDir: './static/dist/',
       copyPublicDir: false,
       manifest: true,
       sourcemap: true,
