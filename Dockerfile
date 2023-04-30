@@ -46,7 +46,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache poetry==1.3.2
 
 # Create app directory and required subdirectories
-RUN mkdir -p /app/public/vite_output
+RUN mkdir -p /app/static
 RUN chown -R nest:nest /app
 
 # Set app user and working directory
@@ -63,12 +63,11 @@ RUN mkdir ./.ssh && chmod 700 ./.ssh
 COPY --chown=nest nest/ /app/nest/
 COPY --chown=nest cli/ /app/cli/
 
-RUN mkdir /app/static && chmod 700 /app/static
 COPY --chown=nest --from=nest-frontend /app/static/vite_output/ /app/static/vite_output/
 
 ENV DJANGO_VITE_DEV_MODE=False
 
 COPY --chown=nest docker-entrypoint.sh /app
 
-RUN chmod +x docker-entrypoint.sh
-ENTRYPOINT ["./docker-entrypoint.sh"]
+#RUN chmod +x docker-entrypoint.sh
+#ENTRYPOINT ["./docker-entrypoint.sh"]
