@@ -115,7 +115,7 @@ DJANGO_VITE_DEV_SERVER_HOST = env.str(
     "DJANGO_VITE_DEV_SERVER_HOST", default="localhost"
 )
 DJANGO_VITE_DEV_SERVER_PORT = env.int("DJANGO_VITE_DEV_SERVER_PORT", default=3000)
-DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "vite_output"
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 #########
 # Files #
