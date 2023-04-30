@@ -49,8 +49,6 @@ node_modules
 
 # Built dirs
 static/
-public/vite_output/*
-!public/vite_output/.gitkeep
 
 # ruff
 .ruff_cache
