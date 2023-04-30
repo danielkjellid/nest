@@ -13,7 +13,7 @@ export default defineConfig(() => {
       origin: 'http://localhost:9002',
     },
     build: {
-      outDir: './static/vite_output/',
+      outDir: './public/vite_output/',
       copyPublicDir: false,
       manifest: true,
       sourcemap: true,

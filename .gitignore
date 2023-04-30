@@ -9,7 +9,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-.idea/
 build/
 develop-eggs/
 downloads/
@@ -50,6 +49,8 @@ node_modules
 
 # Built dirs
 static/
+public/vite_output/*
+!public/vite_output/.gitkeep
 
 # ruff
 .ruff_cache

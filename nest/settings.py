@@ -114,7 +114,7 @@ DJANGO_VITE_DEV_SERVER_HOST = env.str(
     "DJANGO_VITE_DEV_SERVER_HOST", default="localhost"
 )
 DJANGO_VITE_DEV_SERVER_PORT = env.int("DJANGO_VITE_DEV_SERVER_PORT", default=9002)
-DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "vite_output"
+DJANGO_VITE_ASSETS_PATH = BASE_DIR / "public" / "vite_output"
 
 #########
 # Files #
@@ -139,6 +139,7 @@ AWS_S3_SIGNATURE_VERSION = None
 # Static files
 STATIC_URL = env.str("STATIC_URL", default="/static/")
 STATIC_ROOT = BASE_DIR / "static"
+
 # Because we service vite as a static asset, we cannot use minio for static files
 # locally
 if DEBUG:

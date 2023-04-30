@@ -46,7 +46,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache poetry==1.3.2
 
 # Create app directory and required subdirectories
-RUN mkdir -p /app/public /app/vite_output
+RUN mkdir -p /app/public/vite_output
 RUN chown -R nest:nest /app
 
 # Set app user and working directory
@@ -63,7 +63,7 @@ RUN mkdir ./.ssh && chmod 700 ./.ssh
 COPY --chown=nest nest/ /app/nest/
 COPY --chown=nest cli/ /app/cli/
 
-COPY --chown=nest --from=nest-frontend /app/static/vite_output/ /app/static/
+COPY --chown=nest --from=nest-frontend /app/public/vite_output/ /app/public/vite_output/
 
 # Collect static files and migrate
 #RUN poetry run python manage.py collectstatic --noinput
