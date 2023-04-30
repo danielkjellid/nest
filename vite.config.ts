@@ -1,19 +1,20 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from 'tailwindcss'
 
 // https://vitejs.dev/config/
 export default defineConfig(() => {
   return {
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     base: '/static/',
     server: {
       host: '0.0.0.0',
-      port: 9002,
+      port: 3000,
       strictPort: true,
-      origin: 'http://localhost:9002',
+      // origin: 'http://localhost:9002',
     },
     build: {
-      outDir: './public/vite_output/',
+      outDir: './static/vite_output/',
       copyPublicDir: false,
       manifest: true,
       sourcemap: true,
@@ -41,6 +42,11 @@ export default defineConfig(() => {
       ],
       coverage: {
         reporter: ['text', 'json', 'html'],
+      },
+    },
+    css: {
+      postcss: {
+        plugins: [tailwindcss],
       },
     },
   }

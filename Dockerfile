@@ -10,7 +10,7 @@ COPY .nvmrc package.json package-lock.json /app/
 RUN npm ci
 
 # Copy application files
-COPY tsconfig.json tsconfig.node.json vite.config.ts schema.json /app/
+COPY tsconfig.json tsconfig.node.json vite.config.ts schema.json tailwind.config.js postcss.config.cjs /app/
 COPY frontend /app/frontend/
 
 RUN npm run build:production
@@ -53,7 +53,7 @@ RUN chown -R nest:nest /app
 USER nest
 WORKDIR /app
 
-COPY --chown=nest poetry.lock pyproject.toml poetry.toml manage.py .env.test /app/
+COPY --chown=nest poetry.lock pyproject.toml poetry.toml manage.py .env.test db.sqlite3 /app/
 RUN poetry install --no-root --only main --no-interaction --no-ansi
 
 # Render needs a .ssh folder to make ssh tunneling work.
@@ -63,11 +63,11 @@ RUN mkdir ./.ssh && chmod 700 ./.ssh
 COPY --chown=nest nest/ /app/nest/
 COPY --chown=nest cli/ /app/cli/
 
-COPY --chown=nest --from=nest-frontend /app/public/vite_output/ /app/public/vite_output/
+RUN mkdir /app/static && chmod 700 /app/static
+COPY --chown=nest --from=nest-frontend /app/static/vite_output/ /app/static/vite_output/
 
-# Collect static files and migrate
-#RUN poetry run python manage.py collectstatic --noinput
-#RUN poetry run python manage.py migrate
+RUN poetry run python manage.py collectstatic --noinput
+RUN poetry run python manage.py migrate
 
 ENV DJANGO_VITE_DEV_MODE=False
 
