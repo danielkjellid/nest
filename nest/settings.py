@@ -97,6 +97,7 @@ THIRD_PARTY_APPS = ["django_s3_storage", "django_vite", "hijack", "ninja"]
 
 PROJECT_APPS = [
     "nest.api",
+    "nest.audit_logs",
     "nest.core",
     "nest.frontend",
     "nest.homes",
