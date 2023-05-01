@@ -8,7 +8,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
-from nest.units.selectors import UnitSelector
+from nest.units.selectors import get_unit_by_abbreviation
 
 from .models import Product
 from .records import ProductRecord
@@ -106,7 +106,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
         pass
 
     # Get corresponding unit from product response
-    unit = UnitSelector.get_unit_from_abbreviation(
+    unit = get_unit_by_abbreviation(
         abbreviation=product_response.unit_price_quantity_abbreviation
     )
     unit_quantity = float(product_response.gross_price) / float(

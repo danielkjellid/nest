@@ -24,7 +24,7 @@ class TestUsersSelectors:
         with pytest.raises(ApplicationError):
             get_user(pk=999)
 
-    def test_all_users(self, django_assert_num_queries):
+    def test_get_users(self, django_assert_num_queries):
         """
         Test that the all_users selector correctly retrieves all users in the app within
         query limits.

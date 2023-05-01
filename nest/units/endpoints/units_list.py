@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from ninja import Schema
 
 from nest.api.responses import APIResponse
-from nest.units.selectors import UnitSelector
+from nest.units.selectors import get_units
 
 from .router import router
 
@@ -15,7 +15,7 @@ class UnitListOut(Schema):
 
 @router.get("/", response=APIResponse[list[UnitListOut]])
 def unit_list_api(request: HttpRequest) -> APIResponse[list[UnitListOut]]:
-    units = UnitSelector.all_units()
+    units = get_units()
     data = [UnitListOut(**unit.dict()) for unit in units]
 
     return APIResponse(status="success", data=data)
