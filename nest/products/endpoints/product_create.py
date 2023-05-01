@@ -6,7 +6,7 @@ from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
 from nest.frontend.components import FrontendComponents
-from nest.products.services import ProductService
+from nest.products.services import create_product
 
 from .router import router
 
@@ -49,5 +49,5 @@ def product_create_api(
     Create a normal product.
     """
 
-    ProductService.create_product(**payload.dict(), thumbnail=thumbnail)
+    create_product(**payload.dict(), thumbnail=thumbnail)
     return APIResponse(status="success", data=None)

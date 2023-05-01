@@ -7,7 +7,7 @@ from nest.users.services import create_user
 pytestmark = pytest.mark.django_db
 
 
-class TestServicesUsers:
+class TestUsersServices:
     def test_user_create(self, django_assert_num_queries, user_fixture) -> None:
         """
         Test that the "create" service creates a user.

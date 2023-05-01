@@ -6,9 +6,16 @@ from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.data_pools.tests.oda.utils import get_oda_product_response_dict
 from nest.products.models import Product
-from nest.products.services import ProductService
-from nest.products.tests.utils import (
+from nest.products.services import (
+    _validate_oda_response,
     create_product,
+    import_from_oda,
+    update_or_create_product,
+)
+from nest.products.tests.utils import (
+    create_product as create_product_test_util,
+)
+from nest.products.tests.utils import (
     create_product_image,
     get_unit,
     next_oda_id,
@@ -17,7 +24,7 @@ from nest.products.tests.utils import (
 pytestmark = pytest.mark.django_db
 
 
-class TestProductService:
+class TestProductServices:
     def test_create_product(self, django_assert_num_queries):
         """
         Test that create_product service successfully creates a product with expected
@@ -34,7 +41,7 @@ class TestProductService:
         }
 
         with django_assert_num_queries(3):
-            product_no_thumbnail = ProductService.create_product(
+            product_no_thumbnail = create_product(
                 name="Awesome product",
                 **fields,
             )
@@ -51,7 +58,7 @@ class TestProductService:
         assert product_no_thumbnail.thumbnail_url is None
 
         with django_assert_num_queries(3):
-            product = ProductService.create_product(
+            product = create_product(
                 name="Another awesome product",
                 thumbnail=create_product_image(name="thumb"),
                 **fields,
@@ -82,11 +89,11 @@ class TestProductService:
         assert Product.objects.all().count() == 0
 
         with django_assert_num_queries(7):
-            ProductService.update_or_create_product(**defaults)
+            update_or_create_product(**defaults)
 
         assert Product.objects.all().count() == 1
 
-        existing_product = create_product()
+        existing_product = create_product_test_util()
         assert existing_product.name == "Test product"
 
         defaults = {
@@ -102,7 +109,7 @@ class TestProductService:
         }
 
         with django_assert_num_queries(5):
-            updated_product = ProductService.update_or_create_product(
+            updated_product = update_or_create_product(
                 pk=existing_product.id, **defaults
             )
 
@@ -111,7 +118,7 @@ class TestProductService:
 
     def test_update_or_create_product_with_oda_id(self, django_assert_num_queries):
         """ """
-        existing_product = create_product()
+        existing_product = create_product_test_util()
         assert existing_product.name == "Test product"
 
         defaults = {
@@ -126,7 +133,7 @@ class TestProductService:
         }
 
         with django_assert_num_queries(5):
-            updated_product = ProductService.update_or_create_product(
+            updated_product = update_or_create_product(
                 oda_id=existing_product.oda_id, **defaults
             )
 
@@ -141,7 +148,7 @@ class TestProductService:
         Test that products marked as is_synced=False is returned early
         without any updates.
         """
-        product = create_product(is_synced=False)
+        product = create_product_test_util(is_synced=False)
         product_response_request_mock = mocker.patch.object(
             OdaClient,
             "get_product",
@@ -154,14 +161,12 @@ class TestProductService:
             "get_image",
             return_value=create_product_image(name="test"),
         )
-        _validate_oda_response_mock = mocker.patch.object(
-            ProductService, "_validate_oda_response"
+        _validate_oda_response_mock = mocker.patch(
+            f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
         with django_assert_num_queries(1):
-            imported_product = ProductService.import_from_oda(
-                oda_product_id=product.oda_id
-            )
+            imported_product = import_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product is None
 
@@ -193,14 +198,12 @@ class TestProductService:
             "get_image",
             return_value=create_product_image(name="test"),
         )
-        _validate_oda_response_mock = mocker.patch.object(
-            ProductService, "_validate_oda_response"
+        _validate_oda_response_mock = mocker.patch(
+            f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
         with django_assert_num_queries(11):
-            imported_product = ProductService.import_from_oda(
-                oda_product_id=oda_id_mock
-            )
+            imported_product = import_from_oda(oda_product_id=oda_id_mock)
 
         assert Product.objects.all().count() == 1
         assert Product.objects.all().first().oda_id == imported_product.oda_id
@@ -215,7 +218,7 @@ class TestProductService:
         """
         Test that importing an existing product updates the product.
         """
-        product = create_product(name="Some product name")
+        product = create_product_test_util(name="Some product name")
         oda_response = get_oda_product_response_dict(id=product.oda_id)
 
         product_response_request_mock = mocker.patch.object(
@@ -228,14 +231,12 @@ class TestProductService:
             "get_image",
             return_value=create_product_image(name="test"),
         )
-        _validate_oda_response_mock = mocker.patch.object(
-            ProductService, "_validate_oda_response"
+        _validate_oda_response_mock = mocker.patch(
+            f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
         with django_assert_num_queries(9):
-            imported_product = ProductService.import_from_oda(
-                oda_product_id=product.oda_id
-            )
+            imported_product = import_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product.id == product.id
         assert imported_product.name == "Møllerens Hvetemel Siktet"
