@@ -17,9 +17,7 @@ class TestEndpointUsersList:
         """
 
         client = anonymous_client_fixture
-        selector_mock = mocker.patch(
-            f"{user_list_api.__module__}.UserSelector.all_users"
-        )
+        selector_mock = mocker.patch(f"{user_list_api.__module__}.get_users")
 
         with django_assert_num_queries(0):
             response = client.get(self.ENDPOINT)
@@ -35,9 +33,7 @@ class TestEndpointUsersList:
         """
 
         client = authenticated_staff_client
-        selector_mock = mocker.patch(
-            f"{user_list_api.__module__}.UserSelector.all_users"
-        )
+        selector_mock = mocker.patch(f"{user_list_api.__module__}.get_users")
 
         with django_assert_num_queries(2):
             response = client.get(self.ENDPOINT)

@@ -8,16 +8,17 @@ from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
-from nest.units.selectors import UnitSelector
+from nest.units.selectors import get_unit_by_abbreviation
 
 from .models import Product
 from .records import ProductRecord
-from .selectors import ProductSelector
+from .selectors import _get_product, get_product
 
 logger = structlog.getLogger()
 
 
 def create_product(
+    *,
     name: str,
     gross_price: str,
     unit_id: int | str,
@@ -78,7 +79,7 @@ def update_or_create_product(
     return ProductRecord.from_product(product)
 
 
-def import_from_oda(oda_product_id: int) -> ProductRecord | None:
+def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     """
     Import a product from Oda based on the Oda product id.
     """
@@ -98,7 +99,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
     # The selector will throw an Application error if the product does not exit, so
     # we deliberately catch it and ignore it here.
     try:
-        product = ProductSelector.get_product(oda_id=product_response.id)
+        product = get_product(oda_id=product_response.id)
 
         if not getattr(product, "is_synced", True):
             return None
@@ -106,7 +107,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
         pass
 
     # Get corresponding unit from product response
-    unit = UnitSelector.get_unit_from_abbreviation(
+    unit = get_unit_by_abbreviation(
         abbreviation=product_response.unit_price_quantity_abbreviation
     )
     unit_quantity = float(product_response.gross_price) / float(
@@ -130,7 +131,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
     )
 
     if product_image:
-        product = ProductSelector._get_product(pk=product_record.id)
+        product = _get_product(pk=product_record.id)
         product.thumbnail.save("thumbnail.jpg", product_image)
 
         return ProductRecord.from_product(product)
@@ -138,7 +139,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
     return product_record
 
 
-def _validate_oda_response(response_record: OdaProductDetailRecord) -> None:
+def _validate_oda_response(*, response_record: OdaProductDetailRecord) -> None:
     """
     Validate that required values from the Oda product response is present, and
     raise an exception if they're not.

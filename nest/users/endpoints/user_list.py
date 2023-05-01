@@ -3,7 +3,7 @@ from ninja import Schema
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.users.selectors import UserSelector
+from nest.users.selectors import get_users
 
 from .router import router
 
@@ -31,7 +31,7 @@ def user_list_api(request: HttpRequest) -> APIResponse[list[UserListOut]]:
     Get a list of all users in the application.
     """
 
-    users = UserSelector.all_users()
+    users = get_users()
     data = [UserListOut(**user.dict()) for user in users]
 
     return APIResponse(status="success", data=data)

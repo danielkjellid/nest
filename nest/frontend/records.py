@@ -4,18 +4,18 @@ from nest.homes.records import HomeRecord
 from nest.users.records import UserRecord
 
 
-class CoreMenuItemRecord(BaseModel):
+class FrontendMenuItemRecord(BaseModel):
     key: str
     title: str
     end: bool
 
 
-class CoreConfigRecord(BaseModel):
+class FrontendConfigRecord(BaseModel):
     is_production: bool
 
 
-class CoreInitialPropsRecord(BaseModel):
-    menu: list[CoreMenuItemRecord]
-    config: CoreConfigRecord
+class FrontendInitialPropsRecord(BaseModel):
+    menu: list[FrontendMenuItemRecord]
+    config: FrontendConfigRecord
     current_user: UserRecord
     available_homes: list[HomeRecord]
