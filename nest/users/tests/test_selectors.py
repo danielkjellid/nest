@@ -2,13 +2,13 @@ import pytest
 
 from nest.core.exceptions import ApplicationError
 from nest.homes.tests.utils import create_home
-from nest.users.selectors import UserSelector
+from nest.users.selectors import get_user, get_users
 from nest.users.tests.utils import create_user
 
 pytestmark = pytest.mark.django_db
 
 
-class TestUserSelector:
+class TestUsersSelectors:
     def test_get_user(self, django_assert_num_queries):
         """
         Test that the get_user selector correctly gets the user and that it raises
@@ -17,12 +17,12 @@ class TestUserSelector:
         user = create_user()
 
         with django_assert_num_queries(1):
-            gotten_user = UserSelector.get_user(pk=user.id)
+            gotten_user = get_user(pk=user.id)
 
         assert user.id == gotten_user.id
 
         with pytest.raises(ApplicationError):
-            UserSelector.get_user(pk=999)
+            get_user(pk=999)
 
     def test_all_users(self, django_assert_num_queries):
         """
@@ -34,6 +34,6 @@ class TestUserSelector:
         create_user(first_name="User 3", home=create_home(street_address="Address 3"))
 
         with django_assert_num_queries(1):
-            users = UserSelector.all_users()
+            users = get_users()
 
         assert len(users) == 3
