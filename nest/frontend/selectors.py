@@ -6,7 +6,7 @@ from nest.frontend.records import (
     CoreInitialPropsRecord,
     CoreMenuItemRecord,
 )
-from nest.homes.selectors import HomeSelector
+from nest.homes.selectors import get_homes_for_user
 from nest.users.records import UserRecord
 
 from .menu import MENU
@@ -25,7 +25,7 @@ class CoreSelector:
 
         user = UserRecord.from_user(user=request.user)
         menu = cls.user_menu(user=user)
-        available_homes = HomeSelector.user_homes(user=user)
+        available_homes = get_homes_for_user(user=user)
 
         return CoreInitialPropsRecord(
             menu=menu,
