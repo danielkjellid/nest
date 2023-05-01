@@ -8,7 +8,7 @@ import { IconEye } from '@tabler/icons-react'
 import { MRT_RowSelectionState } from 'mantine-react-table'
 import Table from '../../components/Table'
 import View from '../../components/View'
-import urls from './urls'
+import { urls } from '../urls'
 import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
 
@@ -75,7 +75,7 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
 }
 
 function UsersApp() {
-  const users = useFetch<UserListAPIResponse>(urls.list())
+  const users = useFetch<UserListAPIResponse>(urls.users.list())
 
   return (
     <View<object, UsersAppInnerProps>
