@@ -12,7 +12,7 @@ from nest.units.selectors import get_unit_by_abbreviation
 
 from .models import Product
 from .records import ProductRecord
-from .selectors import ProductSelector
+from .selectors import _get_product, get_product
 
 logger = structlog.getLogger()
 
@@ -98,7 +98,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
     # The selector will throw an Application error if the product does not exit, so
     # we deliberately catch it and ignore it here.
     try:
-        product = ProductSelector.get_product(oda_id=product_response.id)
+        product = get_product(oda_id=product_response.id)
 
         if not getattr(product, "is_synced", True):
             return None
@@ -130,7 +130,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
     )
 
     if product_image:
-        product = ProductSelector._get_product(pk=product_record.id)
+        product = _get_product(pk=product_record.id)
         product.thumbnail.save("thumbnail.jpg", product_image)
 
         return ProductRecord.from_product(product)
