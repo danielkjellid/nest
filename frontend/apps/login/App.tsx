@@ -1,16 +1,8 @@
-import {
-  Button,
-  Card,
-  Center,
-  Container,
-  PasswordInput,
-  Stack,
-  TextInput,
-  Title,
-} from '@mantine/core'
+import { Card, Center, Container, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
 import React, { useEffect } from 'react'
 
 import { BaseAppCore } from '../../components/BaseApp/BaseApp'
+import { Button } from '../../components/Button'
 import ColorSchemeSwitch from '../../components/ColorSchemeSwitch'
 import Logo from '../../components/Logo'
 import { notifications } from '@mantine/notifications'

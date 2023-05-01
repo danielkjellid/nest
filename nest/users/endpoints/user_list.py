@@ -8,30 +8,30 @@ from nest.users.selectors import UserSelector
 from .router import router
 
 
-class UserListHome(Schema):
+class UserListHomeOut(Schema):
     id: int
     address: str
     is_active: bool
 
 
-class UserList(Schema):
+class UserListOut(Schema):
     id: int
     email: str
     full_name: str
     is_active: bool
     is_staff: bool
     is_superuser: bool
-    home: UserListHome | None
+    home: UserListHomeOut | None
 
 
-@router.get("/", response={200: APIResponse[list[UserList]]})
+@router.get("/", response=APIResponse[list[UserListOut]])
 @staff_required
-def user_list_api(request: HttpRequest) -> APIResponse[list[UserList]]:
+def user_list_api(request: HttpRequest) -> APIResponse[list[UserListOut]]:
     """
     Get a list of all users in the application.
     """
 
     users = UserSelector.all_users()
-    data = [UserList(**user.dict()) for user in users]
+    data = [UserListOut(**user.dict()) for user in users]
 
     return APIResponse(status="success", data=data)

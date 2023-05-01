@@ -1,18 +1,19 @@
 /* eslint-disable react/prop-types */
-import { Button, Menu, Title } from '@mantine/core'
+import { Menu, Title } from '@mantine/core'
 import React, { useState } from 'react'
-import { UserList, UserListAPIResponse } from '../../types'
+import { UserListOut, UserListOutAPIResponse } from '../../types'
 
+import { Button } from '../../components/Button'
 import { IconEye } from '@tabler/icons-react'
 import { MRT_RowSelectionState } from 'mantine-react-table'
 import Table from '../../components/Table'
 import View from '../../components/View'
-import urls from './urls'
+import { urls } from '../urls'
 import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
 
 interface UsersAppInnerProps {
-  results: { users: UserListAPIResponse }
+  results: { users: UserListOutAPIResponse }
 }
 
 function UsersAppInner({ results }: UsersAppInnerProps) {
@@ -35,7 +36,7 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
         </div>
       </div>
 
-      <Table<UserList>
+      <Table<UserListOut>
         rowIdentifier="id"
         columns={[
           { header: 'Id', accessorKey: 'id', size: 20 },
@@ -74,7 +75,7 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
 }
 
 function UsersApp() {
-  const users = useFetch<UserListAPIResponse>(urls.list())
+  const users = useFetch<UserListOutAPIResponse>(urls.users.list())
 
   return (
     <View<object, UsersAppInnerProps>
