@@ -1,7 +1,7 @@
 import pytest
 
 from nest.core.exceptions import ApplicationError
-from nest.units.selectors import get_units, get_unit_by_abbreviation
+from nest.units.selectors import get_unit_by_abbreviation, get_units
 from nest.units.tests.utils import create_units
 
 pytestmark = pytest.mark.django_db
