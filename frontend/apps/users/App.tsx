@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
-import { Button, Menu, Title } from '@mantine/core'
+import { Menu, Title } from '@mantine/core'
 import React, { useState } from 'react'
 import { UserList, UserListAPIResponse } from '../../types'
 
+import { Button } from '../../components/Button'
 import { IconEye } from '@tabler/icons-react'
 import { MRT_RowSelectionState } from 'mantine-react-table'
 import Table from '../../components/Table'
