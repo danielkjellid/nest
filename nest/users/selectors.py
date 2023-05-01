@@ -4,7 +4,7 @@ from .models import User
 from .records import UserRecord
 
 
-def get_user(pk: int) -> UserRecord:
+def get_user(*, pk: int) -> UserRecord:
     """
     Get a user instance.
     """

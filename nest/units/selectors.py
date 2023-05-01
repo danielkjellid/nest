@@ -13,7 +13,7 @@ def get_units() -> list[UnitRecord]:
     return [UnitRecord.from_unit(unit) for unit in units]
 
 
-def get_unit_by_abbreviation(abbreviation: str) -> UnitRecord:
+def get_unit_by_abbreviation(*, abbreviation: str) -> UnitRecord:
     """
     Get a unit based on its abbreviation.
     """

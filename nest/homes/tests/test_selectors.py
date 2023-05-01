@@ -9,7 +9,7 @@ from nest.users.tests.utils import create_user
 pytestmark = pytest.mark.django_db
 
 
-class TestHomeSelector:
+class TestHomesSelectors:
     def test_get_homes(self, django_assert_num_queries):
         """
         Test that the all_homes selector returns expected output within query limits.

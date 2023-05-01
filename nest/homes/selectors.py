@@ -17,7 +17,7 @@ def get_homes() -> list[HomeRecord]:
     return records
 
 
-def get_homes_for_user(user: UserRecord) -> list[HomeRecord]:
+def get_homes_for_user(*, user: UserRecord) -> list[HomeRecord]:
     """
     Get all available homes for a specific user.
     """

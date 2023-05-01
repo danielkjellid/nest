@@ -7,7 +7,7 @@ from django.http import HttpRequest
 
 from nest.core.utils.humps import HumpsUtil
 
-from ..selectors import CoreSelector
+from ..selectors import get_initial_props
 from .base import ReactView
 
 
@@ -16,7 +16,7 @@ class FrontendView(LoginRequiredMixin, ReactView):
     frontend_app = "frontend/index.tsx"
 
     def get_additional_context(self, request: HttpRequest) -> dict[str, Any]:
-        props = CoreSelector.initial_props(request=request)
+        props = get_initial_props(request=request)
 
         return {
             "initial_props": json.dumps(

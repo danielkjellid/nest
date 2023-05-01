@@ -6,7 +6,7 @@ from .models import Product
 from .records import ProductRecord
 
 
-def get_product(pk: int | None = None, oda_id: int | None = None) -> ProductRecord:
+def get_product(*, pk: int | None = None, oda_id: int | None = None) -> ProductRecord:
     """
     Get a specific product instance.
     """
@@ -14,7 +14,7 @@ def get_product(pk: int | None = None, oda_id: int | None = None) -> ProductReco
     return ProductRecord.from_product(product)
 
 
-def _get_product(pk: int | None = None, oda_id: int | None = None) -> Product:
+def _get_product(*, pk: int | None = None, oda_id: int | None = None) -> Product:
     """
     Get a product instance. Caution: this returns a model instance, and not a
     record, and should therefore not be used directly. Use
