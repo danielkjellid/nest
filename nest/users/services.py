@@ -11,6 +11,7 @@ from .records import UserRecord
 
 
 def create_user(
+    *,
     email: str,
     password: str | None = None,
     password2: str | None = None,
@@ -33,7 +34,7 @@ def create_user(
 
 
 def _validate_email_and_password(
-    email: str, password: str | None, password2: str | None
+    *, email: str, password: str | None, password2: str | None
 ) -> tuple[str, str]:
     """
     Validate email and password for create operation

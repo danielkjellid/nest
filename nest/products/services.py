@@ -18,6 +18,7 @@ logger = structlog.getLogger()
 
 
 def create_product(
+    *,
     name: str,
     gross_price: str,
     unit_id: int | str,
@@ -78,7 +79,7 @@ def update_or_create_product(
     return ProductRecord.from_product(product)
 
 
-def import_from_oda(oda_product_id: int) -> ProductRecord | None:
+def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     """
     Import a product from Oda based on the Oda product id.
     """
@@ -138,7 +139,7 @@ def import_from_oda(oda_product_id: int) -> ProductRecord | None:
     return product_record
 
 
-def _validate_oda_response(response_record: OdaProductDetailRecord) -> None:
+def _validate_oda_response(*, response_record: OdaProductDetailRecord) -> None:
     """
     Validate that required values from the Oda product response is present, and
     raise an exception if they're not.
