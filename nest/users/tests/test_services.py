@@ -2,18 +2,18 @@ import pytest
 
 from nest.core.exceptions import ApplicationError
 from nest.users.models import User
-from nest.users.services import UserService
+from nest.users.services import create_user
 
 pytestmark = pytest.mark.django_db
 
 
-class TestServicesUsers:
+class TestUsersServices:
     def test_user_create(self, django_assert_num_queries, user_fixture) -> None:
         """
         Test that the "create" service creates a user.
         """
         with django_assert_num_queries(2):
-            new_user = UserService.create(
+            new_user = create_user(
                 email="test@example.com",
                 password="supersecret",
                 is_active=True,
@@ -32,7 +32,7 @@ class TestServicesUsers:
 
         with pytest.raises(ApplicationError):
             # Test no provided email
-            UserService.create(
+            create_user(
                 email="",
                 password="supersecret",
                 is_active=True,
@@ -41,7 +41,7 @@ class TestServicesUsers:
         with pytest.raises(ApplicationError):
             # Test user already exists
             existing_user = user_fixture
-            UserService.create(
+            create_user(
                 email=existing_user.email,
                 password="supersecret",
                 is_active=True,
@@ -49,7 +49,7 @@ class TestServicesUsers:
 
         with pytest.raises(ApplicationError):
             # Test email does not pass validation.
-            UserService.create(
+            create_user(
                 email="willnotpass",
                 password="supersecret",
                 is_active=True,
@@ -57,7 +57,7 @@ class TestServicesUsers:
 
         with pytest.raises(ApplicationError):
             # Test password does not pass validation.
-            UserService.create(
+            create_user(
                 email="someone@example.com",
                 password="1234",
                 is_active=True,
