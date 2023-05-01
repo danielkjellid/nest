@@ -2,9 +2,9 @@ import pytest
 from django.test.client import RequestFactory
 
 from nest.frontend.records import (
-    FrontendMenuItemRecord,
-    FrontendInitialPropsRecord,
     FrontendConfigRecord,
+    FrontendInitialPropsRecord,
+    FrontendMenuItemRecord,
 )
 from nest.frontend.selectors import get_initial_props, get_menu_for_user
 from nest.homes.records import HomeRecord

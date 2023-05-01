@@ -2,8 +2,8 @@ from django.conf import settings
 from django.http import HttpRequest
 
 from nest.frontend.records import (
-    FrontendInitialPropsRecord,
     FrontendConfigRecord,
+    FrontendInitialPropsRecord,
     FrontendMenuItemRecord,
 )
 from nest.homes.selectors import get_homes_for_user
