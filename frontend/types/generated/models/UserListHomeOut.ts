@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserListHome = {
+export type UserListHomeOut = {
     id: number;
     address: string;
     isActive: boolean;

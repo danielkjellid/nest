@@ -2,15 +2,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UserListHome } from './UserListHome';
+import type { UserListHomeOut } from './UserListHomeOut';
 
-export type UserList = {
+export type UserListOut = {
     id: number;
     email: string;
     fullName: string;
     isActive: boolean;
     isStaff: boolean;
     isSuperuser: boolean;
-    home?: UserListHome;
+    home?: UserListHomeOut;
 };
 

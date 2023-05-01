@@ -147,7 +147,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserListAPIResponse"
+                                    "$ref": "#/components/schemas/UserListOutAPIResponse"
                                 }
                             }
                         }
@@ -507,8 +507,8 @@
                 ],
                 "type": "object"
             },
-            "UserListHome": {
-                "title": "UserListAPIResponse",
+            "UserListHomeOut": {
+                "title": "UserListOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
@@ -533,8 +533,8 @@
                 ],
                 "type": "object"
             },
-            "UserList": {
-                "title": "UserListAPIResponse",
+            "UserListOut": {
+                "title": "UserListOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
@@ -567,7 +567,7 @@
                         "component": "Checkbox"
                     },
                     "home": {
-                        "$ref": "#/components/schemas/UserListHome"
+                        "$ref": "#/components/schemas/UserListHomeOut"
                     }
                 },
                 "required": [
@@ -580,8 +580,8 @@
                 ],
                 "type": "object"
             },
-            "UserListAPIResponse": {
-                "title": "UserListAPIResponse",
+            "UserListOutAPIResponse": {
+                "title": "UserListOutAPIResponse",
                 "properties": {
                     "status": {
                         "title": "Status",
@@ -601,7 +601,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/UserList"
+                            "$ref": "#/components/schemas/UserListOut"
                         },
                         "component": "MultiSelect"
                     }
