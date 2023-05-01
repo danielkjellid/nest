@@ -6,7 +6,7 @@ from decimal import Decimal
 from django.db import models
 
 from nest.core.models import BaseModel
-from nest.core.utils.dates import DateUtil
+from nest.core.utils import format_datetime
 
 from .managers import ProductQuerySet
 
@@ -86,7 +86,7 @@ class Product(BaseModel):
     @property
     def last_synced_at(self) -> str | None:
         return (
-            DateUtil.format_datetime(self.updated_at, with_seconds=True)
+            format_datetime(self.updated_at, with_seconds=True)
             if self.updated_at
             else None
         )

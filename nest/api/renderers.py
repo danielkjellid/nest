@@ -4,7 +4,7 @@ import orjson
 from django.http import HttpRequest
 from ninja.renderers import BaseRenderer
 
-from nest.core.utils.humps import HumpsUtil
+from nest.core.utils import camelize
 
 
 class CamelCaseRenderer(BaseRenderer):
@@ -15,5 +15,5 @@ class CamelCaseRenderer(BaseRenderer):
     media_type = "application/json"
 
     def render(self, request: HttpRequest, data: Any, *, response_status: int) -> Any:
-        camelized_data = HumpsUtil.camelize(data)
+        camelized_data = camelize(data)
         return orjson.dumps(camelized_data)

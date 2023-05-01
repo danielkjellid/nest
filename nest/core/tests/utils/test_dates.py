@@ -2,12 +2,12 @@ from datetime import datetime
 
 import pytest
 
-from nest.core.utils.dates import DateUtil
+from nest.core.utils import format_date, format_datetime, format_time
 
 DT = datetime(2020, 1, 1, 12, 30, 45)
 
 
-class TestDateUtil:
+class TestDatesUtil:
     @pytest.mark.parametrize(
         "kwargs, expected",
         [
@@ -18,7 +18,7 @@ class TestDateUtil:
         ],
     )
     def test_format_date(self, kwargs, expected):
-        assert DateUtil.format_date(DT.date(), **kwargs) == expected
+        assert format_date(DT.date(), **kwargs) == expected
 
     @pytest.mark.parametrize(
         "kwargs, expected",
@@ -31,7 +31,7 @@ class TestDateUtil:
         ],
     )
     def test_format_time(self, kwargs, expected):
-        assert DateUtil.format_time(DT.time(), **kwargs) == expected
+        assert format_time(DT.time(), **kwargs) == expected
 
     @pytest.mark.parametrize(
         "with_weekday",
@@ -46,6 +46,6 @@ class TestDateUtil:
         if with_weekday is True:
             expected = f"{DT.strftime('%a, ')}{expected}"
 
-        dt = DateUtil.format_datetime(DT, with_weekday=with_weekday)
+        dt = format_datetime(DT, with_weekday=with_weekday)
 
         assert expected == dt

@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpRequest
 
-from nest.core.utils.humps import HumpsUtil
+from nest.core.utils import camelize
 
 from ..selectors import get_initial_props
 from .base import ReactView
@@ -20,7 +20,7 @@ class FrontendView(LoginRequiredMixin, ReactView):
 
         return {
             "initial_props": json.dumps(
-                HumpsUtil.camelize(props.dict()) if props else {},
+                camelize(props.dict()) if props else {},
                 indent=4,
                 cls=DjangoJSONEncoder,
             )

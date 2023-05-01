@@ -5,7 +5,7 @@ from ninja.errors import ValidationError as NinjaValidationError
 from pydantic.error_wrappers import ValidationError as PydanticValidationError
 
 from nest.core.exceptions import ApplicationError
-from nest.core.utils.humps import HumpsUtil
+from nest.core.utils import camelize
 from nest.products.endpoints import products_router
 from nest.units.endpoints import units_router
 from nest.users.endpoints import users_router
@@ -49,7 +49,7 @@ def models_validation_error(
 
     for error in errors:
         location = error["loc"]
-        field = HumpsUtil.camelize(location[len(location) - 1])
+        field = camelize(location[len(location) - 1])
         field_errors[field] = error["msg"].capitalize()  # type: ignore
 
     return api.create_response(
