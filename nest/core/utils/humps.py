@@ -47,23 +47,23 @@ def decamelize(
     return _separate_words(_fix_abbreviations(stri)).lower()
 
 
-def is_camelcase(cls, str_or_iter: str | list[Any] | dict[str, Any]) -> bool:
+def is_camelcase(str_or_iter: str | list[Any] | dict[str, Any]) -> bool:
     """
     Determine if a string, dict, or list of dicts is camel case.
     """
 
-    if str_or_iter == cls.camelize(str_or_iter):
+    if str_or_iter == camelize(str_or_iter):
         return True
 
     return False
 
 
-def is_snakecase(cls, str_or_iter: str | list[Any] | dict[str, Any]) -> bool:
+def is_snakecase(str_or_iter: str | list[Any] | dict[str, Any]) -> bool:
     """
     Determine if a string, dict, or list of dicts is snake case.
     """
 
-    if str_or_iter == cls.decamelize(str_or_iter):
+    if str_or_iter == decamelize(str_or_iter):
         return True
 
     return False
