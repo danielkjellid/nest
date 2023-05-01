@@ -21,7 +21,7 @@ from pydantic import BaseModel
 from pydantic.schema import enum_process_schema, model_schema
 
 from nest.api.files import UploadedFile, UploadedImageFile
-from nest.core.utils.humps import HumpsUtil
+from nest.core.utils import camelize
 
 MANUALLY_ADDED_SCHEMAS = []
 
@@ -266,7 +266,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
                     except KeyError:
                         pass
 
-        return HumpsUtil.camelize(props)  # type: ignore
+        return camelize(props)  # type: ignore
 
     def _convert_keys_to_camelcase(self, data: dict[str, Any] | list[str]) -> Any:
         """
@@ -277,7 +277,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
                 key: self._convert_keys_to_camelcase(val) for key, val in data.items()
             }
         elif isinstance(data, list):
-            return [HumpsUtil.camelize(val) for val in data]
+            return [camelize(val) for val in data]
         else:
             return data
 

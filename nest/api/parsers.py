@@ -4,7 +4,7 @@ import orjson
 from django.http import HttpRequest
 from ninja.parser import Parser
 
-from nest.core.utils.humps import HumpsUtil
+from nest.core.utils import decamelize, is_camelcase
 
 
 class CamelCaseParser(Parser):
@@ -17,8 +17,8 @@ class CamelCaseParser(Parser):
     def parse_body(self, request: HttpRequest) -> Any:
         data = orjson.loads(request.body)
 
-        if HumpsUtil.is_camelcase(data):
-            decamelized_data = HumpsUtil.decamelize(data)
+        if is_camelcase(data):
+            decamelized_data = decamelize(data)
             return decamelized_data
 
         return data
