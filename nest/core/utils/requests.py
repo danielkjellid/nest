@@ -27,6 +27,9 @@ def get_remote_request_ip(*, request: HttpRequest) -> str | None:
 def get_remote_request_user(
     *, request_or_user: HttpRequest | User | UserRecord
 ) -> tuple[UserRecord | None, HttpRequest | None]:
+    """
+    Get a user from request or passed user. Returned as a UserRecord.
+    """
     from nest.users.models import User
     from nest.users.records import UserRecord
 
