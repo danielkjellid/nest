@@ -2,6 +2,7 @@ import { ProductListOutAPIResponse, UnitListOutAPIResponse } from '../../types'
 
 import { Button } from '../../components/Button'
 import ProductAddDrawer from './components/ProductAddDrawer'
+import ProductEditDrawer from './components/ProductEditDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import React from 'react'
 import { Title } from '@mantine/core'
@@ -38,6 +39,7 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
         </div>
         <ProductOverViewTable data={products.data || []} />
         <ProductAddDrawer opened={opened} onClose={close} />
+        <ProductEditDrawer productId={7} />
       </div>
     </UnitsProvider>
   )

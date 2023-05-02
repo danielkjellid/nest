@@ -6,6 +6,8 @@ export interface FormElementOptionsObj {
   beforeSlot?: React.ReactNode
   afterSlot?: React.ReactNode
   options?: FormEnum[]
+  helpText?: string
+  placeholder?: string
 }
 
 export interface FormElementOptions {

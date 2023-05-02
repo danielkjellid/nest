@@ -10,10 +10,11 @@ from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.units.selectors import get_unit_by_abbreviation
-
+from django.http import HttpRequest
 from .models import Product
 from .records import ProductRecord
-from .selectors import get_product
+from .selectors import get_product, _get_product
+from nest.core.services import update_model
 
 logger = structlog.getLogger()
 
@@ -52,6 +53,46 @@ def create_product(
     product.save()
 
     return ProductRecord.from_product(product)
+
+
+def edit_product(
+    *,
+    request: HttpRequest | None = None,
+    product_id: int | str,
+    thumbnail: UploadedFile | InMemoryUploadedFile | ImageFile | None = None,
+    **edits: dict[str, Any],
+) -> ProductRecord:
+    """
+    Edit an existing product instance.
+    """
+
+    data = edits
+
+    if thumbnail is not None:
+        data["thumbnail"] = thumbnail
+
+    product_instance, _has_updated = update_model(
+        instance=_get_product(pk=product_id),
+        fields=[
+            "name",
+            "gross_price",
+            "gross_unit_price",
+            "unit",
+            "unit_id",
+            "unit_quantity",
+            "oda_url",
+            "oda_id",
+            "is_available",
+            "thumbnail",
+            "gtin",
+            "supplier",
+            "is_synced",
+        ],
+        data=data,
+        request=request,
+    )
+
+    return ProductRecord.from_product(product_instance)
 
 
 def update_or_create_product(

@@ -83,6 +83,16 @@ function Form<T extends object>({
    ** Values: defaults, initial and current **
    *******************************************/
 
+  const getDefaultForElement = ({ element }: { element: FormElementObj }) => {
+    if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
+      return (element.defaultValue ? element.defaultValue : false) as T[K]
+    } else if ((element as FormElementObj).component === FrontendComponents.FILE_INPUT) {
+      return (element.defaultValue ? element.defaultValue : null) as T[K]
+    } else {
+      return (element.defaultValue ? element.defaultValue : '') as T[K]
+    }
+  }
+
   // We want to use controlled elements only, and therefore, we have to be a bit careful with
   // what state we're setting the elements to. For checkboxes, we want to set a boolean, for
   // the file input we want to set null, and for everything else we want to set an empty string.
@@ -90,37 +100,35 @@ function Form<T extends object>({
     const values = {} as T
     Object.entries(elements).map(([elementKey, element]) => {
       const elemId = elementKey as K
-
-      if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
-        values[elemId] = (element.defaultValue ? element.defaultValue : false) as T[K]
-      } else if ((element as FormElementObj).component === FrontendComponents.FILE_INPUT) {
-        values[elemId] = (element.defaultValue ? element.defaultValue : null) as T[K]
-      } else {
-        values[elemId] = (element.defaultValue ? element.defaultValue : '') as T[K]
-      }
+      values[elemId] = getDefaultForElement({ element })
     })
 
     return values
   }
 
-  const getInitialFormValues = () => {
+  const getInitialFormValues = ({
+    initialData,
+  }: {
+    initialData: Partial<T> | null | undefined
+  }) => {
     let initialValues = {} as T
 
-    Object.keys(elements).map((elementKey) => {
-      // If we have data passed, we want to set the initial values equal to that of the
-      // existing object. If not, just set the defaults for each element.
-      if (data && data[elementKey as K] !== undefined) {
-        initialValues[elementKey as K] = data[elementKey as K] as T[K]
+    Object.entries(elements).map(([elementKey, element]) => {
+      if (initialData) {
+        if (initialData[elementKey as K] !== null) {
+          initialValues[elementKey as K] = initialData[elementKey as K] as T[K]
+        } else {
+          initialValues[elementKey as K] = getDefaultForElement({ element })
+        }
       } else {
         initialValues = setDefaultFormValues()
       }
     })
-
     return initialValues
   }
 
   // The formValues variable controls all state passed back and forth.
-  const [formValues, setFormValues] = useState<T>(getInitialFormValues())
+  const [formValues, setFormValues] = useState<T>(getInitialFormValues({ initialData: data }))
 
   /*************************
    ** Handle form changes **
@@ -158,7 +166,17 @@ function Form<T extends object>({
    ** Element creation **
    **********************/
 
-  const createCheckboxComponent = (elementKey: K, element: FormElementObj) => {
+  const createCheckboxComponent = ({
+    elementKey,
+    element,
+    helpText,
+    disabled,
+  }: {
+    elementKey: K
+    element: FormElementObj
+    helpText?: string
+    disabled?: boolean
+  }) => {
     if (!elementKey) {
       return null
     }
@@ -168,8 +186,10 @@ function Form<T extends object>({
       <Checkbox
         key={elementKey.toString()}
         label={title}
-        disabled={loadingState === 'loading'}
+        description={helpText ? helpText : element.helpText}
+        disabled={disabled ? disabled : loadingState === 'loading'}
         checked={formValues[elementKey as K] as boolean}
+        className={`w-full col-span-${element.colSpan ? element.colSpan : columns}`}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           handleInputChange(elementKey, event)
         }
@@ -177,25 +197,39 @@ function Form<T extends object>({
     )
   }
 
-  const createFormComponent = (elementKey: K, element: FormElementObj, options?: FormEnum[]) => {
+  const createFormComponent = ({
+    elementKey,
+    element,
+    options,
+    placeholder,
+    helpText,
+    disabled,
+  }: {
+    elementKey: K
+    element: FormElementObj
+    options?: FormEnum[]
+    placeholder?: string
+    helpText?: string
+    disabled?: boolean
+  }) => {
     // The checkbox component uses slightly different properties than the other supported components.
     if (element.component === FrontendComponents.CHECKBOX) {
-      return createCheckboxComponent(elementKey, element)
+      return createCheckboxComponent({ elementKey, element })
     }
 
     return (
       // @ts-ignore
       React.createElement(supportedComponents[element.component], {
         key: elementKey,
-        placeholder: element.placeholder,
+        placeholder: placeholder ? placeholder : element.placeholder,
         required: required.includes(elementKey as string),
         label: !element.hiddenLabel ? element.title : undefined,
         'aria-label': element.hiddenLabel ? element.title : undefined,
-        description: element.helpText,
+        description: helpText ? helpText : element.helpText,
         data: options || [],
         error: getErrorForElement(elementKey),
         className: `w-full col-span-${element.colSpan ? element.colSpan : columns}`,
-        disabled: loadingState === 'loading',
+        disabled: disabled ? disabled : loadingState === 'loading',
         onChange: (e: any) => handleInputChange(elementKey, e),
         value: formValues[elementKey as K],
         icon:
@@ -242,6 +276,8 @@ function Form<T extends object>({
     }
   }, [data])
 
+  console.log(formValues)
+
   return (
     <form encType={isMultipart ? 'multipart/form-data' : undefined}>
       <div className={`grid grid-cols-${columns ? columns : 1} gap-4 items-end`}>
@@ -256,14 +292,25 @@ function Form<T extends object>({
                 : undefined
 
               return (
-                <div key={key.toString()} className="flex items-end space-x-3 w-full">
+                <div
+                  key={key.toString()}
+                  className={`flex items-end space-x-3 w-full col-span-${
+                    element.colSpan ? element.colSpan : columns
+                  }`}
+                >
                   {optionsForElem.beforeSlot}
-                  {createFormComponent(key as K, element, options)}
+                  {createFormComponent({
+                    elementKey: key as K,
+                    element,
+                    options: options,
+                    placeholder: optionsForElem.placeholder,
+                    helpText: optionsForElem.helpText,
+                  })}
                   {optionsForElem.afterSlot}
                 </div>
               )
             } else {
-              return createFormComponent(key as K, element, element.enum)
+              return createFormComponent({ elementKey: key as K, element, options: element.enum })
             }
           }
         })}
