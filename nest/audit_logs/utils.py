@@ -23,8 +23,8 @@ def calculate_models_diff(
     diff = {}
 
     for field in fields:
-        old_value = smart_str(getattr(old, field, None))
-        new_value = smart_str(getattr(new, field, None))
+        old_value = getattr(old, field, None)
+        new_value = getattr(new, field, None)
 
         if old_value != new_value:
             diff[field] = (smart_str(old_value), smart_str(new_value))

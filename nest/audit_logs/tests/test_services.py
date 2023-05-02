@@ -4,12 +4,14 @@ from nest.audit_logs.services import (
     log_update,
     log_delete,
     log_create,
+    log_create_or_updated,
     AuditLogger,
 )
 from nest.products.tests.utils import create_product
 from nest.users.tests.utils import create_user
 from nest.audit_logs.models import LogEntry
 from nest.core.tests.utils import create_request
+from copy import deepcopy
 
 pytestmark = pytest.mark.django_db
 
@@ -21,14 +23,50 @@ class TestAuditLogServices:
         action = LogEntry.ACTION_CREATE when a new object is created, and a log entry
         with action = LogEntry.ACTION_UPDATE when an existing object is updated.
         """
-        assert False
+        product = create_product(name="A name")
+        old_product = deepcopy(product)
 
-    def test__create_log_entry(self, django_assert_num_queries):
+        product.name = "A new name"
+        product.save()
+        product.refresh_from_db()
+
+        action_update_entry = log_create_or_updated(
+            old=old_product, new=product, request_or_user=None, is_updated=True
+        )
+
+        assert action_update_entry.action == LogEntry.ACTION_UPDATE
+        assert action_update_entry.changes == {"name": (old_product.name, product.name)}
+
+        action_create_entry = log_create_or_updated(
+            old=None, new=product, request_or_user=None
+        )
+
+        assert action_create_entry.action == LogEntry.ACTION_CREATE
+
+    def test__create_log_entry(self, django_assert_max_num_queries):
         """
         Test that the _create_log_entry service correctly creates a log entry with
         passed parameters and within query limits.
         """
-        assert False
+        user = create_user()
+        product = create_product()
+
+        changes = {
+            "name": (product.name, "A new name"),
+            "supplier": (product.supplier, "A new supplier"),
+        }
+
+        with django_assert_max_num_queries(4):
+            log_entry = _create_log_entry(
+                request=None,
+                instance=product,
+                user=user,
+                changes=changes,
+                action=LogEntry.ACTION_UPDATE,
+            )
+
+        assert log_entry.changes == changes
+        assert log_entry.user.id == user.id
 
     def test__create_log_entry_no_changes(self, django_assert_num_queries):
         """
@@ -53,7 +91,21 @@ class TestAuditLogServices:
         Test that the _create_log_entry service correctly attaches user and request to
         the log entry when applicable.
         """
-        assert False
+        user = create_user()
+        product = create_product()
+        request = create_request(user=user)
+
+        log_entry = _create_log_entry(
+            request=request,
+            instance=product,
+            user=None,
+            changes={"name": (product.name, "A new product name")},
+            action=LogEntry.ACTION_UPDATE,
+        )
+
+        assert log_entry is not None
+        assert log_entry.user.id == user.id
+        assert log_entry.remote_addr == "127.0.0.1"
 
     def test_log_create(self):
         """

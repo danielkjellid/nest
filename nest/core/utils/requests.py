@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, cast
 from django.http import HttpRequest
 
 if TYPE_CHECKING:
+    from nest.users.records import UserRecord
     from nest.users.models import User
 
 
@@ -25,10 +26,14 @@ def get_remote_request_ip(*, request: HttpRequest) -> str | None:
 
 def get_remote_request_user(
     *, request_or_user: HttpRequest | User
-) -> tuple[User, HttpRequest | None]:
+) -> tuple[UserRecord | None, HttpRequest | None]:
     from nest.users.models import User
+    from nest.users.records import UserRecord
 
     if isinstance(request_or_user, User):
+        return UserRecord.from_user(request_or_user), None
+
+    if isinstance(request_or_user, UserRecord):
         return request_or_user, None
 
     if isinstance(request_or_user, HttpRequest):
@@ -36,7 +41,7 @@ def get_remote_request_user(
             return None, request_or_user
 
         return (
-            cast("User", request_or_user.user),
+            UserRecord.from_user(cast("User", request_or_user.user)),
             request_or_user,
         )
 
