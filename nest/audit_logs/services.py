@@ -29,6 +29,12 @@ def log_create_or_updated(
     ignore_fields: set[str] | None = None,
     is_updated: bool = False,
 ) -> LogEntryRecord | None:
+    """
+    Creates a LogEntry with correct action based on passed parameters.
+    Calculates the diff automatically between the old and new. If old is None, it the
+    changes diff will populate values from None -> value.
+    """
+
     if ignore_fields is None:
         ignore_fields = set()
 
