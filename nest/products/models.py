@@ -4,7 +4,7 @@ import os
 from decimal import Decimal
 
 from django.db import models
-from typing import Iterable
+
 from nest.core.models import BaseModel
 from nest.core.utils import format_datetime
 

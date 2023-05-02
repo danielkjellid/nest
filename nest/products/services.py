@@ -5,15 +5,15 @@ import structlog
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 
+from nest.audit_logs.services import log_create_or_updated
 from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.units.selectors import get_unit_by_abbreviation
-from nest.audit_logs.services import log_create_or_updated
 
 from .models import Product
 from .records import ProductRecord
-from .selectors import _get_product, get_product
+from .selectors import get_product
 
 logger = structlog.getLogger()
 
