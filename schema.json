@@ -44,54 +44,6 @@
                 ]
             }
         },
-        "/api/v1/products/{product_id}/edit/": {
-            "put": {
-                "operationId": "product_edit_api",
-                "summary": "Product Edit Api",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "product_id",
-                        "schema": {
-                            "title": "Product Id",
-                            "type": "integer"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Edit a product.",
-                "tags": [
-                    "Products"
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ProductEditIn"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/products/import/": {
             "post": {
                 "operationId": "product_import_api",
@@ -321,28 +273,6 @@
                     "unit",
                     "supplier",
                     "isAvailable"
-                ],
-                "columns": 2,
-                "type": "object"
-            },
-            "ProductEditIn": {
-                "title": "ProductEditIn",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "thumbnail": {
-                        "title": "Thumbnail",
-                        "type": "file",
-                        "format": "binary",
-                        "placeholder": "Upload thumbnail",
-                        "component": "FileInput"
-                    }
-                },
-                "required": [
-                    "id"
                 ],
                 "columns": 2,
                 "type": "object"

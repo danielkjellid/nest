@@ -12,7 +12,7 @@ class TestUsersServices:
         """
         Test that the "create" service creates a user.
         """
-        with django_assert_num_queries(2):
+        with django_assert_num_queries(4):
             new_user = create_user(
                 email="test@example.com",
                 password="supersecret",

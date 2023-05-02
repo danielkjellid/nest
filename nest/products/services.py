@@ -82,7 +82,7 @@ def update_or_create_product(
             source=source,
             is_updated=not created,
         )
-    else:
+    elif pk is not None:
         defaults = kwargs
 
         if oda_id is not None:
@@ -100,6 +100,9 @@ def update_or_create_product(
             source=source,
             is_updated=not created,
         )
+
+    else:
+        raise ValueError("Either pk or oda_id must be supplied.")
 
     return ProductRecord.from_product(product)
 

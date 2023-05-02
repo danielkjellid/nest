@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 from django.http import HttpRequest
 
@@ -19,13 +19,13 @@ def get_remote_request_ip(*, request: HttpRequest) -> str | None:
     for meta_field in meta_fields:
         meta_value = request.META.get(meta_field, None)
         if meta_value:
-            return meta_value.split(",")[0]
+            return meta_value.split(",")[0]  # type: ignore
 
     return None
 
 
 def get_remote_request_user(
-    *, request_or_user: HttpRequest | User
+    *, request_or_user: HttpRequest | User | UserRecord
 ) -> tuple[UserRecord | None, HttpRequest | None]:
     from nest.users.models import User
     from nest.users.records import UserRecord
@@ -41,7 +41,7 @@ def get_remote_request_user(
             return None, request_or_user
 
         return (
-            UserRecord.from_user(cast("User", request_or_user.user)),
+            UserRecord.from_user(request_or_user.user),
             request_or_user,
         )
 

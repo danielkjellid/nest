@@ -1,11 +1,8 @@
-import json
-
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
-from django.utils.functional import cached_property
 
 from nest.core.models import BaseModel
 
@@ -55,8 +52,3 @@ class LogEntry(BaseModel):
         ordering = ["-created_at"]
         verbose_name = "log entry"
         verbose_name_plural = "log entries"
-
-    @cached_property
-    def changes_as_dict(self) -> dict[str, str]:
-        message = json.loads(self.changes)
-        return message

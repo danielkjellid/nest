@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, Callable, TypeVar, cast
+from types import TracebackType
+from typing import Any, Callable, Type, TypeVar, cast
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -17,13 +18,12 @@ from .records import LogEntryRecord
 from .utils import calculate_models_diff
 
 T = TypeVar("T")
-T_MODEL = TypeVar("T_MODEL", bound=Model)
 
 
 def log_create_or_updated(
     *,
-    old: T_MODEL | None,
-    new: T_MODEL,
+    old: Model | None,
+    new: Model,
     request_or_user: HttpRequest | User | UserRecord | None = None,
     source: str | None = None,
     ignore_fields: set[str] | None = None,
@@ -51,7 +51,7 @@ def log_create_or_updated(
 
     if request_or_user:
         user, request = get_remote_request_user(request_or_user=request_or_user)
-        user_id = user.id
+        user_id = getattr(user, "id", None)
 
     if old:
         created_log_entry = log_update(
@@ -76,7 +76,7 @@ def log_create_or_updated(
 def _create_log_entry(
     *,
     request: HttpRequest | None,
-    instance: T_MODEL,
+    instance: Model,
     user: UserRecord | None = None,
     changes: dict[str, tuple[T | None, T | None]] | None = None,
     action: int,
@@ -163,7 +163,7 @@ class AuditLogger:
 
     def __init__(
         self,
-        instance: T_MODEL,
+        instance: Model,
         include_fields: set[str] | None = None,
         exclude_fields: set[str] | None = None,
         request_or_user: HttpRequest | User | UserRecord | None = None,
@@ -226,7 +226,12 @@ class AuditLogger:
         self.previous_data = self._get_current_data_dict() if self.instance else {}
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> AuditLogger:
+    def __exit__(
+        self,
+        exc_type: Type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> AuditLogger:
         """
         On context exit: Find the difference, store it and create a LogEntry.
         """
