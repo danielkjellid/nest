@@ -1,13 +1,11 @@
-from typing import Iterable, TypeVar
+from typing import Iterable
 
 from django.db.models import Model
 from django.utils.encoding import smart_str
 
-T_MODEL = TypeVar("T_MODEL", bound=Model)
-
 
 def calculate_models_diff(
-    old: T_MODEL | None, new: T_MODEL | None, fields: Iterable[str]
+    old: Model | None, new: Model | None, fields: Iterable[str]
 ) -> dict[str, tuple[str | None, str | None]] | None:
     """
     Calculates the differences between two model instances. One of the
