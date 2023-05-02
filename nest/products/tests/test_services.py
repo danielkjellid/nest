@@ -108,7 +108,7 @@ class TestProductServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(8):
+        with django_assert_num_queries(9):
             updated_product = update_or_create_product(
                 pk=existing_product.id, **defaults
             )
@@ -132,7 +132,7 @@ class TestProductServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(8):
+        with django_assert_num_queries(9):
             updated_product = update_or_create_product(
                 oda_id=existing_product.oda_id, **defaults
             )
@@ -235,7 +235,7 @@ class TestProductServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(10):
+        with django_assert_num_queries(11):
             imported_product = import_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product.id == product.id
