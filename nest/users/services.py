@@ -3,9 +3,7 @@ from typing import Any
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.validators import validate_email
-from django.http import HttpRequest
 
-from nest.audit_logs.services import log_create_or_updated
 from nest.core.exceptions import ApplicationError
 
 from .models import User
@@ -18,7 +16,6 @@ def create_user(
     password: str | None = None,
     password2: str | None = None,
     is_active: bool = True,
-    request: HttpRequest | None = None,
     **additional_fields: Any,
 ) -> UserRecord:
     """
@@ -32,8 +29,6 @@ def create_user(
     new_user = User(email=validated_email, is_active=is_active, **additional_fields)
     new_user.set_password(raw_password=validated_password)
     new_user.save()
-
-    log_create_or_updated(old=None, new=new_user, request_or_user=request)
 
     return UserRecord.from_user(new_user)
 

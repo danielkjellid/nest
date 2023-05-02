@@ -49,5 +49,5 @@ def product_create_api(
     Create a normal product.
     """
 
-    create_product(**payload.dict(), thumbnail=thumbnail, request=request)
+    create_product(**payload.dict(), thumbnail=thumbnail)
     return APIResponse(status="success", data=None)

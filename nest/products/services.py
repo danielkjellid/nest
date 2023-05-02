@@ -4,9 +4,7 @@ from typing import Any
 import structlog
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
-from django.http import HttpRequest
 
-from nest.audit_logs.services import log_create_or_updated
 from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
@@ -27,7 +25,6 @@ def create_product(
     unit_quantity: str,
     supplier: str,
     thumbnail: UploadedFile | InMemoryUploadedFile | ImageFile | None = None,
-    request: HttpRequest | None = None,
     **additional_fields: Any,
 ) -> ProductRecord:
     """
@@ -53,56 +50,31 @@ def create_product(
     product.full_clean()
     product.save()
 
-    log_create_or_updated(old=None, new=product, request_or_user=request)
-
     return ProductRecord.from_product(product)
 
 
 def update_or_create_product(
-    *,
-    pk: int | None = None,
-    oda_id: int | None = None,
-    source: str | None = None,
-    **kwargs: Any,
+    *, pk: int | None = None, oda_id: int | None = None, **kwargs: Any
 ) -> ProductRecord:
     """
     Update or create a product.
     """
 
     if pk is None and oda_id is not None:
-        existing_product = Product.objects.filter(oda_id=oda_id).first()
-        product, created = Product.objects.update_or_create(
+        product, _created = Product.objects.update_or_create(
             oda_id=oda_id,
             defaults=kwargs,
         )
-        log_create_or_updated(
-            old=existing_product,
-            new=product,
-            request_or_user=None,
-            source=source,
-            is_updated=not created,
-        )
-    elif pk is not None:
+    else:
         defaults = kwargs
 
         if oda_id is not None:
             defaults.update({"oda_id": oda_id})
 
-        existing_product = Product.objects.filter(id=pk).first()
-        product, created = Product.objects.update_or_create(
+        product, _created = Product.objects.update_or_create(
             id=pk,
             defaults=defaults,
         )
-        log_create_or_updated(
-            old=existing_product,
-            new=product,
-            request_or_user=None,
-            source=source,
-            is_updated=not created,
-        )
-
-    else:
-        raise ValueError("Either pk or oda_id must be supplied.")
 
     return ProductRecord.from_product(product)
 
@@ -155,7 +127,7 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     }
 
     product_record = update_or_create_product(
-        pk=None, oda_id=product_response.id, source="Oda", **defaults
+        pk=None, oda_id=product_response.id, **defaults
     )
 
     if product_image:

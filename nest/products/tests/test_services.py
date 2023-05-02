@@ -40,7 +40,7 @@ class TestProductServices:
             "supplier": "Awesome supplier",
         }
 
-        with django_assert_num_queries(4):
+        with django_assert_num_queries(3):
             product_no_thumbnail = create_product(
                 name="Awesome product",
                 **fields,
@@ -57,7 +57,7 @@ class TestProductServices:
         assert product_no_thumbnail.gross_unit_price == Decimal("70.10")
         assert product_no_thumbnail.thumbnail_url is None
 
-        with django_assert_num_queries(4):
+        with django_assert_num_queries(3):
             product = create_product(
                 name="Another awesome product",
                 thumbnail=create_product_image(name="thumb"),
@@ -88,7 +88,7 @@ class TestProductServices:
 
         assert Product.objects.all().count() == 0
 
-        with django_assert_num_queries(9):
+        with django_assert_num_queries(7):
             update_or_create_product(**defaults)
 
         assert Product.objects.all().count() == 1
@@ -108,7 +108,7 @@ class TestProductServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(8):
+        with django_assert_num_queries(5):
             updated_product = update_or_create_product(
                 pk=existing_product.id, **defaults
             )
@@ -132,7 +132,7 @@ class TestProductServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(8):
+        with django_assert_num_queries(5):
             updated_product = update_or_create_product(
                 oda_id=existing_product.oda_id, **defaults
             )
@@ -140,15 +140,6 @@ class TestProductServices:
         assert updated_product.id == existing_product.id
         assert updated_product.name == "Updated test product"
         assert updated_product.oda_id == existing_product.oda_id
-
-    def test_update_or_create_product_no_ids(self, django_assert_num_queries):
-        """
-        Test that update_or_create_product raises ValueError if neither pk or oda_id is
-        passed.
-        """
-        with pytest.raises(ValueError):
-            with django_assert_num_queries(0):
-                update_or_create_product(pk=None, oda_id=None)
 
     def test_import_from_oda_excluded_from_sync(
         self, django_assert_num_queries, request_mock, mocker
@@ -211,7 +202,7 @@ class TestProductServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(13):
+        with django_assert_num_queries(11):
             imported_product = import_from_oda(oda_product_id=oda_id_mock)
 
         assert Product.objects.all().count() == 1
@@ -244,7 +235,7 @@ class TestProductServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(12):
+        with django_assert_num_queries(9):
             imported_product = import_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product.id == product.id
