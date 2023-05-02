@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, TypeVar, cast, Callable, TYPE_CHECKING
+from typing import Any, Callable, TypeVar, cast
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -9,12 +9,12 @@ from django.http import HttpRequest
 from django.utils.encoding import smart_str
 
 from nest.core.utils import get_remote_request_ip, get_remote_request_user
-
-from .models import LogEntry
-from .utils import calculate_models_diff
-from .records import LogEntryRecord
 from nest.users.models import User
 from nest.users.records import UserRecord
+
+from .models import LogEntry
+from .records import LogEntryRecord
+from .utils import calculate_models_diff
 
 T = TypeVar("T")
 T_MODEL = TypeVar("T_MODEL", bound=Model)

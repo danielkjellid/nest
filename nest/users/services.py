@@ -4,8 +4,9 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.validators import validate_email
 from django.http import HttpRequest
-from nest.core.exceptions import ApplicationError
+
 from nest.audit_logs.services import log_create_or_updated
+from nest.core.exceptions import ApplicationError
 
 from .models import User
 from .records import UserRecord

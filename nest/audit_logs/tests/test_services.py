@@ -1,17 +1,19 @@
+from copy import deepcopy
+
 import pytest
+
+from nest.audit_logs.models import LogEntry
 from nest.audit_logs.services import (
+    AuditLogger,
     _create_log_entry,
-    log_update,
-    log_delete,
     log_create,
     log_create_or_updated,
-    AuditLogger,
+    log_delete,
+    log_update,
 )
+from nest.core.tests.utils import create_request
 from nest.products.tests.utils import create_product
 from nest.users.tests.utils import create_user
-from nest.audit_logs.models import LogEntry
-from nest.core.tests.utils import create_request
-from copy import deepcopy
 
 pytestmark = pytest.mark.django_db
 

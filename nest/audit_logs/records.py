@@ -1,8 +1,12 @@
 from __future__ import annotations
-from pydantic import BaseModel
-from nest.users.records import UserRecord
-from .models import LogEntry
+
 from typing import Any
+
+from pydantic import BaseModel
+
+from nest.users.records import UserRecord
+
+from .models import LogEntry
 
 
 class LogEntryRecord(BaseModel):

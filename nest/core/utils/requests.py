@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, cast
 from django.http import HttpRequest
 
 if TYPE_CHECKING:
-    from nest.users.records import UserRecord
     from nest.users.models import User
+    from nest.users.records import UserRecord
 
 
 def get_remote_request_ip(*, request: HttpRequest) -> str | None:

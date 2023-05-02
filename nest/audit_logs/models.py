@@ -9,7 +9,7 @@ from django.utils.functional import cached_property
 
 from nest.core.models import BaseModel
 
-from .managers import LogEntryQuerySet, LogEntryManager
+from .managers import LogEntryManager, LogEntryQuerySet
 
 _LogEntryManager = LogEntryManager.from_queryset(LogEntryQuerySet)
 

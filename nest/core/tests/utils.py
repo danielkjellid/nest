@@ -1,6 +1,7 @@
-from nest.users.models import User
-from django.test.client import RequestFactory
 from django.core.handlers.wsgi import WSGIRequest
+from django.test.client import RequestFactory
+
+from nest.users.models import User
 
 
 def create_request(*, user: User | None = None, addr: str = "127.0.0.1") -> WSGIRequest:

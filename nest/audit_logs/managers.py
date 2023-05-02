@@ -1,7 +1,8 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING, Any
 
-from django.db.models import Model, Manager
+from django.db.models import Manager, Model
 
 from nest.core.managers import BaseQuerySet
 
