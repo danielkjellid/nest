@@ -88,7 +88,7 @@ class TestProductServices:
 
         assert Product.objects.all().count() == 0
 
-        with django_assert_num_queries(7):
+        with django_assert_num_queries(8):
             update_or_create_product(**defaults)
 
         assert Product.objects.all().count() == 1
@@ -108,7 +108,7 @@ class TestProductServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(5):
+        with django_assert_num_queries(9):
             updated_product = update_or_create_product(
                 pk=existing_product.id, **defaults
             )
@@ -132,7 +132,7 @@ class TestProductServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(5):
+        with django_assert_num_queries(9):
             updated_product = update_or_create_product(
                 oda_id=existing_product.oda_id, **defaults
             )
@@ -202,7 +202,7 @@ class TestProductServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(11):
+        with django_assert_num_queries(10):
             imported_product = import_from_oda(oda_product_id=oda_id_mock)
 
         assert Product.objects.all().count() == 1
@@ -235,7 +235,7 @@ class TestProductServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(9):
+        with django_assert_num_queries(11):
             imported_product = import_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product.id == product.id

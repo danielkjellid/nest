@@ -55,6 +55,19 @@ jobs:
     name: python tests
     runs-on: ubuntu-20.04
     services:
+      minio:
+        image: bitnami/minio:latest
+        env:
+          # Make sure these variables is the same as the defaults in settings.py
+          MINIO_ROOT_USER: nest # AWS_ACCESS_KEY_ID
+          MINIO_ROOT_PASSWORD: nesttestpassword # AWS_SECRET_ACCESS_KEY
+          MINIO_DEFAULT_BUCKETS: dev:download # AWS_S3_BUCKET_NAME
+          CONSOLE_SECURE_TLS_REDIRECT: off
+        ports:
+          - '9000:9000'
+          - '9001:9001'
+        volumes:
+         -  'minio_data:/data'
       postgres:
         image: postgres:14
         ports:

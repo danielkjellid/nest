@@ -44,34 +44,6 @@
                 ]
             }
         },
-        "/api/v1/products/": {
-            "get": {
-                "operationId": "product_list_api",
-                "summary": "Product List Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list of all products in the application.",
-                "tags": [
-                    "Products"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/products/import/": {
             "post": {
                 "operationId": "product_import_api",
@@ -102,6 +74,34 @@
                     },
                     "required": true
                 },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/products/": {
+            "get": {
+                "operationId": "product_list_api",
+                "summary": "Product List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all products in the application.",
+                "tags": [
+                    "Products"
+                ],
                 "security": [
                     {
                         "SessionAuth": []
@@ -277,6 +277,84 @@
                 "columns": 2,
                 "type": "object"
             },
+            "ProductImportOut": {
+                "title": "ProductImportOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "NumberInput"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "grossPrice": {
+                        "title": "Gross Price",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "odaUrl",
+                    "grossPrice"
+                ],
+                "type": "object"
+            },
+            "ProductImportOutAPIResponse": {
+                "title": "ProductImportOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/ProductImportOut"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "ProductImportIn": {
+                "title": "ProductImportIn",
+                "properties": {
+                    "odaProductId": {
+                        "title": "Oda Product Id",
+                        "helpText": "Product Id at Oda.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "odaProductId"
+                ],
+                "type": "object"
+            },
             "ProductListOut": {
                 "title": "ProductListOutAPIResponse",
                 "properties": {
@@ -369,84 +447,6 @@
                 },
                 "required": [
                     "status"
-                ],
-                "type": "object"
-            },
-            "ProductImportOut": {
-                "title": "ProductImportOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "NumberInput"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "odaUrl": {
-                        "title": "Oda Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "grossPrice": {
-                        "title": "Gross Price",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id",
-                    "name",
-                    "odaUrl",
-                    "grossPrice"
-                ],
-                "type": "object"
-            },
-            "ProductImportOutAPIResponse": {
-                "title": "ProductImportOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "$ref": "#/components/schemas/ProductImportOut"
-                    }
-                },
-                "required": [
-                    "status"
-                ],
-                "type": "object"
-            },
-            "ProductImportIn": {
-                "title": "ProductImportIn",
-                "properties": {
-                    "odaProductId": {
-                        "title": "Oda Product Id",
-                        "helpText": "Product Id at Oda.",
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "odaProductId"
                 ],
                 "type": "object"
             },
