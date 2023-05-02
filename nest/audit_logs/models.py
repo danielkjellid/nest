@@ -9,9 +9,9 @@ from django.utils.functional import cached_property
 
 from nest.core.models import BaseModel
 
-from .managers import LogEntryQuerySet
+from .managers import LogEntryQuerySet, LogEntryManager
 
-_LogEntryManager = models.Manager.from_queryset(LogEntryQuerySet)
+_LogEntryManager = LogEntryManager.from_queryset(LogEntryQuerySet)
 
 
 class LogEntry(BaseModel):
@@ -51,8 +51,8 @@ class LogEntry(BaseModel):
     objects = _LogEntryManager()
 
     class Meta:
-        get_latest_by = "created_time"
-        ordering = ["-created_time"]
+        get_latest_by = "created_at"
+        ordering = ["-created_at"]
         verbose_name = "log entry"
         verbose_name_plural = "log entries"
 

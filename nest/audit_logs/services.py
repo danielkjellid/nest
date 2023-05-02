@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import functools
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, cast, Callable
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -31,7 +31,7 @@ def log_create_or_updated(
     if ignore_fields is None:
         ignore_fields = set()
 
-    IGNORED_FIELDS = {"modified_time", "created_time"} | ignore_fields
+    IGNORED_FIELDS = {"updated_at", "created_at"} | ignore_fields
 
     fields = {
         field.name
@@ -61,11 +61,11 @@ def log_create_or_updated(
 
 
 def _create_log_entry(
+    *,
     request: HttpRequest | None,
     instance: T_MODEL,
     user: User | None = None,
     changes: dict[str, tuple[T | None, T | None]] | None = None,
-    *,
     action: int,
     **kwargs: Any,
 ) -> LogEntryRecord:
@@ -86,7 +86,7 @@ def _create_log_entry(
         remote_addr = get_remote_request_ip(request=request)
         user = request.user if not user and isinstance(request.user, User) else user
 
-    kwargs.setdefault("log_object_type", ContentType.objects.get_for_model(instance))
+    kwargs.setdefault("content_type", ContentType.objects.get_for_model(instance))
     kwargs.setdefault("object_repr", smart_str(instance))
     kwargs["changes"] = {}
 
@@ -114,9 +114,15 @@ def _create_log_entry(
     return LogEntryRecord.from_log_entry(log_entry=log_entry)
 
 
-log_create = functools.partial(_create_log_entry, LogEntry.ACTION_CREATE)
-log_update = functools.partial(_create_log_entry, LogEntry.ACTION_UPDATE)
-log_delete = functools.partial(_create_log_entry, LogEntry.ACTION_DELETE)
+log_create: Callable[..., LogEntryRecord] = functools.partial(
+    _create_log_entry, action=LogEntry.ACTION_CREATE
+)
+log_update: Callable[..., LogEntryRecord] = functools.partial(
+    _create_log_entry, action=LogEntry.ACTION_UPDATE
+)
+log_delete: Callable[..., LogEntryRecord] = functools.partial(
+    _create_log_entry, action=LogEntry.ACTION_DELETE
+)
 
 
 class AuditLogger:
@@ -125,14 +131,12 @@ class AuditLogger:
     enter and exit. Note that this only logs changes within the context.
 
     Usage:
-    ```
     product = ...
 
     with AuditLogger(instance=product, request_or_user=request):
         ...
         product.title = "New title"
         product.save()
-    ```
     """
 
     def __init__(
@@ -147,9 +151,9 @@ class AuditLogger:
 
         self.old_data: dict[str, str] = {}
         self.new_data: dict[str, str] = {}
-        self.diff = dict[str, tuple[str, str]] = {}
+        self.diff: dict[str, tuple[str, str]] = {}
 
-        EXCLUDED_FIELDS = {"modified_time", "created_time"} | (exclude_fields or set())
+        EXCLUDED_FIELDS = {"updated_at", "created_at"} | (exclude_fields or set())
 
         if include_fields:
             self.fields = include_fields
@@ -177,7 +181,7 @@ class AuditLogger:
         Get and set dict: keys as field names and values as a two-tuple with old value & new value.
         Uses previously stored data dict and new data dict to find the difference.
 
-        I.e.: {"title": ("Milk", "Milk 2%") ... }
+        I.e.: {"name": ("Awesome product", "Another awesome product") ... }
         """
 
         self.new_data = self._get_current_data_dict()
@@ -202,7 +206,7 @@ class AuditLogger:
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> AuditLogger:
         """
-        On context exit: Find the difference, store it and create an AuditLogEntry.
+        On context exit: Find the difference, store it and create a LogEntry.
         """
 
         # Get the latest instance field data

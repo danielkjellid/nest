@@ -7,11 +7,11 @@ from typing import Any
 
 class LogEntryRecord(BaseModel):
     id: int
-    action: LogEntry.ACTIONS
+    action: int
     changes: dict[str, Any]
     user: UserRecord | None
-    remote_addr: str
-    source: str
+    remote_addr: str | None
+    source: str | None
 
     @classmethod
     def from_log_entry(cls, log_entry: LogEntry) -> LogEntryRecord:

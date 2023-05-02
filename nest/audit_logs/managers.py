@@ -1,6 +1,7 @@
+from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
-from django.db.models import Model
+from django.db.models import Model, Manager
 
 from nest.core.managers import BaseQuerySet
 
@@ -8,7 +9,7 @@ if TYPE_CHECKING:
     from nest.audit_logs import models  # noqa
 
 
-class LogEntryQuerySet(BaseQuerySet["models.LogEntry"]):
+class LogEntryManager(Manager):
     def _get_pk_value(self, instance: Model) -> Any:
         """
         Get the primary key field value for a specific model instance.
@@ -22,3 +23,7 @@ class LogEntryQuerySet(BaseQuerySet["models.LogEntry"]):
             pk = self._get_pk_value(pk)
 
         return pk
+
+
+class LogEntryQuerySet(BaseQuerySet["models.LogEntry"]):
+    ...
