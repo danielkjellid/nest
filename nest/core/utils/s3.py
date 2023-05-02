@@ -21,8 +21,7 @@ def s3_asset_delete(*, storage_key: str | None = None) -> None:
 
     storage = S3Storage(aws_s3_bucket_name=settings.AWS_S3_BUCKET_NAME)
     parent_path_key = storage_key.rsplit("/", 1)[0]  # Get everything before the last /
-    print(storage_key)
-    print("parent", parent_path_key)
+
     if storage.exists(parent_path_key):
         print("Parent exists")
         dirs, files = storage.listdir(parent_path_key)
