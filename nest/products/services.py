@@ -9,6 +9,7 @@ from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.units.selectors import get_unit_by_abbreviation
+from nest.audit_logs.services import log_create_or_updated
 
 from .models import Product
 from .records import ProductRecord
@@ -54,27 +55,47 @@ def create_product(
 
 
 def update_or_create_product(
-    *, pk: int | None = None, oda_id: int | None = None, **kwargs: Any
+    *,
+    pk: int | None = None,
+    oda_id: int | None = None,
+    source: str | None = None,
+    log_ignore_fields: set[str] | None = None,
+    **kwargs: Any,
 ) -> ProductRecord:
     """
     Update or create a product.
     """
 
     if pk is None and oda_id is not None:
-        product, _created = Product.objects.update_or_create(
+        existing_product = Product.objects.filter(oda_id=oda_id).first()
+        product, created = Product.objects.update_or_create(
             oda_id=oda_id,
             defaults=kwargs,
         )
-    else:
+
+        if not created:
+            log_create_or_updated(old=existing_product, new=product, source=source)
+    elif pk is not None:
         defaults = kwargs
 
         if oda_id is not None:
             defaults.update({"oda_id": oda_id})
 
-        product, _created = Product.objects.update_or_create(
+        existing_product = Product.objects.filter(id=pk).first()
+        product, created = Product.objects.update_or_create(
             id=pk,
             defaults=defaults,
         )
+
+        if not created:
+            log_create_or_updated(
+                old=existing_product,
+                new=product,
+                source=source,
+                ignore_fields=log_ignore_fields,
+            )
+    else:
+        raise ValueError("Either pk or oda_id (or both) must be passed.")
 
     return ProductRecord.from_product(product)
 
@@ -124,17 +145,16 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         "unit_quantity": unit_quantity,
         "is_available": product_response.availability.is_available,
         "supplier": product_response.brand,
+        "thumbnail": product_image if product_image else None,
     }
 
     product_record = update_or_create_product(
-        pk=None, oda_id=product_response.id, **defaults
+        pk=None,
+        oda_id=product_response.id,
+        source="Oda",
+        log_ignore_fields={"thumbnail"},
+        **defaults,
     )
-
-    if product_image:
-        product = _get_product(pk=product_record.id)
-        product.thumbnail.save("thumbnail.jpg", product_image)
-
-        return ProductRecord.from_product(product)
 
     return product_record
 

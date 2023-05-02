@@ -1,5 +1,5 @@
 from typing import Iterable
-
+from decimal import Decimal
 from django.db.models import Model
 from django.utils.encoding import smart_str
 
@@ -21,10 +21,18 @@ def calculate_models_diff(
     diff = {}
 
     for field in fields:
-        old_value = getattr(old, field, None)
-        new_value = getattr(new, field, None)
+        old_value = smart_str(getattr(old, field, None), strings_only=True)
+        new_value = smart_str(getattr(new, field, None), strings_only=True)
 
         if old_value != new_value:
+            if isinstance(old_value, Decimal) and isinstance(new_value, str):
+                if old_value == Decimal(new_value):
+                    continue
+
+            elif isinstance(new_value, Decimal) and isinstance(old_value, str):
+                if Decimal(old_value) == new_value:
+                    continue
+
             diff[field] = (smart_str(old_value), smart_str(new_value))
 
     if not diff:
