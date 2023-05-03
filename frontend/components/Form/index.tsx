@@ -78,10 +78,13 @@ function Form<T extends object>({
   if (!elements) {
     return null
   }
-
+  console.log(data)
   /*******************************************
    ** Values: defaults, initial and current **
    *******************************************/
+
+  const getOptionsForElement = ({ elementKey }: { elementKey: string }) =>
+    elementsOptions && elementsOptions[elementKey]
 
   const getDefaultForElement = ({ element }: { element: FormElementObj }) => {
     if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
@@ -106,6 +109,11 @@ function Form<T extends object>({
     return values
   }
 
+  const getAccessorKeyValue = ({ accessorKey, obj }: { accessorKey: string; obj: any }) => {
+    const accessorValue = accessorKey.split('.').reduce((o, i) => o[i], obj)
+    return accessorValue
+  }
+
   const getInitialFormValues = ({
     initialData,
   }: {
@@ -115,7 +123,17 @@ function Form<T extends object>({
 
     Object.entries(elements).map(([elementKey, element]) => {
       if (initialData) {
-        if (initialData[elementKey as K] !== null) {
+        const elemOptions = getOptionsForElement({ elementKey })
+        if (elemOptions && elemOptions.accessorKey) {
+          const accessorValue = getAccessorKeyValue({
+            accessorKey: elemOptions.accessorKey,
+            obj: initialData,
+          })
+
+          initialValues[elementKey as K] = accessorValue
+            ? (accessorValue.toString() as T[K])
+            : getDefaultForElement({ element })
+        } else if (initialData[elementKey as K] !== null) {
           initialValues[elementKey as K] = initialData[elementKey as K] as T[K]
         } else {
           initialValues[elementKey as K] = getDefaultForElement({ element })
@@ -124,6 +142,7 @@ function Form<T extends object>({
         initialValues = setDefaultFormValues()
       }
     })
+
     return initialValues
   }
 
@@ -276,14 +295,12 @@ function Form<T extends object>({
     }
   }, [data])
 
-  console.log(formValues)
-
   return (
     <form encType={isMultipart ? 'multipart/form-data' : undefined}>
       <div className={`grid grid-cols-${columns ? columns : 1} gap-4 items-end`}>
         {Object.entries(elements as T).map(([key, element]) => {
           if (element.component) {
-            const optionsForElem = elementsOptions !== undefined ? elementsOptions[key] : undefined
+            const optionsForElem = getOptionsForElement({ elementKey: key })
             if (optionsForElem !== undefined) {
               const options = element.enum
                 ? element.enum

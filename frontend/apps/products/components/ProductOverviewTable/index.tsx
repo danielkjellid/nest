@@ -1,4 +1,4 @@
-import { IconEye, IconTrash } from '@tabler/icons-react'
+import { IconEye, IconPencil, IconTrash } from '@tabler/icons-react'
 
 import { Menu } from '@mantine/core'
 import { ProductListOut } from '../../../../types'
@@ -7,9 +7,10 @@ import Table from '../../../../components/Table'
 
 interface ProductOverViewTableProps {
   data: ProductListOut[]
+  onEditProduct: (id: number) => void
 }
 
-function ProductOverViewTable({ data }: ProductOverViewTableProps) {
+function ProductOverViewTable({ data, onEditProduct }: ProductOverViewTableProps) {
   return (
     <Table<ProductListOut>
       rowIdentifier="id"
@@ -39,6 +40,9 @@ function ProductOverViewTable({ data }: ProductOverViewTableProps) {
       ]}
       data={data || []}
       actionMenuItems={({ row }) => [
+        <Menu.Item key="edit" icon={<IconPencil />} onClick={() => onEditProduct(row.original.id)}>
+          Edit
+        </Menu.Item>,
         <Menu.Item key="delete" icon={<IconTrash />}>
           Delete
         </Menu.Item>,

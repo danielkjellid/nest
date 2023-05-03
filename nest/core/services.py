@@ -13,6 +13,7 @@ def update_model(
     request: HttpRequest | None = None,
     auto_updated_at: bool = True,
     log_change: bool = True,
+    log_ignore_fields: set[str] | None = None,
 ) -> tuple[Model, bool]:
     """
     Generic update service meant to be reused in local update services.
@@ -44,6 +45,9 @@ def update_model(
     update_fields = []
     changes = {}
 
+    if log_ignore_fields is None:
+        log_ignore_fields = set()
+
     model_fields = {field.name: field for field in instance._meta.get_fields()}
 
     for field in fields:
@@ -66,7 +70,9 @@ def update_model(
             has_updated = True
             update_fields.append(field)
             setattr(instance, field, data[field])
-            changes[field] = (instance_field_val, data[field])
+
+            if field not in log_ignore_fields:
+                changes[field] = (instance_field_val, data[field])
 
     if has_updated:
         if auto_updated_at:

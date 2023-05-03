@@ -8,6 +8,7 @@ export interface FormElementOptionsObj {
   options?: FormEnum[]
   helpText?: string
   placeholder?: string
+  accessorKey?: string
 }
 
 export interface FormElementOptions {

@@ -47,16 +47,18 @@ class ProductEditIn(Schema):
         columns = 2
 
 
-@router.put("{product_id}/edit/", response=APIResponse[ProductEditIn])
+@router.post("{product_id}/edit/", response=APIResponse[None])
 @staff_required
 def product_edit_api(
     request: HttpRequest,
     product_id: int,
     payload: ProductEditIn = Form(...),
     thumbnail: UploadedFile | None = File(None),
-) -> APIResponse[ProductEditIn]:
+) -> APIResponse[None]:
     """
     Edit a product.
     """
-    product = edit_product(request=request, product_id=product_id, **payload.dict())
+    product = edit_product(
+        request=request, product_id=product_id, thumbnail=thumbnail, **payload.dict()
+    )
     return APIResponse(status="success", data=None)

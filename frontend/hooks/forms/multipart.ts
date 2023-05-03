@@ -4,16 +4,22 @@ import humps from 'humps'
 // any of the paths, then it checks if the reference to that object value corresponds with
 // the current form key.
 export const determineIsMultipart = (obj: Record<string, any>, formKey: string): any => {
-  if (obj && typeof obj === 'object') {
-    for (const [key, value] of Object.entries(obj)) {
-      if (key && key === 'multipart/form-data') {
-        return value.schema.$ref.split('/').includes(formKey)
-      } else {
-        const found = determineIsMultipart(value, formKey)
-        if (found !== undefined) return found as boolean
+  let foundMultipartKey = false
+  for (const pathValue of Object.values(obj)) {
+    for (const operationValue of Object.values(pathValue)) {
+      if ((operationValue as any).requestBody && (operationValue as any).requestBody.content) {
+        if ((operationValue as any).requestBody.content['multipart/form-data']) {
+          foundMultipartKey = (operationValue as any).requestBody.content[
+            'multipart/form-data'
+          ].schema.$ref
+            .split('/')
+            .includes(formKey)
+        }
       }
     }
   }
+
+  return foundMultipartKey
 }
 
 // Takes current form object and converts it to a valid form data.

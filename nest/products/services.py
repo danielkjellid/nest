@@ -14,6 +14,7 @@ from django.http import HttpRequest
 from .models import Product
 from .records import ProductRecord
 from .selectors import get_product, _get_product
+from nest.units.models import Unit
 from nest.core.services import update_model
 
 logger = structlog.getLogger()
@@ -71,6 +72,10 @@ def edit_product(
     if thumbnail is not None:
         data["thumbnail"] = thumbnail
 
+    if "unit_id" in edits:
+        unit = Unit.objects.get(id=edits.pop("unit_id"))
+        edits["unit"] = unit
+
     product_instance, _has_updated = update_model(
         instance=_get_product(pk=product_id),
         fields=[
@@ -78,7 +83,6 @@ def edit_product(
             "gross_price",
             "gross_unit_price",
             "unit",
-            "unit_id",
             "unit_quantity",
             "oda_url",
             "oda_id",
@@ -90,6 +94,7 @@ def edit_product(
         ],
         data=data,
         request=request,
+        log_ignore_fields={"thumbnail"},
     )
 
     return ProductRecord.from_product(product_instance)

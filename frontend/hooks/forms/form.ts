@@ -99,7 +99,7 @@ export function useForm<T extends object>({
 
   const [formKey, setFormKey] = useState(new Date().toDateString())
   const formFromSchema = (schema as any).components.schemas[key] as FormComponentSchema
-  const isMultipart = determineIsMultipart(schema, key)
+  const isMultipart = determineIsMultipart(schema.paths, key)
 
   return {
     key: formKey,

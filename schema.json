@@ -83,7 +83,7 @@
             }
         },
         "/api/v1/products/{product_id}/edit/": {
-            "put": {
+            "post": {
                 "operationId": "product_edit_api",
                 "summary": "Product Edit Api",
                 "parameters": [
@@ -103,7 +103,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductEditInAPIResponse"
+                                    "$ref": "#/components/schemas/APIResponse"
                                 }
                             }
                         }
@@ -636,32 +636,6 @@
                     "isSynced"
                 ],
                 "columns": 2,
-                "type": "object"
-            },
-            "ProductEditInAPIResponse": {
-                "title": "ProductEditInAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "$ref": "#/components/schemas/ProductEditIn"
-                    }
-                },
-                "required": [
-                    "status"
-                ],
                 "type": "object"
             },
             "ProductImportOut": {
