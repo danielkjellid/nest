@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, TypeVar
 
 from django.db.models import ManyToManyField, Model
 from django.http import HttpRequest
@@ -6,17 +6,19 @@ from django.utils import timezone
 
 from nest.audit_logs.services import log_update
 
+T = TypeVar("T", bound=Model)
+
 
 def update_model(  # noqa
     *,
-    instance: Model,
+    instance: T,
     fields: list[str],
     data: dict[str, Any],
     request: HttpRequest | None = None,
     auto_updated_at: bool = True,
     log_change: bool = True,
     log_ignore_fields: set[str] | None = None,
-) -> tuple[Model, bool]:
+) -> tuple[T, bool]:
     """
     Generic update service meant to be reused in local update services.
 
@@ -80,7 +82,7 @@ def update_model(  # noqa
         if auto_updated_at:
             if "updated_at" in model_fields and "updated_at" not in update_fields:
                 update_fields.append("updated_at")
-                instance.updated_at = timezone.now()
+                instance.updated_at = timezone.now()  # type: ignore
 
         instance.full_clean()
         instance.save(update_fields=update_fields)

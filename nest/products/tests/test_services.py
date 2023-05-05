@@ -69,6 +69,9 @@ class TestProductServices:
         assert product.name == "Another awesome product"
         assert product.thumbnail_url is not None
 
+    def test_edit_product(self):
+        assert False
+
     def test_update_or_create_product_with_pk(self, django_assert_num_queries):
         """
         Test that the update_or_create_product creates or updates as expected.

@@ -60,9 +60,9 @@ def create_product(
 def edit_product(
     *,
     request: HttpRequest | None = None,
-    product_id: int | str,
+    product_id: int,
     thumbnail: UploadedFile | InMemoryUploadedFile | ImageFile | None = None,
-    **edits: dict[str, Any],
+    **edits: Any,
 ) -> ProductRecord:
     """
     Edit an existing product instance.
