@@ -32,7 +32,7 @@ function Drawer({
   return (
     <MDrawer.Root opened={opened} onClose={onClose} position="right" size="lg">
       <ModalBase.Overlay {...overlayProps} />
-      <ModalBase.Content radius={0} className="rounded-t-md" style={{ marginBottom: '80px' }}>
+      <ModalBase.Content radius={0} className="rounded-t-md">
         {hasHeader && (
           <ModalBase.Header>
             {title && (

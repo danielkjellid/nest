@@ -1,6 +1,6 @@
-import { ProductDetailOut, ProductDetailOutAPIResponse, ProductEditIn } from '../../../../types'
+import { ProductDetailOut, ProductDetailOutAPIResponse } from '../../../../types'
 import React, { useEffect, useState } from 'react'
-import { performGet, performPost, performPut } from '../../../../hooks/fetcher/http'
+import { performGet, performPost } from '../../../../hooks/fetcher/http'
 
 import { Button } from '../../../../components/Button'
 import Drawer from '../../../../components/Drawer'
