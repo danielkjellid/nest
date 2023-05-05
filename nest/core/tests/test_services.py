@@ -1,8 +1,9 @@
 import pytest
-from nest.core.services import model_update
-from nest.users.tests.utils import create_user
-from nest.homes.tests.utils import create_home
+
 from nest.audit_logs.models import LogEntry
+from nest.core.services import model_update
+from nest.homes.tests.utils import create_home
+from nest.users.tests.utils import create_user
 
 pytestmark = pytest.mark.django_db
 

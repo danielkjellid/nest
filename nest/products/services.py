@@ -68,14 +68,14 @@ def edit_product(
     Edit an existing product instance.
     """
 
-    data = edits
+    data = edits.copy()
 
     if thumbnail is not None:
         data["thumbnail"] = thumbnail
 
-    if "unit_id" in edits:
-        unit = Unit.objects.get(id=edits.pop("unit_id"))
-        edits["unit"] = unit
+    if "unit_id" in data:
+        unit = Unit.objects.get(id=data.pop("unit_id"))
+        data["unit"] = unit
 
     product_instance, _has_updated = model_update(
         instance=_get_product(pk=product_id),

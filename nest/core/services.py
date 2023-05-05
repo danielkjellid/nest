@@ -8,7 +8,7 @@ from nest.audit_logs.services import log_update
 T = TypeVar("T", bound=Model)
 
 
-def model_update(  # noqa
+def model_update(
     *,
     instance: T,
     fields: list[str],

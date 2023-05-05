@@ -1,7 +1,8 @@
 import pytest
+from django.test.client import MULTIPART_CONTENT
+
 from nest.products.endpoints.product_create import product_create_api
 from nest.units.tests.utils import get_unit
-from django.test.client import MULTIPART_CONTENT
 
 pytestmark = pytest.mark.django_db
 

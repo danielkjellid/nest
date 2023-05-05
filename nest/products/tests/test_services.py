@@ -9,6 +9,7 @@ from nest.products.models import Product
 from nest.products.services import (
     _validate_oda_response,
     create_product,
+    edit_product,
     import_from_oda,
     update_or_create_product,
 )
@@ -69,8 +70,26 @@ class TestProductServices:
         assert product.name == "Another awesome product"
         assert product.thumbnail_url is not None
 
-    def test_edit_product(self):
-        assert False
+    def test_edit_product(self, django_assert_num_queries):
+        """
+        Test that the edit_product service edits a product within query limits.
+        """
+
+        unit_kg = get_unit(abbreviation="kg")
+        unit_g = get_unit(abbreviation="g")
+        product = create_product_test_util(
+            name="A cool product", supplier="A cool supplier", unit=unit_g
+        )
+
+        with django_assert_num_queries(8):
+            updated_product = edit_product(
+                product_id=product.id, name="Wubadubadub", unit_id=unit_kg.id
+            )
+
+        assert updated_product.id == product.id
+        assert updated_product.name == "Wubadubadub"
+        assert updated_product.unit.id == unit_kg.id
+        assert updated_product.supplier == "A cool supplier"
 
     def test_update_or_create_product_with_pk(self, django_assert_num_queries):
         """

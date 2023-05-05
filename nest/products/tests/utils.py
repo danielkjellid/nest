@@ -1,5 +1,6 @@
 from decimal import Decimal
 from io import BytesIO
+from typing import Any
 
 from django.core.files.images import ImageFile
 from PIL import Image
@@ -41,6 +42,7 @@ def create_product(
     oda_id: int | None = None,
     is_available: bool = True,
     is_synced: bool = True,
+    **kwargs: Any,
 ) -> Product:
     if unit is None:
         unit = get_unit()
@@ -63,6 +65,7 @@ def create_product(
             "gtin": "01234567891234",
             "supplier": "Example supplier",
             "is_synced": is_synced,
+            **kwargs,
         },
     )
 

@@ -1,6 +1,7 @@
 import pytest
-from nest.products.endpoints.product_edit import product_edit_api
 from django.test.client import MULTIPART_CONTENT
+
+from nest.products.endpoints.product_edit import product_edit_api
 from nest.products.tests.utils import create_product
 from nest.units.tests.utils import get_unit
 
