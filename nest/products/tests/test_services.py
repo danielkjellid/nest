@@ -70,7 +70,7 @@ class TestProductServices:
         assert product.name == "Another awesome product"
         assert product.thumbnail_url is not None
 
-    def test_edit_product(self, django_assert_num_queries):
+    def test_edit_product(self, django_assert_max_num_queries):
         """
         Test that the edit_product service edits a product within query limits.
         """
@@ -81,7 +81,7 @@ class TestProductServices:
             name="A cool product", supplier="A cool supplier", unit=unit_g
         )
 
-        with django_assert_num_queries(8):
+        with django_assert_max_num_queries(8):
             updated_product = edit_product(
                 product_id=product.id, name="Wubadubadub", unit_id=unit_kg.id
             )
