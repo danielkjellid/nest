@@ -10,7 +10,7 @@ import { useForm } from '../../../../hooks/forms'
 import { useUnits } from '../../../../contexts/UnitsProvider'
 
 interface ProductEditDrawerProps {
-  productId: number
+  productId: number | undefined
   opened: boolean
   onClose: () => void
   refetch: () => void
@@ -30,10 +30,12 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
 
   const editProduct = async () => {
     try {
-      form.setLoadingState('loading')
-      await performPost(urls.products.edit({ id: productId }), form.buildPayload())
-      form.setLoadingState('success')
-      close()
+      if (productId) {
+        form.setLoadingState('loading')
+        await performPost(urls.products.edit({ id: productId }), form.buildPayload())
+        form.setLoadingState('success')
+        close()
+      }
     } catch (e) {
       const errorResponse = (e as any).response.data
       form.setLoadingState('error')
@@ -44,7 +46,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
   }
 
   useEffect(() => {
-    if (!product || (product && product.id !== productId)) {
+    if (productId && (!product || (product && product.id !== productId))) {
       const fetchProduct = async () => {
         const fetchedProduct = await performGet<ProductDetailOutAPIResponse>(
           urls.products.detail({ id: productId })
@@ -54,13 +56,13 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
 
       fetchProduct()
     }
-  }, [product])
+  }, [product, productId])
 
   return (
     <Drawer
       title={`Edit "${product?.fullName}"`}
       opened={opened}
-      onClose={() => console.log('close')}
+      onClose={onClose}
       actions={
         <div className="grid w-full grid-cols-2 gap-4">
           <Button
