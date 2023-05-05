@@ -1,12 +1,13 @@
 from django.http import HttpRequest
 from ninja import File, Form, Schema
 
+from nest.api.fields import FormField
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.api.fields import FormField
 from nest.frontend.components import FrontendComponents
 from nest.products.services import edit_product
+
 from .router import router
 
 
@@ -52,13 +53,13 @@ class ProductEditIn(Schema):
 def product_edit_api(
     request: HttpRequest,
     product_id: int,
-    payload: ProductEditIn = Form(...),
-    thumbnail: UploadedFile | None = File(None),
+    payload: ProductEditIn = Form(...),  # noqa
+    thumbnail: UploadedFile | None = File(None),  # noqa
 ) -> APIResponse[None]:
     """
     Edit a product.
     """
-    product = edit_product(
+    edit_product(
         request=request, product_id=product_id, thumbnail=thumbnail, **payload.dict()
     )
     return APIResponse(status="success", data=None)

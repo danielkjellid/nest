@@ -1,11 +1,13 @@
-from django.db.models import Model, ManyToManyField
 from typing import Any
-from django.utils import timezone
+
+from django.db.models import ManyToManyField, Model
 from django.http import HttpRequest
+from django.utils import timezone
+
 from nest.audit_logs.services import log_update
 
 
-def update_model(
+def update_model(  # noqa
     *,
     instance: Model,
     fields: list[str],
