@@ -3,8 +3,8 @@ import {
   Drawer as MDrawer,
   DrawerProps as MDrawerProps,
   ModalBase,
-  ScrollArea,
   Text,
+  Transition,
 } from '@mantine/core'
 
 import React from 'react'
@@ -13,7 +13,7 @@ interface DrawerProps extends MDrawerProps {
   opened: boolean
   title: string
   children: React.ReactNode
-  actions?: React.ReactNode
+  actions: React.ReactNode
   onClose: () => void
 }
 
@@ -23,7 +23,6 @@ function Drawer({
   children,
   actions,
   onClose,
-  withOverlay,
   overlayProps,
   withCloseButton,
   closeButtonProps,
@@ -32,12 +31,8 @@ function Drawer({
 
   return (
     <MDrawer.Root opened={opened} onClose={onClose} position="right" size="lg">
-      {withOverlay && <ModalBase.Overlay {...overlayProps} />}
-      <ModalBase.Content
-        radius={0}
-        className="relative h-screen"
-        style={{ bottom: '67px', top: 0 }}
-      >
+      <ModalBase.Overlay {...overlayProps} />
+      <ModalBase.Content radius={0} className="rounded-t-md" style={{ marginBottom: '80px' }}>
         {hasHeader && (
           <ModalBase.Header>
             {title && (
@@ -45,60 +40,32 @@ function Drawer({
                 {title}
               </Text>
             )}
-            {withCloseButton && <ModalBase.CloseButton {...closeButtonProps} />}
+            <ModalBase.CloseButton {...closeButtonProps} />
           </ModalBase.Header>
         )}
 
-        <ModalBase.Body>
-          {children}
-          <div className="bg-green-400 h-96 w-full"></div>
-          <div className="bg-green-400 h-96 w-full"></div>
-          <div className="bg-green-400 h-96 w-full"></div>
-          <div className="bg-green-400 h-96 w-full"></div>
-          <div className="bg-green-400 h-96 w-full"></div>
-        </ModalBase.Body>
+        <ModalBase.Body>{children}</ModalBase.Body>
       </ModalBase.Content>
-      {actions && (
-        <div className="absolute bottom-0 right-0" style={{ zIndex: 9999, width: 620 }}>
-          <Box
-            sx={(theme) => ({
-              backgroundColor:
-                theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1],
-            })}
-            className="p-4 w-full"
+      <Transition mounted={opened} transition="slide-left" duration={200}>
+        {(styles) => (
+          <div
+            className="absolute bottom-0 rounded-md"
+            style={{ zIndex: 9999, width: 620, right: '8px', bottom: '8px' }}
           >
-            {actions}
-          </Box>
-        </div>
-      )}
+            <Box
+              sx={(theme) => ({
+                backgroundColor:
+                  theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1],
+              })}
+              className="rounded-b-md w-full p-4"
+              style={{ height: '68px', ...styles }}
+            >
+              {actions}
+            </Box>
+          </div>
+        )}
+      </Transition>
     </MDrawer.Root>
-    // <MDrawer
-    //   size="lg"
-    //   opened={opened}
-    //   onClose={onClose}
-    //   title={
-    // <Text fz="xl" fw={500}>
-    //   {title}
-    // </Text>
-    //   }
-    //   position="right"
-    //   className="relative"
-    // >
-    //   <ScrollArea>{children}</ScrollArea>
-    // {actions && (
-    //   <div className="absolute bottom-0 right-0 left-0">
-    //     <Box
-    //       sx={(theme) => ({
-    //         backgroundColor:
-    //           theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[1],
-    //       })}
-    //       className="p-4 w-full"
-    //     >
-    //       {actions}
-    //     </Box>
-    //   </div>
-    // )}
-    // </MDrawer>
   )
 }
 

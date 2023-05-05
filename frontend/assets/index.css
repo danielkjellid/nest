@@ -1,2 +1,9 @@
 @tailwind components;
 @tailwind utilities;
+
+.mantine-Drawer-inner {
+  bottom: 75px;
+  right: 8px;
+  top: 8px;
+}
+

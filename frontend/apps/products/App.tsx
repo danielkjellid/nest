@@ -22,7 +22,7 @@ interface ProductsAppInnerProps {
 
 function ProductsAppInner({ results, refetch }: ProductsAppInnerProps) {
   const { products, units } = results
-  const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure(true)
+  const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure(false)
   const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
 
   const [productIdToEdit, setProductIdToEdit] = useState<number>()
@@ -46,7 +46,7 @@ function ProductsAppInner({ results, refetch }: ProductsAppInnerProps) {
           </div>
         </div>
         <ProductOverViewTable data={products.data || []} onEditProduct={(id) => editProduct(id)} />
-        <ProductAddDrawer opened={addDrawerOpened} onClose={addDrawerClose} />
+        <ProductAddDrawer opened={addDrawerOpened} onClose={addDrawerClose} refetch={refetch} />
         <ProductEditDrawer
           productId={productIdToEdit}
           opened={editDrawerOpened}

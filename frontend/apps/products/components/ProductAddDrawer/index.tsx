@@ -11,9 +11,10 @@ import { useUnits } from '../../../../contexts/UnitsProvider'
 interface ProductAddDrawerProps {
   opened: boolean
   onClose: () => void
+  refetch: () => void
 }
 
-function ProductAddDrawer({ opened, onClose }: ProductAddDrawerProps) {
+function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   const form = useForm({ key: 'ProductCreateIn' })
   const units = useUnits()
   const unitsOptions = units.map((unit) => ({ label: unit.displayName, value: unit.id.toString() }))
@@ -21,6 +22,7 @@ function ProductAddDrawer({ opened, onClose }: ProductAddDrawerProps) {
   const close = () => {
     form.resetForm()
     onClose()
+    refetch()
   }
 
   const addProduct = async () => {
@@ -44,7 +46,7 @@ function ProductAddDrawer({ opened, onClose }: ProductAddDrawerProps) {
       opened={opened}
       onClose={onClose}
       actions={
-        <div className="grid grid-cols-2 gap-4 w-full">
+        <div className="grid w-full grid-cols-2 gap-4">
           <Button
             variant="default"
             disabled={form.loadingState === 'loading'}

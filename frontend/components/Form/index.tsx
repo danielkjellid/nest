@@ -78,7 +78,7 @@ function Form<T extends object>({
   if (!elements) {
     return null
   }
-  console.log(data)
+
   /*******************************************
    ** Values: defaults, initial and current **
    *******************************************/

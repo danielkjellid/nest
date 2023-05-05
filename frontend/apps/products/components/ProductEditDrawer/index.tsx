@@ -65,7 +65,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
       opened={opened}
       onClose={() => console.log('close')}
       actions={
-        <div className="grid grid-cols-2 gap-4 w-full">
+        <div className="grid w-full grid-cols-2 gap-4">
           <Button
             variant="default"
             disabled={form.loadingState === 'loading'}
