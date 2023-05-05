@@ -15,7 +15,6 @@ def update_model(  # noqa
     fields: list[str],
     data: dict[str, Any],
     request: HttpRequest | None = None,
-    auto_updated_at: bool = True,
     log_change: bool = True,
     log_ignore_fields: set[str] | None = None,
 ) -> tuple[T, bool]:
@@ -79,11 +78,6 @@ def update_model(  # noqa
                 changes[field] = (instance_field_val, data[field])
 
     if has_updated:
-        if auto_updated_at:
-            if "updated_at" in model_fields and "updated_at" not in update_fields:
-                update_fields.append("updated_at")
-                instance.updated_at = timezone.now()  # type: ignore
-
         instance.full_clean()
         instance.save(update_fields=update_fields)
 
