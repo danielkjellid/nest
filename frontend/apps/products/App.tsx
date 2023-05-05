@@ -47,12 +47,15 @@ function ProductsAppInner({ results, refetch }: ProductsAppInnerProps) {
         </div>
         <ProductOverViewTable data={products.data || []} onEditProduct={(id) => editProduct(id)} />
         <ProductAddDrawer opened={addDrawerOpened} onClose={addDrawerClose} refetch={refetch} />
-        <ProductEditDrawer
-          productId={productIdToEdit}
-          opened={editDrawerOpened}
-          onClose={editDrawerClose}
-          refetch={refetch}
-        />
+        {productIdToEdit && (
+          <ProductEditDrawer
+            key={productIdToEdit}
+            productId={productIdToEdit}
+            opened={editDrawerOpened}
+            onClose={editDrawerClose}
+            refetch={refetch}
+          />
+        )}
       </div>
     </UnitsProvider>
   )

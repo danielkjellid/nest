@@ -10,34 +10,17 @@ import { useForm } from '../../../../hooks/forms'
 import { useUnits } from '../../../../contexts/UnitsProvider'
 
 interface ProductEditDrawerProps {
-  productId: number | undefined
+  productId: number
   opened: boolean
   onClose: () => void
   refetch: () => void
 }
 
 function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditDrawerProps) {
-  if (!productId) {
-    return null
-  }
-
   const [product, setProduct] = useState<ProductDetailOut>()
   const form = useForm({ key: 'ProductEditIn', existingObj: product })
   const units = useUnits()
   const unitsOptions = units.map((unit) => ({ label: unit.displayName, value: unit.id.toString() }))
-
-  const fetchProduct = async () => {
-    const fetchedProduct = await performGet<ProductDetailOutAPIResponse>(
-      urls.products.detail({ id: productId })
-    )
-    setProduct(fetchedProduct.data)
-  }
-
-  useEffect(() => {
-    if (!product) {
-      fetchProduct()
-    }
-  }, [product])
 
   const close = () => {
     form.resetForm()
@@ -59,6 +42,20 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
       }
     }
   }
+
+  useEffect(() => {
+    if (!product || (product && product.id !== productId)) {
+      const fetchProduct = async () => {
+        const fetchedProduct = await performGet<ProductDetailOutAPIResponse>(
+          urls.products.detail({ id: productId })
+        )
+        setProduct(fetchedProduct.data)
+      }
+
+      fetchProduct()
+    }
+  }, [product])
+
   return (
     <Drawer
       title={`Edit "${product?.fullName}"`}

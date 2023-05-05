@@ -110,7 +110,7 @@ function Form<T extends object>({
   }
 
   const getAccessorKeyValue = ({ accessorKey, obj }: { accessorKey: string; obj: any }) => {
-    const accessorValue = accessorKey.split('.').reduce((o, i) => o[i], obj)
+    const accessorValue = accessorKey.split('.').reduce((o, i) => (o ? o[i] : ''), obj)
     return accessorValue
   }
 

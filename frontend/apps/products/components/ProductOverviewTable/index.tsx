@@ -22,7 +22,7 @@ function ProductOverViewTable({ data, onEditProduct }: ProductOverViewTableProps
           id: 'fullName',
           Cell: ({ row, renderedCellValue }) => (
             <div className="flex items-center space-x-3">
-              <img src={row.original.thumbnailUrl} className="object-cover h-8" />
+              <img src={row.original.thumbnailUrl} className="object-contain w-8 h-8" />
               <div>{renderedCellValue}</div>
             </div>
           ),
