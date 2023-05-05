@@ -8,7 +8,7 @@ from django.http import HttpRequest
 
 from nest.audit_logs.services import log_create_or_updated
 from nest.core.exceptions import ApplicationError
-from nest.core.services import update_model
+from nest.core.services import model_update
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.units.models import Unit
@@ -77,7 +77,7 @@ def edit_product(
         unit = Unit.objects.get(id=edits.pop("unit_id"))
         edits["unit"] = unit
 
-    product_instance, _has_updated = update_model(
+    product_instance, _has_updated = model_update(
         instance=_get_product(pk=product_id),
         fields=[
             "name",

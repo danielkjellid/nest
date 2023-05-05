@@ -1,5 +1,5 @@
 import pytest
-from nest.core.services import update_model
+from nest.core.services import model_update
 from nest.users.tests.utils import create_user
 from nest.homes.tests.utils import create_home
 from nest.audit_logs.models import LogEntry
@@ -10,14 +10,14 @@ pytestmark = pytest.mark.django_db
 class TestCoreServices:
     def test_model_update_does_nothing(self, django_assert_num_queries):
         """
-        Test that the update_model service does not perform any updates when no fields
+        Test that the model_update service does not perform any updates when no fields
         are provided, or no fields are present in data.
         """
         user = create_user()
 
         # When fields are empty, it should not do anything.
         with django_assert_num_queries(0):
-            updated_user1, has_updated1 = update_model(
+            updated_user1, has_updated1 = model_update(
                 instance=user, fields=[], data={}
             )
 
@@ -27,7 +27,7 @@ class TestCoreServices:
         # When none of the fields specified in fields are present in data, it should
         # not do anything.
         with django_assert_num_queries(0):
-            updated_user2, has_updated2 = update_model(
+            updated_user2, has_updated2 = model_update(
                 instance=user, fields=["first_name"], data={"foo": "bar"}
             )
 
@@ -38,7 +38,7 @@ class TestCoreServices:
         self, django_assert_num_queries
     ):
         """
-        Test that the update_model service only updates data related to the fields
+        Test that the model_update service only updates data related to the fields
         defined. E.g. even though the data parameter contains multiple fields,
         it should only update the fields specified.
         """
@@ -51,7 +51,7 @@ class TestCoreServices:
         assert user.first_name != data["first_name"]
 
         with django_assert_num_queries(5):
-            updated_user, has_updated = update_model(
+            updated_user, has_updated = model_update(
                 instance=user, fields=update_fields, data=data
             )
 
@@ -62,20 +62,20 @@ class TestCoreServices:
 
     def test_model_update_raises_error_when_called_with_non_existing_field(self):
         """
-        Test that the update_model service raises an AssertionError when provided with
+        Test that the model_update service raises an AssertionError when provided with
         fields that does not exist on the model.
         """
 
         user = create_user()
 
         with pytest.raises(AssertionError):
-            update_model(
+            model_update(
                 instance=user, fields=["does_not_exist"], data={"does_not_exist": "foo"}
             )
 
     def test_model_update_updates_many_to_many_field(self, django_assert_num_queries):
         """
-        Test that the update_model service correctly updates m2m fields where
+        Test that the model_update service correctly updates m2m fields where
         applicable.
         """
 
@@ -92,7 +92,7 @@ class TestCoreServices:
         original_updated_at = user.updated_at
 
         with django_assert_num_queries(3):
-            updated_user, has_updated = update_model(
+            updated_user, has_updated = model_update(
                 instance=user, fields=update_fields, data=data
             )
 
@@ -108,7 +108,7 @@ class TestCoreServices:
         self, django_assert_num_queries
     ):
         """
-        Test that the update_model service correctly updates both standard fields and
+        Test that the model_update service correctly updates both standard fields and
         m2m fields when both passed as the same time.
         """
         home1 = create_home(street_address="Address 1")
@@ -120,7 +120,7 @@ class TestCoreServices:
         data = {"first_name": "Bart", "homes": [home2]}
 
         with django_assert_num_queries(7):
-            updated_user, has_updated = update_model(
+            updated_user, has_updated = model_update(
                 instance=user, fields=update_fields, data=data
             )
 
@@ -131,7 +131,7 @@ class TestCoreServices:
 
     def test_model_update_creates_log_entry_by_default(self, django_assert_num_queries):
         """
-        Test that the update_model service creates a log entry by default when
+        Test that the model_update service creates a log entry by default when
         performing updates.
         """
 
@@ -142,7 +142,7 @@ class TestCoreServices:
         assert LogEntry.objects.count() == 0
 
         with django_assert_num_queries(4):
-            updated_user, has_updated = update_model(
+            updated_user, has_updated = model_update(
                 instance=user, fields=update_fields, data=data
             )
 
@@ -156,7 +156,7 @@ class TestCoreServices:
         self, django_assert_num_queries
     ):
         """
-        Test that the update_model service does not create a log entry when explicitly
+        Test that the model_update service does not create a log entry when explicitly
         turned off.
         """
 
@@ -167,7 +167,7 @@ class TestCoreServices:
         assert LogEntry.objects.count() == 0
 
         with django_assert_num_queries(3):
-            _updated_user, has_updated = update_model(
+            _updated_user, has_updated = model_update(
                 instance=user, fields=update_fields, data=data, log_change=False
             )
 

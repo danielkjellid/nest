@@ -2,14 +2,13 @@ from typing import Any, TypeVar
 
 from django.db.models import ManyToManyField, Model
 from django.http import HttpRequest
-from django.utils import timezone
 
 from nest.audit_logs.services import log_update
 
 T = TypeVar("T", bound=Model)
 
 
-def update_model(  # noqa
+def model_update(  # noqa
     *,
     instance: T,
     fields: list[str],
