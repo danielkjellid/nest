@@ -1,9 +1,10 @@
 import { ProductListOutAPIResponse, UnitListOutAPIResponse } from '../../types'
+import React, { useState } from 'react'
 
 import { Button } from '../../components/Button'
 import ProductAddDrawer from './components/ProductAddDrawer'
+import ProductEditDrawer from './components/ProductEditDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
-import React from 'react'
 import { Title } from '@mantine/core'
 import { UnitsProvider } from '../../contexts/UnitsProvider'
 import View from '../../components/View'
@@ -16,11 +17,19 @@ interface ProductsAppInnerProps {
     products: ProductListOutAPIResponse
     units: UnitListOutAPIResponse
   }
+  refetch: () => void
 }
 
-function ProductsAppInner({ results }: ProductsAppInnerProps) {
+function ProductsAppInner({ results, refetch }: ProductsAppInnerProps) {
   const { products, units } = results
-  const [opened, { open, close }] = useDisclosure(false)
+  const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure(false)
+  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
+
+  const [productIdToEdit, setProductIdToEdit] = useState<number>()
+  const editProduct = (id: number) => {
+    setProductIdToEdit(id)
+    editDrawerOpen()
+  }
 
   return (
     <UnitsProvider units={units.data}>
@@ -30,14 +39,20 @@ function ProductsAppInner({ results }: ProductsAppInnerProps) {
           <div className="flex items-center space-x-3">
             <Button.Group>
               {/* <Button variant="default">Import from Oda</Button> */}
-              <Button variant="default" onClick={open}>
+              <Button variant="default" onClick={addDrawerOpen}>
                 Add new
               </Button>
             </Button.Group>
           </div>
         </div>
-        <ProductOverViewTable data={products.data || []} />
-        <ProductAddDrawer opened={opened} onClose={close} />
+        <ProductOverViewTable data={products.data || []} onEditProduct={(id) => editProduct(id)} />
+        <ProductAddDrawer opened={addDrawerOpened} onClose={addDrawerClose} refetch={refetch} />
+        <ProductEditDrawer
+          productId={productIdToEdit}
+          opened={editDrawerOpened}
+          onClose={editDrawerClose}
+          refetch={refetch}
+        />
       </div>
     </UnitsProvider>
   )
@@ -47,11 +62,15 @@ function ProductsApp() {
   const products = useFetch<ProductListOutAPIResponse>(urls.products.list())
   const units = useFetch<UnitListOutAPIResponse>(urls.units.list())
 
+  const refetch = () => {
+    products.reload()
+  }
+
   return (
     <View<object, ProductsAppInnerProps>
       component={ProductsAppInner}
       results={{ products, units }}
-      componentProps={{}}
+      componentProps={{ refetch }}
       loadingProps={{ description: 'Loading products...' }}
       errorProps={{ description: 'There was an error getting products. Please try again.' }}
     />

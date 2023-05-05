@@ -1,5 +1,3 @@
-from django.db.models import Q
-
 from nest.core.exceptions import ApplicationError
 
 from .models import Product
@@ -20,11 +18,15 @@ def _get_product(*, pk: int | None = None, oda_id: int | None = None) -> Product
     record, and should therefore not be used directly. Use
     get_product(...) instead.
     """
-    product = (
-        Product.objects.filter(Q(id=pk) | Q(oda_id=oda_id))
-        .select_related("unit")
-        .first()
-    )
+    filters = {}
+
+    if pk is not None:
+        filters["id"] = pk
+
+    if oda_id is not None:
+        filters["oda_id"] = oda_id
+
+    product = Product.objects.filter(**filters).select_related("unit").first()
 
     if not product:
         raise ApplicationError(message="Product does not exist.")

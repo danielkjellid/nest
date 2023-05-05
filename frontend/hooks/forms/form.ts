@@ -1,9 +1,9 @@
 import { buildMultipartForm, determineIsMultipart } from './multipart'
+import { useEffect, useState } from 'react'
 
 import { ButtonProps } from '../../components/Button'
 import { FormElement } from '../../components/Form/types'
 import schema from '../../../schema.json'
-import { useState } from 'react'
 
 interface FormComponentSchema {
   properties: FormElement
@@ -22,7 +22,14 @@ export function useForm<T extends object>({
    ** Data **
    **********/
 
-  const [data, setData] = useState<Partial<T> | null>(existingObj || ({} as T))
+  const [data, setData] = useState<Partial<T> | null>(null)
+
+  useEffect(() => {
+    if (existingObj) {
+      setData(existingObj)
+      setFormKey(key)
+    }
+  }, [existingObj])
 
   const onChange = (val: Partial<T>) => {
     // If we have fields with errors that are part of the onChange payload, we want to "resolve"
@@ -53,7 +60,7 @@ export function useForm<T extends object>({
    ** Errors **
    ************/
 
-  const [errors, setErrors] = useState<Partial<Record<keyof T, string>> | null>(null)
+  const [errors, setErrors] = useState<Partial<Record<keyof T, string>> | null>({})
   const resetErrors = () => setErrors(null)
 
   /***********
@@ -90,11 +97,14 @@ export function useForm<T extends object>({
    ** Misc **
    **********/
 
+  const [formKey, setFormKey] = useState(new Date().toDateString())
   const formFromSchema = (schema as any).components.schemas[key] as FormComponentSchema
-  const isMultipart = determineIsMultipart(schema, key)
+  const isMultipart = determineIsMultipart(schema.paths, key)
 
   return {
+    key: formKey,
     data,
+    setData,
     onChange,
     errors,
     setErrors,

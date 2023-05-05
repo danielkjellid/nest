@@ -1,4 +1,6 @@
 from .product_create import *  # noqa
+from .product_detail import *  # noqa
+from .product_edit import *  # noqa
 from .product_import import *  # noqa
 from .product_list import *  # noqa
 

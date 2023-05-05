@@ -4,16 +4,19 @@ from typing import Any
 import structlog
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
+from django.http import HttpRequest
 
 from nest.audit_logs.services import log_create_or_updated
 from nest.core.exceptions import ApplicationError
+from nest.core.services import model_update
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
+from nest.units.models import Unit
 from nest.units.selectors import get_unit_by_abbreviation
 
 from .models import Product
 from .records import ProductRecord
-from .selectors import get_product
+from .selectors import _get_product, get_product
 
 logger = structlog.getLogger()
 
@@ -52,6 +55,50 @@ def create_product(
     product.save()
 
     return ProductRecord.from_product(product)
+
+
+def edit_product(
+    *,
+    request: HttpRequest | None = None,
+    product_id: int,
+    thumbnail: UploadedFile | InMemoryUploadedFile | ImageFile | None = None,
+    **edits: Any,
+) -> ProductRecord:
+    """
+    Edit an existing product instance.
+    """
+
+    data = edits.copy()
+
+    if thumbnail is not None:
+        data["thumbnail"] = thumbnail
+
+    if "unit_id" in data:
+        unit = Unit.objects.get(id=data.pop("unit_id"))
+        data["unit"] = unit
+
+    product_instance, _has_updated = model_update(
+        instance=_get_product(pk=product_id),
+        fields=[
+            "name",
+            "gross_price",
+            "gross_unit_price",
+            "unit",
+            "unit_quantity",
+            "oda_url",
+            "oda_id",
+            "is_available",
+            "thumbnail",
+            "gtin",
+            "supplier",
+            "is_synced",
+        ],
+        data=data,
+        request=request,
+        log_ignore_fields={"thumbnail"},
+    )
+
+    return ProductRecord.from_product(product_instance)
 
 
 def update_or_create_product(

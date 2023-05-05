@@ -6,6 +6,7 @@ from nest.users.models import User
 def create_user(
     first_name: str = "Test",
     last_name: str = "User",
+    password: str = "supersecret",
     home: Home | None = None,
     homes: list[Home] | None = None,
     is_active: bool = True,
@@ -23,6 +24,7 @@ def create_user(
         last_name=last_name,
         defaults={
             "home": home,
+            "avatar_color": "#F87171",
             "is_active": is_active,
             "is_staff": is_staff,
             "is_superuser": is_superuser,
@@ -34,5 +36,6 @@ def create_user(
         homes_to_set += homes
 
     user.homes.set(homes_to_set)
+    user.set_password(password)
 
     return user
