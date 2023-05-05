@@ -1,3 +1,3 @@
-import ProductsApp from './App'
+import { ProductsApp } from './App'
 
 export default ProductsApp
