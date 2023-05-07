@@ -12,7 +12,7 @@ import { urls } from '../../urls'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../../hooks/fetcher'
 
-interface ProductsOverviewInnerProps {
+interface ProductOverviewInnerProps {
   results: {
     products: ProductListOutAPIResponse
     units: UnitListOutAPIResponse
@@ -20,7 +20,7 @@ interface ProductsOverviewInnerProps {
   refetch: () => void
 }
 
-function ProductsOverviewInner({ results, refetch }: ProductsOverviewInnerProps) {
+function ProductOverviewInner({ results, refetch }: ProductOverviewInnerProps) {
   const { products, units } = results
   const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure(false)
   const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
@@ -58,7 +58,7 @@ function ProductsOverviewInner({ results, refetch }: ProductsOverviewInnerProps)
   )
 }
 
-function ProductsOverview() {
+function ProductOverview() {
   const products = useFetch<ProductListOutAPIResponse>(urls.products.list())
   const units = useFetch<UnitListOutAPIResponse>(urls.units.list())
 
@@ -67,8 +67,8 @@ function ProductsOverview() {
   }
 
   return (
-    <View<object, ProductsOverviewInnerProps>
-      component={ProductsOverviewInner}
+    <View<object, ProductOverviewInnerProps>
+      component={ProductOverviewInner}
       results={{ products, units }}
       componentProps={{ refetch }}
       loadingProps={{ description: 'Loading products...' }}
@@ -77,4 +77,4 @@ function ProductsOverview() {
   )
 }
 
-export { ProductsOverview }
+export { ProductOverview }

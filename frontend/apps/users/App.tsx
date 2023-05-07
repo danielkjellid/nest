@@ -24,7 +24,7 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Title weight={600}>Products</Title>
+        <Title weight={600}>Users</Title>
         <div className="flex items-center space-x-3">
           {Object.keys(selectedRows).length > 0 && (
             <Button.Group>
