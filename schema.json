@@ -401,6 +401,45 @@
                 ],
                 "type": "object"
             },
+            "ProductDetailAuditLogsOut": {
+                "title": "ProductDetailOutAPIResponse",
+                "properties": {
+                    "user": {
+                        "title": "User",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "remoteAddr": {
+                        "title": "Remote Addr",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "changes": {
+                        "title": "Changes",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": [
+                                {},
+                                {}
+                            ]
+                        },
+                        "component": "NumberInput"
+                    },
+                    "createdAt": {
+                        "title": "Created At",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "changes",
+                    "createdAt"
+                ],
+                "type": "object"
+            },
             "ProductDetailOut": {
                 "title": "ProductDetailOutAPIResponse",
                 "properties": {
@@ -471,6 +510,14 @@
                         "title": "Is Synced",
                         "type": "boolean",
                         "component": "Checkbox"
+                    },
+                    "auditLogs": {
+                        "title": "Audit Logs",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductDetailAuditLogsOut"
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -481,7 +528,8 @@
                     "unit",
                     "isAvailable",
                     "supplier",
-                    "isSynced"
+                    "isSynced",
+                    "auditLogs"
                 ],
                 "type": "object"
             },

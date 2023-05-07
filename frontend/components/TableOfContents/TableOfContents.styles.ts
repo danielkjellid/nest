@@ -6,10 +6,6 @@ export const useTableOfContentsStyles = createStyles((theme) => ({
     position: 'sticky',
     right: 0,
     flex: `0 0 ${rem(260 - 20)}`,
-
-    [`@media (max-width: ${em(1080)})`]: {
-      display: 'none',
-    },
   },
 
   withTabs: {
@@ -19,22 +15,21 @@ export const useTableOfContentsStyles = createStyles((theme) => ({
 
   inner: {
     paddingTop: 0,
-    paddingBottom: theme.spacing.xl,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
 
   items: {
-    borderLeft: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    borderLeft: `${rem(2)} solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
     }`,
   },
 
   link: {
     display: 'block',
     color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
-    borderLeft: `${rem(1)} solid transparent`,
+    borderLeft: `${rem(2)} solid transparent`,
     padding: `${rem(8)} ${theme.spacing.md}`,
     marginLeft: -1,
   },

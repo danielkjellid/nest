@@ -3,8 +3,18 @@ from ninja import Schema
 
 from nest.api.responses import APIResponse
 from nest.products.selectors import get_product
-
+from typing import Any
 from .router import router
+from nest.products.models import Product
+from nest.audit_logs.selectors import get_log_entries_for_object
+from nest.core.utils import format_datetime
+
+
+class ProductDetailAuditLogsOut(Schema):
+    user: str | None
+    remote_addr: str | None
+    changes: dict[str, tuple[Any | None, Any | None]]
+    created_at: str
 
 
 class ProductDetailUnitOut(Schema):
@@ -30,6 +40,7 @@ class ProductDetailOut(Schema):
     gtin: str | None
     supplier: str
     is_synced: bool
+    audit_logs: list[ProductDetailAuditLogsOut]
 
 
 @router.get("{product_id}/", response=APIResponse[ProductDetailOut])
@@ -40,4 +51,20 @@ def product_detail_api(
     Retrieve a single product instance based on product id.
     """
     product = get_product(pk=product_id)
-    return APIResponse(status="success", data=ProductDetailOut(**product.dict()))
+    product_log_entries = get_log_entries_for_object(model=Product, pk=product_id)
+
+    return APIResponse(
+        status="success",
+        data=ProductDetailOut(
+            **product.dict(),
+            audit_logs=[
+                ProductDetailAuditLogsOut(
+                    user=log_entry.user.full_name if log_entry.user else None,
+                    remote_addr=log_entry.remote_addr,
+                    changes=log_entry.changes,
+                    created_at=format_datetime(log_entry.created_at),
+                )
+                for log_entry in product_log_entries[:10]
+            ],  # Only show last 10 entries.
+        ),
+    )

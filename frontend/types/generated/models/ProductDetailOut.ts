@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ProductDetailAuditLogsOut } from './ProductDetailAuditLogsOut';
 import type { ProductDetailUnitOut } from './ProductDetailUnitOut';
 
 export type ProductDetailOut = {
@@ -19,5 +20,6 @@ export type ProductDetailOut = {
     gtin?: string;
     supplier: string;
     isSynced: boolean;
+    auditLogs: Array<ProductDetailAuditLogsOut>;
 };
 

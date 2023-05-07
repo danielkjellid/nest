@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { ReactNode, useMemo } from 'react'
 
 import { useCardStyles } from './Card.styles'
 
@@ -70,11 +70,21 @@ interface Header {
 
 interface CardTableProps {
   headers: Header[]
-  items: any[]
+  items?: any[]
+  children?: React.ReactNode
 }
 
-function CardTable({ headers, items }: CardTableProps) {
+function CardTable({ headers, items, children }: CardTableProps) {
   const { classes } = useCardStyles()
+
+  const renderTableContent = () => {
+    if (items && items.length) {
+      return items.map((item, i) => <CardTableRow key={i} item={item} headers={headers} />)
+    }
+
+    return children
+  }
+
   return (
     <table className="w-full text-sm">
       <thead>
@@ -89,18 +99,7 @@ function CardTable({ headers, items }: CardTableProps) {
           ))}
         </tr>
       </thead>
-      <tbody className="divide-solid divide-y">
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-        <CardTableRow headers={headers} item={items[0]} />
-      </tbody>
+      <tbody className="divide-solid divide-y">{renderTableContent()}</tbody>
     </table>
   )
 }

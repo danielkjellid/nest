@@ -27,7 +27,7 @@ function getActiveElement(rects: DOMRect[]) {
 
       return {
         index,
-        position: item.y,
+        position: item.y - 100,
       }
     },
     { index: 0, position: rects[0].y }
@@ -66,10 +66,6 @@ function TableOfContents({ headings }: TableOfContentProps) {
     <nav className={cx(classes.wrapper, { [classes.withTabs]: true })}>
       <div className={classes.inner}>
         <div>
-          <div className={classes.header}>
-            <IconList size={20} stroke={1.5} />
-            <Text className={classes.title}>Overview</Text>
-          </div>
           <ScrollArea.Autosize mah={`calc(100vh - ${rem(140)})`} type="scroll" offsetScrollbars>
             <div className={classes.items}>
               {headings.map((heading, index) => (

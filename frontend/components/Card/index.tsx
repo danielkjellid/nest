@@ -1,32 +1,36 @@
+import { CardTable, CardTableRow } from './Table'
 import React, { Children } from 'react'
 
 import { CardKeyValue } from './KeyValue'
-import { CardTable } from './Table'
 import { useCardStyles } from './Card.styles'
 
 interface CardProps {
   title: string
   subtitle?: string
   children: React.ReactNode
-  withDivider?: boolean
 }
 
-function Card({ title, subtitle, children, withDivider }: CardProps) {
+function Card({ title, subtitle, children }: CardProps) {
   const { classes } = useCardStyles()
 
+  const childIsElement = ({
+    childrenNodes,
+    element,
+  }: {
+    childrenNodes: React.ReactNode[]
+    element: string
+  }) => {
+    return childrenNodes.some(
+      (child) =>
+        React.isValidElement(child) && typeof child.type !== 'string' && child.type.name === element
+    )
+  }
   const renderContainer = () => {
     const childrenNodes = Children.toArray(children)
 
-    if (
-      childrenNodes.some(
-        (child) =>
-          React.isValidElement(child) &&
-          typeof child.type !== 'string' &&
-          child.type.name === 'CardTable'
-      )
-    ) {
+    if (childIsElement({ childrenNodes, element: 'CardTable' })) {
       return <div>{children}</div>
-    } else if (withDivider) {
+    } else if (childIsElement({ childrenNodes, element: 'CardKeyValue' })) {
       return <dl className="divide-solid m-0 divide-y">{children}</dl>
     } else {
       return <div className="sm:px-6 px-4 py-4">{children}</div>
@@ -46,5 +50,6 @@ function Card({ title, subtitle, children, withDivider }: CardProps) {
 
 Card.KeyValue = CardKeyValue
 Card.Table = CardTable
+Card.TableRow = CardTableRow
 
 export { Card }
