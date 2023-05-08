@@ -1,11 +1,11 @@
 import { ProductDetailAuditLogsOut, ProductDetailOutAPIResponse } from '../../../types'
-import React, { useEffect } from 'react'
 
 import { Anchor } from '@mantine/core'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { Button as MButton } from '@mantine/core'
 import ProductEditDrawer from '../components/ProductEditDrawer'
+import React from 'react'
 import { TableOfContents } from '../../../components/TableOfContents'
 import View from '../../../components/View'
 import invariant from 'tiny-invariant'

@@ -1,12 +1,11 @@
-import { ProductListOutAPIResponse, UnitListOutAPIResponse } from '../../../types'
 import React, { useState } from 'react'
 
 import { Button } from '../../../components/Button'
 import ProductAddDrawer from '../components/ProductAddDrawer'
 import ProductEditDrawer from '../components/ProductEditDrawer'
+import { ProductListOutAPIResponse } from '../../../types'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import { Title } from '@mantine/core'
-import { UnitsProvider } from '../../../contexts/UnitsProvider'
 import View from '../../../components/View'
 import { urls } from '../../urls'
 import { useDisclosure } from '@mantine/hooks'

@@ -1,7 +1,6 @@
 import { Text, Title, createStyles } from '@mantine/core'
 
 import React from 'react'
-import classNames from 'classnames'
 
 const useStyles = createStyles((theme) => ({
   main: {

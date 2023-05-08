@@ -1,6 +1,6 @@
 from decimal import Decimal
-from typing import Iterable
-from typing import Any
+from typing import Any, Iterable
+
 from django.db.models import Model
 from django.utils.encoding import smart_str
 

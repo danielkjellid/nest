@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
 from pydantic import BaseModel
 
 from nest.users.records import UserRecord
-from datetime import datetime
+
 from .models import LogEntry
 from .utils import format_changes_display
 

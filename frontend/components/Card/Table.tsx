@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import Empty from '../Empty'
 import { useCardStyles } from './Card.styles'

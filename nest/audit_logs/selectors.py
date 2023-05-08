@@ -1,13 +1,20 @@
-from .models import LogEntry
-from django.db.models import Model
-from typing import TypeVar
+from typing import TypeVar, Type
+
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Model
+
+from .models import LogEntry
 from .records import LogEntryRecord
 
 T_MODEL = TypeVar("T_MODEL", bound=Model)
 
 
-def get_log_entries_for_object(*, model: T_MODEL, pk: int):
+def get_log_entries_for_object(
+    *, model: Type[T_MODEL], pk: int
+) -> list[LogEntryRecord]:
+    """
+    Get a list of log entries based on generic model and pk.
+    """
     instance_content_type = ContentType.objects.get_for_model(model)
 
     log_entries = LogEntry.objects.filter(
@@ -18,8 +25,12 @@ def get_log_entries_for_object(*, model: T_MODEL, pk: int):
 
 
 def get_log_entries_for_instance(*, instance: T_MODEL) -> list[LogEntryRecord]:
+    """
+    Get a list of log entries based on a concrete instance.
+    """
+
     if not isinstance(instance, Model):
-        raise ValueError(message="The given instance is not a model instance.")
+        raise ValueError("The given instance is not a model instance.")
 
     instance_content_type = ContentType.objects.get_for_model(instance.__class__)
 

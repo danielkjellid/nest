@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ScrollArea, Text, rem } from '@mantine/core'
 
-import { IconList } from '@tabler/icons-react'
 import cx from 'classnames'
 import { useTableOfContentsStyles } from './TableOfContents.styles'
 

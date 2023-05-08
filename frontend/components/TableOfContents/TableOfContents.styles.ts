@@ -1,4 +1,4 @@
-import { createStyles, em, rem } from '@mantine/core'
+import { createStyles, rem } from '@mantine/core'
 
 export const useTableOfContentsStyles = createStyles((theme) => ({
   wrapper: {

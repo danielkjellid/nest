@@ -1,13 +1,15 @@
+from typing import Any
+
 from django.http import HttpRequest
 from ninja import Schema
 
 from nest.api.responses import APIResponse
-from nest.products.selectors import get_product
-from typing import Any
-from .router import router
-from nest.products.models import Product
 from nest.audit_logs.selectors import get_log_entries_for_object
 from nest.core.utils import format_datetime
+from nest.products.models import Product
+from nest.products.selectors import get_product
+
+from .router import router
 
 
 class ProductDetailAuditLogsOut(Schema):

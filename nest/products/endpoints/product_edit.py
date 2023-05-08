@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from django.http import HttpRequest
 from ninja import File, Form, Schema
-from decimal import Decimal
+
 from nest.api.fields import FormField
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
