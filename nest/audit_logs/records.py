@@ -8,7 +8,6 @@ from pydantic import BaseModel
 from nest.users.records import UserRecord
 
 from .models import LogEntry
-from .utils import format_changes_display
 
 
 class LogEntryRecord(BaseModel):
