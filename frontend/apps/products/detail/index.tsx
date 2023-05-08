@@ -23,8 +23,11 @@ interface ProductDetailInnerProps {
 
 function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
   const { classes } = useProductDetailStyles()
-  const { data: product } = results.productResponse
   const { currentUser } = useCommonContext()
+  const { data: product } = results.productResponse
+  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
+
+  if (!product) return null
 
   const auditLogTableHeaders = [
     { label: 'User/Source', value: 'userOrSource' },
@@ -32,6 +35,8 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
     { label: 'Date', value: 'date' },
     { label: 'IP', value: 'ip' },
   ]
+
+  // Format change message by highlighting changes, making it a bit more readable.
   const formatChangeMessage = ({ changes }: { changes: ProductDetailAuditLogsOut['changes'] }) => {
     return (
       <div>
@@ -45,10 +50,6 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
       </div>
     )
   }
-
-  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
-
-  if (!product) return null
 
   let headings = []
   if (product.isOdaProduct) {
@@ -173,7 +174,6 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
 
 function ProductDetail() {
   const { productId } = useParams()
-
   invariant(productId)
 
   const productResponse = useFetch<ProductDetailOutAPIResponse>(

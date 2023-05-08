@@ -40,14 +40,3 @@ def calculate_models_diff(
         diff = None  # type: ignore
 
     return diff
-
-
-def format_changes_display(
-    *, changes: dict[str, tuple[Any | None, Any | None]]
-) -> list[str]:
-    formatted_changes = [
-        f"{key} changed from {old_value} to {new_value}"
-        for key, (old_value, new_value) in changes.items()
-    ]
-
-    return formatted_changes

@@ -45,10 +45,4 @@ export const useTableOfContentsStyles = createStyles((theme) => ({
         ? theme.colors[theme.primaryColor][1]
         : theme.colors[theme.primaryColor][8],
   },
-
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: theme.spacing.md,
-  },
 }))

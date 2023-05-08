@@ -13,6 +13,7 @@ interface TableOfContentProps {
   headings: Heading[]
 }
 
+// Calculate closest id (slug) and set active state.
 function getActiveElement(rects: DOMRect[]) {
   if (rects.length === 0) {
     return -1
@@ -26,6 +27,7 @@ function getActiveElement(rects: DOMRect[]) {
 
       return {
         index,
+        // - 100 offset because of offset when scrolling into view.
         position: item.y - 100,
       }
     },
@@ -38,7 +40,6 @@ function getActiveElement(rects: DOMRect[]) {
 function TableOfContents({ headings }: TableOfContentProps) {
   const { classes } = useTableOfContentsStyles()
   const [active, setActive] = useState(2)
-
   const slugs = useRef<HTMLDivElement[]>([])
 
   useEffect(() => {
@@ -51,6 +52,7 @@ function TableOfContents({ headings }: TableOfContentProps) {
     setActive(getActiveElement(slugs.current.map((d) => d.getBoundingClientRect())))
   }
 
+  // Add event listener on scroll and set active based on which id is currently closest.
   useEffect(() => {
     setActive(getActiveElement(slugs.current.map((d) => d.getBoundingClientRect())))
     window.addEventListener('scroll', handleScroll)

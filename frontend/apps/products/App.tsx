@@ -21,8 +21,9 @@ export function ProductsApp() {
         setUnits(fetchedUnits.data)
       }
     }
-
-    fetchUnits()
+    if (!units) {
+      fetchUnits()
+    }
   }, [])
 
   return (

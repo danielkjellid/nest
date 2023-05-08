@@ -25,6 +25,7 @@ function Card({ title, subtitle, children }: CardProps) {
         React.isValidElement(child) && typeof child.type !== 'string' && child.type.name === element
     )
   }
+
   const renderContainer = () => {
     const childrenNodes = Children.toArray(children)
 
