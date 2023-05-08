@@ -1,19 +1,19 @@
-import { Anchor, Badge, Paper, Stepper, Table, Tabs, Text, Timeline, Title } from '@mantine/core'
 import { ProductDetailAuditLogsOut, ProductDetailOutAPIResponse } from '../../../types'
-import { useLocation, useParams } from 'react-router-dom'
+import React, { useEffect } from 'react'
 
-import { Button } from '@mantine/core'
+import { Anchor } from '@mantine/core'
+import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
+import { Button as MButton } from '@mantine/core'
 import ProductEditDrawer from '../components/ProductEditDrawer'
-import React from 'react'
 import { TableOfContents } from '../../../components/TableOfContents'
-import { UnitsProvider } from '../../../contexts/UnitsProvider'
 import View from '../../../components/View'
 import invariant from 'tiny-invariant'
 import { urls } from '../../urls'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../../hooks/fetcher'
+import { useParams } from 'react-router-dom'
 import { useProductDetailStyles } from './detail.styles'
 
 interface ProductDetailInnerProps {
@@ -25,16 +25,6 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
   const { classes } = useProductDetailStyles()
   const { data: product } = results.productResponse
   const { currentUser } = useCommonContext()
-
-  if (!product) return null
-
-  const headings = [
-    { label: 'Information', slug: 'information' },
-    // { label: 'Nutrition', slug: 'nutrition' },
-    { label: 'Prices', slug: 'prices' },
-    { label: 'Oda', slug: 'oda' },
-    { label: 'Changes', slug: 'changes' },
-  ]
 
   const auditLogTableHeaders = [
     { label: 'User/Source', value: 'userOrSource' },
@@ -58,6 +48,26 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
 
   const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
 
+  if (!product) return null
+
+  let headings = []
+  if (product.isOdaProduct) {
+    headings = [
+      { label: 'Information', slug: 'information' },
+      // { label: 'Nutrition', slug: 'nutrition' },
+      { label: 'Prices', slug: 'prices' },
+      { label: 'Oda', slug: 'oda' },
+      { label: 'Changes', slug: 'changes' },
+    ]
+  } else {
+    headings = [
+      { label: 'Information', slug: 'information' },
+      // { label: 'Nutrition', slug: 'nutrition' },
+      { label: 'Prices', slug: 'prices' },
+      { label: 'Changes', slug: 'changes' },
+    ]
+  }
+
   return (
     <div>
       <header className="lg:grid-cols-2 grid content-center grid-cols-1 gap-8">
@@ -73,20 +83,20 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
           </div>
         </div>
         {currentUser.isStaff && (
-          <Button.Group className="lg:order-2 justify-self-start lg:justify-self-end self-center order-1">
+          <div className="lg:order-2 justify-self-start lg:justify-self-end self-center order-1 space-x-1">
             {product.isOdaProduct && <Button variant="default">Update from Oda</Button>}
             {currentUser.isSuperuser && (
-              <Button
+              <MButton
                 component="a"
                 href={`/admin/products/product/${product.id}/`}
                 target="_blank"
                 variant="default"
               >
                 View in admin
-              </Button>
+              </MButton>
             )}
             <Button onClick={editDrawerOpen}>Edit product</Button>
-          </Button.Group>
+          </div>
         )}
       </header>
       <div className="lg:grid-cols-3 grid grid-cols-1 gap-6 mt-10">
@@ -113,19 +123,21 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
               <Card.KeyValue k="Gross unit price" value={product.grossUnitPrice} />
             </Card>
           </div>
-          <div id="oda">
-            <Card title="Oda">
-              <Card.KeyValue k="Gross price" value={product.odaId} />
-              <Card.KeyValue
-                k="Gross price"
-                value={
-                  <Anchor href={product.odaUrl} target="_blank">
-                    {product.odaUrl}
-                  </Anchor>
-                }
-              />
-            </Card>
-          </div>
+          {product.isOdaProduct && (
+            <div id="oda">
+              <Card title="Oda">
+                <Card.KeyValue k="Gross price" value={product.odaId} />
+                <Card.KeyValue
+                  k="Gross price"
+                  value={
+                    <Anchor href={product.odaUrl} target="_blank">
+                      {product.odaUrl}
+                    </Anchor>
+                  }
+                />
+              </Card>
+            </div>
+          )}
           <div id="changes" className="mt-12">
             <Card title="Changes">
               <Card.Table headers={auditLogTableHeaders}>

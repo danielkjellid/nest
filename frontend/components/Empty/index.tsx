@@ -5,14 +5,16 @@ import React from 'react'
 interface EmptyProps {
   title: string
   message: string
+  className?: string
 }
 
-function Empty({ title, message }: EmptyProps) {
+function Empty({ title, message, className }: EmptyProps) {
   return (
     <PageState
       title={title}
       message={message}
-      icon={<IconMoodSad className="h-12 w-12" stroke={1.3} />}
+      className={className}
+      icon={<IconMoodSad className="w-12 h-12 mx-auto" stroke={1.3} />}
     />
   )
 }

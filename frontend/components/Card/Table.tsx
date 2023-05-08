@@ -1,5 +1,6 @@
 import React, { ReactNode, useMemo } from 'react'
 
+import Empty from '../Empty'
 import { useCardStyles } from './Card.styles'
 
 interface CardTableRowProps {
@@ -82,7 +83,21 @@ function CardTable({ headers, items, children }: CardTableProps) {
       return items.map((item, i) => <CardTableRow key={i} item={item} headers={headers} />)
     }
 
-    return children
+    if (children) {
+      return children
+    }
+
+    return (
+      <tr>
+        <td className="sm:px-6 px-4 py-4" colSpan={headers.length + 1}>
+          <Empty
+            title="No records found"
+            message="The data here is currently empty. Please check back later."
+            className="w-full"
+          />
+        </td>
+      </tr>
+    )
   }
 
   return (

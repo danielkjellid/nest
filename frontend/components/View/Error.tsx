@@ -10,8 +10,9 @@ function Error({ description }: ErrorProps) {
   return (
     <PageState
       title="Something went wrong"
+      className="min-h-screen"
       message={description}
-      icon={<IconHeartBroken className="h-12 w-12" stroke={1.3} />}
+      icon={<IconHeartBroken className="w-12 h-12 mx-auto" stroke={1.3} />}
     />
   )
 }
