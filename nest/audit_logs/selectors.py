@@ -1,4 +1,4 @@
-from typing import TypeVar, Type
+from typing import Type, TypeVar
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
@@ -19,7 +19,7 @@ def get_log_entries_for_object(
 
     log_entries = LogEntry.objects.filter(
         content_type=instance_content_type, object_id=pk
-    )
+    ).select_related("user__home")
 
     return [LogEntryRecord.from_log_entry(log_entry) for log_entry in log_entries]
 
@@ -36,6 +36,6 @@ def get_log_entries_for_instance(*, instance: T_MODEL) -> list[LogEntryRecord]:
 
     log_entries = LogEntry.objects.filter(
         content_type=instance_content_type, object_id=instance.pk
-    )
+    ).select_related("user__home")
 
     return [LogEntryRecord.from_log_entry(log_entry) for log_entry in log_entries]

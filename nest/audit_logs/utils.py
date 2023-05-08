@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Any, Iterable
+from typing import Iterable
 
 from django.db.models import Model
 from django.utils.encoding import smart_str
