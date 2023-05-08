@@ -511,6 +511,11 @@
                         "type": "boolean",
                         "component": "Checkbox"
                     },
+                    "isOdaProduct": {
+                        "title": "Is Oda Product",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
                     "auditLogs": {
                         "title": "Audit Logs",
                         "type": "array",
@@ -529,6 +534,7 @@
                     "isAvailable",
                     "supplier",
                     "isSynced",
+                    "isOdaProduct",
                     "auditLogs"
                 ],
                 "type": "object"

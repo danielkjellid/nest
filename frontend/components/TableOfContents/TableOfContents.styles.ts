@@ -51,8 +51,4 @@ export const useTableOfContentsStyles = createStyles((theme) => ({
     alignItems: 'center',
     marginBottom: theme.spacing.md,
   },
-
-  title: {
-    marginLeft: theme.spacing.md,
-  },
 }))

@@ -513,3 +513,7 @@ video {
   right: 8px;
   top: 8px;
 }
+
+.mantine-ScrollArea-viewport {
+  padding: 0;
+}

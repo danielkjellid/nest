@@ -20,6 +20,7 @@ export type ProductDetailOut = {
     gtin?: string;
     supplier: string;
     isSynced: boolean;
+    isOdaProduct: boolean;
     auditLogs: Array<ProductDetailAuditLogsOut>;
 };
 

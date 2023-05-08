@@ -40,6 +40,7 @@ class ProductDetailOut(Schema):
     gtin: str | None
     supplier: str
     is_synced: bool
+    is_oda_product: bool
     audit_logs: list[ProductDetailAuditLogsOut]
 
 
