@@ -51,7 +51,7 @@ class TestCoreServices:
 
         assert user.first_name != data["first_name"]
 
-        with django_assert_num_queries(5):
+        with django_assert_num_queries(4):
             updated_user, has_updated = model_update(
                 instance=user, fields=update_fields, data=data
             )

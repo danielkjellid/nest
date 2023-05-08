@@ -8,10 +8,9 @@ export default [
   { key: 'plans', path: '/', element: () => import('./plans'), icon: <IconHome />, end },
   {
     key: 'products',
-    path: '/products/',
+    path: '/products/*',
     element: () => import('./products'),
     icon: <IconShoppingCart />,
-    end,
   },
   {
     key: 'recipes',

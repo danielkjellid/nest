@@ -65,6 +65,7 @@ export function BaseAppCore({ appShellClassName, navbar, header, children }: Bas
           className={appShellClassName}
           navbar={navbar}
           header={header}
+          padding={32}
           styles={(theme) => ({
             main: {
               color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.dark[8],
@@ -74,7 +75,7 @@ export function BaseAppCore({ appShellClassName, navbar, header, children }: Bas
           })}
         >
           <Notifications />
-          <div className="h-full">{children}</div>
+          <div className="max-w-7xl min-h-screen mx-auto">{children}</div>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>
@@ -96,9 +97,9 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
 
   return (
     <BaseAppCore appShellClassName={appShellClassName} navbar={navbar} header={header}>
-      <div className="space-y-5 h-full">
+      <div className="h-full space-y-5">
         {currentUser.isHijacked && (
-          <Alert color="orange" title="User hijacked" icon={<IconInfoCircle className="h-5 w-5" />}>
+          <Alert color="orange" title="User hijacked" icon={<IconInfoCircle className="w-5 h-5" />}>
             <div className="flex items-center justify-between">
               You&apos;re currently working on behalf of {currentUser.fullName}.
               <form action="/hijack/release/" method="post">

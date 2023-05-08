@@ -24,7 +24,7 @@ class ProductCreateIn(Schema):
         help_text="Amount in selected unit type. E.g. 2 if 2 kg.",
         col_span=1,
     )
-    unit_id: str = FormField(
+    unit_id: int = FormField(
         ...,
         alias="unit",
         help_text="What sort of unit is this?",

@@ -20,13 +20,14 @@ interface PageStateProps {
   title: string
   message: string
   icon: React.ReactNode
+  className?: string
 }
 
-function PageState({ title, message, icon }: PageStateProps) {
+function PageState({ title, message, icon, className }: PageStateProps) {
   const { classes } = useStyles()
   return (
     <div
-      className={`${classes.main} border-2 border-dashed rounded-md h-full flex items-center justify-center`}
+      className={`${classes.main} ${className} border-2 border-dashed rounded-md flex items-center justify-center p-8`}
     >
       <div className={`${classes.text} text-center space-y-2`}>
         {icon}

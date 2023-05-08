@@ -66,11 +66,14 @@ function Navbar() {
     }
 
     const { icon, path } = correspondingApp
+    const basePath = path.split('/').filter((i) => i && i !== '*')[0]
+    const pathnameBase = location.pathname.split('/').filter((i) => i)[0] // First instance should always match base
+
     return (
       <NavbarLink
         key={menuItem.key}
         label={menuItem.title}
-        active={location.pathname === path}
+        active={pathnameBase === basePath}
         icon={() => icon}
         onClick={() => navigate(path)}
       />

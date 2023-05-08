@@ -1,9 +1,9 @@
 import { IconEye, IconPencil, IconTrash } from '@tabler/icons-react'
 
 import { Menu } from '@mantine/core'
-import { ProductListOut } from '../../../../types'
+import { ProductListOut } from '../../../../../types'
 import React from 'react'
-import Table from '../../../../components/Table'
+import Table from '../../../../../components/Table'
 
 interface ProductOverViewTableProps {
   data: ProductListOut[]

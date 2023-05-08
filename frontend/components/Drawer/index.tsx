@@ -49,7 +49,7 @@ function Drawer({
       <Transition mounted={opened} transition="slide-left" duration={200}>
         {(styles) => (
           <div
-            className="absolute bottom-0 rounded-md"
+            className="fixed bottom-0 rounded-md"
             style={{ zIndex: 9999, width: 620, right: '8px', bottom: '8px' }}
           >
             <Box

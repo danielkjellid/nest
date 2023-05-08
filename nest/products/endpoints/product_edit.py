@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.http import HttpRequest
 from ninja import File, Form, Schema
 
@@ -16,15 +18,15 @@ class ProductEditIn(Schema):
         ...,
         help_text="Plain name of product, should not include unit.",
     )
-    gross_price: str = FormField(
+    gross_price: Decimal = FormField(
         ..., help_text="Gross price of product, including VAT."
     )
-    unit_quantity: str = FormField(
+    unit_quantity: Decimal = FormField(
         ...,
         help_text="Amount in selected unit type. E.g. 2 if 2 kg.",
         col_span=1,
     )
-    unit_id: str = FormField(
+    unit_id: int = FormField(
         ...,
         alias="unit",
         help_text="What sort of unit is this?",
@@ -35,7 +37,7 @@ class ProductEditIn(Schema):
     gtin: str | None = FormField(
         None, help_text="Global trade item number. Number bellow barcode."
     )
-    oda_id: str | None = FormField(None, help_text="Corresponding product id at Oda.")
+    oda_id: int | None = FormField(None, help_text="Corresponding product id at Oda.")
     oda_url: str | None = FormField(None, help_text="Link to product at Oda.")
     is_available: bool = FormField(
         ..., help_text="Product is available and is actively used in recipes."

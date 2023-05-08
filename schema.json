@@ -326,7 +326,7 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
-                        "type": "string"
+                        "type": "integer"
                     },
                     "supplier": {
                         "title": "Supplier",
@@ -369,7 +369,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -401,13 +401,52 @@
                 ],
                 "type": "object"
             },
+            "ProductDetailAuditLogsOut": {
+                "title": "ProductDetailOutAPIResponse",
+                "properties": {
+                    "userOrSource": {
+                        "title": "User Or Source",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "remoteAddr": {
+                        "title": "Remote Addr",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "changes": {
+                        "title": "Changes",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": [
+                                {},
+                                {}
+                            ]
+                        },
+                        "component": "NumberInput"
+                    },
+                    "createdAt": {
+                        "title": "Created At",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "changes",
+                    "createdAt"
+                ],
+                "type": "object"
+            },
             "ProductDetailOut": {
                 "title": "ProductDetailOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -471,6 +510,19 @@
                         "title": "Is Synced",
                         "type": "boolean",
                         "component": "Checkbox"
+                    },
+                    "isOdaProduct": {
+                        "title": "Is Oda Product",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "auditLogs": {
+                        "title": "Audit Logs",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductDetailAuditLogsOut"
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -481,7 +533,9 @@
                     "unit",
                     "isAvailable",
                     "supplier",
-                    "isSynced"
+                    "isSynced",
+                    "isOdaProduct",
+                    "auditLogs"
                 ],
                 "type": "object"
             },
@@ -534,7 +588,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
-                        "type": "string"
+                        "type": "number"
                     },
                     "unitQuantity": {
                         "title": "Unit Quantity",
@@ -545,7 +599,7 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
-                        "type": "string"
+                        "type": "number"
                     },
                     "unit": {
                         "title": "Unit",
@@ -556,7 +610,7 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
-                        "type": "string"
+                        "type": "integer"
                     },
                     "supplier": {
                         "title": "Supplier",
@@ -583,7 +637,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
-                        "type": "string"
+                        "type": "integer"
                     },
                     "odaUrl": {
                         "title": "Oda Url",
@@ -644,7 +698,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -722,7 +776,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "fullName": {
                         "title": "Full Name",
@@ -747,7 +801,7 @@
                     "odaId": {
                         "title": "Oda Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "isSynced": {
                         "title": "Is Synced",
@@ -817,7 +871,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -874,7 +928,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "address": {
                         "title": "Address",
@@ -900,7 +954,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "email": {
                         "title": "Email",

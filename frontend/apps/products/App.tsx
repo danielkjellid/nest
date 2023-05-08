@@ -1,80 +1,37 @@
-import { ProductListOutAPIResponse, UnitListOutAPIResponse } from '../../types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import { UnitListOut, UnitListOutAPIResponse } from '../../types'
 
-import { Button } from '../../components/Button'
-import ProductAddDrawer from './components/ProductAddDrawer'
-import ProductEditDrawer from './components/ProductEditDrawer'
-import ProductOverViewTable from './components/ProductOverviewTable'
-import { Title } from '@mantine/core'
+import { ProductDetail } from './detail'
+import { ProductOverview } from './overview'
 import { UnitsProvider } from '../../contexts/UnitsProvider'
-import View from '../../components/View'
+import { performGet } from '../../hooks/fetcher/http'
+import { routes } from './routes'
 import { urls } from '../urls'
-import { useDisclosure } from '@mantine/hooks'
-import { useFetch } from '../../hooks/fetcher'
+import { useStrippedRoute } from '../../hooks/route'
 
-interface ProductsAppInnerProps {
-  results: {
-    products: ProductListOutAPIResponse
-    units: UnitListOutAPIResponse
-  }
-  refetch: () => void
-}
+export function ProductsApp() {
+  const baseRoute = useStrippedRoute('/products')
+  const [units, setUnits] = useState<UnitListOut[]>()
 
-function ProductsAppInner({ results, refetch }: ProductsAppInnerProps) {
-  const { products, units } = results
-  const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure(false)
-  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
-
-  const [productIdToEdit, setProductIdToEdit] = useState<number>()
-  const editProduct = (id: number) => {
-    setProductIdToEdit(id)
-    editDrawerOpen()
-  }
+  useEffect(() => {
+    const fetchUnits = async () => {
+      const fetchedUnits = await performGet<UnitListOutAPIResponse>(urls.units.list())
+      if (fetchedUnits && fetchedUnits.data) {
+        setUnits(fetchedUnits.data)
+      }
+    }
+    if (!units) {
+      fetchUnits()
+    }
+  }, [])
 
   return (
-    <UnitsProvider units={units.data}>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <Title weight={600}>Products</Title>
-          <div className="flex items-center space-x-3">
-            <Button.Group>
-              {/* <Button variant="default">Import from Oda</Button> */}
-              <Button variant="default" onClick={addDrawerOpen}>
-                Add new
-              </Button>
-            </Button.Group>
-          </div>
-        </div>
-        <ProductOverViewTable data={products.data || []} onEditProduct={(id) => editProduct(id)} />
-        <ProductAddDrawer opened={addDrawerOpened} onClose={addDrawerClose} refetch={refetch} />
-        <ProductEditDrawer
-          productId={productIdToEdit}
-          opened={editDrawerOpened}
-          onClose={editDrawerClose}
-          refetch={refetch}
-        />
-      </div>
+    <UnitsProvider units={units}>
+      <Routes>
+        <Route path={baseRoute(routes.overview.path)} element={<ProductOverview />} />
+        <Route path={baseRoute(routes.detail.path)} element={<ProductDetail />} />
+      </Routes>
     </UnitsProvider>
   )
 }
-
-function ProductsApp() {
-  const products = useFetch<ProductListOutAPIResponse>(urls.products.list())
-  const units = useFetch<UnitListOutAPIResponse>(urls.units.list())
-
-  const refetch = () => {
-    products.reload()
-  }
-
-  return (
-    <View<object, ProductsAppInnerProps>
-      component={ProductsAppInner}
-      results={{ products, units }}
-      componentProps={{ refetch }}
-      loadingProps={{ description: 'Loading products...' }}
-      errorProps={{ description: 'There was an error getting products. Please try again.' }}
-    />
-  )
-}
-
-export default ProductsApp
