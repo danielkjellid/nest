@@ -39,7 +39,7 @@ function Header() {
         align="center"
         className="flex-row"
       >
-        <Logo className="h-12 w-12" />
+        <Logo className="w-12 h-12" />
         {currentHome &&
           (availableHomes.length > 1 ? (
             <Menu shadow="md">

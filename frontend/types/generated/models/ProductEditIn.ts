@@ -4,12 +4,12 @@
 
 export type ProductEditIn = {
     name: string;
-    grossPrice: string;
-    unitQuantity: string;
-    unit: string;
+    grossPrice: number;
+    unitQuantity: number;
+    unit: number;
     supplier: string;
     gtin?: string;
-    odaId?: string;
+    odaId?: number;
     odaUrl?: string;
     isAvailable: boolean;
     isSynced: boolean;

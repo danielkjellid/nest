@@ -75,7 +75,7 @@ export function BaseAppCore({ appShellClassName, navbar, header, children }: Bas
           })}
         >
           <Notifications />
-          <div className="max-w-7xl min-h-screen">{children}</div>
+          <div className="max-w-7xl min-h-screen mx-auto">{children}</div>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>

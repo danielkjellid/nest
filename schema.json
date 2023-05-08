@@ -326,7 +326,7 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
-                        "type": "string"
+                        "type": "integer"
                     },
                     "supplier": {
                         "title": "Supplier",
@@ -369,7 +369,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -404,8 +404,8 @@
             "ProductDetailAuditLogsOut": {
                 "title": "ProductDetailOutAPIResponse",
                 "properties": {
-                    "user": {
-                        "title": "User",
+                    "userOrSource": {
+                        "title": "User Or Source",
                         "type": "string",
                         "component": "TextInput"
                     },
@@ -446,7 +446,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -582,7 +582,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
-                        "type": "string"
+                        "type": "number"
                     },
                     "unitQuantity": {
                         "title": "Unit Quantity",
@@ -593,7 +593,7 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
-                        "type": "string"
+                        "type": "number"
                     },
                     "unit": {
                         "title": "Unit",
@@ -604,7 +604,7 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
-                        "type": "string"
+                        "type": "integer"
                     },
                     "supplier": {
                         "title": "Supplier",
@@ -631,7 +631,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
-                        "type": "string"
+                        "type": "integer"
                     },
                     "odaUrl": {
                         "title": "Oda Url",
@@ -692,7 +692,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -770,7 +770,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "fullName": {
                         "title": "Full Name",
@@ -795,7 +795,7 @@
                     "odaId": {
                         "title": "Oda Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "isSynced": {
                         "title": "Is Synced",
@@ -865,7 +865,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
@@ -922,7 +922,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "address": {
                         "title": "Address",
@@ -948,7 +948,7 @@
                     "id": {
                         "title": "Id",
                         "type": "integer",
-                        "component": "NumberInput"
+                        "component": "TextInput"
                     },
                     "email": {
                         "title": "Email",

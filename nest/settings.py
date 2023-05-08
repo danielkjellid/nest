@@ -343,13 +343,13 @@ if SENTRY_DSN is not None:
 FORM_COMPONENT_MAPPING_DEFAULTS = {
     "string": FrontendComponents.TEXT_INPUT,
     "text": FrontendComponents.TEXT_INPUT,
-    "integer": FrontendComponents.NUMBER_INPUT,
+    "integer": FrontendComponents.TEXT_INPUT,
     "boolean": FrontendComponents.CHECKBOX,
     "enum": FrontendComponents.SELECT,
     "array": FrontendComponents.MULTISELECT,
     "file": FrontendComponents.FILE_INPUT,
     "image": FrontendComponents.FILE_INPUT,
-    "number": FrontendComponents.NUMBER_INPUT,
+    "number": FrontendComponents.TEXT_INPUT,
     "object": FrontendComponents.NUMBER_INPUT,
 }
 

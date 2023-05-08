@@ -79,7 +79,7 @@ def model_update(
     if has_updated:
         instance.full_clean()
         instance.save(update_fields=update_fields)
-
+        print(changes)
         if log_change:
             log_update(instance=instance, request=request, changes=changes)
 

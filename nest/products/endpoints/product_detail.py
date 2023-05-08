@@ -11,7 +11,7 @@ from nest.core.utils import format_datetime
 
 
 class ProductDetailAuditLogsOut(Schema):
-    user: str | None
+    user_or_source: str | None
     remote_addr: str | None
     changes: dict[str, tuple[Any | None, Any | None]]
     created_at: str
@@ -59,7 +59,11 @@ def product_detail_api(
             **product.dict(),
             audit_logs=[
                 ProductDetailAuditLogsOut(
-                    user=log_entry.user.full_name if log_entry.user else None,
+                    user_or_source=log_entry.source
+                    if log_entry.source
+                    else log_entry.user.full_name
+                    if log_entry.user
+                    else None,
                     remote_addr=log_entry.remote_addr,
                     changes=log_entry.changes,
                     created_at=format_datetime(log_entry.created_at),

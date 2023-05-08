@@ -4,19 +4,23 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import { Button } from '@mantine/core'
 import { Card } from '../../../components/Card'
+import ProductEditDrawer from '../components/ProductEditDrawer'
 import React from 'react'
 import { TableOfContents } from '../../../components/TableOfContents'
+import { UnitsProvider } from '../../../contexts/UnitsProvider'
 import View from '../../../components/View'
 import invariant from 'tiny-invariant'
 import { urls } from '../../urls'
+import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../../hooks/fetcher'
 import { useProductDetailStyles } from './detail.styles'
 
 interface ProductDetailInnerProps {
   results: { productResponse: ProductDetailOutAPIResponse }
+  refetch: () => void
 }
 
-function ProductDetailInner({ results }: ProductDetailInnerProps) {
+function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
   const { classes } = useProductDetailStyles()
   const { data: product } = results.productResponse
 
@@ -31,7 +35,7 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
   ]
 
   const auditLogTableHeaders = [
-    { label: 'User', value: 'user' },
+    { label: 'User/Source', value: 'userOrSource' },
     { label: 'Change', value: 'change' },
     { label: 'Date', value: 'date' },
     { label: 'IP', value: 'ip' },
@@ -50,6 +54,8 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
     )
   }
 
+  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
+
   return (
     <div>
       <header className="flex items-center justify-between">
@@ -67,7 +73,7 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
         <Button.Group>
           <Button variant="default">Update from Oda</Button>
           <Button variant="default">View in admin</Button>
-          <Button>Edit product</Button>
+          <Button onClick={editDrawerOpen}>Edit product</Button>
         </Button.Group>
       </header>
       <div className="lg:grid-cols-3 grid grid-cols-1 gap-6 mt-10">
@@ -115,7 +121,7 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
                     key={i}
                     headers={auditLogTableHeaders}
                     item={{
-                      user: logEntry.user,
+                      userOrSource: logEntry.userOrSource,
                       change: formatChangeMessage({ changes: logEntry.changes }),
                       date: logEntry.createdAt,
                       ip: logEntry.remoteAddr,
@@ -130,6 +136,12 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
           <TableOfContents headings={headings} />
         </div>
       </div>
+      <ProductEditDrawer
+        productId={product.id}
+        opened={editDrawerOpened}
+        onClose={editDrawerClose}
+        refetch={refetch}
+      />
     </div>
   )
 }
@@ -143,11 +155,15 @@ function ProductDetail() {
     urls.products.detail({ id: productId })
   )
 
+  const refetch = () => {
+    productResponse.reload()
+  }
+
   return (
     <View<object, any>
       component={ProductDetailInner}
       results={{ productResponse }}
-      componentProps={{}}
+      componentProps={{ refetch }}
       loadingProps={{ description: 'Loading product...' }}
       errorProps={{
         description: 'There was en error retrieving the product. Please try again later.',

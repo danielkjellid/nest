@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type ProductDetailAuditLogsOut = {
-    user?: string;
+    userOrSource?: string;
     remoteAddr?: string;
     changes: Record<string, Array<any>>;
     createdAt: string;
