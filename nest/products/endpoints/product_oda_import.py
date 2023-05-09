@@ -3,8 +3,9 @@ from ninja import Schema
 
 from nest.api.fields import FormField
 from nest.api.responses import APIResponse
-from nest.data_pools.providers.oda.clients import OdaClient
 from nest.core.decorators import staff_required
+from nest.data_pools.providers.oda.clients import OdaClient
+
 from .router import router
 
 
@@ -27,7 +28,7 @@ class ProductOdaImportIn(Schema):
 @staff_required
 def product_oda_import_api(
     request: HttpRequest, payload: ProductOdaImportIn
-) -> APIResponse[ProductOdaImportIn]:
+) -> APIResponse[ProductOdaImportOut]:
     """
     Import product data from id. Note: This does not create a product, it only retrieves
     data.
@@ -43,7 +44,7 @@ def product_oda_import_api(
             is_available=response.availability.is_available,
             gross_price=response.gross_price,
             unit=response.unit_price_quantity_abbreviation,
-            unit_quantity=(
+            unit_quantity=str(
                 float(response.gross_price) / float(response.gross_unit_price)
             ),
             thumbnail_url=response.images[0].thumbnail.url,

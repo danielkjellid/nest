@@ -1,7 +1,5 @@
 import pytest
-from nest.data_pools.providers.oda.clients import OdaClient
-from nest.data_pools.tests.oda.utils import get_oda_product_response_dict
-from nest.data_pools.providers.oda.records import OdaProductDetailRecord
+
 from nest.products.endpoints.product_oda_import_confirm import (
     product_oda_import_confirm_api,
 )

@@ -2,11 +2,12 @@ from decimal import Decimal
 from typing import Any
 
 import structlog
+from django.core.files import File
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 from django.http import HttpRequest
-from django.core.files import File
 from django.utils.text import slugify
+
 from nest.audit_logs.services import log_create_or_updated
 from nest.core.exceptions import ApplicationError
 from nest.core.services import model_update
@@ -159,7 +160,7 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         url=product_response.images[0].thumbnail.url, filename="thumbnail.jpg"
     )
 
-    def get_product_image() -> File | None:
+    def get_product_image() -> File | None:  # type: ignroe
         if not product_image:
             return None
 
