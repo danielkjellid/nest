@@ -4,6 +4,7 @@ import { Button } from '../../../components/Button'
 import ProductAddDrawer from '../components/ProductAddDrawer'
 import ProductEditDrawer from '../components/ProductEditDrawer'
 import { ProductListOutAPIResponse } from '../../../types'
+import { ProductOdaImportDrawer } from '../components/ProductOdaImportDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
 import { Title } from '@mantine/core'
 import View from '../../../components/View'
@@ -22,6 +23,8 @@ function ProductOverviewInner({ results, refetch }: ProductOverviewInnerProps) {
   const { products } = results
   const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure(false)
   const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
+  const [odaImportDrawerOpened, { open: odaImportDrawerOpen, close: odaImportDrawerClose }] =
+    useDisclosure(false)
 
   const [productIdToEdit, setProductIdToEdit] = useState<number>()
   const editProduct = (id: number) => {
@@ -35,7 +38,9 @@ function ProductOverviewInner({ results, refetch }: ProductOverviewInnerProps) {
         <Title weight={600}>Products</Title>
         <div className="flex items-center space-x-3">
           <Button.Group>
-            {/* <Button variant="default">Import from Oda</Button> */}
+            <Button variant="default" onClick={odaImportDrawerOpen}>
+              Import from Oda
+            </Button>
             <Button variant="default" onClick={addDrawerOpen}>
               Add new
             </Button>
@@ -48,6 +53,11 @@ function ProductOverviewInner({ results, refetch }: ProductOverviewInnerProps) {
         productId={productIdToEdit}
         opened={editDrawerOpened}
         onClose={editDrawerClose}
+        refetch={refetch}
+      />
+      <ProductOdaImportDrawer
+        opened={odaImportDrawerOpened}
+        onClose={odaImportDrawerClose}
         refetch={refetch}
       />
     </div>

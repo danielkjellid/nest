@@ -7,7 +7,11 @@ function PlansApp() {
 
   if (currentHome === null) {
     return (
-      <Empty title="You are currently not assigned any homes" message="Please contact an admin." />
+      <Empty
+        title="You are currently not assigned any homes"
+        message="Please contact an admin."
+        className="min-h-screen"
+      />
     )
   }
 

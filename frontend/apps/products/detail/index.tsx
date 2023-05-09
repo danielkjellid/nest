@@ -11,6 +11,7 @@ import View from '../../../components/View'
 import invariant from 'tiny-invariant'
 import { urls } from '../../urls'
 import { useCommonContext } from '../../../contexts/CommonProvider'
+import { useCommonStyles } from '../../../styles/common'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../../hooks/fetcher'
 import { useParams } from 'react-router-dom'
@@ -23,6 +24,7 @@ interface ProductDetailInnerProps {
 
 function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
   const { classes } = useProductDetailStyles()
+  const { classes: commonClasses } = useCommonStyles()
   const { currentUser } = useCommonContext()
   const { data: product } = results.productResponse
   const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
@@ -74,7 +76,7 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
       <header className="lg:grid-cols-2 grid content-center grid-cols-1 gap-8">
         <div className="lg:order-1 flex items-center self-center order-2 space-x-6">
           <img
-            className={`object-contain w-16 h-16 p-1 border-2 ${classes.border} border-solid rounded-lg bg-white`}
+            className={`object-contain w-16 h-16 p-1 border-2 ${commonClasses.border} border-solid rounded-lg bg-white`}
             src={product.thumbnailUrl}
             alt=""
           />

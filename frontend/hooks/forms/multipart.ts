@@ -14,6 +14,8 @@ export const determineIsMultipart = (obj: Record<string, any>, formKey: string):
           ].schema.$ref
             .split('/')
             .includes(formKey)
+
+          return foundMultipartKey
         }
       }
     }

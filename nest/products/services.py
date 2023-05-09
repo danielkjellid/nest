@@ -218,7 +218,6 @@ def _validate_oda_response(*, response_record: OdaProductDetailRecord) -> None:
         assert (
             response_record.unit_price_quantity_abbreviation
         ), "Oda payload did not provide a unit abbreviation"
-        assert response_record.brand, "Oda payload did not provide a supplier"
         assert (
             response_record.availability.is_available is not None
         ), "Oda payload did not provide is_available"

@@ -2,6 +2,7 @@ import { IconCircleCheckFilled, IconCircleXFilled } from '@tabler/icons-react'
 
 import React from 'react'
 import { useCardStyles } from './Card.styles'
+import { useCommonStyles } from '../../styles/common'
 
 interface CardKeyValueProps {
   k: string
@@ -9,7 +10,7 @@ interface CardKeyValueProps {
 }
 
 function CardKeyValue({ k, value }: CardKeyValueProps) {
-  const { classes } = useCardStyles()
+  const { classes } = useCommonStyles()
   return (
     <div className={`${classes.border} sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 px-4 py-4`}>
       <dt className={`text-sm font-medium ${classes.title}`}>{k}</dt>

@@ -75,7 +75,7 @@ function Navbar() {
         label={menuItem.title}
         active={pathnameBase === basePath}
         icon={() => icon}
-        onClick={() => navigate(path)}
+        onClick={() => navigate(basePath)}
       />
     )
   })

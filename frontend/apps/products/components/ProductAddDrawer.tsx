@@ -1,12 +1,12 @@
-import { Button } from '../../../../components/Button'
-import Drawer from '../../../../components/Drawer'
-import Form from '../../../../components/Form'
-import { ProductCreateIn } from '../../../../types'
+import { Button } from '../../../components/Button'
+import Drawer from '../../../components/Drawer'
+import Form from '../../../components/Form'
+import { ProductCreateIn } from '../../../types'
 import React from 'react'
-import { performPost } from '../../../../hooks/fetcher/http'
-import { urls } from '../../../urls'
-import { useForm } from '../../../../hooks/forms'
-import { useUnits } from '../../../../contexts/UnitsProvider'
+import { performPost } from '../../../hooks/fetcher/http'
+import { urls } from '../../urls'
+import { useForm } from '../../../hooks/forms'
+import { useUnits } from '../../../contexts/UnitsProvider'
 
 interface ProductAddDrawerProps {
   opened: boolean
@@ -28,7 +28,7 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   const addProduct = async () => {
     try {
       form.setLoadingState('loading')
-      await performPost(urls.products.create(), form.buildPayload())
+      await performPost({ url: urls.products.create(), ...form.buildPayload() })
       form.setLoadingState('success')
       close()
     } catch (e) {

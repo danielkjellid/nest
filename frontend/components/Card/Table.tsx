@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 
 import Empty from '../Empty'
 import { useCardStyles } from './Card.styles'
+import { useCommonStyles } from '../../styles/common'
 
 interface CardTableRowProps {
   headers: Header[]
@@ -9,7 +10,7 @@ interface CardTableRowProps {
 }
 
 function CardTableRow({ headers, item }: CardTableRowProps) {
-  const { classes } = useCardStyles()
+  const { classes } = useCommonStyles()
   const getNestedValue = (obj: any, path: (string | number)[], fallback?: any): any => {
     const last = path.length - 1
     if (last < 0) return obj === undefined ? fallback : obj
@@ -77,6 +78,7 @@ interface CardTableProps {
 
 function CardTable({ headers, items, children }: CardTableProps) {
   const { classes } = useCardStyles()
+  const { classes: commonClasses } = useCommonStyles()
 
   const renderTableContent = () => {
     if (items && items.length) {
@@ -106,7 +108,7 @@ function CardTable({ headers, items, children }: CardTableProps) {
         <tr>
           {headers.map((header) => (
             <th
-              className={`${classes.tableHeader} sm:px-6 px-4 py-4 border-b ${classes.border} text-left ${classes.subtitle}`}
+              className={`${classes.tableHeader} sm:px-6 px-4 py-4 border-b ${commonClasses.border} text-left ${commonClasses.subtitle}`}
               key={header.value}
             >
               {header.label}

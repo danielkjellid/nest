@@ -1,12 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { CommonContextType, CommonProvider } from './contexts/CommonProvider'
 import { MenuContextType, MenuProvider } from './contexts/MenuProvider'
-import React, { Suspense, useMemo, useState } from 'react'
+import React, { Suspense, useEffect, useMemo, useState } from 'react'
+import { UnitListOut, UnitListOutAPIResponse } from './types'
 
 import BaseApp from './components/BaseApp/BaseApp'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
+import { UnitsProvider } from './contexts/UnitsProvider'
 import apps from './apps/config'
+import { performGet } from './hooks/fetcher/http'
+import { urls } from './apps/urls'
 
 interface AppProps extends CommonContextType, MenuContextType {}
 
@@ -49,6 +53,20 @@ function MainApp(props: AppProps) {
 
   const [currentHome, setCurrentHome] = useState<CommonContextType['currentHome']>(home)
 
+  const [units, setUnits] = useState<UnitListOut[]>()
+
+  useEffect(() => {
+    const fetchUnits = async () => {
+      const fetchedUnits = await performGet<UnitListOutAPIResponse>({ url: urls.units.list() })
+      if (fetchedUnits && fetchedUnits.data) {
+        setUnits(fetchedUnits.data)
+      }
+    }
+    if (!units) {
+      fetchUnits()
+    }
+  }, [])
+
   return (
     <CommonProvider
       config={config}
@@ -58,11 +76,13 @@ function MainApp(props: AppProps) {
       setCurrentHome={setCurrentHome}
     >
       <MenuProvider menu={menu}>
-        <BrowserRouter>
-          <BaseApp navbar={<Navbar />} header={<Header />}>
-            <MainAppInner />
-          </BaseApp>
-        </BrowserRouter>
+        <UnitsProvider units={units}>
+          <BrowserRouter>
+            <BaseApp navbar={<Navbar />} header={<Header />}>
+              <MainAppInner />
+            </BaseApp>
+          </BrowserRouter>
+        </UnitsProvider>
       </MenuProvider>
     </CommonProvider>
   )

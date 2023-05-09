@@ -46,7 +46,7 @@ class Product(BaseModel):
         null=True,
     )
     gtin = models.CharField(max_length=14, null=True, blank=True)
-    supplier = models.CharField(max_length=50)
+    supplier = models.CharField(max_length=50, null=True, blank=True)
     is_synced = models.BooleanField(
         default=True, help_text="Product is kept in sync from Oda."
     )
