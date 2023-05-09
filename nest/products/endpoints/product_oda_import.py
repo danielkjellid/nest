@@ -4,7 +4,7 @@ from ninja import Schema
 from nest.api.fields import FormField
 from nest.api.responses import APIResponse
 from nest.data_pools.providers.oda.clients import OdaClient
-
+from nest.core.decorators import staff_required
 from .router import router
 
 
@@ -24,6 +24,7 @@ class ProductOdaImportIn(Schema):
 
 
 @router.post("oda/import/", response=APIResponse[ProductOdaImportOut])
+@staff_required
 def product_oda_import_api(
     request: HttpRequest, payload: ProductOdaImportIn
 ) -> APIResponse[ProductOdaImportIn]:
