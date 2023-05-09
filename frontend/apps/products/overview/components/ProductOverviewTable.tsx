@@ -1,9 +1,10 @@
+import { Anchor, Menu } from '@mantine/core'
 import { IconEye, IconPencil, IconTrash } from '@tabler/icons-react'
 
-import { Menu } from '@mantine/core'
-import { ProductListOut } from '../../../../../types'
+import { ProductListOut } from '../../../../types'
 import React from 'react'
-import Table from '../../../../../components/Table'
+import Table from '../../../../components/Table'
+import { routes } from '../../routes'
 
 interface ProductOverViewTableProps {
   data: ProductListOut[]
@@ -23,7 +24,9 @@ function ProductOverViewTable({ data, onEditProduct }: ProductOverViewTableProps
           Cell: ({ row, renderedCellValue }) => (
             <div className="flex items-center space-x-3">
               <img src={row.original.thumbnailUrl} className="object-contain w-8 h-8" />
-              <div>{renderedCellValue}</div>
+              <Anchor href={routes.detail.build({ productId: row.original.id })}>
+                {renderedCellValue}
+              </Anchor>
             </div>
           ),
         },

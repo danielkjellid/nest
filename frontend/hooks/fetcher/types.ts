@@ -1,10 +1,19 @@
 import { RequestError } from './http'
 
-export type Getter = <T>(url: string, options?: RequestOptions) => Promise<T>
-export type Setter = <T>(url: string, data: any, options?: RequestOptions) => Promise<T>
+export type Getter = <T>({ url, options }: { url: string; options?: RequestOptions }) => Promise<T>
+export type Setter = <T>({
+  url,
+  data,
+  options,
+}: {
+  url: string
+  data: any
+  options?: RequestOptions
+}) => Promise<T>
 
 export interface RequestOptions extends RequestInit {
   noContentTypeHeader?: boolean
+  isMultipart?: boolean
 }
 
 export type RequestQuery = Record<string, number | boolean | string>

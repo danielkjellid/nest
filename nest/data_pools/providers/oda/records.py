@@ -205,7 +205,7 @@ class OdaProductLocalInfo(BaseModel):
     language_name: str
     local_product_name: str
     short_description: str
-    description_from_supplier: str
+    description_from_supplier: str | None
     nutrition_info_table: OdaProductLocalInfoTable
     contents_table: OdaProductLocalInfoTable
     hazards: OdaProductHazardRecord | None

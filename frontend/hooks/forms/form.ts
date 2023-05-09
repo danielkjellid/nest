@@ -77,14 +77,16 @@ export function useForm<T extends object>({
    ** Payload **
    *************/
 
-  const buildPayload = (): FormData | Partial<T> | undefined => {
+  const buildPayload = (): any => {
     if (!data) return
 
     if (isMultipart) {
-      return buildMultipartForm<T>(data)
+      return { data: buildMultipartForm<T>(data), options: { isMultipart: true } }
     }
 
-    return data
+    return { data, options: {} }
+
+    // return data
   }
 
   /*******************

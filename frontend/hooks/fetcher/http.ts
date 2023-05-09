@@ -20,7 +20,13 @@ export class RequestError extends Error {
   }
 }
 
-async function getter<T>(url: string, options: RequestOptions = {}): Promise<T> {
+async function getter<T>({
+  url,
+  options = {},
+}: {
+  url: string
+  options?: RequestOptions
+}): Promise<T> {
   if (!url) {
     throw new Error(`No url provided, got ${url}`)
   }
@@ -59,17 +65,20 @@ async function getter<T>(url: string, options: RequestOptions = {}): Promise<T> 
 
 const setter =
   (method: string): Setter =>
-  <T>(url: string, data: BodyInit | null | undefined, options: RequestOptions = {}) =>
-    getter<T>(url, {
-      body: data, // Can not be JSON.stringify(...) because of multipart.
-      method,
-      ...options,
-      headers: {
-        // 'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken,
-        ...options.headers,
+  <T>({ url, data, options = {} }: { url: string; data: any; options?: RequestOptions }) => {
+    return getter<T>({
+      url: url,
+      options: {
+        body: options.isMultipart ? data : JSON.stringify(data),
+        method,
+        ...options,
+        headers: {
+          'X-CSRFToken': csrfToken,
+          ...options.headers,
+        },
       },
     })
+  }
 
 const encodeQuery = (key: string, value: string | boolean | string[]): string | null => {
   if (value === null || value === undefined) {

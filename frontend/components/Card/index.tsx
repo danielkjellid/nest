@@ -3,6 +3,7 @@ import React, { Children } from 'react'
 
 import { CardKeyValue } from './KeyValue'
 import { useCardStyles } from './Card.styles'
+import { useCommonStyles } from '../../styles/common'
 
 interface CardProps {
   title: string
@@ -12,6 +13,7 @@ interface CardProps {
 
 function Card({ title, subtitle, children }: CardProps) {
   const { classes } = useCardStyles()
+  const { classes: commonClasses } = useCommonStyles()
 
   const childIsElement = ({
     childrenNodes,
@@ -41,10 +43,10 @@ function Card({ title, subtitle, children }: CardProps) {
   return (
     <div className={`${classes.card} overflow-hidden rounded-md shadow`}>
       <div className="sm:px-6 px-4 py-6">
-        <h3 className={`text-base font-semibold leading-7 ${classes.title}`}>{title}</h3>
-        <p className={`max-w-2xl m-0 text-sm leading-6 ${classes.subtitle}`}>{subtitle}</p>
+        <h3 className={`text-base font-semibold leading-7 ${commonClasses.title}`}>{title}</h3>
+        <p className={`max-w-2xl m-0 text-sm leading-6 ${commonClasses.subtitle}`}>{subtitle}</p>
       </div>
-      <div className={`${classes.border} border-t`}>{renderContainer()}</div>
+      <div className={`${commonClasses.border} border-t`}>{renderContainer()}</div>
     </div>
   )
 }

@@ -87,7 +87,11 @@ function Table<TData extends object>({
   return (
     <MantineReactTable
       // State
-      initialState={{ density: 'xs', showGlobalFilter: true }}
+      initialState={{
+        density: 'xs',
+        showGlobalFilter: true,
+        pagination: { pageSize: 25, pageIndex: 0 },
+      }}
       state={{ rowSelection }}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -96,6 +100,7 @@ function Table<TData extends object>({
       // @ts-ignore
       columns={columnDefs}
       data={data}
+      mantinePaginationProps={{ rowsPerPageOptions: ['25', '50', '100'] }}
       // Editing and toggles
       enableEditing={false}
       enableDensityToggle={false}
@@ -112,6 +117,11 @@ function Table<TData extends object>({
       mantineSearchTextInputProps={{
         variant: 'filled',
         sx: { minWidth: '400px' },
+      }}
+      mantinePaperProps={{
+        radius: 'lg',
+        withBorder: false,
+        shadow: 'sm',
       }}
     />
   )

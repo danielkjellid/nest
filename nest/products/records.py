@@ -24,7 +24,7 @@ class ProductRecord(BaseModel):
     last_synced_at: str | None
     thumbnail_url: str | None
     gtin: str | None
-    supplier: str
+    supplier: str | None
     display_price: str
     is_oda_product: bool
 

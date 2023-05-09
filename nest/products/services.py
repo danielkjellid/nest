@@ -2,9 +2,11 @@ from decimal import Decimal
 from typing import Any
 
 import structlog
+from django.core.files import File
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 from django.http import HttpRequest
+from django.utils.text import slugify
 
 from nest.audit_logs.services import log_create_or_updated
 from nest.core.exceptions import ApplicationError
@@ -29,6 +31,7 @@ def create_product(
     unit_quantity: str,
     supplier: str,
     thumbnail: UploadedFile | InMemoryUploadedFile | ImageFile | None = None,
+    request: HttpRequest | None = None,
     **additional_fields: Any,
 ) -> ProductRecord:
     """
@@ -54,6 +57,7 @@ def create_product(
     product.full_clean()
     product.save()
 
+    log_create_or_updated(old=None, new=product, request_or_user=request)
     return ProductRecord.from_product(product)
 
 
@@ -120,8 +124,7 @@ def update_or_create_product(
             defaults=kwargs,
         )
 
-        if not created:
-            log_create_or_updated(old=existing_product, new=product, source=source)
+        log_create_or_updated(old=existing_product, new=product, source=source)
     elif pk is not None:
         defaults = kwargs
 
@@ -134,13 +137,12 @@ def update_or_create_product(
             defaults=defaults,
         )
 
-        if not created:
-            log_create_or_updated(
-                old=existing_product,
-                new=product,
-                source=source,
-                ignore_fields=log_ignore_fields,
-            )
+        log_create_or_updated(
+            old=existing_product,
+            new=product,
+            source=source,
+            ignore_fields=log_ignore_fields,
+        )
     else:
         raise ValueError("Either pk or oda_id (or both) must be passed.")
 
@@ -157,6 +159,13 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     product_image = OdaClient.get_image(
         url=product_response.images[0].thumbnail.url, filename="thumbnail.jpg"
     )
+
+    def get_product_image() -> File | None:  # type: ignore
+        if not product_image:
+            return None
+
+        product_image.name = slugify(product_response.full_name)
+        return product_image
 
     # Validate that all required values are present.
     _validate_oda_response(response_record=product_response)
@@ -192,7 +201,7 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         "unit_quantity": unit_quantity,
         "is_available": product_response.availability.is_available,
         "supplier": product_response.brand,
-        "thumbnail": product_image if product_image else None,
+        "thumbnail": get_product_image(),
     }
 
     product_record = update_or_create_product(
@@ -218,7 +227,6 @@ def _validate_oda_response(*, response_record: OdaProductDetailRecord) -> None:
         assert (
             response_record.unit_price_quantity_abbreviation
         ), "Oda payload did not provide a unit abbreviation"
-        assert response_record.brand, "Oda payload did not provide a supplier"
         assert (
             response_record.availability.is_available is not None
         ), "Oda payload did not provide is_available"

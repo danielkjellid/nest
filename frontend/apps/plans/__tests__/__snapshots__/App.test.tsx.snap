@@ -3,7 +3,7 @@
 exports[`Test PageApp app > empty state matches snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="mantine-1j5d86u undefined border-2 border-dashed rounded-md flex items-center justify-center p-8"
+    class="mantine-1j5d86u h-full border-2 border-dashed rounded-md flex items-center justify-center p-8"
   >
     <div
       class="mantine-15ha46x text-center space-y-2"

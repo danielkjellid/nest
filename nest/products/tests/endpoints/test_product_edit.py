@@ -11,7 +11,7 @@ pytestmark = pytest.mark.django_db
 class TestEndpointProductEdit:
     ENDPOINT = "/api/v1/products"
 
-    def test_anonymous_request_product_edit_api(
+    def test_client_request_product_edit_api(
         self, django_assert_num_queries, authenticated_client, mocker
     ):
         """

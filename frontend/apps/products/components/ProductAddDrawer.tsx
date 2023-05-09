@@ -1,12 +1,12 @@
-import { Button } from '../../../../components/Button'
-import Drawer from '../../../../components/Drawer'
-import Form from '../../../../components/Form'
-import { ProductCreateIn } from '../../../../types'
+import { Button } from '../../../components/Button'
+import Drawer from '../../../components/Drawer'
+import Form from '../../../components/Form'
+import { ProductCreateIn } from '../../../types'
 import React from 'react'
-import { performPost } from '../../../../hooks/fetcher/http'
-import { urls } from '../../../urls'
-import { useForm } from '../../../../hooks/forms'
-import { useUnits } from '../../../../contexts/UnitsProvider'
+import { performPost } from '../../../hooks/fetcher/http'
+import { urls } from '../../urls'
+import { useForm } from '../../../hooks/forms'
+import { useUnits } from '../../../contexts/UnitsProvider'
 
 interface ProductAddDrawerProps {
   opened: boolean
@@ -22,15 +22,15 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   const close = () => {
     form.resetForm()
     onClose()
-    refetch()
   }
 
   const addProduct = async () => {
     try {
       form.setLoadingState('loading')
-      await performPost(urls.products.create(), form.buildPayload())
+      await performPost({ url: urls.products.create(), ...form.buildPayload() })
       form.setLoadingState('success')
       close()
+      refetch()
     } catch (e) {
       const errorResponse = (e as any).response.data
       form.setLoadingState('error')
@@ -44,7 +44,7 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
     <Drawer
       title="Add product"
       opened={opened}
-      onClose={onClose}
+      onClose={close}
       actions={
         <div className="grid w-full grid-cols-2 gap-4">
           <Button

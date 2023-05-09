@@ -38,7 +38,7 @@ export const useFetch = <TData = any, TQuery = RequestQuery>(
   const { getter = performGet, query } = options
   const { data, error, mutate, isValidating } = useSWR<TData, RequestError>(
     url + makeQuery(query),
-    getter
+    () => getter<TData>({ url: url as string, options: options as any })
   )
 
   const loading = useMemo<boolean>(
@@ -99,7 +99,7 @@ export const useLazyFetch = <TData = any, TQuery = RequestQuery, TResponseData =
       try {
         setLoading(true)
         const response = await mutate(
-          setter<TResponseData>(url + makeQuery(options?.query), options?.data),
+          setter<TResponseData>({ url: url + makeQuery(options?.query), data: options?.data }),
           false
         )
 

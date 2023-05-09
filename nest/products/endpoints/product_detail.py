@@ -40,7 +40,7 @@ class ProductDetailOut(Schema):
     is_available: bool
     thumbnail_url: str | None
     gtin: str | None
-    supplier: str
+    supplier: str | None
     is_synced: bool
     is_oda_product: bool
     audit_logs: list[ProductDetailAuditLogsOut]

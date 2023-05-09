@@ -1,13 +1,13 @@
-import { ProductDetailOut, ProductDetailOutAPIResponse } from '../../../../types'
+import { ProductDetailOut, ProductDetailOutAPIResponse } from '../../../types'
 import React, { useEffect, useState } from 'react'
-import { performGet, performPost } from '../../../../hooks/fetcher/http'
+import { performGet, performPost } from '../../../hooks/fetcher/http'
 
-import { Button } from '../../../../components/Button'
-import Drawer from '../../../../components/Drawer'
-import Form from '../../../../components/Form'
-import { urls } from '../../../urls'
-import { useForm } from '../../../../hooks/forms'
-import { useUnits } from '../../../../contexts/UnitsProvider'
+import { Button } from '../../../components/Button'
+import Drawer from '../../../components/Drawer'
+import Form from '../../../components/Form'
+import { urls } from '../../urls'
+import { useForm } from '../../../hooks/forms'
+import { useUnits } from '../../../contexts/UnitsProvider'
 
 interface ProductEditDrawerProps {
   productId: number | undefined
@@ -25,16 +25,16 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
   const close = () => {
     form.resetForm()
     onClose()
-    refetch()
   }
 
   const editProduct = async () => {
     try {
       if (productId) {
         form.setLoadingState('loading')
-        await performPost(urls.products.edit({ id: productId }), form.buildPayload())
+        await performPost({ url: urls.products.edit({ id: productId }), ...form.buildPayload() })
         form.setLoadingState('success')
         close()
+        refetch()
       }
     } catch (e) {
       const errorResponse = (e as any).response.data
@@ -48,9 +48,9 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
   useEffect(() => {
     if (productId && (!product || (product && product.id !== productId))) {
       const fetchProduct = async () => {
-        const fetchedProduct = await performGet<ProductDetailOutAPIResponse>(
-          urls.products.detail({ id: productId })
-        )
+        const fetchedProduct = await performGet<ProductDetailOutAPIResponse>({
+          url: urls.products.detail({ id: productId }),
+        })
         setProduct(fetchedProduct.data)
       }
 
@@ -62,7 +62,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
     <Drawer
       title={`Edit "${product?.fullName}"`}
       opened={opened}
-      onClose={onClose}
+      onClose={close}
       actions={
         <div className="grid w-full grid-cols-2 gap-4">
           <Button

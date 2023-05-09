@@ -16,7 +16,7 @@ _ProductManager = models.Manager.from_queryset(ProductQuerySet)
 class Product(BaseModel):
     def get_product_upload_path(self, filename: str) -> str:
         name, extension = os.path.splitext(filename)
-        return f"products/{self.id}/{name}{extension}"
+        return f"products/thumbnails/{name}{extension}"
 
     name = models.CharField(max_length=255)
     gross_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -46,7 +46,7 @@ class Product(BaseModel):
         null=True,
     )
     gtin = models.CharField(max_length=14, null=True, blank=True)
-    supplier = models.CharField(max_length=50)
+    supplier = models.CharField(max_length=50, null=True, blank=True)
     is_synced = models.BooleanField(
         default=True, help_text="Product is kept in sync from Oda."
     )
