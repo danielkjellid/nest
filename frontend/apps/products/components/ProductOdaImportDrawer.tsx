@@ -21,12 +21,18 @@ interface ProductOdaImportDrawerProps {
 }
 
 function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDrawerProps) {
+  /***********
+   ** State **
+   ***********/
   const { classes } = useCommonStyles()
   const form = useForm<ProductOdaImportIn>({ key: 'ProductOdaImportIn' })
-
   const [fetchedProduct, setFetchedProduct] = useState<ProductOdaImportOut | null>()
   const [importLoadingState, setImportLoadingState] =
     useState<ButtonProps['loadingState']>('initial')
+
+  /**************
+   ** Handlers **
+   **************/
 
   const close = () => {
     onClose()
