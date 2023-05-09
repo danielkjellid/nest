@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { Children, useMemo } from 'react'
 
 import Empty from '../Empty'
 import { useCardStyles } from './Card.styles'
@@ -85,7 +85,7 @@ function CardTable({ headers, items, children }: CardTableProps) {
       return items.map((item, i) => <CardTableRow key={i} item={item} headers={headers} />)
     }
 
-    if (children) {
+    if (children && Children.toArray(children).length) {
       return children
     }
 

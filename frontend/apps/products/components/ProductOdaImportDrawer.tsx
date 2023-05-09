@@ -5,11 +5,11 @@ import {
   ProductOdaImportOutAPIResponse,
 } from '../../../types'
 import React, { useState } from 'react'
-import { performGet, performPost } from '../../../hooks/fetcher/http'
 
 import { Badge } from '@mantine/core'
 import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
+import { performPost } from '../../../hooks/fetcher/http'
 import { urls } from '../../urls'
 import { useCommonStyles } from '../../../styles/common'
 import { useForm } from '../../../hooks/forms'
@@ -24,9 +24,15 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
   const { classes } = useCommonStyles()
   const form = useForm<ProductOdaImportIn>({ key: 'ProductOdaImportIn' })
 
-  const [fetchedProduct, setFetchedProduct] = useState<ProductOdaImportOut>()
+  const [fetchedProduct, setFetchedProduct] = useState<ProductOdaImportOut | null>()
   const [importLoadingState, setImportLoadingState] =
     useState<ButtonProps['loadingState']>('initial')
+
+  const close = () => {
+    onClose()
+    form.resetForm()
+    setFetchedProduct(null)
+  }
 
   const fetchOdaProduct = async () => {
     try {
@@ -58,8 +64,8 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
         data: { odaProductId: fetchedProduct.id },
       })
       setImportLoadingState('success')
-
-      // TODO: cleanup
+      close()
+      refetch()
     } catch (e) {
       console.error(e)
       setImportLoadingState('error')
@@ -70,7 +76,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
     <Drawer
       title="Import product from Oda"
       opened={opened}
-      onClose={onClose}
+      onClose={close}
       actions={
         <div className="grid w-full grid-cols-2 gap-4">
           <Button
@@ -80,7 +86,11 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
           >
             Cancel
           </Button>
-          <Button disabled={!fetchedProduct} onClick={() => importOdaProduct()}>
+          <Button
+            loadingState={importLoadingState}
+            disabled={!fetchedProduct}
+            onClick={() => importOdaProduct()}
+          >
             Import product
           </Button>
         </div>
@@ -112,14 +122,18 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
                 src={fetchedProduct.thumbnailUrl}
                 alt=""
               />
-              <div>
-                <div className="text-lg font-semibold leading-6">
+              <div className="w-80 overflow-hidden">
+                <div className="whitespace-nowrap text-ellipsis overflow-hidden text-lg font-semibold leading-6">
                   {fetchedProduct.fullName}, {fetchedProduct.unitQuantity} {fetchedProduct.unit}
                 </div>
-                <div className="mt-1 text-sm">{fetchedProduct.supplier}</div>
+                {fetchedProduct.supplier ? (
+                  <div className="mt-1 text-sm">{fetchedProduct.supplier}</div>
+                ) : (
+                  <div className="mt-1 text-sm">Unknown supplier</div>
+                )}
               </div>
             </div>
-            <div className="flex flex-col text-right">
+            <div className="shrink-0 flex flex-col text-right">
               <Badge size="lg" color="green">
                 Available
               </Badge>

@@ -16,7 +16,7 @@ _ProductManager = models.Manager.from_queryset(ProductQuerySet)
 class Product(BaseModel):
     def get_product_upload_path(self, filename: str) -> str:
         name, extension = os.path.splitext(filename)
-        return f"products/{self.id}/{name}{extension}"
+        return f"products/thumbnails/{name}{extension}"
 
     name = models.CharField(max_length=255)
     gross_price = models.DecimalField(max_digits=10, decimal_places=2)

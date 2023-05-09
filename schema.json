@@ -571,7 +571,6 @@
                     "grossPrice",
                     "unit",
                     "isAvailable",
-                    "supplier",
                     "isSynced",
                     "isOdaProduct",
                     "auditLogs"

@@ -22,7 +22,6 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   const close = () => {
     form.resetForm()
     onClose()
-    refetch()
   }
 
   const addProduct = async () => {
@@ -31,6 +30,7 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
       await performPost({ url: urls.products.create(), ...form.buildPayload() })
       form.setLoadingState('success')
       close()
+      refetch()
     } catch (e) {
       const errorResponse = (e as any).response.data
       form.setLoadingState('error')
@@ -44,7 +44,7 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
     <Drawer
       title="Add product"
       opened={opened}
-      onClose={onClose}
+      onClose={close}
       actions={
         <div className="grid w-full grid-cols-2 gap-4">
           <Button

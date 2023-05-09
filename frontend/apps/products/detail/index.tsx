@@ -107,12 +107,22 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
           <div id="information">
             <Card title="Information">
               <Card.KeyValue k="Name" value={product.name} />
-              <Card.KeyValue k="Supplier" value={product.supplier} />
+              {product.supplier && <Card.KeyValue k="Supplier" value={product.supplier} />}
               <Card.KeyValue k="Unit" value={product.unit.displayName} />
               <Card.KeyValue k="Unit quantity" value={product.unitQuantity} />
               {product.gtin && <Card.KeyValue k="Gtin" value={product.gtin} />}
               <Card.KeyValue k="Is available" value={product.isAvailable} />
               <Card.KeyValue k="Is synced" value={product.isSynced} />
+              {product.thumbnailUrl && (
+                <Card.KeyValue
+                  k="Picture"
+                  value={
+                    <Anchor href={product.odaUrl} target="_blank">
+                      {product.thumbnailUrl}
+                    </Anchor>
+                  }
+                />
+              )}
             </Card>
           </div>
           {/* <div id="nutrition">

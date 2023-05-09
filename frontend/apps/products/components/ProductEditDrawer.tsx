@@ -25,7 +25,6 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
   const close = () => {
     form.resetForm()
     onClose()
-    refetch()
   }
 
   const editProduct = async () => {
@@ -35,6 +34,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
         await performPost({ url: urls.products.edit({ id: productId }), ...form.buildPayload() })
         form.setLoadingState('success')
         close()
+        refetch()
       }
     } catch (e) {
       const errorResponse = (e as any).response.data
@@ -62,7 +62,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
     <Drawer
       title={`Edit "${product?.fullName}"`}
       opened={opened}
-      onClose={onClose}
+      onClose={close}
       actions={
         <div className="grid w-full grid-cols-2 gap-4">
           <Button
