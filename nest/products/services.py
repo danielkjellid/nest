@@ -160,7 +160,7 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         url=product_response.images[0].thumbnail.url, filename="thumbnail.jpg"
     )
 
-    def get_product_image() -> File | None:  # type: ignroe
+    def get_product_image() -> File | None:  # type: ignore
         if not product_image:
             return None
 
