@@ -16,6 +16,7 @@ export type { ProductDetailUnitOut } from './models/ProductDetailUnitOut';
 export type { ProductEditIn } from './models/ProductEditIn';
 export type { ProductListOut } from './models/ProductListOut';
 export { ProductListOutAPIResponse } from './models/ProductListOutAPIResponse';
+export type { ProductOdaImportConfirmIn } from './models/ProductOdaImportConfirmIn';
 export type { ProductOdaImportIn } from './models/ProductOdaImportIn';
 export type { ProductOdaImportOut } from './models/ProductOdaImportOut';
 export { ProductOdaImportOutAPIResponse } from './models/ProductOdaImportOutAPIResponse';

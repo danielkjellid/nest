@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProductOdaImportIn = {
+export type ProductOdaImportConfirmIn = {
     odaProductId: number;
 };
 

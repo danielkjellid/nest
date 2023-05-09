@@ -71,11 +71,12 @@ export function BaseAppCore({ appShellClassName, navbar, header, children }: Bas
               color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.dark[8],
               backgroundColor:
                 theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+              minHeight: '100vh',
             },
           })}
         >
           <Notifications />
-          <div className="max-w-7xl min-h-screen mx-auto">{children}</div>
+          <div className="max-w-7xl h-full mx-auto">{children}</div>
         </AppShell>
       </MantineProvider>
     </ColorSchemeProvider>

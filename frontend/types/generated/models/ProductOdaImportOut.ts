@@ -5,7 +5,7 @@
 export type ProductOdaImportOut = {
     id: number;
     fullName: string;
-    supplier: string;
+    supplier?: string;
     isAvailable: boolean;
     grossPrice: string;
     unit: string;

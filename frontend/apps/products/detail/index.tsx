@@ -117,7 +117,7 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
                 <Card.KeyValue
                   k="Picture"
                   value={
-                    <Anchor href={product.odaUrl} target="_blank">
+                    <Anchor href={product.thumbnailUrl} target="_blank">
                       {product.thumbnailUrl}
                     </Anchor>
                   }
