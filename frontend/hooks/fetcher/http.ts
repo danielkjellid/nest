@@ -69,11 +69,10 @@ const setter =
     return getter<T>({
       url: url,
       options: {
-        body: options.isMultipart ? data : JSON.stringify(data), // Can not be JSON.stringify(...) because of multipart.
+        body: options.isMultipart ? data : JSON.stringify(data),
         method,
         ...options,
         headers: {
-          // 'Content-Type': 'application/json',
           'X-CSRFToken': csrfToken,
           ...options.headers,
         },
