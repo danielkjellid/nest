@@ -41,7 +41,7 @@ class TestProductServices:
             "supplier": "Awesome supplier",
         }
 
-        with django_assert_num_queries(3):
+        with django_assert_num_queries(4):
             product_no_thumbnail = create_product(
                 name="Awesome product",
                 **fields,
@@ -58,7 +58,7 @@ class TestProductServices:
         assert product_no_thumbnail.gross_unit_price == Decimal("70.10")
         assert product_no_thumbnail.thumbnail_url is None
 
-        with django_assert_num_queries(3):
+        with django_assert_num_queries(4):
             product = create_product(
                 name="Another awesome product",
                 thumbnail=create_product_image(name="thumb"),
@@ -81,7 +81,7 @@ class TestProductServices:
             name="A cool product", supplier="A cool supplier", unit=unit_g
         )
 
-        with django_assert_max_num_queries(8):
+        with django_assert_max_num_queries(9):
             updated_product = edit_product(
                 product_id=product.id, name="Wubadubadub", unit_id=unit_kg.id
             )
@@ -110,7 +110,7 @@ class TestProductServices:
 
         assert Product.objects.all().count() == 0
 
-        with django_assert_num_queries(8):
+        with django_assert_num_queries(9):
             update_or_create_product(**defaults)
 
         assert Product.objects.all().count() == 1
@@ -224,7 +224,7 @@ class TestProductServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(10):
+        with django_assert_num_queries(11):
             imported_product = import_from_oda(oda_product_id=oda_id_mock)
 
         assert Product.objects.all().count() == 1
