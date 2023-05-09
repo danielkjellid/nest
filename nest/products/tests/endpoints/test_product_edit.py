@@ -15,7 +15,7 @@ class TestEndpointProductEdit:
         self, django_assert_num_queries, authenticated_client, mocker
     ):
         """
-        Test that anonymous users gets a 401 unauthorized when trying to edit
+        Test that authenticated users gets a 401 unauthorized when trying to edit
         products.
         """
 
