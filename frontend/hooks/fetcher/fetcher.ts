@@ -38,7 +38,7 @@ export const useFetch = <TData = any, TQuery = RequestQuery>(
   const { getter = performGet, query } = options
   const { data, error, mutate, isValidating } = useSWR<TData, RequestError>(
     url + makeQuery(query),
-    () => getter({ url: url as string, options: options as any })
+    () => getter<TData>({ url: url as string, options: options as any })
   )
 
   const loading = useMemo<boolean>(
