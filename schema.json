@@ -440,6 +440,37 @@
                 ],
                 "type": "object"
             },
+            "ProductDetailNutritionOut": {
+                "title": "ProductDetailOutAPIResponse",
+                "properties": {
+                    "key": {
+                        "title": "Key",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "parentKey": {
+                        "title": "Parent Key",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "value": {
+                        "title": "Value",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "key",
+                    "title",
+                    "value"
+                ],
+                "type": "object"
+            },
             "ProductDetailAuditLogsOut": {
                 "title": "ProductDetailOutAPIResponse",
                 "properties": {
@@ -497,6 +528,16 @@
                         "type": "string",
                         "component": "TextInput"
                     },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
                     "grossPrice": {
                         "title": "Gross Price",
                         "type": "string",
@@ -515,26 +556,6 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "odaUrl": {
-                        "title": "Oda Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "odaId": {
-                        "title": "Oda Id",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "isAvailable": {
-                        "title": "Is Available",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
                     "gtin": {
                         "title": "Gtin",
                         "type": "string",
@@ -550,10 +571,28 @@
                         "type": "boolean",
                         "component": "Checkbox"
                     },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
                     "isOdaProduct": {
                         "title": "Is Oda Product",
                         "type": "boolean",
                         "component": "Checkbox"
+                    },
+                    "nutrition": {
+                        "title": "Nutrition",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductDetailNutritionOut"
+                        },
+                        "component": "MultiSelect"
                     },
                     "auditLogs": {
                         "title": "Audit Logs",
@@ -568,11 +607,12 @@
                     "id",
                     "name",
                     "fullName",
+                    "isAvailable",
                     "grossPrice",
                     "unit",
-                    "isAvailable",
                     "isSynced",
                     "isOdaProduct",
+                    "nutrition",
                     "auditLogs"
                 ],
                 "type": "object"

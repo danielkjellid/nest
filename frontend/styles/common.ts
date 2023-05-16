@@ -10,6 +10,9 @@ export const useCommonStyles = createStyles((theme) => ({
   subtitle: {
     color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
   },
+  muted: {
+    color: theme.colorScheme === 'dark' ? theme.colors.gray[5] : theme.colors.gray[7],
+  },
   iconSuccess: {
     color: theme.colors.green[5],
   },

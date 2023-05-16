@@ -57,7 +57,7 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
   if (product.isOdaProduct) {
     headings = [
       { label: 'Information', slug: 'information' },
-      // { label: 'Nutrition', slug: 'nutrition' },
+      { label: 'Nutrition', slug: 'nutrition' },
       { label: 'Prices', slug: 'prices' },
       { label: 'Oda', slug: 'oda' },
       { label: 'Changes', slug: 'changes' },
@@ -65,7 +65,7 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
   } else {
     headings = [
       { label: 'Information', slug: 'information' },
-      // { label: 'Nutrition', slug: 'nutrition' },
+      { label: 'Nutrition', slug: 'nutrition' },
       { label: 'Prices', slug: 'prices' },
       { label: 'Changes', slug: 'changes' },
     ]
@@ -123,13 +123,21 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
                   }
                 />
               )}
+              <Card.KeyValue k="Contains gluten" value={false} />
             </Card>
           </div>
-          {/* <div id="nutrition">
-            <Card title="Nutrition">
-              <p>Nutrition</p>
+          <div id="nutrition">
+            <Card title="Nutrition" subtitle="Nutritional content per 100g/ml">
+              <Card.Table
+                headers={[
+                  { label: 'Label', value: 'title' },
+                  { label: 'Content', value: 'value' },
+                ]}
+                parentIdentifier="parentKey"
+                items={product.nutrition}
+              />
             </Card>
-          </div> */}
+          </div>
           <div id="prices">
             <Card title="Prices">
               <Card.KeyValue k="Gross price" value={product.grossPrice} />

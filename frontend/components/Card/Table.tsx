@@ -7,9 +7,10 @@ import { useCommonStyles } from '../../styles/common'
 interface CardTableRowProps {
   headers: Header[]
   item: any
+  parentIdentifier?: string
 }
 
-function CardTableRow({ headers, item }: CardTableRowProps) {
+function CardTableRow({ headers, item, parentIdentifier }: CardTableRowProps) {
   const { classes } = useCommonStyles()
   const getNestedValue = (obj: any, path: (string | number)[], fallback?: any): any => {
     const last = path.length - 1
@@ -42,25 +43,36 @@ function CardTableRow({ headers, item }: CardTableRowProps) {
       headers.map((header) => {
         const value = getObjectValueByPath(item, header.value)
         const align = header.align ? header.align : undefined
+        const isChild = parentIdentifier && !!item[parentIdentifier]
 
         return {
           value,
           align,
+          isChild,
         }
       }),
     [headers]
   )
+
+  // find children to current item
+  // make sure that they're not rendered as well in sortedItemValues
+  console.log('sorted', sortedItemValues)
+
   return (
-    <tr className={classes.border}>
-      {sortedItemValues.map((obj, i) => (
-        <td
-          key={i}
-          className={`px-6 py-3 text-sm leading-5 ${classes.title} align-top align-${obj.align}`}
-        >
-          {obj.value}
-        </td>
-      ))}
-    </tr>
+    <>
+      <tr className={classes.border}>
+        {sortedItemValues.map((obj, i) => (
+          <td
+            key={i}
+            className={`py-3 leading-5 align-top align-${obj.align} ${
+              obj.isChild && i === 0 ? 'px-8' : 'px-6'
+            } ${obj.isChild ? classes.muted : classes.title}`}
+          >
+            {obj.value}
+          </td>
+        ))}
+      </tr>
+    </>
   )
 }
 
@@ -74,15 +86,18 @@ interface CardTableProps {
   headers: Header[]
   items?: any[]
   children?: React.ReactNode
+  parentIdentifier?: string
 }
 
-function CardTable({ headers, items, children }: CardTableProps) {
+function CardTable({ headers, items, children, parentIdentifier }: CardTableProps) {
   const { classes } = useCardStyles()
   const { classes: commonClasses } = useCommonStyles()
 
   const renderTableContent = () => {
     if (items && items.length) {
-      return items.map((item, i) => <CardTableRow key={i} item={item} headers={headers} />)
+      return items.map((item, i) => (
+        <CardTableRow key={i} item={item} headers={headers} parentIdentifier={parentIdentifier} />
+      ))
     }
 
     if (children && Children.toArray(children).length) {

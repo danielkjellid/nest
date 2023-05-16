@@ -6,11 +6,13 @@ from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.units.selectors import get_unit_by_abbreviation
-
+from django.utils import timezone
 from ..models import Product
 from ..records import ProductRecord
 from ..selectors import get_product
 from .core import update_or_create_product
+from ..constants import PRODUCT_NUTRITION_IDENTIFIERS
+from decimal import Decimal
 
 logger = structlog.getLogger()
 
@@ -57,6 +59,12 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         product_response.gross_unit_price
     )
 
+    # Extract nutrition values.
+    nutrition = _extract_nutrition_values_from_response(
+        product_response=product_response
+    )
+    content = _extract_content_values_from_response(product_response=product_response)
+
     # A set of defaults based on our own product model.
     defaults = {
         "oda_url": product_response.front_url,
@@ -68,6 +76,9 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         "is_available": product_response.availability.is_available,
         "supplier": product_response.brand,
         "thumbnail": get_product_image(),
+        "last_data_update": timezone.now(),
+        **nutrition,
+        **content,
     }
 
     product_record = update_or_create_product(
@@ -79,6 +90,81 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     )
 
     return product_record
+
+
+def _extract_nutrition_values_from_response(
+    *, product_response: OdaProductDetailRecord
+) -> dict[str, Decimal | None]:
+    """
+    Extract a dict of nutritional values from response record.
+    """
+
+    # The response dict that we're interested in returning. All nutrition values on the
+    # product model is nullable, therefore, None is the default.
+    extracted_values = PRODUCT_NUTRITION_IDENTIFIERS
+
+    # Extract correct info from response record and map oda's keys to match our own.
+    try:
+        nutrition_info = product_response.detailed_info.local[
+            0
+        ].nutrition_info_table.rows
+    except IndexError:
+        return extracted_values
+
+    nutrition_info_key_mapping = {
+        "fat": "Fett",
+        "fat_saturated": "hvorav mettede fettsyrer",
+        "fat_monounsaturated": "hvorav enumettede fettsyrer",
+        "fat_polyunsaturated": "hvorav flerumettede fettsyrer",
+        "carbohydrates": "Karbohydrater",
+        "carbohydrates_sugars": "hvorav sukkerarter",
+        "carbohydrates_polyols": "hvorav polyoler",
+        "carbohydrates_starch": "hvorav stivelse",
+        "fibres": "Kostfiber",
+        "protein": "Protein",
+        "salt": "Salt",
+        "sodium": "Natrium",
+    }
+
+    for info in nutrition_info:
+        # Energy has to be treated a bit differently as the value contains the value for
+        # both the kj and kcal.
+        if info.key == "Energi":
+            # Energy values looks like ['743', 'kJ', '/', '177', 'kcal'] after split.
+            energy_values = info.value.split(" ")
+            extracted_values["energy_kj"] = Decimal(energy_values[0])
+            extracted_values["energy_kcal"] = Decimal(energy_values[3])
+        else:
+            for model_key, mapped_key in nutrition_info_key_mapping.items():
+                if info.key != mapped_key:
+                    continue
+                # Grab the number before abbreviation. Looks something like
+                # ['8.20', 'g'] after split.
+                value = Decimal(info.value.split(" ")[0])
+                extracted_values[model_key] = value
+
+    return extracted_values
+
+
+def _extract_content_values_from_response(*, product_response: OdaProductDetailRecord):
+    """
+    Extract a dict of content values from response record.
+    """
+    extracted_values = {"ingredients": None, "allergens": None}
+
+    try:
+        contents_info = product_response.detailed_info.local[0].contents_table.rows
+    except IndexError:
+        return extracted_values
+
+    for info in contents_info:
+        if info.key == "Ingredienser":
+            extracted_values["ingredients"] = info.value
+
+            if info.emphasis is not None and info.emphasis.reason == "allergens":
+                extracted_values["allergens"] = ", ".join(info.emphasis.keywords)
+
+    return extracted_values
 
 
 def _validate_oda_response(*, response_record: OdaProductDetailRecord) -> None:
