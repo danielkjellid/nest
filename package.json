@@ -63,7 +63,7 @@
     "eslint-plugin-react": "^7.32.2",
     "import-sort-cli": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
-    "jsdom": "^21.1.1",
+    "jsdom": "^22.1.0",
     "openapi-typescript-codegen": "^0.23.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.7",
