@@ -298,39 +298,41 @@ function Form<T extends object>({
   return (
     <form encType={isMultipart ? 'multipart/form-data' : undefined}>
       <div className={`grid grid-cols-${columns ? columns : 1} gap-4 items-end`}>
-        {Object.entries(elements as T).map(([key, element]) => {
-          if (element.component) {
-            const optionsForElem = getOptionsForElement({ elementKey: key })
-            if (optionsForElem !== undefined) {
-              const options = element.enum
-                ? element.enum
-                : optionsForElem.options
-                ? optionsForElem.options
-                : undefined
+        {Object.entries(elements as T)
+          .sort(([, a], [, b]) => a.order - b.order)
+          .map(([key, element]) => {
+            if (element.component) {
+              const optionsForElem = getOptionsForElement({ elementKey: key })
+              if (optionsForElem !== undefined) {
+                const options = element.enum
+                  ? element.enum
+                  : optionsForElem.options
+                  ? optionsForElem.options
+                  : undefined
 
-              return (
-                <div
-                  key={key.toString()}
-                  className={`flex items-end space-x-3 w-full col-span-${
-                    element.colSpan ? element.colSpan : columns
-                  }`}
-                >
-                  {optionsForElem.beforeSlot}
-                  {createFormComponent({
-                    elementKey: key as K,
-                    element,
-                    options: options,
-                    placeholder: optionsForElem.placeholder,
-                    helpText: optionsForElem.helpText,
-                  })}
-                  {optionsForElem.afterSlot}
-                </div>
-              )
-            } else {
-              return createFormComponent({ elementKey: key as K, element, options: element.enum })
+                return (
+                  <div
+                    key={key.toString()}
+                    className={`flex items-end space-x-3 w-full col-span-${
+                      element.colSpan ? element.colSpan : columns
+                    }`}
+                  >
+                    {optionsForElem.beforeSlot}
+                    {createFormComponent({
+                      elementKey: key as K,
+                      element,
+                      options: options,
+                      placeholder: optionsForElem.placeholder,
+                      helpText: optionsForElem.helpText,
+                    })}
+                    {optionsForElem.afterSlot}
+                  </div>
+                )
+              } else {
+                return createFormComponent({ elementKey: key as K, element, options: element.enum })
+              }
             }
-          }
-        })}
+          })}
       </div>
     </form>
   )

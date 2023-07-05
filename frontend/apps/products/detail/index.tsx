@@ -113,6 +113,8 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
               {product.gtin && <Card.KeyValue k="Gtin" value={product.gtin} />}
               <Card.KeyValue k="Is available" value={product.isAvailable} />
               <Card.KeyValue k="Is synced" value={product.isSynced} />
+              <Card.KeyValue k="Gluten free" value={!product.containsGluten} />
+              <Card.KeyValue k="Lactose free" value={!product.containsLactose} />
               {product.thumbnailUrl && (
                 <Card.KeyValue
                   k="Picture"
@@ -123,7 +125,9 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
                   }
                 />
               )}
-              <Card.KeyValue k="Contains gluten" value={false} />
+              {product.lastDataUpdate && (
+                <Card.KeyValue k="Last data update" value={product.lastDataUpdate} />
+              )}
             </Card>
           </div>
           <div id="nutrition">

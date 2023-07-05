@@ -49,7 +49,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
     if (productId && (!product || (product && product.id !== productId))) {
       const fetchProduct = async () => {
         const fetchedProduct = await performGet<ProductDetailOutAPIResponse>({
-          url: urls.products.detail({ id: productId }),
+          url: urls.products.editFetch({ id: productId }),
         })
         setProduct(fetchedProduct.data)
       }
@@ -82,7 +82,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
         <Form
           {...form}
           elementsOptions={{
-            unit: { options: unitsOptions, accessorKey: 'unit.id' },
+            unit: { options: unitsOptions, accessorKey: 'unit' },
             thumbnail: { placeholder: product.thumbnailUrl?.split('/').pop() },
           }}
         />

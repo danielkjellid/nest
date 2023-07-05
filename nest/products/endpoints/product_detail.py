@@ -27,23 +27,6 @@ class ProductDetailUnitOut(Schema):
     display_name: str
 
 
-# class ProductDetailNutritionOut(Schema):
-#     energy_kj: str | None
-#     energy_kcal: str | None
-#     fat: str | None
-#     fat_saturated: str | None
-#     fat_monounsaturated: str | None
-#     fat_polyunsaturated: str | None
-#     carbohydrates: str | None
-#     carbohydrates_sugars: str | None
-#     carbohydrates_polyols: str | None
-#     carbohydrates_starch: str | None
-#     fibres: str | None
-#     protein: str | None
-#     salt: str | None
-#     sodium: str | None
-
-
 class ProductDetailNutritionOut(Schema):
     key: str
     parent_key: str | None
@@ -58,6 +41,9 @@ class ProductDetailOut(Schema):
     is_available: bool
     thumbnail_url: str | None
 
+    contains_lactose: bool = False
+    contains_gluten: bool = False
+
     gross_price: str
     gross_unit_price: str | None
 
@@ -71,6 +57,7 @@ class ProductDetailOut(Schema):
     oda_id: str | None
     oda_url: str | None
     is_oda_product: bool
+    last_data_update: str | None
 
     nutrition: list[ProductDetailNutritionOut]
 
@@ -90,11 +77,17 @@ def product_detail_api(
 
     product_dict = product.dict()
     product_dict.pop("nutrition")
+    last_data_update = product_dict.pop("last_data_update", None)
 
     return APIResponse(
         status="success",
         data=ProductDetailOut(
             **product_dict,
+            last_data_update=(
+                format_datetime(last_data_update, with_seconds=True)
+                if last_data_update
+                else None
+            ),
             nutrition=nutrition,
             audit_logs=[
                 ProductDetailAuditLogsOut(

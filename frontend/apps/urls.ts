@@ -5,6 +5,7 @@ const urls = {
     create: () => '/api/v1/products/create/',
     detail: ({ id }: { id: Param }) => `/api/v1/products/${id}/`,
     edit: ({ id }: { id: Param }) => `/api/v1/products/${id}/edit/`,
+    editFetch: ({ id }: { id: Param }) => `/api/v1/products/${id}/edit/`,
     list: () => '/api/v1/products/',
     oda: {
       import: () => '/api/v1/products/oda/import/',

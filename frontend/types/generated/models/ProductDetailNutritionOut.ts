@@ -6,6 +6,6 @@ export type ProductDetailNutritionOut = {
     key: string;
     parentKey?: string;
     title: string;
-    value?: string;
+    value: string;
 };
 

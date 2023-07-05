@@ -12,6 +12,8 @@ export type ProductDetailOut = {
     fullName: string;
     isAvailable: boolean;
     thumbnailUrl?: string;
+    containsLactose: boolean;
+    containsGluten: boolean;
     grossPrice: string;
     grossUnitPrice?: string;
     unit: ProductDetailUnitOut;
@@ -22,6 +24,7 @@ export type ProductDetailOut = {
     odaId?: string;
     odaUrl?: string;
     isOdaProduct: boolean;
+    lastDataUpdate?: string;
     nutrition: Array<ProductDetailNutritionOut>;
     auditLogs: Array<ProductDetailAuditLogsOut>;
 };

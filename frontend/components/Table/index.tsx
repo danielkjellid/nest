@@ -100,7 +100,7 @@ function Table<TData extends object>({
       // @ts-ignore
       columns={columnDefs}
       data={data}
-      mantinePaginationProps={{ rowsPerPageOptions: ['25', '50', '100'] }}
+      // mantinePaginationProps={{ rowsPerPageOptions: ['25', '50', '100'] }} Causes error?!
       // Editing and toggles
       enableEditing={false}
       enableDensityToggle={false}

@@ -49,6 +49,7 @@ def FormField(
     hidden_label: bool = False,
     col_span: int | None = None,
     section: str | None = None,
+    order: int | None = 1,
     **extra: Any,
 ) -> Any:
     field_info = FieldInfo(
@@ -84,6 +85,7 @@ def FormField(
         hidden_label=hidden_label,
         col_span=col_span,
         section=section,
+        order=order,
         **extra,
     )
     field_info._validate()
