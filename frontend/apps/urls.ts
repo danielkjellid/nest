@@ -6,7 +6,6 @@ const urls = {
     detail: ({ id }: { id: Param }) => `/api/v1/products/${id}/`,
     edit: ({ id }: { id: Param }) => `/api/v1/products/${id}/edit/`,
     list: () => '/api/v1/products/',
-
     oda: {
       import: () => '/api/v1/products/oda/import/',
       importConfirm: () => '/api/v1/products/oda/import/confirm/',
