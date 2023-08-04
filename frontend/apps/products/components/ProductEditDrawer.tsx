@@ -19,8 +19,7 @@ interface ProductEditDrawerProps {
 function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditDrawerProps) {
   const [product, setProduct] = useState<ProductDetailOut>()
   const form = useForm({ key: 'ProductEditIn', existingObj: product })
-  const units = useUnits()
-  const unitsOptions = units.map((unit) => ({ label: unit.displayName, value: unit.id.toString() }))
+  const { unitsOptions } = useUnits()
 
   const close = () => {
     form.resetForm()
@@ -45,19 +44,6 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
     }
   }
 
-  useEffect(() => {
-    if (productId && (!product || (product && product.id !== productId))) {
-      const fetchProduct = async () => {
-        const fetchedProduct = await performGet<ProductDetailOutAPIResponse>({
-          url: urls.products.editFetch({ id: productId }),
-        })
-        setProduct(fetchedProduct.data)
-      }
-
-      fetchProduct()
-    }
-  }, [product, productId])
-
   return (
     <Drawer
       title={`Edit "${product?.fullName}"`}
@@ -78,6 +64,7 @@ function ProductEditDrawer({ productId, opened, onClose, refetch }: ProductEditD
         </div>
       }
     >
+      {JSON.stringify(form.isMultipart)}
       {product && (
         <Form
           {...form}

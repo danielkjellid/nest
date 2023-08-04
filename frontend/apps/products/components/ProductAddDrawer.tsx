@@ -16,8 +16,7 @@ interface ProductAddDrawerProps {
 
 function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   const form = useForm({ key: 'ProductCreateIn' })
-  const units = useUnits()
-  const unitsOptions = units.map((unit) => ({ label: unit.displayName, value: unit.id.toString() }))
+  const { unitsOptions } = useUnits()
 
   const close = () => {
     form.resetForm()

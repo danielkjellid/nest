@@ -44,8 +44,8 @@ class Product(BaseModel):
     )
     gtin = models.CharField(max_length=14, null=True, blank=True)
     supplier = models.CharField(max_length=50, null=True, blank=True)
-    ingredients = models.TextField(null=True)
-    allergens = models.TextField(null=True)
+    ingredients = models.TextField(null=True, blank=True)
+    allergens = models.TextField(null=True, blank=True)
 
     # Classifiers/allergens
     contains_gluten = models.BooleanField(default=False)

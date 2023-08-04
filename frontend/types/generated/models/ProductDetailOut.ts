@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 import type { ProductDetailAuditLogsOut } from './ProductDetailAuditLogsOut';
-import type { ProductDetailNutritionOut } from './ProductDetailNutritionOut';
+import type { ProductDetailNutritionTableOut } from './ProductDetailNutritionTableOut';
 import type { ProductDetailUnitOut } from './ProductDetailUnitOut';
 
 export type ProductDetailOut = {
@@ -12,8 +12,8 @@ export type ProductDetailOut = {
     fullName: string;
     isAvailable: boolean;
     thumbnailUrl?: string;
-    containsLactose: boolean;
-    containsGluten: boolean;
+    containsLactose?: boolean;
+    containsGluten?: boolean;
     grossPrice: string;
     grossUnitPrice?: string;
     unit: ProductDetailUnitOut;
@@ -25,7 +25,18 @@ export type ProductDetailOut = {
     odaUrl?: string;
     isOdaProduct: boolean;
     lastDataUpdate?: string;
-    nutrition: Array<ProductDetailNutritionOut>;
+    fat?: string;
+    fatSaturated?: string;
+    fatMonounsaturated?: string;
+    fatPolyunsaturated?: string;
+    carbohydrates?: string;
+    carbohydratesSugars?: string;
+    carbohydratesPolyols?: string;
+    carbohydratesStarch?: string;
+    fibres?: string;
+    salt?: string;
+    sodium?: string;
+    nutritionTable: Array<ProductDetailNutritionTableOut>;
     auditLogs: Array<ProductDetailAuditLogsOut>;
 };
 

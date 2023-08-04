@@ -241,7 +241,7 @@ function Form<T extends object>({
       React.createElement(supportedComponents[element.component], {
         key: elementKey,
         placeholder: placeholder ? placeholder : element.placeholder,
-        required: required.includes(elementKey as string),
+        required: required && required.includes(elementKey as string),
         label: !element.hiddenLabel ? element.title : undefined,
         'aria-label': element.hiddenLabel ? element.title : undefined,
         description: helpText ? helpText : element.helpText,

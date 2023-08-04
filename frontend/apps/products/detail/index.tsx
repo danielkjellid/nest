@@ -45,7 +45,7 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
         {Object.entries(changes).map(([field, change], i) => (
           <p key={i} className="mb-2">
             <code className={classes.changeMessageCode}>{field}</code> changed from{' '}
-            <code className={classes.changeMessageCode}>{change[0]}</code> to{' '}
+            <code className={classes.changeMessageCode}>{change[0] ? change[0] : 'null'}</code> to{' '}
             <code className={classes.changeMessageCode}>{change[1]}</code>
           </p>
         ))}
@@ -138,7 +138,7 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
                   { label: 'Content', value: 'value' },
                 ]}
                 parentIdentifier="parentKey"
-                items={product.nutrition}
+                items={product.nutritionTable}
               />
             </Card>
           </div>

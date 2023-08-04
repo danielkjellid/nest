@@ -11,9 +11,9 @@ T = TypeVar("T", bound=Model)
 def model_update(
     *,
     instance: T,
-    fields: list[str],
     data: dict[str, Any],
     request: HttpRequest | None = None,
+    ignore_fields: list[str] | None = None,
     log_change: bool = True,
     log_ignore_fields: set[str] | None = None,
 ) -> tuple[T, bool]:
@@ -47,13 +47,16 @@ def model_update(
     update_fields = []
     changes = {}
 
+    if ignore_fields is None:
+        ignore_fields = set()
+
     if log_ignore_fields is None:
         log_ignore_fields = set()
 
     model_fields = {field.name: field for field in instance._meta.get_fields()}
 
-    for field in fields:
-        if field not in data:
+    for field in model_fields.keys():
+        if field not in data or field in ignore_fields:
             continue
 
         model_field = model_fields.get(field, None)

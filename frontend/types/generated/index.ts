@@ -10,7 +10,7 @@ export { APIResponse } from './models/APIResponse';
 export { FrontendComponents } from './models/FrontendComponents';
 export type { ProductCreateIn } from './models/ProductCreateIn';
 export type { ProductDetailAuditLogsOut } from './models/ProductDetailAuditLogsOut';
-export type { ProductDetailNutritionOut } from './models/ProductDetailNutritionOut';
+export type { ProductDetailNutritionTableOut } from './models/ProductDetailNutritionTableOut';
 export type { ProductDetailOut } from './models/ProductDetailOut';
 export { ProductDetailOutAPIResponse } from './models/ProductDetailOutAPIResponse';
 export type { ProductDetailUnitOut } from './models/ProductDetailUnitOut';

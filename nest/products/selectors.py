@@ -1,9 +1,11 @@
 from nest.core.exceptions import ApplicationError
 
 from .models import Product
-from .records import ProductRecord, ProductNutritionPrettyRecord
+from .records import ProductRecord
 from .constants import PRODUCT_NUTRITION_IDENTIFIERS
 from decimal import Decimal
+
+from nest.core.records import TableRecord
 
 
 def get_product(*, pk: int | None = None, oda_id: int | None = None) -> ProductRecord:
@@ -47,9 +49,7 @@ def get_products() -> list[ProductRecord]:
 
 def get_pretty_product_nutrition(
     *, product: Product | ProductRecord
-) -> list[ProductNutritionPrettyRecord]:
-    accessor = product.nutrition if isinstance(product, ProductRecord) else product
-
+) -> list[TableRecord]:
     records = []
     modified_identifiers = PRODUCT_NUTRITION_IDENTIFIERS.copy()
 
@@ -57,14 +57,14 @@ def get_pretty_product_nutrition(
     modified_identifiers.pop("energy_kj")
     modified_identifiers.pop("energy_kcal")
 
-    if accessor.energy_kj is not None and accessor.energy_kcal is not None:
+    if product.energy_kj is not None and product.energy_kcal is not None:
         records.append(
-            ProductNutritionPrettyRecord(
+            TableRecord(
                 title="Energy",
                 key="energy",
                 value=(
-                    f"{accessor.energy_kj.normalize()} kJ / "
-                    f"{accessor.energy_kcal.normalize()} kcal"
+                    f"{product.energy_kj.normalize()} kJ / "
+                    f"{product.energy_kcal.normalize()} kcal"
                 ),
             )
         )
@@ -73,17 +73,17 @@ def get_pretty_product_nutrition(
         split_key = key.split("_")
         parent_key = split_key[0]
         pretty_key = " ".join(split_key).capitalize()
-        value: Decimal | None = getattr(accessor, key, fallback_value)
+        value: Decimal | None = getattr(product, key, fallback_value)
 
         if value:
             records.append(
-                ProductNutritionPrettyRecord(
+                TableRecord(
                     title=pretty_key,
                     value=f"{value.normalize()} g",
                     key=key,
                     parent_key=(
                         parent_key
-                        if hasattr(accessor, parent_key) and parent_key != key
+                        if hasattr(product, parent_key) and parent_key != key
                         else None
                     ),
                 )

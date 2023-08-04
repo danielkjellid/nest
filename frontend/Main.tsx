@@ -54,12 +54,19 @@ function MainApp(props: AppProps) {
   const [currentHome, setCurrentHome] = useState<CommonContextType['currentHome']>(home)
 
   const [units, setUnits] = useState<UnitListOut[]>()
+  const [unitsOptions, setUnitsOptions] = useState<{ label: string; value: string }[]>()
 
   useEffect(() => {
     const fetchUnits = async () => {
       const fetchedUnits = await performGet<UnitListOutAPIResponse>({ url: urls.units.list() })
       if (fetchedUnits && fetchedUnits.data) {
         setUnits(fetchedUnits.data)
+        setUnitsOptions(
+          fetchedUnits.data.map((unit) => ({
+            label: unit.displayName,
+            value: unit.id.toString(),
+          }))
+        )
       }
     }
     if (!units) {
@@ -76,7 +83,7 @@ function MainApp(props: AppProps) {
       setCurrentHome={setCurrentHome}
     >
       <MenuProvider menu={menu}>
-        <UnitsProvider units={units}>
+        <UnitsProvider units={units} unitsOptions={unitsOptions}>
           <BrowserRouter>
             <BaseApp navbar={<Navbar />} header={<Header />}>
               <MainAppInner />

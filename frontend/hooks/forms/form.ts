@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { ButtonProps } from '../../components/Button'
 import { FormElement } from '../../components/Form/types'
 import schema from '../../../schema.json'
+import { notifications } from '@mantine/notifications'
+import { performPost as httpPost } from '../fetcher/http'
 
 interface FormComponentSchema {
   properties: FormElement
@@ -96,6 +98,33 @@ export function useForm<T extends object>({
   const [loadingState, setLoadingState] = useState<ButtonProps['loadingState']>('initial')
 
   /**********
+   ** Http **
+   **********/
+
+  const performPost = async ({ url }: { url: string }) => {
+    try {
+      setLoadingState('loading')
+      await httpPost({
+        url,
+        ...buildPayload(),
+      })
+      notifications.show({
+        title: 'Changes were saved successfully',
+        message: 'Your changes were saves successfully.',
+        color: 'green',
+      })
+      setLoadingState('success')
+    } catch (e) {
+      const error = e as any
+      setLoadingState('error')
+      if (error && error.response && error.response.data) {
+        setErrors(error.response.data)
+      }
+      console.log(e)
+    }
+  }
+
+  /**********
    ** Misc **
    **********/
 
@@ -115,6 +144,7 @@ export function useForm<T extends object>({
     resetForm,
     loadingState,
     setLoadingState,
+    performPost,
     elements: formFromSchema.properties,
     required: formFromSchema.required,
     columns: formFromSchema.columns,
