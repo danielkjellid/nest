@@ -19,8 +19,8 @@ export default defineConfig(() => {
       sourcemap: true,
       rollupOptions: {
         input: {
-          main: './actions',
-          login: './frontend/apps/login/index.tsx',
+          main: './frontend/index.tsx',
+          login: './frontend/apps/login/index.tsx'
         },
       },
     },
