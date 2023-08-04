@@ -24,6 +24,7 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
 
   const addProduct = async () => {
     await form.performPost({ url: urls.products.create() })
+    refetch()
   }
 
   return (

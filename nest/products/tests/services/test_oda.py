@@ -124,7 +124,7 @@ class TestProductOdaServices:
         assert _validate_oda_response_mock.call_count == 1
 
     def test__extract_nutrition_values_from_response(self):
-        assert False
+        raise AssertionError()
 
     def test__extract_content_values_from_response(self):
-        assert False
+        raise AssertionError()
