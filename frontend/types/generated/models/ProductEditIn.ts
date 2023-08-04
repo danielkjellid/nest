@@ -11,6 +11,17 @@ export type ProductEditIn = {
     gtin?: string;
     odaId?: number;
     odaUrl?: string;
+    fat?: string;
+    fatSaturated?: string;
+    fatMonounsaturated?: string;
+    fatPolyunsaturated?: string;
+    carbohydrates?: string;
+    carbohydratesSugars?: string;
+    carbohydratesPolyols?: string;
+    carbohydratesStarch?: string;
+    fibres?: string;
+    salt?: string;
+    sodium?: string;
     isAvailable: boolean;
     isSynced: boolean;
     thumbnail?: Blob;

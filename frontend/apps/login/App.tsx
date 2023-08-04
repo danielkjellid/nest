@@ -41,15 +41,15 @@ function LoginAppInner() {
   return (
     <>
       <Container size="xs">
-        <div className="absolute right-0 top-0 m-4">
+        <div className="absolute top-0 right-0 m-4">
           <ColorSchemeSwitch />
         </div>
       </Container>
-      <Container className="min-h-screen items-center flex justify-center" size="xs">
+      <Container className="flex items-center justify-center min-h-screen" size="xs">
         <Stack>
           <Center>
             <Stack>
-              <Logo className="h-16 w-16 mx-auto" />
+              <Logo className="w-16 h-16 mx-auto" />
               <Title order={2}>Sign in to your account</Title>
             </Stack>
           </Center>

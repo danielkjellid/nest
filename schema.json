@@ -332,6 +332,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 1,
                         "type": "string"
                     },
                     "grossPrice": {
@@ -343,6 +344,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 2,
                         "type": "string"
                     },
                     "unitQuantity": {
@@ -354,6 +356,7 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
+                        "order": 3,
                         "type": "string"
                     },
                     "unit": {
@@ -365,12 +368,188 @@
                         "hiddenLabel": false,
                         "colSpan": 1,
                         "section": null,
+                        "order": 4,
                         "type": "integer"
                     },
                     "supplier": {
                         "title": "Supplier",
-                        "type": "string",
-                        "component": "TextInput"
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 5,
+                        "type": "string"
+                    },
+                    "gtin": {
+                        "title": "Gtin",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 6,
+                        "type": "string"
+                    },
+                    "ingredients": {
+                        "title": "Ingredients",
+                        "helpText": "Specify ingredients seperated by a comma. E.g. milk, egg, sugar.",
+                        "component": "Textarea",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 7,
+                        "type": "string"
+                    },
+                    "allergens": {
+                        "title": "Allergens",
+                        "helpText": "Specify allergens seperated by a comma. E.g. milk, egg, sugar.",
+                        "component": "Textarea",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 8,
+                        "type": "string"
+                    },
+                    "fat": {
+                        "title": "Fat",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 9,
+                        "type": "string"
+                    },
+                    "fatSaturated": {
+                        "title": "Fat Saturated",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 10,
+                        "type": "string"
+                    },
+                    "fatMonounsaturated": {
+                        "title": "Fat Monounsaturated",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 11,
+                        "type": "string"
+                    },
+                    "fatPolyunsaturated": {
+                        "title": "Fat Polyunsaturated",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 12,
+                        "type": "string"
+                    },
+                    "carbohydrates": {
+                        "title": "Carbohydrates",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 13,
+                        "type": "string"
+                    },
+                    "carbohydratesSugars": {
+                        "title": "Carbohydrates Sugars",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 14,
+                        "type": "string"
+                    },
+                    "carbohydratesPolyols": {
+                        "title": "Carbohydrates Polyols",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 15,
+                        "type": "string"
+                    },
+                    "carbohydratesStarch": {
+                        "title": "Carbohydrates Starch",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 16,
+                        "type": "string"
+                    },
+                    "fibres": {
+                        "title": "Fibres",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 2,
+                        "section": null,
+                        "order": 17,
+                        "type": "string"
+                    },
+                    "salt": {
+                        "title": "Salt",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 2,
+                        "section": null,
+                        "order": 18,
+                        "type": "string"
+                    },
+                    "sodium": {
+                        "title": "Sodium",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 2,
+                        "section": null,
+                        "order": 19,
+                        "type": "string"
                     },
                     "isAvailable": {
                         "title": "Is Available",
@@ -381,6 +560,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 20,
                         "type": "boolean"
                     },
                     "thumbnail": {
@@ -437,6 +617,37 @@
                     "abbreviation",
                     "unitType",
                     "displayName"
+                ],
+                "type": "object"
+            },
+            "TableRecord": {
+                "title": "ProductDetailOutAPIResponse",
+                "properties": {
+                    "key": {
+                        "title": "Key",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "parentKey": {
+                        "title": "Parent Key",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "value": {
+                        "title": "Value",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "key",
+                    "title",
+                    "value"
                 ],
                 "type": "object"
             },
@@ -497,6 +708,28 @@
                         "type": "string",
                         "component": "TextInput"
                     },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "containsLactose": {
+                        "title": "Contains Lactose",
+                        "default": false,
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "containsGluten": {
+                        "title": "Contains Gluten",
+                        "default": false,
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
                     "grossPrice": {
                         "title": "Gross Price",
                         "type": "string",
@@ -515,26 +748,6 @@
                         "type": "string",
                         "component": "TextInput"
                     },
-                    "odaUrl": {
-                        "title": "Oda Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "odaId": {
-                        "title": "Oda Id",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "isAvailable": {
-                        "title": "Is Available",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
                     "gtin": {
                         "title": "Gtin",
                         "type": "string",
@@ -550,10 +763,88 @@
                         "type": "boolean",
                         "component": "Checkbox"
                     },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
                     "isOdaProduct": {
                         "title": "Is Oda Product",
                         "type": "boolean",
                         "component": "Checkbox"
+                    },
+                    "lastDataUpdate": {
+                        "title": "Last Data Update",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "fat": {
+                        "title": "Fat",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "fatSaturated": {
+                        "title": "Fat Saturated",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "fatMonounsaturated": {
+                        "title": "Fat Monounsaturated",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "fatPolyunsaturated": {
+                        "title": "Fat Polyunsaturated",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "carbohydrates": {
+                        "title": "Carbohydrates",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "carbohydratesSugars": {
+                        "title": "Carbohydrates Sugars",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "carbohydratesPolyols": {
+                        "title": "Carbohydrates Polyols",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "carbohydratesStarch": {
+                        "title": "Carbohydrates Starch",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "fibres": {
+                        "title": "Fibres",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "salt": {
+                        "title": "Salt",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "sodium": {
+                        "title": "Sodium",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "nutritionTable": {
+                        "title": "Nutrition Table",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TableRecord"
+                        },
+                        "component": "MultiSelect"
                     },
                     "auditLogs": {
                         "title": "Audit Logs",
@@ -568,11 +859,12 @@
                     "id",
                     "name",
                     "fullName",
+                    "isAvailable",
                     "grossPrice",
                     "unit",
-                    "isAvailable",
                     "isSynced",
                     "isOdaProduct",
+                    "nutritionTable",
                     "auditLogs"
                 ],
                 "type": "object"
@@ -615,6 +907,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 1,
                         "type": "string"
                     },
                     "grossPrice": {
@@ -626,6 +919,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 2,
                         "type": "number"
                     },
                     "unitQuantity": {
@@ -635,8 +929,9 @@
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
-                        "colSpan": 1,
+                        "colSpan": 2,
                         "section": null,
+                        "order": 3,
                         "type": "number"
                     },
                     "unit": {
@@ -646,14 +941,22 @@
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
-                        "colSpan": 1,
+                        "colSpan": 2,
                         "section": null,
+                        "order": 4,
                         "type": "integer"
                     },
                     "supplier": {
                         "title": "Supplier",
-                        "type": "string",
-                        "component": "TextInput"
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 5,
+                        "type": "string"
                     },
                     "gtin": {
                         "title": "Gtin",
@@ -664,6 +967,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 6,
                         "type": "string"
                     },
                     "odaId": {
@@ -675,6 +979,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 7,
                         "type": "integer"
                     },
                     "odaUrl": {
@@ -686,6 +991,139 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 8,
+                        "type": "string"
+                    },
+                    "fat": {
+                        "title": "Fat",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 9,
+                        "type": "string"
+                    },
+                    "fatSaturated": {
+                        "title": "Fat Saturated",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 10,
+                        "type": "string"
+                    },
+                    "fatMonounsaturated": {
+                        "title": "Fat Monounsaturated",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 11,
+                        "type": "string"
+                    },
+                    "fatPolyunsaturated": {
+                        "title": "Fat Polyunsaturated",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 12,
+                        "type": "string"
+                    },
+                    "carbohydrates": {
+                        "title": "Carbohydrates",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 13,
+                        "type": "string"
+                    },
+                    "carbohydratesSugars": {
+                        "title": "Carbohydrates Sugars",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 14,
+                        "type": "string"
+                    },
+                    "carbohydratesPolyols": {
+                        "title": "Carbohydrates Polyols",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 15,
+                        "type": "string"
+                    },
+                    "carbohydratesStarch": {
+                        "title": "Carbohydrates Starch",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 1,
+                        "section": null,
+                        "order": 16,
+                        "type": "string"
+                    },
+                    "fibres": {
+                        "title": "Fibres",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 4,
+                        "section": null,
+                        "order": 17,
+                        "type": "string"
+                    },
+                    "salt": {
+                        "title": "Salt",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 4,
+                        "section": null,
+                        "order": 18,
+                        "type": "string"
+                    },
+                    "sodium": {
+                        "title": "Sodium",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 4,
+                        "section": null,
+                        "order": 19,
                         "type": "string"
                     },
                     "isAvailable": {
@@ -697,6 +1135,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 20,
                         "type": "boolean"
                     },
                     "isSynced": {
@@ -708,6 +1147,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 21,
                         "type": "boolean"
                     },
                     "thumbnail": {
@@ -727,7 +1167,7 @@
                     "isAvailable",
                     "isSynced"
                 ],
-                "columns": 2,
+                "columns": 4,
                 "type": "object"
             },
             "ProductListOut": {
@@ -918,6 +1358,7 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
+                        "order": 1,
                         "type": "integer"
                     }
                 },

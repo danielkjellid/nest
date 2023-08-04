@@ -411,6 +411,16 @@ def get_oda_product_response_dict(*, id: int) -> dict[str, Any]:
                                 "key_id": None,
                             },
                             {
+                                "key": "Opprinnelsesland",
+                                "value": "Norge",
+                                "badge": None,
+                                "indent": None,
+                                "tooltip": None,
+                                "link": None,
+                                "emphasis": None,
+                                "key_id": None,
+                            },
+                            {
                                 "key": "St\u00f8rrelse",
                                 "value": "2 kilogram",
                                 "badge": None,

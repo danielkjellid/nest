@@ -93,7 +93,12 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["django_s3_storage", "django_vite", "hijack", "ninja"]
+THIRD_PARTY_APPS = [
+    "django_s3_storage",
+    "django_vite",
+    "hijack",
+    "ninja",
+]
 
 PROJECT_APPS = [
     "nest.api",

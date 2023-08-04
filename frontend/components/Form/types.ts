@@ -26,6 +26,7 @@ export interface FormElementObj {
   section?: string | null
   type: string
   enum?: FormEnum[]
+  order: number
 }
 
 export interface FormElement {

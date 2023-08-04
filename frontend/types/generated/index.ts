@@ -20,6 +20,7 @@ export type { ProductOdaImportConfirmIn } from './models/ProductOdaImportConfirm
 export type { ProductOdaImportIn } from './models/ProductOdaImportIn';
 export type { ProductOdaImportOut } from './models/ProductOdaImportOut';
 export { ProductOdaImportOutAPIResponse } from './models/ProductOdaImportOutAPIResponse';
+export type { TableRecord } from './models/TableRecord';
 export type { UnitListOut } from './models/UnitListOut';
 export { UnitListOutAPIResponse } from './models/UnitListOutAPIResponse';
 export { UnitType } from './models/UnitType';

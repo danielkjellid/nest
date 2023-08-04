@@ -4,9 +4,10 @@ import { UnitListOut } from '../types'
 
 export interface UnitsContextType {
   units: UnitListOut[] | undefined
+  unitsOptions: { label: string; value: string }[] | undefined
 }
 
-const UnitsContext = createContext<UnitListOut[] | undefined>(undefined)
+const UnitsContext = createContext<UnitsContextType | undefined>(undefined)
 
 export function useUnits() {
   const ctx = useContext(UnitsContext)
@@ -24,7 +25,7 @@ interface UnitsProviderProps extends UnitsContextType {
   children: React.ReactNode
 }
 
-export function UnitsProvider({ units, children }: UnitsProviderProps) {
-  const value = useMemo(() => units, [units])
+export function UnitsProvider({ units, unitsOptions, children }: UnitsProviderProps) {
+  const value = useMemo(() => ({ units, unitsOptions }), [units, unitsOptions])
   return <UnitsContext.Provider value={value}>{children}</UnitsContext.Provider>
 }

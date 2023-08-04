@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 
 import { ProductDetail } from './detail'
+import { ProductEdit } from './edit'
 import { ProductOverview } from './overview'
 import React from 'react'
 import { routes } from './routes'
@@ -13,6 +14,7 @@ export function ProductsApp() {
     <Routes>
       <Route path={baseRoute(routes.overview.path)} element={<ProductOverview />} />
       <Route path={baseRoute(routes.detail.path)} element={<ProductDetail />} />
+      <Route path={baseRoute(routes.edit.path)} element={<ProductEdit />} />
     </Routes>
   )
 }

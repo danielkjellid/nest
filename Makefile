@@ -60,7 +60,7 @@ lint-backend: lint-mypy lint-ruff lint-black | $(BASE) ; @
 	$Q
 
 .PHONY: lint-frontend
-lint-frontend: lint-import-sort lint-tsc lint-eslint lint-prettier | $(BASE) ; @
+lint-frontend: lint-tsc lint-eslint lint-prettier lint-import-sort | $(BASE) ; @
 	$Q
 
 .PHONY: lint-ruff

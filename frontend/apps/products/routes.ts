@@ -13,4 +13,10 @@ export const routes = {
       return generatePath(this.path, { productId })
     },
   },
+  edit: {
+    path: '/products/:productId/edit',
+    build({ productId }: { productId: string | number }) {
+      return generatePath(this.path, { productId })
+    },
+  },
 }

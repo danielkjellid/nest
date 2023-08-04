@@ -5,6 +5,7 @@ import humps from 'humps'
 // the current form key.
 export const determineIsMultipart = (obj: Record<string, any>, formKey: string): any => {
   let foundMultipartKey = false
+
   for (const pathValue of Object.values(obj)) {
     for (const operationValue of Object.values(pathValue)) {
       if ((operationValue as any).requestBody && (operationValue as any).requestBody.content) {
@@ -14,8 +15,6 @@ export const determineIsMultipart = (obj: Record<string, any>, formKey: string):
           ].schema.$ref
             .split('/')
             .includes(formKey)
-
-          return foundMultipartKey
         }
       }
     }

@@ -3,7 +3,6 @@ import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { ProductCreateIn } from '../../../types'
 import React from 'react'
-import { performPost } from '../../../hooks/fetcher/http'
 import { urls } from '../../urls'
 import { useForm } from '../../../hooks/forms'
 import { useUnits } from '../../../contexts/UnitsProvider'
@@ -16,8 +15,7 @@ interface ProductAddDrawerProps {
 
 function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   const form = useForm({ key: 'ProductCreateIn' })
-  const units = useUnits()
-  const unitsOptions = units.map((unit) => ({ label: unit.displayName, value: unit.id.toString() }))
+  const { unitsOptions } = useUnits()
 
   const close = () => {
     form.resetForm()
@@ -25,19 +23,8 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   }
 
   const addProduct = async () => {
-    try {
-      form.setLoadingState('loading')
-      await performPost({ url: urls.products.create(), ...form.buildPayload() })
-      form.setLoadingState('success')
-      close()
-      refetch()
-    } catch (e) {
-      const errorResponse = (e as any).response.data
-      form.setLoadingState('error')
-      if (errorResponse) {
-        form.setErrors(errorResponse.data)
-      }
-    }
+    await form.performPost({ url: urls.products.create() })
+    refetch()
   }
 
   return (

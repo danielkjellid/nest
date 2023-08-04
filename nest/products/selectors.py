@@ -1,5 +1,9 @@
-from nest.core.exceptions import ApplicationError
+from decimal import Decimal
 
+from nest.core.exceptions import ApplicationError
+from nest.core.records import TableRecord
+
+from .constants import PRODUCT_NUTRITION_IDENTIFIERS
 from .models import Product
 from .records import ProductRecord
 
@@ -41,3 +45,46 @@ def get_products() -> list[ProductRecord]:
 
     products = Product.objects.all().select_related("unit")
     return [ProductRecord.from_product(product) for product in products]
+
+
+def get_nutrition_table(*, product: Product | ProductRecord) -> list[TableRecord]:
+    records = []
+    modified_identifiers = PRODUCT_NUTRITION_IDENTIFIERS.copy()
+
+    # energy_kj and energy_kcal are handled manually bellow.
+    modified_identifiers.pop("energy_kj")
+    modified_identifiers.pop("energy_kcal")
+
+    if product.energy_kj is not None and product.energy_kcal is not None:
+        records.append(
+            TableRecord(
+                title="Energy",
+                key="energy",
+                value=(
+                    f"{product.energy_kj.normalize()} kJ / "  # type: ignore
+                    f"{product.energy_kcal.normalize()} kcal"  # type: ignore
+                ),
+            )
+        )
+
+    for key, fallback_value in modified_identifiers.items():
+        split_key = key.split("_")
+        parent_key = split_key[0]
+        pretty_key = " ".join(split_key).capitalize()
+        value: Decimal | None = getattr(product, key, fallback_value)
+
+        if value:
+            records.append(
+                TableRecord(
+                    title=pretty_key,
+                    value=f"{value.normalize()} g",
+                    key=key,
+                    parent_key=(
+                        parent_key
+                        if hasattr(product, parent_key) and parent_key != key
+                        else None
+                    ),
+                )
+            )
+
+    return records
