@@ -50,24 +50,17 @@ function CardTableRow({ headers, item }: CardTableRowProps) {
       }),
     [headers]
   )
-
-  // find children to current item
-  // make sure that they're not rendered as well in sortedItemValues
-  console.log('sorted', sortedItemValues)
-
   return (
-    <>
-      <tr className={classes.border}>
-        {sortedItemValues.map((obj, i) => (
-          <td
-            key={i}
-            className={`px-6 py-3 text-sm leading-5 ${classes.title} align-top align-${obj.align}`}
-          >
-            {obj.value}
-          </td>
-        ))}
-      </tr>
-    </>
+    <tr className={classes.border}>
+      {sortedItemValues.map((obj, i) => (
+        <td
+          key={i}
+          className={`px-6 py-3 text-sm leading-5 ${classes.title} align-top align-${obj.align}`}
+        >
+          {obj.value}
+        </td>
+      ))}
+    </tr>
   )
 }
 
