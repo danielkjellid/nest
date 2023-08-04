@@ -5,6 +5,7 @@ from ninja import Schema
 
 from nest.api.responses import APIResponse
 from nest.audit_logs.selectors import get_log_entries_for_object
+from nest.core.records import TableRecord
 from nest.core.utils import format_datetime
 from nest.products.models import Product
 from nest.products.selectors import get_pretty_product_nutrition, get_product
@@ -25,13 +26,6 @@ class ProductDetailUnitOut(Schema):
     abbreviation: str
     unit_type: str
     display_name: str
-
-
-class ProductDetailNutritionTableOut(Schema):
-    key: str
-    parent_key: str | None
-    title: str
-    value: str
 
 
 class ProductDetailOut(Schema):
@@ -71,7 +65,7 @@ class ProductDetailOut(Schema):
     salt: str | None
     sodium: str | None
 
-    nutrition_table: list[ProductDetailNutritionTableOut]
+    nutrition_table: list[TableRecord]
 
     audit_logs: list[ProductDetailAuditLogsOut]
 

@@ -1,4 +1,6 @@
-PRODUCT_NUTRITION_IDENTIFIERS = {
+from decimal import Decimal
+
+PRODUCT_NUTRITION_IDENTIFIERS: dict[str, Decimal | None] = {
     "energy_kj": None,
     "energy_kcal": None,
     "fat": None,

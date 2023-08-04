@@ -148,11 +148,13 @@ def _extract_nutrition_values_from_response(
     return extracted_values
 
 
-def _extract_content_values_from_response(*, product_response: OdaProductDetailRecord):
+def _extract_content_values_from_response(
+    *, product_response: OdaProductDetailRecord
+) -> dict[str, str | None]:
     """
     Extract a dict of content values from response record.
     """
-    extracted_values = {"ingredients": None, "allergens": None}
+    extracted_values: dict[str, str | None] = {"ingredients": None, "allergens": None}
 
     try:
         contents_info = product_response.detailed_info.local[0].contents_table.rows

@@ -445,7 +445,7 @@
                 ],
                 "type": "object"
             },
-            "ProductDetailNutritionTableOut": {
+            "TableRecord": {
                 "title": "ProductDetailOutAPIResponse",
                 "properties": {
                     "key": {
@@ -667,7 +667,7 @@
                         "title": "Nutrition Table",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ProductDetailNutritionTableOut"
+                            "$ref": "#/components/schemas/TableRecord"
                         },
                         "component": "MultiSelect"
                     },

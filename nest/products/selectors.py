@@ -63,8 +63,8 @@ def get_pretty_product_nutrition(
                 title="Energy",
                 key="energy",
                 value=(
-                    f"{product.energy_kj.normalize()} kJ / "
-                    f"{product.energy_kcal.normalize()} kcal"
+                    f"{product.energy_kj.normalize()} kJ / "  # type: ignore
+                    f"{product.energy_kcal.normalize()} kcal"  # type: ignore
                 ),
             )
         )

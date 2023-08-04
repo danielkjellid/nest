@@ -13,7 +13,7 @@ def model_update(  # noqa: C901
     instance: T,
     data: dict[str, Any],
     request: HttpRequest | None = None,
-    ignore_fields: list[str] | None = None,
+    ignore_fields: set[str] | None = None,
     log_change: bool = True,
     log_ignore_fields: set[str] | None = None,
 ) -> tuple[T, bool]:
