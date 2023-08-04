@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProductDetailNutritionTableOut = {
+export type TableRecord = {
     key: string;
     parentKey?: string;
     title: string;

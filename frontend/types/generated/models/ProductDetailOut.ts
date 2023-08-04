@@ -3,8 +3,8 @@
 /* eslint-disable */
 
 import type { ProductDetailAuditLogsOut } from './ProductDetailAuditLogsOut';
-import type { ProductDetailNutritionTableOut } from './ProductDetailNutritionTableOut';
 import type { ProductDetailUnitOut } from './ProductDetailUnitOut';
+import type { TableRecord } from './TableRecord';
 
 export type ProductDetailOut = {
     id: number;
@@ -36,7 +36,7 @@ export type ProductDetailOut = {
     fibres?: string;
     salt?: string;
     sodium?: string;
-    nutritionTable: Array<ProductDetailNutritionTableOut>;
+    nutritionTable: Array<TableRecord>;
     auditLogs: Array<ProductDetailAuditLogsOut>;
 };
 

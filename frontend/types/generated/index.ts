@@ -10,7 +10,6 @@ export { APIResponse } from './models/APIResponse';
 export { FrontendComponents } from './models/FrontendComponents';
 export type { ProductCreateIn } from './models/ProductCreateIn';
 export type { ProductDetailAuditLogsOut } from './models/ProductDetailAuditLogsOut';
-export type { ProductDetailNutritionTableOut } from './models/ProductDetailNutritionTableOut';
 export type { ProductDetailOut } from './models/ProductDetailOut';
 export { ProductDetailOutAPIResponse } from './models/ProductDetailOutAPIResponse';
 export type { ProductDetailUnitOut } from './models/ProductDetailUnitOut';
@@ -21,6 +20,7 @@ export type { ProductOdaImportConfirmIn } from './models/ProductOdaImportConfirm
 export type { ProductOdaImportIn } from './models/ProductOdaImportIn';
 export type { ProductOdaImportOut } from './models/ProductOdaImportOut';
 export { ProductOdaImportOutAPIResponse } from './models/ProductOdaImportOutAPIResponse';
+export type { TableRecord } from './models/TableRecord';
 export type { UnitListOut } from './models/UnitListOut';
 export { UnitListOutAPIResponse } from './models/UnitListOutAPIResponse';
 export { UnitType } from './models/UnitType';
