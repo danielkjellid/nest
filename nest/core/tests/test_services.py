@@ -18,9 +18,7 @@ class TestCoreServices:
 
         # When fields are empty, it should not do anything.
         with django_assert_num_queries(0):
-            updated_user1, has_updated1 = model_update(
-                instance=user, fields=[], data={}
-            )
+            updated_user1, has_updated1 = model_update(instance=user, data={})
 
         assert user == updated_user1
         assert has_updated1 is False
@@ -29,7 +27,7 @@ class TestCoreServices:
         # not do anything.
         with django_assert_num_queries(0):
             updated_user2, has_updated2 = model_update(
-                instance=user, fields=["first_name"], data={"foo": "bar"}
+                instance=user, data={"foo": "bar"}
             )
 
         assert user == updated_user2
@@ -46,33 +44,20 @@ class TestCoreServices:
 
         user = create_user(first_name="Tony", last_name="Montana", is_superuser=False)
 
-        update_fields = ["first_name"]
+        ignore_fields = ["last_name"]
         data = {"first_name": "Anthony", "last_name": "Scarface", "is_superuser": True}
 
         assert user.first_name != data["first_name"]
 
         with django_assert_num_queries(4):
             updated_user, has_updated = model_update(
-                instance=user, fields=update_fields, data=data
+                instance=user, ignore_fields=ignore_fields, data=data
             )
 
         assert has_updated is True
         assert updated_user.first_name == data["first_name"]
         assert user.last_name == updated_user.last_name
         assert user.is_superuser == updated_user.is_superuser
-
-    def test_model_update_raises_error_when_called_with_non_existing_field(self):
-        """
-        Test that the model_update service raises an AssertionError when provided with
-        fields that does not exist on the model.
-        """
-
-        user = create_user()
-
-        with pytest.raises(AssertionError):
-            model_update(
-                instance=user, fields=["does_not_exist"], data={"does_not_exist": "foo"}
-            )
 
     def test_model_update_updates_many_to_many_field(self, django_assert_num_queries):
         """
@@ -85,7 +70,6 @@ class TestCoreServices:
         home3 = create_home(street_address="Address 3")
         user = create_user(homes=[home1, home2])
 
-        update_fields = ["homes"]
         data = {"homes": [home3]}
 
         assert home3 not in user.homes.all()
@@ -93,9 +77,7 @@ class TestCoreServices:
         original_updated_at = user.updated_at
 
         with django_assert_num_queries(3):
-            updated_user, has_updated = model_update(
-                instance=user, fields=update_fields, data=data
-            )
+            updated_user, has_updated = model_update(instance=user, data=data)
 
         assert user == updated_user
         assert has_updated is True
@@ -117,13 +99,10 @@ class TestCoreServices:
 
         user = create_user(first_name="Homer", last_name="Simpson", homes=[home1])
 
-        update_fields = ["first_name", "homes"]
         data = {"first_name": "Bart", "homes": [home2]}
 
         with django_assert_num_queries(7):
-            updated_user, has_updated = model_update(
-                instance=user, fields=update_fields, data=data
-            )
+            updated_user, has_updated = model_update(instance=user, data=data)
 
         assert has_updated is True
         assert updated_user.first_name == data["first_name"]
@@ -137,15 +116,12 @@ class TestCoreServices:
         """
 
         user = create_user(first_name="Peter", last_name="Griffin")
-        update_fields = ["first_name"]
         data = {"first_name": "Brian"}
 
         assert LogEntry.objects.count() == 0
 
         with django_assert_num_queries(4):
-            updated_user, has_updated = model_update(
-                instance=user, fields=update_fields, data=data
-            )
+            updated_user, has_updated = model_update(instance=user, data=data)
 
         assert has_updated is True
         assert updated_user.first_name == data["first_name"]
@@ -162,14 +138,13 @@ class TestCoreServices:
         """
 
         user = create_user(first_name="Peter", last_name="Griffin")
-        update_fields = ["first_name"]
         data = {"first_name": "Brian"}
 
         assert LogEntry.objects.count() == 0
 
         with django_assert_num_queries(3):
             _updated_user, has_updated = model_update(
-                instance=user, fields=update_fields, data=data, log_change=False
+                instance=user, data=data, log_change=False
             )
 
         assert has_updated is True

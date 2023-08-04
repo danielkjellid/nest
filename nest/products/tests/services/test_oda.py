@@ -1,13 +1,18 @@
 import pytest
-
+from decimal import Decimal
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.data_pools.tests.oda.utils import get_oda_product_response_dict
 from nest.products.models import Product
+from nest.products.constants import PRODUCT_NUTRITION_IDENTIFIERS
 from nest.products.services import (
     import_from_oda,
 )
-from nest.products.services.oda import _validate_oda_response
+from nest.products.services.oda import (
+    _validate_oda_response,
+    _extract_nutrition_values_from_response,
+    _extract_classifier_values_from_response,
+)
 from nest.products.tests.utils import (
     create_product as create_product_test_util,
 )
@@ -124,7 +129,47 @@ class TestProductOdaServices:
         assert _validate_oda_response_mock.call_count == 1
 
     def test__extract_nutrition_values_from_response(self):
-        raise AssertionError()
+        """
+        Test that we're successfully extracting nutritional values from response and
+        that all of our identifiers are a part of the returned dict.
+        """
+        product = create_product_test_util(name="Some product name")
+        oda_response = get_oda_product_response_dict(id=product.oda_id)
 
-    def test__extract_content_values_from_response(self):
-        raise AssertionError()
+        nutrition_values = _extract_nutrition_values_from_response(
+            product_response=OdaProductDetailRecord(**oda_response)
+        )
+
+        assert nutrition_values == {
+            "carbohydrates": Decimal("67.90"),
+            "carbohydrates_polyols": None,
+            "carbohydrates_starch": None,
+            "carbohydrates_sugars": Decimal("2.70"),
+            "energy_kcal": Decimal("338"),
+            "energy_kj": Decimal("1433"),
+            "fat": Decimal("1.60"),
+            "fat_monounsaturated": Decimal("0.20"),
+            "fat_polyunsaturated": Decimal("1"),
+            "fat_saturated": Decimal("0.40"),
+            "fibres": Decimal("3.60"),
+            "protein": Decimal("11.20"),
+            "salt": Decimal("0"),
+            "sodium": None,
+        }
+        assert all(key in nutrition_values for key in PRODUCT_NUTRITION_IDENTIFIERS)
+
+    def test__extract_classifier_values_from_response(self):
+        """
+        Test that we're successfully extracting classifier values from response.
+        """
+        product = create_product_test_util(name="Some product name")
+        oda_response = get_oda_product_response_dict(id=product.oda_id)
+
+        classifiers = _extract_classifier_values_from_response(
+            product_response=OdaProductDetailRecord(**oda_response)
+        )
+
+        assert classifiers == {
+            "allergens": "hvete",
+            "ingredients": "Siktet mel av HVETE, melbehandlingsmiddel (ascorbinsyre)",
+        }

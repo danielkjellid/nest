@@ -36,7 +36,6 @@ def model_update(  # noqa: C901
     Some important notes:
         - Only keys present in `ignore_fields` will be ignored from `data`.
         - If there are no relevant changes to the field in data, we skip it.
-        - There's a strict assertion that all values in `fields` are actual fields in `instance`.
         - `ignore_fields` can support m2m fields, which are handled after the update on `instance`.
         - If `auto_updated_at` is True, we'll try bumping `updated_at` with the current timestamp.
     """
@@ -53,16 +52,13 @@ def model_update(  # noqa: C901
         log_ignore_fields = set()
 
     model_fields = {field.name: field for field in instance._meta.get_fields()}
+    fields = set(model_fields.keys()) - set(ignore_fields)
 
-    for field in model_fields.keys():
-        if field not in data or field in ignore_fields:
+    for field in fields:
+        if field not in data:
             continue
 
         model_field = model_fields.get(field, None)
-
-        assert (
-            model_field is not None
-        ), f"{field} is not part of {instance.__class__.__name__} fields."
 
         # If we have m2m field, handle differently
         if isinstance(model_field, ManyToManyField):

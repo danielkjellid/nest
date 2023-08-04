@@ -65,7 +65,9 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     nutrition = _extract_nutrition_values_from_response(
         product_response=product_response
     )
-    content = _extract_content_values_from_response(product_response=product_response)
+    classifiers = _extract_classifier_values_from_response(
+        product_response=product_response
+    )
 
     # A set of defaults based on our own product model.
     defaults = {
@@ -80,7 +82,7 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         "thumbnail": get_product_image(),
         "last_data_update": timezone.now(),
         **nutrition,
-        **content,
+        **classifiers,
     }
 
     product_record = update_or_create_product(
@@ -148,7 +150,7 @@ def _extract_nutrition_values_from_response(
     return extracted_values
 
 
-def _extract_content_values_from_response(
+def _extract_classifier_values_from_response(
     *, product_response: OdaProductDetailRecord
 ) -> dict[str, str | None]:
     """
