@@ -156,7 +156,9 @@ class TestProductOdaServices:
             "salt": Decimal("0"),
             "sodium": None,
         }
-        assert all(key in nutrition_values for key in PRODUCT_NUTRITION_IDENTIFIERS)
+        assert all(
+            key in nutrition_values for key in PRODUCT_NUTRITION_IDENTIFIERS.keys()
+        )
 
     def test__extract_classifier_values_from_response(self):
         """
