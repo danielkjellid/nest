@@ -7,10 +7,9 @@ import { useCommonStyles } from '../../styles/common'
 interface CardTableRowProps {
   headers: Header[]
   item: any
-  parentIdentifier?: string
 }
 
-function CardTableRow({ headers, item, parentIdentifier }: CardTableRowProps) {
+function CardTableRow({ headers, item }: CardTableRowProps) {
   const { classes } = useCommonStyles()
   const getNestedValue = (obj: any, path: (string | number)[], fallback?: any): any => {
     const last = path.length - 1
@@ -43,12 +42,10 @@ function CardTableRow({ headers, item, parentIdentifier }: CardTableRowProps) {
       headers.map((header) => {
         const value = getObjectValueByPath(item, header.value)
         const align = header.align ? header.align : undefined
-        const isChild = parentIdentifier && !!item[parentIdentifier]
 
         return {
           value,
           align,
-          isChild,
         }
       }),
     [headers]
@@ -64,9 +61,7 @@ function CardTableRow({ headers, item, parentIdentifier }: CardTableRowProps) {
         {sortedItemValues.map((obj, i) => (
           <td
             key={i}
-            className={`py-3 leading-5 align-top align-${obj.align} ${
-              obj.isChild && i === 0 ? 'px-8' : 'px-6'
-            } ${obj.isChild ? classes.muted : classes.title}`}
+            className={`px-6 py-3 text-sm leading-5 ${classes.title} align-top align-${obj.align}`}
           >
             {obj.value}
           </td>
@@ -86,18 +81,15 @@ interface CardTableProps {
   headers: Header[]
   items?: any[]
   children?: React.ReactNode
-  parentIdentifier?: string
 }
 
-function CardTable({ headers, items, children, parentIdentifier }: CardTableProps) {
+function CardTable({ headers, items, children }: CardTableProps) {
   const { classes } = useCardStyles()
   const { classes: commonClasses } = useCommonStyles()
 
   const renderTableContent = () => {
     if (items && items.length) {
-      return items.map((item, i) => (
-        <CardTableRow key={i} item={item} headers={headers} parentIdentifier={parentIdentifier} />
-      ))
+      return items.map((item, i) => <CardTableRow key={i} item={item} headers={headers} />)
     }
 
     if (children && Children.toArray(children).length) {

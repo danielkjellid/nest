@@ -132,7 +132,6 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
                   { label: 'Label', value: 'title' },
                   { label: 'Content', value: 'value' },
                 ]}
-                parentIdentifier="parentKey"
                 items={product.nutritionTable}
               />
             </Card>
