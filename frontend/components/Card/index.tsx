@@ -1,4 +1,4 @@
-import { CardForm, CardFormRow } from './Form'
+import { CardForm } from './Form'
 import { CardTable, CardTableRow } from './Table'
 import React, { Children } from 'react'
 
@@ -60,6 +60,5 @@ Card.KeyValue = CardKeyValue
 Card.Table = CardTable
 Card.TableRow = CardTableRow
 Card.Form = CardForm
-Card.FormRow = CardFormRow
 
 export { Card }
