@@ -7,7 +7,7 @@ from nest.api.responses import APIResponse
 from nest.audit_logs.selectors import get_log_entries_for_object
 from nest.core.utils import format_datetime
 from nest.products.models import Product
-from nest.products.selectors import get_product, get_pretty_product_nutrition
+from nest.products.selectors import get_pretty_product_nutrition, get_product
 
 from .router import router
 

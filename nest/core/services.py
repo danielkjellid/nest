@@ -8,7 +8,7 @@ from nest.audit_logs.services import log_update
 T = TypeVar("T", bound=Model)
 
 
-def model_update(
+def model_update(  # noqa: C901
     *,
     instance: T,
     data: dict[str, Any],
@@ -23,8 +23,7 @@ def model_update(
     For example:
 
     def user_update(*, user: User, data) -> User:
-        fields = ['first_name', 'last_name']
-        user, has_updated = model_update(instance=user, fields=fields, data=data)
+        user, has_updated = model_update(instance=user, data=data)
 
         // Do other actions with the user here
 
@@ -35,10 +34,10 @@ def model_update(
         2. A boolean value representing whether we performed an update or not.
 
     Some important notes:
-        - Only keys present in `fields` will be taken from `data`.
-        - If something in present in `fields` but not present in `data`, we simply skip.
+        - Only keys present in `ignore_fields` will be ignored from `data`.
+        - If there are no relevant changes to the field in data, we skip it.
         - There's a strict assertion that all values in `fields` are actual fields in `instance`.
-        - `fields` can support m2m fields, which are handled after the update on `instance`.
+        - `ignore_fields` can support m2m fields, which are handled after the update on `instance`.
         - If `auto_updated_at` is True, we'll try bumping `updated_at` with the current timestamp.
     """
 

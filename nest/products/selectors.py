@@ -1,11 +1,11 @@
-from nest.core.exceptions import ApplicationError
-
-from .models import Product
-from .records import ProductRecord
-from .constants import PRODUCT_NUTRITION_IDENTIFIERS
 from decimal import Decimal
 
+from nest.core.exceptions import ApplicationError
 from nest.core.records import TableRecord
+
+from .constants import PRODUCT_NUTRITION_IDENTIFIERS
+from .models import Product
+from .records import ProductRecord
 
 
 def get_product(*, pk: int | None = None, oda_id: int | None = None) -> ProductRecord:

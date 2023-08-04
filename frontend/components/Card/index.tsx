@@ -1,10 +1,10 @@
+import { CardForm, CardFormRow } from './Form'
 import { CardTable, CardTableRow } from './Table'
 import React, { Children } from 'react'
 
 import { CardKeyValue } from './KeyValue'
 import { useCardStyles } from './Card.styles'
 import { useCommonStyles } from '../../styles/common'
-import { CardForm, CardFormRow } from './Form'
 
 interface CardProps {
   title?: string

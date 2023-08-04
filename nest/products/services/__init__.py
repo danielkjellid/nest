@@ -1,4 +1,4 @@
-from .core import create_product, update_or_create_product, edit_product
+from .core import create_product, edit_product, update_or_create_product
 from .oda import import_from_oda
 
 __all__ = [

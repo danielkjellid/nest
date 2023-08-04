@@ -4,10 +4,10 @@ from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.data_pools.tests.oda.utils import get_oda_product_response_dict
 from nest.products.models import Product
-from nest.products.services.oda import _validate_oda_response
 from nest.products.services import (
     import_from_oda,
 )
+from nest.products.services.oda import _validate_oda_response
 from nest.products.tests.utils import (
     create_product as create_product_test_util,
 )

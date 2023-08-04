@@ -1,18 +1,20 @@
+from decimal import Decimal
+
 import structlog
 from django.core.files import File
+from django.utils import timezone
 from django.utils.text import slugify
 
 from nest.core.exceptions import ApplicationError
 from nest.data_pools.providers.oda.clients import OdaClient
 from nest.data_pools.providers.oda.records import OdaProductDetailRecord
 from nest.units.selectors import get_unit_by_abbreviation
-from django.utils import timezone
+
+from ..constants import PRODUCT_NUTRITION_IDENTIFIERS
 from ..models import Product
 from ..records import ProductRecord
 from ..selectors import get_product
 from .core import update_or_create_product
-from ..constants import PRODUCT_NUTRITION_IDENTIFIERS
-from decimal import Decimal
 
 logger = structlog.getLogger()
 

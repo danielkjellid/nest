@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from decimal import Decimal
+
 from django.db import models
 
 from nest.core.models import BaseModel

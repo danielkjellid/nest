@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from datetime import datetime
 from decimal import Decimal
 
 from pydantic import BaseModel
 
 from nest.units.records import UnitRecord
-from datetime import datetime
+
 from .models import Product
 
 

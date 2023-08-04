@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-
 import { Button } from '../../../components/Button'
 import ProductAddDrawer from '../components/ProductAddDrawer'
-import ProductEditDrawer from '../components/ProductEditDrawer'
 import { ProductListOutAPIResponse } from '../../../types'
 import { ProductOdaImportDrawer } from '../components/ProductOdaImportDrawer'
 import ProductOverViewTable from './components/ProductOverviewTable'
+import React from 'react'
 import { Title } from '@mantine/core'
 import View from '../../../components/View'
+import { routes } from '../routes'
 import { urls } from '../../urls'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../../hooks/fetcher'
+import { useNavigate } from 'react-router-dom'
 
 interface ProductOverviewInnerProps {
   results: {
@@ -21,19 +21,13 @@ interface ProductOverviewInnerProps {
 }
 
 function ProductOverviewInner({ results, refetch }: ProductOverviewInnerProps) {
+  const navigate = useNavigate()
   const { products } = results
   const { currentUser } = useCommonContext()
 
   const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure(false)
-  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
   const [odaImportDrawerOpened, { open: odaImportDrawerOpen, close: odaImportDrawerClose }] =
     useDisclosure(false)
-
-  const [productIdToEdit, setProductIdToEdit] = useState<number>()
-  const editProduct = (id: number) => {
-    setProductIdToEdit(id)
-    editDrawerOpen()
-  }
 
   return (
     <div className="space-y-6">
@@ -52,14 +46,11 @@ function ProductOverviewInner({ results, refetch }: ProductOverviewInnerProps) {
           </div>
         )}
       </div>
-      <ProductOverViewTable data={products.data || []} onEditProduct={(id) => editProduct(id)} />
-      <ProductAddDrawer opened={addDrawerOpened} onClose={addDrawerClose} refetch={refetch} />
-      <ProductEditDrawer
-        productId={productIdToEdit}
-        opened={editDrawerOpened}
-        onClose={editDrawerClose}
-        refetch={refetch}
+      <ProductOverViewTable
+        data={products.data || []}
+        onEditProduct={(id) => navigate(routes.edit.build({ productId: id }))}
       />
+      <ProductAddDrawer opened={addDrawerOpened} onClose={addDrawerClose} refetch={refetch} />
       <ProductOdaImportDrawer
         opened={odaImportDrawerOpened}
         onClose={odaImportDrawerClose}

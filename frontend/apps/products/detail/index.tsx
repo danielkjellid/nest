@@ -1,34 +1,30 @@
 import { ProductDetailAuditLogsOut, ProductDetailOutAPIResponse } from '../../../types'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { Anchor } from '@mantine/core'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { Button as MButton } from '@mantine/core'
-import ProductEditDrawer from '../components/ProductEditDrawer'
+import { ProductDetailHeader } from '../components/ProductDetailHeader'
 import React from 'react'
 import { TableOfContents } from '../../../components/TableOfContents'
 import View from '../../../components/View'
 import invariant from 'tiny-invariant'
+import { routes } from '../routes'
 import { urls } from '../../urls'
 import { useCommonContext } from '../../../contexts/CommonProvider'
-import { useCommonStyles } from '../../../styles/common'
-import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../../hooks/fetcher'
-import { useParams } from 'react-router-dom'
 import { useProductDetailStyles } from './detail.styles'
-import { ProductDetailHeader } from '../components/ProductDetailHeader'
 
 interface ProductDetailInnerProps {
   results: { productResponse: ProductDetailOutAPIResponse }
-  refetch: () => void
 }
 
-function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
+function ProductDetailInner({ results }: ProductDetailInnerProps) {
+  const navigate = useNavigate()
   const { classes } = useProductDetailStyles()
-  const { classes: commonClasses } = useCommonStyles()
   const { currentUser } = useCommonContext()
   const { data: product } = results.productResponse
-  const [editDrawerOpened, { open: editDrawerOpen, close: editDrawerClose }] = useDisclosure(false)
 
   if (!product) return null
 
@@ -93,7 +89,9 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
                     View in admin
                   </MButton>
                 )}
-                <Button onClick={editDrawerOpen}>Edit product</Button>
+                <Button onClick={() => navigate(routes.edit.build({ productId: product.id }))}>
+                  Edit product
+                </Button>
               </div>
             )}
           </>
@@ -183,12 +181,6 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
           <TableOfContents headings={headings} />
         </div>
       </div>
-      <ProductEditDrawer
-        productId={product.id}
-        opened={editDrawerOpened}
-        onClose={editDrawerClose}
-        refetch={refetch}
-      />
     </div>
   )
 }
@@ -201,15 +193,11 @@ function ProductDetail() {
     urls.products.detail({ id: productId })
   )
 
-  const refetch = () => {
-    productResponse.reload()
-  }
-
   return (
     <View<object, any>
       component={ProductDetailInner}
       results={{ productResponse }}
-      componentProps={{ refetch }}
+      componentProps={{}}
       loadingProps={{ description: 'Loading product...' }}
       errorProps={{
         description: 'There was en error retrieving the product. Please try again later.',

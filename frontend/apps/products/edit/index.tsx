@@ -1,31 +1,27 @@
-import React, { useState } from 'react'
-import View from '../../../components/View'
-import { Title } from '@mantine/core'
-import {
-  ProductDetailOut,
-  ProductDetailOutAPIResponse,
-  ProductOdaImportOutAPIResponse,
-} from '../../../types'
-import { useUnits } from '../../../contexts/UnitsProvider'
-import { useParams } from 'react-router-dom'
-import invariant from 'tiny-invariant'
-import { useFetch } from '../../../hooks/fetcher'
-import { urls } from '../../urls'
-import { useForm } from '../../../hooks/forms'
-import { ProductDetailHeader } from '../components/ProductDetailHeader'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import { Button } from '../../../components/Button'
-import Form from '../../../components/Form'
 import { Card } from '../../../components/Card'
+import Form from '../../../components/Form'
+import { ProductDetailHeader } from '../components/ProductDetailHeader'
+import { ProductDetailOutAPIResponse } from '../../../types'
+import React from 'react'
+import View from '../../../components/View'
+import invariant from 'tiny-invariant'
+import { urls } from '../../urls'
+import { useFetch } from '../../../hooks/fetcher'
+import { useForm } from '../../../hooks/forms'
+import { useUnits } from '../../../contexts/UnitsProvider'
 
 interface ProductEditInnerProps {
   results: {
     productResponse: ProductDetailOutAPIResponse
   }
   productId: number
-  refetch: () => void
 }
 
-function ProductEditInner({ results, productId, refetch }: ProductEditInnerProps) {
+function ProductEditInner({ results, productId }: ProductEditInnerProps) {
+  const navigate = useNavigate()
   const { data: product } = results.productResponse
   const { unitsOptions } = useUnits()
 
@@ -33,7 +29,7 @@ function ProductEditInner({ results, productId, refetch }: ProductEditInnerProps
 
   const submit = async () => {
     productForm.performPost({ url: urls.products.edit({ id: productId }) })
-    refetch()
+    navigate(-1)
   }
 
   return (
@@ -75,15 +71,11 @@ function ProductEdit() {
     urls.products.detail({ id: productId })
   )
 
-  const refetch = () => {
-    productResponse.reload()
-  }
-
   return (
     <View<object, any>
       component={ProductEditInner}
       results={{ productResponse }}
-      componentProps={{ productId, refetch }}
+      componentProps={{ productId }}
       loadingProps={{ description: 'Loading product...' }}
       errorProps={{ description: 'There was an error getting the product. Please try again.' }}
     />

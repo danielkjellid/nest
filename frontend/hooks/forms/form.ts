@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 
 import { ButtonProps } from '../../components/Button'
 import { FormElement } from '../../components/Form/types'
-import schema from '../../../schema.json'
-import { notifications } from '@mantine/notifications'
 import { performPost as httpPost } from '../fetcher/http'
+import { notifications } from '@mantine/notifications'
+import schema from '../../../schema.json'
 
 interface FormComponentSchema {
   properties: FormElement
