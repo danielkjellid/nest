@@ -22,42 +22,6 @@ class ProductClassifiersRecord(BaseModel):
         )
 
 
-class ProductNutritionRecord(BaseModel):
-    energy_kj: Decimal | None
-    energy_kcal: Decimal | None
-    fat: Decimal | None
-    fat_saturated: Decimal | None
-    fat_monounsaturated: Decimal | None
-    fat_polyunsaturated: Decimal | None
-    carbohydrates: Decimal | None
-    carbohydrates_sugars: Decimal | None
-    carbohydrates_polyols: Decimal | None
-    carbohydrates_starch: Decimal | None
-    fibres: Decimal | None
-    protein: Decimal | None
-    salt: Decimal | None
-    sodium: Decimal | None
-
-    @classmethod
-    def from_product(cls, product: Product) -> ProductNutritionRecord:
-        return cls(
-            energy_kj=product.energy_kj,
-            energy_kcal=product.energy_kcal,
-            fat=product.fat,
-            fat_saturated=product.fat_saturated,
-            fat_monounsaturated=product.fat_monounsaturated,
-            fat_polyunsaturated=product.fat_polyunsaturated,
-            carbohydrates=product.carbohydrates,
-            carbohydrates_sugars=product.carbohydrates_sugars,
-            carbohydrates_polyols=product.carbohydrates_polyols,
-            carbohydrates_starch=product.carbohydrates_starch,
-            fibres=product.fibres,
-            protein=product.protein,
-            salt=product.salt,
-            sodium=product.sodium,
-        )
-
-
 class ProductRecord(BaseModel):
     id: int
     name: str

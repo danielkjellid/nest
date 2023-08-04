@@ -8,7 +8,7 @@ from nest.audit_logs.selectors import get_log_entries_for_object
 from nest.core.records import TableRecord
 from nest.core.utils import format_datetime
 from nest.products.models import Product
-from nest.products.selectors import get_pretty_product_nutrition, get_product
+from nest.products.selectors import get_nutrition_table, get_product
 
 from .router import router
 
@@ -79,7 +79,7 @@ def product_detail_api(
     """
     product = get_product(pk=product_id)
     product_log_entries = get_log_entries_for_object(model=Product, pk=product_id)
-    nutrition_table = get_pretty_product_nutrition(product=product)
+    nutrition_table = get_nutrition_table(product=product)
 
     product_dict = product.dict()
     last_data_update = product_dict.pop("last_data_update", None)

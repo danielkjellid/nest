@@ -47,9 +47,7 @@ def get_products() -> list[ProductRecord]:
     return [ProductRecord.from_product(product) for product in products]
 
 
-def get_pretty_product_nutrition(
-    *, product: Product | ProductRecord
-) -> list[TableRecord]:
+def get_nutrition_table(*, product: Product | ProductRecord) -> list[TableRecord]:
     records = []
     modified_identifiers = PRODUCT_NUTRITION_IDENTIFIERS.copy()
 

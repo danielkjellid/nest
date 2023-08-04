@@ -122,3 +122,9 @@ class TestProductOdaServices:
         assert product_response_request_mock.call_count == 1
         assert product_image_response_request_mock.call_count == 1
         assert _validate_oda_response_mock.call_count == 1
+
+    def test__extract_nutrition_values_from_response(self):
+        assert False
+
+    def test__extract_content_values_from_response(self):
+        assert False
