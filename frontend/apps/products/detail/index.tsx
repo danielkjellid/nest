@@ -16,6 +16,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../../hooks/fetcher'
 import { useParams } from 'react-router-dom'
 import { useProductDetailStyles } from './detail.styles'
+import { ProductDetailHeader } from '../components/ProductDetailHeader'
 
 interface ProductDetailInnerProps {
   results: { productResponse: ProductDetailOutAPIResponse }
@@ -73,35 +74,31 @@ function ProductDetailInner({ results, refetch }: ProductDetailInnerProps) {
 
   return (
     <div>
-      <header className="lg:grid-cols-2 grid content-center grid-cols-1 gap-8">
-        <div className="lg:order-1 flex items-center self-center order-2 space-x-6">
-          <img
-            className={`object-contain w-16 h-16 p-1 border-2 ${commonClasses.border} border-solid rounded-lg bg-white`}
-            src={product.thumbnailUrl}
-            alt=""
-          />
-          <div>
-            <div className="text-lg font-semibold leading-6">{product.fullName}</div>
-            <div className="mt-1 text-sm">{product.supplier}</div>
-          </div>
-        </div>
-        {currentUser.isStaff && (
-          <div className="lg:order-2 justify-self-start lg:justify-self-end self-center order-1 space-x-1">
-            {product.isOdaProduct && <Button variant="default">Update from Oda</Button>}
-            {currentUser.isSuperuser && (
-              <MButton
-                component="a"
-                href={`/admin/products/product/${product.id}/`}
-                target="_blank"
-                variant="default"
-              >
-                View in admin
-              </MButton>
+      <ProductDetailHeader
+        fullName={product.fullName}
+        thumbnailUrl={product.thumbnailUrl}
+        supplier={product.supplier}
+        actions={
+          <>
+            {currentUser.isStaff && (
+              <div className="lg:order-2 justify-self-start lg:justify-self-end self-center order-1 space-x-1">
+                {product.isOdaProduct && <Button variant="default">Update from Oda</Button>}
+                {currentUser.isSuperuser && (
+                  <MButton
+                    component="a"
+                    href={`/admin/products/product/${product.id}/`}
+                    target="_blank"
+                    variant="default"
+                  >
+                    View in admin
+                  </MButton>
+                )}
+                <Button onClick={editDrawerOpen}>Edit product</Button>
+              </div>
             )}
-            <Button onClick={editDrawerOpen}>Edit product</Button>
-          </div>
-        )}
-      </header>
+          </>
+        }
+      />
       <div className="lg:grid-cols-3 grid grid-cols-1 gap-6 mt-10">
         <div className="lg:order-1 lg:col-span-2 order-2 col-span-1 space-y-4">
           <div id="information">

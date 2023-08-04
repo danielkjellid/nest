@@ -17,14 +17,14 @@ function ProductDetailHeader({
 
   return (
     <header className="lg:grid-cols-2 grid content-center grid-cols-1 gap-8">
-      <div className="lg:order-1 flex items-center self-center order-2 space-x-6">
+      <div className="lg:order-1 text-ellipsis flex items-center self-center order-2 space-x-6">
         <img
           className={`object-contain w-16 h-16 p-1 border-2 ${classes.border} border-solid rounded-lg bg-white`}
           src={thumbnailUrl}
           alt=""
         />
-        <div>
-          <div className="overflow-hidden text-lg font-semibold leading-6 truncate">{fullName}</div>
+        <div className="overflow-hidden">
+          <div className=" max-w-full text-lg font-semibold leading-6 truncate">{fullName}</div>
           <div className="mt-1 text-sm">{supplier}</div>
         </div>
       </div>
