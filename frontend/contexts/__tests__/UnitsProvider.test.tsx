@@ -34,9 +34,15 @@ describe('UnitsContext context', () => {
 
     const { result } = renderHook(() => useUnits(), { wrapper })
 
-    expect(result.current).toStrictEqual([
-      { id: 1, name: 'Gram', displayName: 'Gram (g)' },
-      { id: 2, name: 'Kilogram', displayName: 'Kilogram (kg)' },
-    ])
+    expect(result.current).toStrictEqual({
+      units: [
+        { id: 1, name: 'Gram', displayName: 'Gram (g)' },
+        { id: 2, name: 'Kilogram', displayName: 'Kilogram (kg)' },
+      ],
+      unitsOptions: [
+        { label: 'Gram (g)', value: '1' },
+        { label: 'Kilogram (kg)', value: '2' },
+      ],
+    })
   })
 })
