@@ -12,20 +12,19 @@ function IngredientsOverviewTable({ data }: IngredientsOverviewTableProps) {
     <Table<IngredientListOut>
       rowIdentifier="id"
       columns={[
-        { header: 'Id', accessorKey: 'id', size: 20 },
+        { header: 'Title', accessorKey: 'title' },
         {
           header: 'Product',
           accessorKey: 'product.fullName',
           Cell: ({ row, renderedCellValue }) => (
             <div className="flex items-center space-x-3">
               <img src={row.original.product.thumbnailUrl} className="object-contain w-8 h-8" />
-              <Anchor href={productRoutes.detail.build({ productId: row.original.id })}>
+              <Anchor href={productRoutes.detail.build({ productId: row.original.product.id })}>
                 {renderedCellValue}
               </Anchor>
             </div>
           ),
         },
-        { header: 'Title', accessorKey: 'title' },
       ]}
       data={data || []}
     />
