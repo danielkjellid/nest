@@ -14,7 +14,7 @@ export default [
   },
   {
     key: 'recipes',
-    path: '/recipes/',
+    path: '/recipes/*',
     element: () => import('./recipes'),
     icon: <IconNews />,
     end,

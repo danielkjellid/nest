@@ -10,5 +10,4 @@ class BaseModel(models.Model):
     updated_at = models.DateTimeField("modified time", auto_now=True)
 
     class Meta:
-        app_label = "nest"
         abstract = True

@@ -11,6 +11,12 @@ const urls = {
       importConfirm: () => '/api/v1/products/oda/import/confirm/',
     },
   },
+  recipes: {
+    ingredients: {
+      list: () => '/api/v1/recipes/ingredients/',
+      create: () => '/api/v1/recipes/ingredients/create/',
+    },
+  },
   users: {
     list: () => '/api/v1/users/',
   },

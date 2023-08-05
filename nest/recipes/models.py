@@ -2,6 +2,17 @@ from django.db import models
 from nest.core.models import BaseModel
 from .enums import RecipeDifficulty, RecipeStatus
 
+from .managers import (
+    RecipeQuerySet,
+    RecipeIngredientQuerySet,
+    RecipeStepItemQuerySet,
+    RecipeIngredientItemGroupQuerySet,
+    RecipeIngredientItemQuerySet,
+    RecipeStepQuerySet,
+)
+
+_RecipeManager = models.Manager.from_queryset(RecipeQuerySet)
+
 
 class Recipe(BaseModel):
     title = models.CharField(max_length=255)
@@ -36,12 +47,17 @@ class Recipe(BaseModel):
     is_vegetarian = models.BooleanField(default=False)
     is_pescatarian = models.BooleanField(default=False)
 
+    objects = _RecipeManager()
+
     class Meta:
         verbose_name = "recipe"
         verbose_name_plural = "recipes"
 
     def __str__(self) -> str:
         return f"{self.title} ({self.id})"
+
+
+_RecipeStepManager = models.Manager.from_queryset(RecipeStepQuerySet)
 
 
 class RecipeStep(BaseModel):
@@ -69,12 +85,17 @@ class RecipeStep(BaseModel):
         blank=True,
     )
 
+    objects = _RecipeStepManager()
+
     class Meta:
-        verbose_name = "recipe step"
-        verbose_name_plural = "recipe steps"
+        verbose_name = "step"
+        verbose_name_plural = "steps"
 
     def __str__(self) -> str:
         return f"Step {self.index}, recipe {self.recipe_id}"
+
+
+_RecipeStepItemManager = models.Manager.from_queryset(RecipeStepItemQuerySet)
 
 
 class RecipeStepItem(BaseModel):
@@ -87,9 +108,16 @@ class RecipeStepItem(BaseModel):
     is_preparation_step = models.BooleanField(default=False)
     is_cooking_step = models.BooleanField(default=False)
 
+    objects = _RecipeStepItemManager()
+
     class Meta:
-        verbose_name = "recipe step"
-        verbose_name_plural = "recipe steps"
+        verbose_name = "step item"
+        verbose_name_plural = "step items"
+
+
+_RecipeIngredientItemGroupManager = models.Manager.from_queryset(
+    RecipeIngredientItemGroupQuerySet
+)
 
 
 class RecipeIngredientItemGroup(BaseModel):
@@ -99,17 +127,24 @@ class RecipeIngredientItemGroup(BaseModel):
     title = models.CharField(max_length=255)
     ordering = models.PositiveIntegerField()
 
+    objects = _RecipeIngredientItemGroupManager()
+
     class Meta:
-        verbose_name = "recipe ingredient group"
-        verbose_name_plural = "recipe ingredient groups"
+        verbose_name = "ingredient group"
+        verbose_name_plural = "ingredient groups"
 
     def __str__(self) -> None:
         return f"{self.title} ({self.id}), recipe {self.recipe_id}"
 
 
+_RecipeIngredientItemManager = models.Manager.from_queryset(
+    RecipeIngredientItemQuerySet
+)
+
+
 class RecipeIngredientItem(BaseModel):
     ingredient_group = models.ForeignKey(
-        "recipes.RecipeIngredientGroup",
+        "recipes.RecipeIngredientItemGroup",
         related_name="ingredient_items",
         on_delete=models.CASCADE,
     )
@@ -128,14 +163,26 @@ class RecipeIngredientItem(BaseModel):
         "units.Unit", related_name="+", on_delete=models.PROTECT
     )
 
-    ordering = models.PositiveIntegerField()
+    objects = _RecipeIngredientItemManager()
+
+    class Meta:
+        verbose_name = "ingredient item"
+        verbose_name_plural = "ingredient items"
 
 
-# Should ingredients be its own concept/model?
+_RecipeIngredientManager = models.Manager.from_queryset(RecipeIngredientQuerySet)
+
+
 class RecipeIngredient(BaseModel):
     # A friendly (alternative) title for ingredient, used in cases where the title is
     # 'Tomatoes, red' and the friendly/display name would be 'Red tomatoes'.
     title = models.CharField(max_length=255)
     product = models.ForeignKey(
-        "products.Product", related_name="ingredients", on_delete=models.CASCADE
+        "products.Product", related_name="recipe_ingredients", on_delete=models.CASCADE
     )
+
+    objects = _RecipeIngredientManager()
+
+    class Meta:
+        verbose_name = "ingredient"
+        verbose_name_plural = "ingredients"
