@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import cx from 'classnames'
-import { Tabs, Title, Text, ActionIcon, useMantineTheme } from '@mantine/core'
+import { Tabs, Title, Text, ActionIcon, useMantineTheme, Badge } from '@mantine/core'
 import { RecipeHealthScoreMeter } from './HealthScore'
 import { RecipeSteps } from './Steps'
 import { RecipeSection } from './Section'
@@ -17,11 +17,30 @@ function Recipe() {
   const [portions, setPortions] = useState<number>(defaultNumPortions)
 
   return (
-    <div className={cx('max-w-7xl py-8 px-10 space-y-6 rounded-lg shadow', classes.panel)}>
-      <div className="flex items-center justify-between px-3 py-4 border-b border-gray-200">
-        <Title weight={600} className={classes.title}>
-          Recipe name
-        </Title>
+    <div className={cx('max-w-7xl py-8 space-y-6 rounded-lg shadow', classes.panel)}>
+      <div className="flex items-center justify-between px-12 pt-4">
+        <div>
+          <Title weight={600} className={classes.title}>
+            Recipe name
+          </Title>
+          <div className="w-96 space-3 flex flex-wrap mt-4">
+            <Badge className="mb-2 mr-2" color="gray">
+              Easy
+            </Badge>
+            <Badge className="mb-2 mr-2" color="gray">
+              Under 30 minutes
+            </Badge>
+            <Badge className="mb-2 mr-2" color="gray">
+              Delicious
+            </Badge>
+            <Badge className="mb-2 mr-2" color="gray">
+              Spicy
+            </Badge>
+            <Badge className="mb-2 mr-2" color="gray">
+              Makes leftovers
+            </Badge>
+          </div>
+        </div>
         <div className="flex items-center space-x-2">
           <ActionIcon
             color={theme.primaryColor}
@@ -50,13 +69,13 @@ function Recipe() {
           </ActionIcon>
         </div>
       </div>
-      {/* <Tabs value="recipe">
+      <Tabs value="recipe" className="px-8">
         <Tabs.List>
           <Tabs.Tab value="recipe">Recipe</Tabs.Tab>
           <Tabs.Tab value="products">Products</Tabs.Tab>
         </Tabs.List>
-      </Tabs> */}
-      <div className="lg:grid-cols-3 xl:grid-cols-5 grid grid-cols-1 gap-6">
+      </Tabs>
+      <div className="lg:grid-cols-3 xl:grid-cols-5 grid grid-cols-1 gap-6 px-12">
         <div className="xl:row-span-2 order-1 col-span-1">
           <RecipeSection title="Ingredients">
             <RecipeIngredientGroup title="Pizzatoast">

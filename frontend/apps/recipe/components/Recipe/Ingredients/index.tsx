@@ -44,7 +44,7 @@ function RecipeIngredientGroupItem({
 
   return (
     <tr>
-      <td className="whitespace-nowrap w-24 py-1 font-medium">
+      <td className="whitespace-nowrap w-16 py-1 font-medium">
         {portionAmount} {unit}
       </td>
       <td className="py-1">{title}</td>

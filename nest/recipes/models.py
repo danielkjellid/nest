@@ -104,6 +104,18 @@ class RecipeStepItem(BaseModel):
     )
     instruction = models.TextField()
 
+    # Experiment with this, might keep and might delete
+    ingredient_item = models.ForeignKey(
+        "recipes.RecipeIngredientItem",
+        related_name="step_items",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    ingredient_quantity = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+
     step_duration = models.DurationField()
     is_preparation_step = models.BooleanField(default=False)
     is_cooking_step = models.BooleanField(default=False)
