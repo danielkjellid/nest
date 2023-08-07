@@ -1,0 +1,7 @@
+{% extends 'react-base.html' %}
+
+{% block body %}
+    <script type="application/javascript">
+        window.initialProps = {{ initial_props|safe }};
+     </script>
+{% endblock %}

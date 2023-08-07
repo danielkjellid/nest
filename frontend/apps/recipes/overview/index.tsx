@@ -1,6 +1,7 @@
 import React from 'react'
 import View from '../../../components/View'
 import { OverviewHeader } from '../components/OverviewHeader'
+import { Recipe } from '../../recipe/components/Recipe'
 
 interface RecipeOverviewInnerProps {
   foo?: string
@@ -10,6 +11,7 @@ function RecipeOverviewInner() {
   return (
     <div className="space-y-6">
       <OverviewHeader title="Recipes" />
+      <Recipe />
     </div>
   )
 }
