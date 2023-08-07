@@ -7,14 +7,15 @@ interface RecipeSectionProps {
   title: string
   children: React.ReactNode
   infoModalContent?: React.ReactNode
+  className?: string
 }
 
-function RecipeSection({ title, children, infoModalContent }: RecipeSectionProps) {
+function RecipeSection({ title, children, infoModalContent, className }: RecipeSectionProps) {
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false)
   const { classes } = useCommonStyles()
   return (
     <>
-      <div className="flex flex-col space-y-3">
+      <div className={`${className} flex flex-col w-full space-y-3`}>
         <div className="flex items-center justify-between">
           <h2 className={`${classes.subtitle} font-medium`}>{title}</h2>
           {infoModalContent && (

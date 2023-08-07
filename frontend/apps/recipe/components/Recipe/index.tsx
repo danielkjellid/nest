@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import cx from 'classnames'
-import { Tabs, Title, Text, UnstyledButton, ActionIcon, useMantineTheme } from '@mantine/core'
+import { Tabs, Title, Text, ActionIcon, useMantineTheme } from '@mantine/core'
 import { RecipeHealthScoreMeter } from './HealthScore'
 import { RecipeSteps } from './Steps'
 import { RecipeSection } from './Section'
@@ -8,7 +8,6 @@ import { RecipeNutritionTable } from './Nutrition'
 import { useCommonStyles } from '../../../../styles/common'
 import { RecipeIngredientGroup } from './Ingredients'
 import { IconClock, IconCoin, IconMinus, IconPlus } from '@tabler/icons-react'
-import { Button } from '../../../../components/Button'
 
 function Recipe() {
   const theme = useMantineTheme()
@@ -51,14 +50,14 @@ function Recipe() {
           </ActionIcon>
         </div>
       </div>
-      <Tabs value="recipe">
+      {/* <Tabs value="recipe">
         <Tabs.List>
           <Tabs.Tab value="recipe">Recipe</Tabs.Tab>
           <Tabs.Tab value="products">Products</Tabs.Tab>
         </Tabs.List>
-      </Tabs>
-      <div className="grid grid-cols-5 gap-6 px-3">
-        <div className="col-span-1">
+      </Tabs> */}
+      <div className="lg:grid-cols-3 xl:grid-cols-5 grid grid-cols-1 gap-6">
+        <div className="xl:row-span-2 order-1 col-span-1">
           <RecipeSection title="Ingredients">
             <RecipeIngredientGroup title="Pizzatoast">
               <RecipeIngredientGroup.Item
@@ -129,46 +128,59 @@ function Recipe() {
             </RecipeIngredientGroup>
           </RecipeSection>
         </div>
-        <div className="col-span-3">
+        <div className="lg:col-span-2 xl:col-span-3 xl:row-span-2 order-2 col-span-1">
           <RecipeSection title="Steps">
             <RecipeSteps>
               <RecipeSteps.Item index={1} />
               <RecipeSteps.Item index={2} />
+              <RecipeSteps.Item index={3} />
+              <RecipeSteps.Item index={4} />
+              <RecipeSteps.Item index={5} />
             </RecipeSteps>
           </RecipeSection>
         </div>
-        <div className="space-y-6">
-          <RecipeSection title="Time">
-            <div className="flex items-start space-x-2">
-              <IconClock className={classes.icon} />
-              <div>
+        <div
+          className={`lg:grid-cols-3 lg:col-span-3 xl:col-span-1 xl:grid-cols-1 grid order-3 grid-cols-1 gap-6 pt-8 xl:pt-0 xl:border-none border-t ${classes.border}`}
+        >
+          <div className="col-span-1">
+            <RecipeSection title="Time">
+              <div className="flex items-start space-x-2">
+                <IconClock className={classes.icon} />
+                <div>
+                  <Title
+                    weight={500}
+                    size={24}
+                    className={`${classes.subtitle} flex items-center space-x-2 -mt-1`}
+                  >
+                    15 min
+                    <span className={`${classes.muted} text-sm ml-1.5`}>(5 min prep)</span>
+                  </Title>
+                </div>
+              </div>
+            </RecipeSection>
+          </div>
+          <div className="col-span-1">
+            <RecipeSection title="Price">
+              <div className="flex items-start space-x-2">
+                <IconCoin className={classes.icon} />
                 <Title
                   weight={500}
                   size={24}
                   className={`${classes.subtitle} flex items-center space-x-2 -mt-1`}
                 >
-                  15 min
-                  <span className={`${classes.muted} text-sm ml-1.5`}>(5 min prep)</span>
+                  479,00 kr
                 </Title>
               </div>
-            </div>
-          </RecipeSection>
-          <RecipeSection title="Price">
-            <div className="flex items-start space-x-2">
-              <IconCoin className={classes.icon} />
-              <Title
-                weight={500}
-                size={24}
-                className={`${classes.subtitle} flex items-center space-x-2 -mt-1`}
-              >
-                479,00 kr
-              </Title>
-            </div>
-          </RecipeSection>
-          <RecipeSection title="Health Score">
-            <RecipeHealthScoreMeter value={5} />
-          </RecipeSection>
-          <RecipeSection title="Nutrition per serving">
+            </RecipeSection>
+          </div>
+          <div className="col-span-1">
+            <RecipeSection title="Health Score">
+              <RecipeHealthScoreMeter value={9} />
+            </RecipeSection>
+          </div>
+        </div>
+        <div className="lg:col-span-3 xl:col-span-1 xl:col-start-5 order-4 col-span-1">
+          <RecipeSection title="Nutrition per serving" className="xl:col-span-1 col-span-3">
             <RecipeNutritionTable
               nutrition={[
                 {
@@ -226,12 +238,6 @@ function Recipe() {
               Percentage of daily values are based on a 2000 calories diet.
             </Text>
           </RecipeSection>
-          <div>
-            <Text size="lg" weight={500}>
-              Glycemic values
-            </Text>
-            <Text size="sm">400</Text>
-          </div>
         </div>
       </div>
     </div>

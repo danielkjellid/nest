@@ -40,7 +40,10 @@ interface RecipeHealthScoreProps {
 function RecipeHealthScoreMeter({ value }: RecipeHealthScoreProps) {
   const { classes } = useCommonStyles()
   return (
-    <div className={`relative p-2 border rounded-md ${classes.border}`}>
+    <div
+      style={{ maxWidth: '220px' }}
+      className={`relative p-2 border rounded-md ${classes.border}`}
+    >
       <div className="grid grid-cols-2 gap-5">
         <div>
           <div className="space-y-px">
