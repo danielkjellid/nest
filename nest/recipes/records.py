@@ -33,8 +33,15 @@ class RecipeHealthScoreRecord(BaseModel):
     negative_impact: list[RecipeTableRecord]
 
 
+class RecipeGlycemicRecord(BaseModel):
+    glycemic_index: Decimal
+    glycemic_load: Decimal
+
+
 class RecipeRecord(BaseModel):
     title: str
     default_num_portions: int
+
     health_score: RecipeHealthScoreRecord
     nutrition: list[RecipeTableRecord]
+    glycemic_values: RecipeGlycemicRecord

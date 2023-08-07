@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import cx from 'classnames'
-import { Tabs, Title, Text } from '@mantine/core'
+import { Tabs, Title, Text, UnstyledButton, ActionIcon, useMantineTheme } from '@mantine/core'
 import { RecipeHealthScoreMeter } from './HealthScore'
 import { RecipeSteps } from './Steps'
 import { RecipeSection } from './Section'
 import { RecipeNutritionTable } from './Nutrition'
 import { useCommonStyles } from '../../../../styles/common'
 import { RecipeIngredientGroup } from './Ingredients'
+import { IconClock, IconCoin, IconMinus, IconPlus } from '@tabler/icons-react'
+import { Button } from '../../../../components/Button'
 
 function Recipe() {
+  const theme = useMantineTheme()
   const { classes } = useCommonStyles()
+
+  const defaultNumPortions = 4
+  const [portions, setPortions] = useState<number>(defaultNumPortions)
 
   return (
     <div className={cx('max-w-7xl py-8 px-10 space-y-6 rounded-lg shadow', classes.panel)}>
@@ -17,9 +23,33 @@ function Recipe() {
         <Title weight={600} className={classes.title}>
           Recipe name
         </Title>
-        <Title weight={500} size={24} className={classes.subtitle}>
-          - 4 portions +
-        </Title>
+        <div className="flex items-center space-x-2">
+          <ActionIcon
+            color={theme.primaryColor}
+            disabled={portions <= 1}
+            onClick={() => {
+              if (portions > 1) {
+                setPortions(portions - 1)
+              }
+            }}
+          >
+            <IconMinus />
+          </ActionIcon>
+          <Title weight={500} size={24} className={`${classes.subtitle} w-36 text-center`}>
+            {portions} {portions > 1 ? 'portions' : 'portion'}
+          </Title>
+          <ActionIcon
+            color={theme.primaryColor}
+            disabled={portions >= 99}
+            onClick={() => {
+              if (portions < 99) {
+                setPortions(portions + 1)
+              }
+            }}
+          >
+            <IconPlus />
+          </ActionIcon>
+        </div>
       </div>
       <Tabs value="recipe">
         <Tabs.List>
@@ -31,17 +61,71 @@ function Recipe() {
         <div className="col-span-1">
           <RecipeSection title="Ingredients">
             <RecipeIngredientGroup title="Pizzatoast">
-              <RecipeIngredientGroup.Item title="tomater, røde" amount={200} unit="g" />
-              <RecipeIngredientGroup.Item title="tomatersaus, ferdig" amount={3} unit="dl" />
-              <RecipeIngredientGroup.Item title="pizzabunn, halvstekt" amount={4} unit="stk" />
-              <RecipeIngredientGroup.Item title="parmaskinke" amount={100} unit="g" />
-              <RecipeIngredientGroup.Item title="basilikum, fersk" amount={20} unit="g" />
-              <RecipeIngredientGroup.Item title="mozzarella, fersk" amount={2} unit="stk" />
-              <RecipeIngredientGroup.Item title="pepper, kvernet" amount={0.5} unit="ts" />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="tomater, røde"
+                amount={200}
+                unit="g"
+              />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="tomatersaus, ferdig"
+                amount={3}
+                unit="dl"
+              />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="pizzabunn, halvstekt"
+                amount={4}
+                unit="stk"
+              />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="parmaskinke"
+                amount={100}
+                unit="g"
+              />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="basilikum, fersk"
+                amount={20}
+                unit="g"
+              />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="mozzarella, fersk"
+                amount={2}
+                unit="stk"
+              />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="pepper, kvernet"
+                amount={0.5}
+                unit="ts"
+              />
             </RecipeIngredientGroup>
             <RecipeIngredientGroup title="Tilbehør">
-              <RecipeIngredientGroup.Item title="tomater, røde" amount={200} unit="g" />
-              <RecipeIngredientGroup.Item title="ruccula" amount={70} unit="g" />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="tomater, røde"
+                amount={200}
+                unit="g"
+              />
+              <RecipeIngredientGroup.Item
+                basePortions={defaultNumPortions}
+                portions={portions}
+                title="ruccula"
+                amount={70}
+                unit="g"
+              />
             </RecipeIngredientGroup>
           </RecipeSection>
         </div>
@@ -54,13 +138,32 @@ function Recipe() {
           </RecipeSection>
         </div>
         <div className="space-y-6">
-          <RecipeSection title="Price">
-            <Title weight={500} size={24} className={classes.subtitle}>
-              479,00 kr
-            </Title>
-          </RecipeSection>
           <RecipeSection title="Time">
-            <p>TIME</p>
+            <div className="flex items-start space-x-2">
+              <IconClock className={classes.icon} />
+              <div>
+                <Title
+                  weight={500}
+                  size={24}
+                  className={`${classes.subtitle} flex items-center space-x-2 -mt-1`}
+                >
+                  15 min
+                  <span className={`${classes.muted} text-sm ml-1.5`}>(5 min prep)</span>
+                </Title>
+              </div>
+            </div>
+          </RecipeSection>
+          <RecipeSection title="Price">
+            <div className="flex items-start space-x-2">
+              <IconCoin className={classes.icon} />
+              <Title
+                weight={500}
+                size={24}
+                className={`${classes.subtitle} flex items-center space-x-2 -mt-1`}
+              >
+                479,00 kr
+              </Title>
+            </div>
           </RecipeSection>
           <RecipeSection title="Health Score">
             <RecipeHealthScoreMeter value={5} />
