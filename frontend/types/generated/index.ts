@@ -8,6 +8,10 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export { APIResponse } from './models/APIResponse';
 export { FrontendComponents } from './models/FrontendComponents';
+export type { IngredientCreateIn } from './models/IngredientCreateIn';
+export type { IngredientListOut } from './models/IngredientListOut';
+export { IngredientListOutAPIResponse } from './models/IngredientListOutAPIResponse';
+export type { IngredientListProductOut } from './models/IngredientListProductOut';
 export type { ProductCreateIn } from './models/ProductCreateIn';
 export type { ProductDetailAuditLogsOut } from './models/ProductDetailAuditLogsOut';
 export type { ProductDetailOut } from './models/ProductDetailOut';

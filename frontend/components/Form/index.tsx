@@ -17,7 +17,7 @@ import {
   Textarea,
 } from '@mantine/core'
 import { FormElement, FormElementObj, FormElementOptions, FormEnum } from './types'
-import React, { useEffect, useState } from 'react'
+import React, { ForwardRefExoticComponent, useEffect, useState } from 'react'
 
 import { ButtonProps } from '../Button'
 import { FrontendComponents } from '../../types/'
@@ -223,6 +223,8 @@ function Form<T extends object>({
     placeholder,
     helpText,
     disabled,
+    searchable,
+    itemComponent,
   }: {
     elementKey: K
     element: FormElementObj
@@ -230,6 +232,8 @@ function Form<T extends object>({
     placeholder?: string
     helpText?: string
     disabled?: boolean
+    searchable?: boolean
+    itemComponent?: ForwardRefExoticComponent<any>
   }) => {
     // The checkbox component uses slightly different properties than the other supported components.
     if (element.component === FrontendComponents.CHECKBOX) {
@@ -249,6 +253,8 @@ function Form<T extends object>({
         error: getErrorForElement(elementKey),
         className: `w-full col-span-${element.colSpan ? element.colSpan : columns}`,
         disabled: disabled ? disabled : loadingState === 'loading',
+        searchable: searchable ? searchable : undefined,
+        itemComponent: itemComponent ? itemComponent : undefined,
         onChange: (e: any) => handleInputChange(elementKey, e),
         value: formValues[elementKey as K],
         icon:
@@ -324,6 +330,8 @@ function Form<T extends object>({
                       options: options,
                       placeholder: optionsForElem.placeholder,
                       helpText: optionsForElem.helpText,
+                      searchable: optionsForElem.searchable,
+                      itemComponent: optionsForElem.itemComponent,
                     })}
                     {optionsForElem.afterSlot}
                   </div>

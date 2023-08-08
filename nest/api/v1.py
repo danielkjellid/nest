@@ -9,6 +9,7 @@ from nest.core.utils import camelize
 from nest.products.endpoints import products_router
 from nest.units.endpoints import units_router
 from nest.users.endpoints import users_router
+from nest.recipes.endpoints import recipes_router
 
 from .base import NestAPI
 from .responses import APIResponse
@@ -16,6 +17,7 @@ from .responses import APIResponse
 api = NestAPI()
 
 api.add_router("/products/", products_router)
+api.add_router("/recipes/", recipes_router)
 api.add_router("/units/", units_router)
 api.add_router("/users/", users_router)
 
