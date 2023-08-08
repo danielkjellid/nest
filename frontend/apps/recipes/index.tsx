@@ -1,3 +1,3 @@
-import RecipesApp from './App'
+import { RecipesApp } from './App'
 
 export default RecipesApp

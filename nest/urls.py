@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import URLPattern, URLResolver, include, path, re_path
 
 from nest.api.v1 import api as api_v1
-from nest.frontend.views import FrontendView, LoginView
+from nest.frontend.views import FrontendView, LoginView, RecipeView
 
 urlpatterns: list[URLPattern | URLResolver] = []
 
@@ -16,6 +16,7 @@ urlpatterns += [
     path("admin/", admin.site.urls),
     path("hijack/", include("hijack.urls")),
     path("login/", LoginView.as_view(), name="login"),
+    path("recipe/", RecipeView.as_view(), name="recipe"),
     path("api/v1/", api_v1.urls),
     re_path("", FrontendView.as_view(), name="index"),
 ]

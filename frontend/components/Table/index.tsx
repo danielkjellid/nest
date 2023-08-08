@@ -107,10 +107,10 @@ function Table<TData extends object>({
       positionGlobalFilter="left"
       enableFullScreenToggle={false}
       // Selection
-      enableRowSelection={currentUser.isStaff && typeof onRowSelectionChange !== undefined}
+      enableRowSelection={currentUser.isStaff && onRowSelectionChange !== undefined}
       onRowSelectionChange={setRowSelection}
       // Actions
-      enableRowActions
+      enableRowActions={actionMenuItems !== undefined}
       positionActionsColumn="last"
       renderRowActionMenuItems={actionMenuItems}
       // Search

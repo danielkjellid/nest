@@ -75,7 +75,9 @@ class OpenAPISchema(NinjaOpenAPISchema):
                     "title": schema_key,
                     "properties": self._populate_definition_properties(
                         properties=properties, enum_mapping=mapped_enums
-                    ),
+                    )
+                    if properties is not None
+                    else None,
                     "required": self._convert_keys_to_camelcase(required),
                     **meta,
                     **value,
@@ -242,6 +244,9 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
         """
         props = self._convert_keys_to_camelcase(properties.copy())
+        print("-------")
+        print(enum_mapping)
+        print(props)
 
         for property, property_value in props.items():
             property_type = property_value.get("type", None)
@@ -249,6 +254,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
                 if enum_mapping:
                     for mapping in enum_mapping:
                         if mapping["field"] == property:
+                            props[property]["title"] = mapping["field"].title()
                             props[property]["enum"] = mapping["enum"]
                             props[property][
                                 "component"
