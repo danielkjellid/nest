@@ -8,6 +8,7 @@ import { useCommonStyles } from '../../../styles/common'
 import { RecipeCreateOutAPIResponse } from '../../../types'
 import { useNavigate } from 'react-router-dom'
 import { routes } from '../routes'
+import { urls } from '../../urls'
 
 function RecipeCreate() {
   const [loadingStep, setLoadingStep] = useState<number | undefined>()
@@ -19,7 +20,7 @@ function RecipeCreate() {
   const createRecipe = async () => {
     setLoadingStep(1)
     const response = await form.performPost<RecipeCreateOutAPIResponse>({
-      url: '/api/v1/recipes/create/',
+      url: urls.recipes.create(),
     })
 
     if (response && response.data) {
@@ -31,19 +32,19 @@ function RecipeCreate() {
   return (
     <div className="space-y-10">
       <Header title="Create new recipe" loadingStep={loadingStep} />
-      <div className="flex flex-col justify-end space-y-6">
-        <Card>
-          <Card.Form
-            title="Recipe information"
-            subtitle="Add basic recipe information"
-            form={<Form {...form} />}
-          />
-          <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
-            <Button variant="default">Cancel</Button>
-            <Button onClick={() => createRecipe()}>Continue</Button>
-          </div>
-        </Card>
-      </div>
+      <Card>
+        <Card.Form
+          title="Recipe information"
+          subtitle="Add basic recipe information"
+          form={<Form {...form} />}
+        />
+        <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
+          <Button variant="default" onClick={() => navigate(-1)}>
+            Cancel
+          </Button>
+          <Button onClick={() => createRecipe()}>Continue</Button>
+        </div>
+      </Card>
     </div>
   )
 }

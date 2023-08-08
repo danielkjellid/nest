@@ -12,6 +12,7 @@ const urls = {
     },
   },
   recipes: {
+    create: () => '/api/v1/recipes/create/',
     ingredients: {
       list: () => '/api/v1/recipes/ingredients/',
       create: () => '/api/v1/recipes/ingredients/create/',
