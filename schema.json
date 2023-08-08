@@ -300,6 +300,44 @@
                 ]
             }
         },
+        "/api/v1/recipes/create/": {
+            "post": {
+                "operationId": "recipe_create_api",
+                "summary": "Recipe Create Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeCreateOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create a recipe.",
+                "tags": [
+                    "Recipes"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecipeCreateIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/units/": {
             "get": {
                 "operationId": "unit_list_api",
@@ -1558,6 +1596,227 @@
                 },
                 "required": [
                     "status"
+                ],
+                "type": "object"
+            },
+            "RecipeCreateOut": {
+                "title": "RecipeCreateOutAPIResponse",
+                "properties": {
+                    "recipeId": {
+                        "title": "Recipe Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "recipeId"
+                ],
+                "type": "object"
+            },
+            "RecipeCreateOutAPIResponse": {
+                "title": "RecipeCreateOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/RecipeCreateOut"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "RecipeStatus": {
+                "title": "RecipeCreateIn",
+                "properties": null,
+                "required": null,
+                "description": "An enumeration.",
+                "enum": [
+                    1,
+                    2
+                ],
+                "type": "integer"
+            },
+            "RecipeDifficulty": {
+                "title": "RecipeCreateIn",
+                "properties": null,
+                "required": null,
+                "description": "An enumeration.",
+                "enum": [
+                    1,
+                    2,
+                    3
+                ],
+                "type": "integer"
+            },
+            "RecipeCreateIn": {
+                "title": "RecipeCreateIn",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "helpText": "Name of the recipe.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "type": "string"
+                    },
+                    "slug": {
+                        "title": "Slug",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 2,
+                        "type": "string"
+                    },
+                    "searchKeywords": {
+                        "title": "Search Keywords",
+                        "helpText": "Separate with spaces. Title is included by default.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 3,
+                        "type": "string"
+                    },
+                    "defaultNumPortions": {
+                        "title": "Default Num Portions",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": 4,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 4,
+                        "type": "string"
+                    },
+                    "externalId": {
+                        "title": "External Id",
+                        "helpText": "Recipe identifier on a provider's site.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 5,
+                        "type": "string"
+                    },
+                    "externalUrl": {
+                        "title": "External Url",
+                        "helpText": "Direct link to the recipe on a provider's site",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 6,
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/RecipeStatus",
+                        "title": "Status",
+                        "enum": [
+                            {
+                                "label": "Draft",
+                                "value": 1
+                            },
+                            {
+                                "label": "Published",
+                                "value": 2
+                            }
+                        ],
+                        "component": "Select"
+                    },
+                    "difficulty": {
+                        "$ref": "#/components/schemas/RecipeDifficulty",
+                        "title": "Difficulty",
+                        "enum": [
+                            {
+                                "label": "Easy",
+                                "value": 1
+                            },
+                            {
+                                "label": "Medium",
+                                "value": 2
+                            },
+                            {
+                                "label": "Hard",
+                                "value": 3
+                            }
+                        ],
+                        "component": "Select"
+                    },
+                    "isPartialRecipe": {
+                        "title": "Is Partial Recipe",
+                        "default": false,
+                        "helpText": "Designates if the recipe can be considered a full meal.",
+                        "component": "Checkbox",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "type": "boolean"
+                    },
+                    "isVegetarian": {
+                        "title": "Is Vegetarian",
+                        "default": false,
+                        "helpText": "The recipe does not conatin any meat or fish products.",
+                        "component": "Checkbox",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "type": "boolean"
+                    },
+                    "isPescatarian": {
+                        "title": "Is Pescatarian",
+                        "default": false,
+                        "helpText": "The recipe contains fish.",
+                        "component": "Checkbox",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "title",
+                    "slug",
+                    "defaultNumPortions",
+                    "status",
+                    "difficulty"
                 ],
                 "type": "object"
             },

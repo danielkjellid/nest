@@ -20,6 +20,7 @@ class Recipe(BaseModel):
     default_num_portions = models.PositiveIntegerField(default=4)
     search_keywords = models.CharField(
         max_length=255,
+        null=True,
         blank=True,
         help_text="Separate with spaces. Title is included by default.",
     )

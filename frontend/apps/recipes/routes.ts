@@ -7,6 +7,12 @@ export const routes = {
       return generatePath(this.path)
     },
   },
+  create: {
+    path: '/recipes/create',
+    build() {
+      return generatePath(this.path)
+    },
+  },
   ingredientsOverview: {
     path: '/recipes/ingredients',
     build() {

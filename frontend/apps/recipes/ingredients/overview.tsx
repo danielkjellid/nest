@@ -33,6 +33,7 @@ function RecipeIngredientsOverviewInner({ results, refetch }: RecipeIngredientsO
       <OverviewHeader
         title="Ingredients"
         actions={
+          currentUser &&
           currentUser.isStaff && (
             <div className="flex items-center space-x-3">
               <Button.Group>
