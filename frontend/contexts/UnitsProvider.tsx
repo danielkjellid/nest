@@ -2,9 +2,14 @@ import React, { createContext, useContext, useMemo } from 'react'
 
 import { UnitListOut } from '../types'
 
+export interface UnitOption {
+  label: string
+  value: string
+}
+
 export interface UnitsContextType {
   units: UnitListOut[] | undefined
-  unitsOptions: { label: string; value: string }[] | undefined
+  unitsOptions: UnitOption[] | undefined
 }
 
 const UnitsContext = createContext<UnitsContextType | undefined>(undefined)
