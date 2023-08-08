@@ -8,13 +8,13 @@ from nest.core.decorators import staff_required
 from nest.recipes.enums import RecipeDifficulty, RecipeStatus
 from nest.frontend.components import FrontendComponents
 from nest.products.services import create_product
+from nest.recipes.services import create_recipe
 
 from .router import router
 
 
 class RecipeCreateIn(Schema):
     title: str = FormField(..., order=1, help_text="Name of the recipe.")
-    slug: str = FormField(..., order=2)
     search_keywords: str | None = FormField(
         None, order=3, help_text="Separate with spaces. Title is included by default."
     )
@@ -25,8 +25,8 @@ class RecipeCreateIn(Schema):
     external_url: str | None = FormField(
         None, order=6, help_text="Direct link to the recipe on a provider's site"
     )
-    status: RecipeStatus
-    difficulty: RecipeDifficulty
+    status: RecipeStatus | str
+    difficulty: RecipeDifficulty | str
     is_partial_recipe: bool = FormField(
         False, help_text="Designates if the recipe can be considered a full meal."
     )
@@ -48,6 +48,6 @@ def recipe_create_api(
     """
     Create a recipe.
     """
-
     print(payload)
-    return APIResponse(status="success", data=RecipeCreateOut(recipe_id=1))
+    recipe_id = create_recipe(**payload.dict(), request=request)
+    return APIResponse(status="success", data=RecipeCreateOut(recipe_id=recipe_id))

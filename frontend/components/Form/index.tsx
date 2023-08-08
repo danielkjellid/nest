@@ -167,10 +167,12 @@ function Form<T extends object>({
       } else {
         const eventTarget = eventOrValue.currentTarget as HTMLInputElement
 
-        if (eventTarget.type === 'checkbox') {
-          value = eventTarget.checked
-        } else {
-          value = eventTarget.value
+        if (eventTarget) {
+          if (eventTarget.type === 'checkbox') {
+            value = eventTarget.checked
+          } else {
+            value = eventTarget.value
+          }
         }
       }
     } else {
@@ -238,6 +240,14 @@ function Form<T extends object>({
     // The checkbox component uses slightly different properties than the other supported components.
     if (element.component === FrontendComponents.CHECKBOX) {
       return createCheckboxComponent({ elementKey, element })
+    }
+
+    // Sanitize options, all values need to be string.
+    if (options) {
+      options = options.map((option) => ({
+        label: option.label,
+        value: option.value.toString(),
+      }))
     }
 
     return (

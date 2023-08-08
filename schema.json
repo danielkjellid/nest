@@ -1677,18 +1677,6 @@
                         "order": 1,
                         "type": "string"
                     },
-                    "slug": {
-                        "title": "Slug",
-                        "helpText": null,
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 2,
-                        "type": "string"
-                    },
                     "searchKeywords": {
                         "title": "Search Keywords",
                         "helpText": "Separate with spaces. Title is included by default.",
@@ -1738,8 +1726,15 @@
                         "type": "string"
                     },
                     "status": {
-                        "$ref": "#/components/schemas/RecipeStatus",
                         "title": "Status",
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeStatus"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
                         "enum": [
                             {
                                 "label": "Draft",
@@ -1753,8 +1748,15 @@
                         "component": "Select"
                     },
                     "difficulty": {
-                        "$ref": "#/components/schemas/RecipeDifficulty",
                         "title": "Difficulty",
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeDifficulty"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
                         "enum": [
                             {
                                 "label": "Easy",
@@ -1813,7 +1815,6 @@
                 },
                 "required": [
                     "title",
-                    "slug",
                     "defaultNumPortions",
                     "status",
                     "difficulty"
