@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { forwardRef, useEffect, useMemo, useState } from 'react'
 import { Card } from '../../../components/Card'
 import { Button } from '../../../components/Button'
 
@@ -8,9 +8,40 @@ import View from '../../../components/View'
 import { useFetch } from '../../../hooks/fetcher'
 import { IngredientListOut, IngredientListOutAPIResponse } from '../../../types'
 import { urls } from '../../urls'
-import { ActionIcon, Select, TextInput } from '@mantine/core'
+import { ActionIcon, Select, TextInput, Text } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { useUnits, UnitOption } from '../../../contexts/UnitsProvider'
+
+interface IngredientOptionType {
+  label: string
+  value: string
+  image?: string | null
+  description: string
+}
+
+interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
+  image?: string | null
+  label: string
+  description: string
+}
+
+const IngredientOption = forwardRef<HTMLDivElement, IngredientOptionProps>(
+  ({ image, label, description, ...others }: IngredientOptionProps, ref) => (
+    <div ref={ref} {...others}>
+      <div className="flex items-center space-x-2">
+        <img src={image || ''} className="object-contain w-12 h-12 rounded-md" />
+        <div className="w-full">
+          <Text size="sm">{label}</Text>
+          <Text size="xs" opacity={0.65} className="truncate">
+            {description}
+          </Text>
+        </div>
+      </div>
+    </div>
+  )
+)
+
+IngredientOption.displayName = 'IngredientOption'
 
 interface Ingredient {
   ingredient: string
@@ -21,15 +52,17 @@ interface Ingredient {
 interface IngredientInputProps {
   units: UnitOption[]
   ingredient: Ingredient
-  ingredients: IngredientListOut[]
+  ingredientOptions: IngredientOptionType[]
+  canBeDeleted: boolean
   onInputDelete: () => void
   onInputChange: (data: Ingredient) => void
 }
 
 function IngredientInput({
   ingredient,
-  ingredients,
+  ingredientOptions,
   units,
+  canBeDeleted,
   onInputDelete,
   onInputChange,
 }: IngredientInputProps) {
@@ -55,29 +88,37 @@ function IngredientInput({
     <div className="relative">
       <div className="rounded-bl-md absolute bottom-0 w-8 h-8 mb-4 ml-3 bg-transparent border-b-2 border-l-2 border-gray-200" />
       <div className="flex items-end w-full space-x-2">
-        <TextInput
+        <Select
           label="Ingredient"
           value={ingredient.ingredient}
           required
           className="w-full ml-10"
+          data={ingredientOptions}
+          searchable
+          itemComponent={IngredientOption}
           onChange={(event) => handleInputChange('ingredient', event)}
         />
         <TextInput
           label="Amount"
           value={ingredient.amount}
           required
-          className="w-64 ml-10"
+          className="w-48 ml-10"
           onChange={(event) => handleInputChange('amount', event)}
         />
         <Select
           label="Unit"
           value={ingredient.unit}
           required
-          className="w-64 ml-10"
+          className="w-48 ml-10"
           data={units}
           onChange={(event) => handleInputChange('unit', event)}
         />
-        <ActionIcon className="mb-1" color="red" onClick={() => onInputDelete()}>
+        <ActionIcon
+          disabled={!canBeDeleted}
+          className="mb-1"
+          color="red"
+          onClick={() => onInputDelete()}
+        >
           <IconX />
         </ActionIcon>
       </div>
@@ -86,35 +127,54 @@ function IngredientInput({
 }
 
 interface IngredientGroupInputProps {
+  ingredientGroup: IngredientGroup
   units: UnitOption[]
-  ingredients: IngredientListOut[]
+  ingredientOptions: IngredientOptionType[]
+  canBeDeleted: boolean
+  onIngredientGroupInputChange: (data: IngredientGroup) => void
+  onIngredientGroupInputDelete: () => void
+  onIngredientInputChange: (index: number, data: Ingredient) => void
+  onIngredientInputAdd: () => void
+  onIngredientInputDelete: (index: number) => void
 }
 
-function IngredientGroupInput({ ingredients, units }: IngredientGroupInputProps) {
-  const defaultObj = { ingredient: '', amount: '', unit: '' }
-  const [addedIngredients, setAddedIngredients] = useState<(typeof defaultObj)[]>([defaultObj])
+function IngredientGroupInput({
+  ingredientGroup,
+  ingredientOptions,
+  units,
+  canBeDeleted,
+  onIngredientGroupInputChange,
+  onIngredientGroupInputDelete,
+  onIngredientInputChange,
+  onIngredientInputAdd,
+  onIngredientInputDelete,
+}: IngredientGroupInputProps) {
+  const handleIngredientGroupInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const data = { ...ingredientGroup }
+    data.title = event.target.value.toString()
 
-  const addNewInput = () => {
-    setAddedIngredients([...addedIngredients, defaultObj])
-  }
-
-  const handleRemoveInput = (index: number) => {
-    console.log(index)
-    console.log(addedIngredients[index])
-    const ingredientCopy = [...addedIngredients]
-    ingredientCopy.splice(index, 1)
-    setAddedIngredients(ingredientCopy)
-  }
-
-  const handleInputChange = (index: number, data: Ingredient) => {
-    const ingredientCopy = [...addedIngredients]
-    ingredientCopy[index] = data
-    setAddedIngredients(ingredientCopy)
+    onIngredientGroupInputChange(data)
   }
 
   return (
     <div>
-      <TextInput label="Ingredient group name" className="z-25" required />
+      <div className="flex items-end w-full space-x-2">
+        <TextInput
+          label="Ingredient group name"
+          className="z-25 w-full"
+          required
+          value={ingredientGroup.title}
+          onChange={handleIngredientGroupInputChange}
+        />
+        <ActionIcon
+          disabled={!canBeDeleted}
+          className="mb-1"
+          color="red"
+          onClick={onIngredientGroupInputDelete}
+        >
+          <IconX />
+        </ActionIcon>
+      </div>
       <div className="relative">
         <div
           style={{ height: 'calc(100% - 20px)' }}
@@ -122,14 +182,15 @@ function IngredientGroupInput({ ingredients, units }: IngredientGroupInputProps)
           aria-hidden
         />
         <div className="relative mt-4 space-y-4">
-          {addedIngredients.map((ingredient, index) => (
+          {ingredientGroup.ingredients.map((ingredient, index) => (
             <IngredientInput
               key={index}
               ingredient={ingredient}
-              ingredients={ingredients}
+              ingredientOptions={ingredientOptions}
               units={units}
-              onInputDelete={() => handleRemoveInput(index)}
-              onInputChange={(data) => handleInputChange(index, data)}
+              canBeDeleted={ingredientGroup.ingredients.length > 1}
+              onInputDelete={() => onIngredientInputDelete(index)}
+              onInputChange={(data) => onIngredientInputChange(index, data)}
             />
           ))}
         </div>
@@ -138,7 +199,7 @@ function IngredientGroupInput({ ingredients, units }: IngredientGroupInputProps)
         color="green"
         variant="light"
         className="mt-3 ml-10"
-        onClick={() => addNewInput()}
+        onClick={onIngredientInputAdd}
       >
         <IconPlus />
       </ActionIcon>
@@ -146,16 +207,93 @@ function IngredientGroupInput({ ingredients, units }: IngredientGroupInputProps)
   )
 }
 
-interface CreateIngredientFormProps {
-  units: UnitOption[]
-  ingredients: IngredientListOut[]
+interface IngredientGroup {
+  title: string
+  ingredients: Ingredient[]
 }
 
-function CreateIngredientsForm({ ingredients, units }: CreateIngredientFormProps) {
+interface CreateIngredientFormProps {
+  units: UnitOption[]
+  ingredientOptions: IngredientOptionType[]
+}
+
+function CreateIngredientsForm({ ingredientOptions, units }: CreateIngredientFormProps) {
+  const defaultIngredient = { ingredient: '', amount: '', unit: '' }
+  const defaultIngredientGroup = { title: '', ingredients: [defaultIngredient] }
+
+  const [ingredientGroups, setIngredientGroups] = useState<IngredientGroup[]>([
+    defaultIngredientGroup,
+  ])
+
+  const handleIngredientGroupInputAdd = () => {
+    const ingredientGroupsData = [...ingredientGroups]
+    setIngredientGroups([...ingredientGroupsData, defaultIngredientGroup])
+  }
+
+  const handleIngredientGroupInputChange = (index: number, data: IngredientGroup) => {
+    const ingredientGroupsData = [...ingredientGroups]
+    ingredientGroupsData[index] = data
+    setIngredientGroups(ingredientGroupsData)
+  }
+
+  const handleIngredientGroupInputDelete = (index: number) => {
+    const ingredientGroupsData = [...ingredientGroups]
+    ingredientGroupsData.splice(index, 1)
+    setIngredientGroups(ingredientGroupsData)
+  }
+
+  const handleIngredientInputAdd = (index: number) => {
+    const ingredientGroupsData = [...ingredientGroups]
+    const ingredientGroup = ingredientGroupsData[index]
+
+    ingredientGroup.ingredients = [...ingredientGroup.ingredients, defaultIngredient]
+    setIngredientGroups(ingredientGroupsData)
+  }
+
+  const handleIngredientInputChange = (
+    index: number,
+    ingredientIndex: number,
+    data: Ingredient
+  ) => {
+    const ingredientGroupsData = [...ingredientGroups]
+    const ingredientGroup = ingredientGroupsData[index]
+
+    ingredientGroup.ingredients[ingredientIndex] = data
+    setIngredientGroups(ingredientGroupsData)
+  }
+
+  const handleIngredientInputDelete = (index: number, ingredientIndex: number) => {
+    const ingredientGroupsData = [...ingredientGroups]
+    const ingredientGroup = ingredientGroupsData[index]
+    const ingredientsData = [...ingredientGroup.ingredients]
+
+    ingredientsData.splice(ingredientIndex, 1)
+    ingredientGroup.ingredients = ingredientsData
+
+    setIngredientGroups(ingredientGroupsData)
+  }
+
   return (
     <div className="space-y-4">
-      <IngredientGroupInput ingredients={ingredients} units={units} />
-      <Button variant="light" compact>
+      {ingredientGroups.map((ingredientGroup, index) => (
+        <IngredientGroupInput
+          key={index}
+          ingredientGroup={ingredientGroup}
+          ingredientOptions={ingredientOptions}
+          units={units}
+          canBeDeleted={ingredientGroups.length > 1}
+          onIngredientInputAdd={() => handleIngredientInputAdd(index)}
+          onIngredientInputChange={(ingredientIndex, data) =>
+            handleIngredientInputChange(index, ingredientIndex, data)
+          }
+          onIngredientInputDelete={(ingredientIndex) =>
+            handleIngredientInputDelete(index, ingredientIndex)
+          }
+          onIngredientGroupInputChange={(data) => handleIngredientGroupInputChange(index, data)}
+          onIngredientGroupInputDelete={() => handleIngredientGroupInputDelete(index)}
+        />
+      ))}
+      <Button variant="light" compact onClick={handleIngredientGroupInputAdd}>
         Add group
       </Button>
     </div>
@@ -171,9 +309,19 @@ interface RecipeIngredientsCreateInnerProps {
 function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerProps) {
   const { data: ingredients } = results.ingredients
   const { classes } = useCommonStyles()
-
-  const memoedIngredients = useMemo(() => ingredients, [ingredients])
   const { unitsOptions } = useUnits()
+
+  const ingredientOptions = useMemo(
+    () =>
+      ingredients &&
+      ingredients.map((ingredient) => ({
+        label: ingredient.title,
+        image: ingredient.product.thumbnailUrl,
+        description: ingredient.product.fullName,
+        value: ingredient.id.toString(),
+      })),
+    [ingredients]
+  )
 
   return (
     <div className="space-y-10">
@@ -184,8 +332,8 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
           subtitle="Add ingredients and amounts to recipe"
           form={
             <CreateIngredientsForm
-              ingredients={memoedIngredients || []}
               units={unitsOptions || []}
+              ingredientOptions={ingredientOptions || []}
             />
           }
         />
