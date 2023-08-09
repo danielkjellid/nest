@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Card } from '../../../components/Card'
 import { Button } from '../../../components/Button'
 
@@ -12,20 +12,72 @@ import { ActionIcon, Select, TextInput } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { useUnits, UnitOption } from '../../../contexts/UnitsProvider'
 
-interface IngredientInputProps {
-  units: UnitOption[]
-  ingredients: IngredientListOut[]
+interface Ingredient {
+  ingredient: string
+  amount: string
+  unit: UnitOption['value']
 }
 
-function IngredientInput({ ingredients, units }: IngredientInputProps) {
+interface IngredientInputProps {
+  units: UnitOption[]
+  ingredient: Ingredient
+  ingredients: IngredientListOut[]
+  onInputDelete: () => void
+  onInputChange: (data: Ingredient) => void
+}
+
+function IngredientInput({
+  ingredient,
+  ingredients,
+  units,
+  onInputDelete,
+  onInputChange,
+}: IngredientInputProps) {
+  const handleInputChange = (
+    key: keyof Ingredient,
+    event: React.ChangeEvent<HTMLInputElement> | string | null
+  ) => {
+    if (!event) {
+      return
+    }
+
+    const data = { ...ingredient }
+
+    if (typeof event === 'string') {
+      data[key] = event
+    } else {
+      data[key] = event.target.value.toString()
+    }
+    onInputChange(data)
+  }
+
   return (
     <div className="relative">
       <div className="rounded-bl-md absolute bottom-0 w-8 h-8 mb-4 ml-3 bg-transparent border-b-2 border-l-2 border-gray-200" />
       <div className="flex items-end w-full space-x-2">
-        <TextInput label="Ingredient" required className="w-full ml-10" />
-        <TextInput label="Amount" required className="w-64 ml-10" />
-        <Select label="Unit" required className="w-64 ml-10" data={units} />
-        <ActionIcon className="mb-1" color="red">
+        <TextInput
+          label="Ingredient"
+          value={ingredient.ingredient}
+          required
+          className="w-full ml-10"
+          onChange={(event) => handleInputChange('ingredient', event)}
+        />
+        <TextInput
+          label="Amount"
+          value={ingredient.amount}
+          required
+          className="w-64 ml-10"
+          onChange={(event) => handleInputChange('amount', event)}
+        />
+        <Select
+          label="Unit"
+          value={ingredient.unit}
+          required
+          className="w-64 ml-10"
+          data={units}
+          onChange={(event) => handleInputChange('unit', event)}
+        />
+        <ActionIcon className="mb-1" color="red" onClick={() => onInputDelete()}>
           <IconX />
         </ActionIcon>
       </div>
@@ -39,6 +91,27 @@ interface IngredientGroupInputProps {
 }
 
 function IngredientGroupInput({ ingredients, units }: IngredientGroupInputProps) {
+  const defaultObj = { ingredient: '', amount: '', unit: '' }
+  const [addedIngredients, setAddedIngredients] = useState<(typeof defaultObj)[]>([defaultObj])
+
+  const addNewInput = () => {
+    setAddedIngredients([...addedIngredients, defaultObj])
+  }
+
+  const handleRemoveInput = (index: number) => {
+    console.log(index)
+    console.log(addedIngredients[index])
+    const ingredientCopy = [...addedIngredients]
+    ingredientCopy.splice(index, 1)
+    setAddedIngredients(ingredientCopy)
+  }
+
+  const handleInputChange = (index: number, data: Ingredient) => {
+    const ingredientCopy = [...addedIngredients]
+    ingredientCopy[index] = data
+    setAddedIngredients(ingredientCopy)
+  }
+
   return (
     <div>
       <TextInput label="Ingredient group name" className="z-25" required />
@@ -49,12 +122,24 @@ function IngredientGroupInput({ ingredients, units }: IngredientGroupInputProps)
           aria-hidden
         />
         <div className="relative mt-4 space-y-4">
-          <IngredientInput ingredients={ingredients} units={units} />
-          <IngredientInput ingredients={ingredients} units={units} />
-          <IngredientInput ingredients={ingredients} units={units} />
+          {addedIngredients.map((ingredient, index) => (
+            <IngredientInput
+              key={index}
+              ingredient={ingredient}
+              ingredients={ingredients}
+              units={units}
+              onInputDelete={() => handleRemoveInput(index)}
+              onInputChange={(data) => handleInputChange(index, data)}
+            />
+          ))}
         </div>
       </div>
-      <ActionIcon color="green" variant="light" className="mt-3 ml-10">
+      <ActionIcon
+        color="green"
+        variant="light"
+        className="mt-3 ml-10"
+        onClick={() => addNewInput()}
+      >
         <IconPlus />
       </ActionIcon>
     </div>
