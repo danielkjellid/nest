@@ -4,6 +4,7 @@ import { ActionIcon, Select, TextInput, Text } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { UnitOption } from '../../../../contexts/UnitsProvider'
 import { FormError } from '../createRecipeIngredients'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 
 export interface IngredientOptionType {
   label: string
@@ -130,6 +131,9 @@ export interface IngredientGroup {
 }
 
 interface IngredientGroupInputProps {
+  order: number
+  draggableId: string
+  isDragDisabled?: boolean
   ingredientGroup: IngredientGroup
   error?: FormError
   ingredientErrors: FormError[]
@@ -144,6 +148,9 @@ interface IngredientGroupInputProps {
 }
 
 function IngredientGroupInput({
+  order,
+  draggableId,
+  isDragDisabled,
   ingredientGroup,
   error,
   ingredientErrors,
@@ -164,55 +171,64 @@ function IngredientGroupInput({
   }
 
   return (
-    <div>
-      <div className="flex items-end w-full space-x-2">
-        <TextInput
-          label="Ingredient group name"
-          className="z-25 w-full"
-          required
-          error={error?.message}
-          value={ingredientGroup.title}
-          onChange={handleIngredientGroupInputChange}
-        />
-        <ActionIcon
-          disabled={!canBeDeleted}
-          className="mb-1"
-          color="red"
-          onClick={onIngredientGroupInputDelete}
-        >
-          <IconX />
-        </ActionIcon>
-      </div>
-      <div className="relative">
+    <Draggable draggableId={draggableId} index={order} isDragDisabled={isDragDisabled}>
+      {(draggableProvided, draggableSnapshot) => (
         <div
-          style={{ height: 'calc(100% - 20px)' }}
-          className="absolute left-3 w-0.5 bg-gray-200 -mt-4"
-          aria-hidden
-        />
-        <div className="relative mt-4 space-y-4">
-          {ingredientGroup.ingredients.map((ingredient, index) => (
-            <IngredientInput
-              key={index}
-              ingredient={ingredient}
-              error={ingredientErrors.find((error) => error.index === index)}
-              ingredientOptions={ingredientOptions}
-              units={units}
-              canBeDeleted={ingredientGroup.ingredients.length > 1}
-              onInputDelete={() => onIngredientInputDelete(index)}
-              onInputChange={(data) => onIngredientInputChange(index, data)}
+          ref={draggableProvided.innerRef}
+          {...draggableProvided.draggableProps}
+          {...draggableProvided.dragHandleProps}
+          className="bg-white rounded-md"
+        >
+          <div className="flex items-end w-full space-x-2">
+            <TextInput
+              label="Ingredient group name"
+              className="z-25 w-full"
+              required
+              error={error?.message}
+              value={ingredientGroup.title}
+              onChange={handleIngredientGroupInputChange}
             />
-          ))}
+            <ActionIcon
+              disabled={!canBeDeleted}
+              className="mb-1"
+              color="red"
+              onClick={onIngredientGroupInputDelete}
+            >
+              <IconX />
+            </ActionIcon>
+          </div>
+          <div className="relative">
+            <div
+              style={{ height: 'calc(100% - 20px)' }}
+              className="absolute left-3 w-0.5 bg-gray-200 -mt-4"
+              aria-hidden
+            />
+            <div className="relative mt-4 space-y-4">
+              {ingredientGroup.ingredients.map((ingredient, index) => (
+                <IngredientInput
+                  key={index}
+                  ingredient={ingredient}
+                  error={ingredientErrors.find((error) => error.index === index)}
+                  ingredientOptions={ingredientOptions}
+                  units={units}
+                  canBeDeleted={ingredientGroup.ingredients.length > 1}
+                  onInputDelete={() => onIngredientInputDelete(index)}
+                  onInputChange={(data) => onIngredientInputChange(index, data)}
+                />
+              ))}
+            </div>
+          </div>
+          <ActionIcon
+            color="green"
+            variant="light"
+            className="mt-3 ml-10"
+            onClick={onIngredientInputAdd}
+          >
+            <IconPlus />
+          </ActionIcon>
         </div>
-      </div>
-      <ActionIcon
-        color="green"
-        variant="light"
-        className="mt-3 ml-10"
-        onClick={onIngredientInputAdd}
-      >
-        <IconPlus />
-      </ActionIcon>
-    </div>
+      )}
+    </Draggable>
   )
 }
 

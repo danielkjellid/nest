@@ -30,6 +30,7 @@
     "@mantine/modals": "^6.0.5",
     "@mantine/notifications": "^6.0.5",
     "@tabler/icons-react": "^2.11.0",
+    "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-router-dom": "5.3.3",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
