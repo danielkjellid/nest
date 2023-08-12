@@ -15,6 +15,7 @@ import {
   IngredientOptionType,
   IngredientGroupInput,
 } from './components/IngredientGroupInput'
+import { performPost } from '../../../hooks/fetcher/http'
 
 export interface FormError {
   index: number
@@ -224,7 +225,7 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
     validate()
 
     if (!ingredientErrors.length && !ingredientGroupErrors.length) {
-      // Nu kjør vi
+      await performPost({ url: '/api/v1/recipes/5/ingredients/create/', data: ingredientGroups })
     }
   }
 
@@ -253,7 +254,7 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
         />
         <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
           <Button variant="default">Cancel</Button>
-          <Button onClick={() => validate()}>Continue</Button>
+          <Button onClick={() => addIngredients()}>Continue</Button>
         </div>
       </Card>
     </div>

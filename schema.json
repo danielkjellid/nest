@@ -338,6 +338,58 @@
                 ]
             }
         },
+        "/api/v1/recipes/{recipe_id}/ingredients/create/": {
+            "post": {
+                "operationId": "recipe_ingredients_create_api",
+                "summary": "Recipe Ingredients Create Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Add ingredients to an existing recipe.",
+                "tags": [
+                    "Recipes"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "Payload",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/RecipeIngredientsCreateIn"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/units/": {
             "get": {
                 "operationId": "unit_list_api",
@@ -1818,6 +1870,69 @@
                     "defaultNumPortions",
                     "status",
                     "difficulty"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientsCreateIngredientIn": {
+                "title": "RecipeIngredientsCreateIn",
+                "properties": {
+                    "ingredient": {
+                        "title": "Ingredient",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "type": "string"
+                    },
+                    "amount": {
+                        "title": "Amount",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "unit": {
+                        "title": "Unit",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "ingredient",
+                    "amount",
+                    "unit"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientsCreateIn": {
+                "title": "RecipeIngredientsCreateIn",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredients": {
+                        "title": "Ingredients",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientsCreateIngredientIn"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "title",
+                    "ingredients"
                 ],
                 "type": "object"
             },

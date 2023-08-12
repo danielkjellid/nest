@@ -61,3 +61,7 @@ def create_recipe(
 
     log_create_or_updated(old=None, new=recipe, request_or_user=request)
     return recipe.id
+
+
+def link_ingredients_to_recipe():
+    ...
