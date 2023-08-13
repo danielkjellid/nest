@@ -4,7 +4,7 @@ import { ActionIcon, Select, TextInput, Text } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { UnitOption } from '../../../../contexts/UnitsProvider'
 import { FormError } from '../createRecipeIngredients'
-import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { Draggable } from 'react-beautiful-dnd'
 
 export interface IngredientOptionType {
   label: string
@@ -39,7 +39,8 @@ IngredientOption.displayName = 'IngredientOption'
 
 export interface Ingredient {
   ingredient: string
-  amount: string
+  portionQuantity: string
+  additionalInfo: string
   unit: UnitOption['value']
 }
 
@@ -82,13 +83,13 @@ function IngredientInput({
 
   return (
     <div className="relative">
-      <div className="rounded-bl-md absolute bottom-0 w-8 h-8 mb-4 ml-3 bg-transparent border-b-2 border-l-2 border-gray-200" />
+      <div className="rounded-bl-md absolute bottom-0 w-6 h-8 mb-4 ml-3 bg-transparent border-b-2 border-l-2 border-gray-200" />
       <div className="flex items-end w-full space-x-2">
         <Select
           label="Ingredient"
           value={ingredient.ingredient}
           required
-          className="w-full ml-10"
+          className="w-96 ml-8"
           data={ingredientOptions}
           searchable
           error={error ? <></> : undefined}
@@ -96,21 +97,29 @@ function IngredientInput({
           onChange={(event) => handleInputChange('ingredient', event)}
         />
         <TextInput
-          label="Amount"
-          value={ingredient.amount}
+          label="Quantity"
+          value={ingredient.portionQuantity}
           required
           error={error ? <></> : undefined}
-          className="w-48 ml-10"
-          onChange={(event) => handleInputChange('amount', event)}
+          className="w-48"
+          onChange={(event) => handleInputChange('portionQuantity', event)}
         />
         <Select
           label="Unit"
           value={ingredient.unit}
           required
           error={error ? <></> : undefined}
-          className="w-48 ml-10"
+          className="w-48"
           data={units}
           onChange={(event) => handleInputChange('unit', event)}
+        />
+        <TextInput
+          label="Comment"
+          value={ingredient.additionalInfo}
+          error={error ? <></> : undefined}
+          className="w-80"
+          placeholder="Optional comment"
+          onChange={(event) => handleInputChange('additionalInfo', event)}
         />
         <ActionIcon
           disabled={!canBeDeleted}
@@ -172,7 +181,7 @@ function IngredientGroupInput({
 
   return (
     <Draggable draggableId={draggableId} index={order} isDragDisabled={isDragDisabled}>
-      {(draggableProvided, draggableSnapshot) => (
+      {(draggableProvided, _draggableSnapshot) => (
         <div
           ref={draggableProvided.innerRef}
           {...draggableProvided.draggableProps}
@@ -192,6 +201,7 @@ function IngredientGroupInput({
               disabled={!canBeDeleted}
               className="mb-1"
               color="red"
+              variant="light"
               onClick={onIngredientGroupInputDelete}
             >
               <IconX />

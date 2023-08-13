@@ -9,18 +9,21 @@ from nest.recipes.enums import RecipeDifficulty, RecipeStatus
 from nest.frontend.components import FrontendComponents
 from nest.products.services import create_product
 from nest.recipes.services import create_recipe
+from nest.recipes.services import link_ingredient_item_groups_to_recipe
 
 from .router import router
 
 
 class RecipeIngredientsCreateIngredientIn(Schema):
     ingredient_id: str = FormField(..., alias="ingredient")
-    amount: str
-    unit_id: str = FormField(..., alias="unit")
+    portion_quantity: str
+    portion_quantity_unit_id: str = FormField(..., alias="unit")
+    additional_info: str | None
 
 
 class RecipeIngredientsCreateIn(Schema):
     title: str
+    ordering: int
     ingredients: list[RecipeIngredientsCreateIngredientIn]
 
 
@@ -32,6 +35,7 @@ def recipe_ingredients_create_api(
     """
     Add ingredients to an existing recipe.
     """
-    print(recipe_id)
-    print([p.dict() for p in payload])
+    link_ingredient_item_groups_to_recipe(
+        recipe_id=recipe_id, ingredient_group_items=[p.dict() for p in payload]
+    )
     return APIResponse(status="success", data=None)

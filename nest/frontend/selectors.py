@@ -21,7 +21,7 @@ def get_initial_props(*, request: HttpRequest) -> FrontendInitialPropsRecord | N
     if not request.user or not request.user.is_authenticated:
         return None
 
-    user = UserRecord.from_user(user=request.user)
+    user = UserRecord.from_user(user=request.user, skip_check=True)
     menu = get_menu_for_user(user=user)
     available_homes = get_homes_for_user(user=user)
 

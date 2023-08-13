@@ -244,9 +244,6 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
         """
         props = self._convert_keys_to_camelcase(properties.copy())
-        print("-------")
-        print(enum_mapping)
-        print(props)
 
         for property, property_value in props.items():
             property_type = property_value.get("type", None)

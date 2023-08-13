@@ -390,6 +390,44 @@
                 ]
             }
         },
+        "/api/v1/recipes/{recipe_id}/ingredients/": {
+            "get": {
+                "operationId": "recipe_ingredient_group_items_api",
+                "summary": "Recipe Ingredient Group Items Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeIngredientItemGroupListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all RecipeIngredientItemGroups for a recipe.",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/units/": {
             "get": {
                 "operationId": "unit_list_api",
@@ -1888,8 +1926,8 @@
                         "order": 1,
                         "type": "string"
                     },
-                    "amount": {
-                        "title": "Amount",
+                    "portionQuantity": {
+                        "title": "Portion Quantity",
                         "type": "string",
                         "component": "TextInput"
                     },
@@ -1904,11 +1942,16 @@
                         "section": null,
                         "order": 1,
                         "type": "string"
+                    },
+                    "additionalInfo": {
+                        "title": "Additional Info",
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
                     "ingredient",
-                    "amount",
+                    "portionQuantity",
                     "unit"
                 ],
                 "type": "object"
@@ -1919,6 +1962,11 @@
                     "title": {
                         "title": "Title",
                         "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ordering": {
+                        "title": "Ordering",
+                        "type": "integer",
                         "component": "TextInput"
                     },
                     "ingredients": {
@@ -1932,7 +1980,153 @@
                 },
                 "required": [
                     "title",
+                    "ordering",
                     "ingredients"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientProductListOut": {
+                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+                "properties": {
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "fullName"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientListOut": {
+                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/RecipeIngredientProductListOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientItemPortionUnitListOut": {
+                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+                "properties": {
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "abbreviation"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientItemListOut": {
+                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredient": {
+                        "$ref": "#/components/schemas/RecipeIngredientListOut"
+                    },
+                    "portionQuantityDisplay": {
+                        "title": "Portion Quantity Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "portionQuantityUnit": {
+                        "$ref": "#/components/schemas/RecipeIngredientItemPortionUnitListOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "ingredient",
+                    "portionQuantityDisplay",
+                    "portionQuantityUnit"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientItemGroupListOut": {
+                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientItemListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "ingredientItems"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientItemGroupListOutAPIResponse": {
+                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientItemGroupListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
                 ],
                 "type": "object"
             },

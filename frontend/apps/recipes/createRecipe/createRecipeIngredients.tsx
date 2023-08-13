@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { Card } from '../../../components/Card'
 import { Button } from '../../../components/Button'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Header } from './components/Header'
 import { useCommonStyles } from '../../../styles/common'
@@ -72,7 +72,7 @@ function CreateIngredientsForm({
           isDropDisabled={ingredientGroups.length <= 1}
         >
           {(provided, snapshot) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <div ref={provided.innerRef} {...provided.droppableProps} className="space-y-4">
               {ingredientGroups.map((ingredientGroup, index) => (
                 <IngredientGroupInput
                   key={index}
@@ -121,8 +121,8 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
    **********/
 
   const { data: ingredients } = results.ingredients
-  const defaultIngredient = { ingredient: '', amount: '', unit: '' }
-  const defaultIngredientGroup = { title: '', ingredients: [defaultIngredient] }
+  const defaultIngredient = { ingredient: '', portionQuantity: '', unit: '', additionalInfo: '' }
+  const defaultIngredientGroup = { title: '', order: '', ingredients: [defaultIngredient] }
   const [ingredientGroups, setIngredientGroups] = useState<IngredientGroup[]>([
     defaultIngredientGroup,
   ])
@@ -258,7 +258,12 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
     validate()
 
     if (!ingredientErrors.length && !ingredientGroupErrors.length) {
-      await performPost({ url: '/api/v1/recipes/5/ingredients/create/', data: ingredientGroups })
+      const payload = ingredientGroups.map((ingredientGroup, index) => ({
+        ...ingredientGroup,
+        ordering: index + 1,
+      }))
+
+      await performPost({ url: '/api/v1/recipes/5/ingredients/create/', data: payload })
     }
   }
 
@@ -268,7 +273,7 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
       <Card>
         <Card.Form
           title="Add ingredients"
-          subtitle="Add ingredients and amounts to recipe"
+          subtitle="Add ingredients and amounts to recipe. If one ingredient is needed withing multiple groups, add it to each group respectively."
           form={
             <CreateIngredientsForm
               ingredientGroups={ingredientGroups}

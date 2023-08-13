@@ -1,5 +1,6 @@
 from django.db import models
 from nest.core.models import BaseModel
+from django.db.models.fields.mixins import FieldCacheMixin
 from .enums import RecipeDifficulty, RecipeStatus
 
 from .managers import (
@@ -133,7 +134,7 @@ _RecipeIngredientItemGroupManager = models.Manager.from_queryset(
 )
 
 
-class RecipeIngredientItemGroup(BaseModel):
+class RecipeIngredientItemGroup(BaseModel, FieldCacheMixin):
     recipe = models.ForeignKey(
         "recipes.Recipe", related_name="ingredient_groups", on_delete=models.CASCADE
     )

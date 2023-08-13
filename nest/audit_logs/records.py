@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from nest.users.records import UserRecord
 
 from .models import LogEntry
+from nest.core.utils import ensure_prefetched_relations
 
 
 class LogEntryRecord(BaseModel):
@@ -21,6 +22,7 @@ class LogEntryRecord(BaseModel):
 
     @classmethod
     def from_log_entry(cls, log_entry: LogEntry) -> LogEntryRecord:
+        ensure_prefetched_relations(instance=log_entry, prefetch_keys=["user"])
         return cls(
             id=log_entry.id,
             action=log_entry.action,
