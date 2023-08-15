@@ -37,29 +37,29 @@ def application_error_handler(
     )
 
 
-@api.exception_handler(NinjaValidationError)
-@api.exception_handler(PydanticValidationError)
-def models_validation_error(
-    request: HttpRequest, exc: NinjaValidationError | PydanticValidationError
-) -> HttpResponse:
-    if isinstance(exc.errors, list):
-        errors = exc.errors
-    else:
-        errors = exc.errors()  # type: ignore
-
-    field_errors: dict[str, Any] = {}
-
-    for error in errors:
-        location = error["loc"]
-        field = camelize(location[len(location) - 1])
-        field_errors[field] = error["msg"].capitalize()  # type: ignore
-
-    return api.create_response(
-        request,
-        APIResponse(
-            status="error",
-            message="There were some errors in the form.",
-            data=field_errors,
-        ).dict(),
-        status=400,
-    )
+# @api.exception_handler(NinjaValidationError)
+# @api.exception_handler(PydanticValidationError)
+# def models_validation_error(
+#     request: HttpRequest, exc: NinjaValidationError | PydanticValidationError
+# ) -> HttpResponse:
+#     if isinstance(exc.errors, list):
+#         errors = exc.errors
+#     else:
+#         errors = exc.errors()  # type: ignore
+#
+#     field_errors: dict[str, Any] = {}
+#
+#     for error in errors:
+#         location = error["loc"]
+#         field = camelize(location[len(location) - 1])
+#         field_errors[field] = error["msg"].capitalize()  # type: ignore
+#
+#     return api.create_response(
+#         request,
+#         APIResponse(
+#             status="error",
+#             message="There were some errors in the form.",
+#             data=field_errors,
+#         ).dict(),
+#         status=400,
+#     )

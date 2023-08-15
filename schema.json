@@ -428,6 +428,34 @@
                 ]
             }
         },
+        "/api/v1/recipes/": {
+            "get": {
+                "operationId": "recipe_list_api",
+                "summary": "Recipe List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all recipes in the application.",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/units/": {
             "get": {
                 "operationId": "unit_list_api",
@@ -2121,6 +2149,186 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientItemGroupListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "RecipeListIngredientProductOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "fullName"
+                ],
+                "type": "object"
+            },
+            "RecipeListIngredientOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/RecipeListIngredientProductOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "RecipeListIngredientItemPortionUnitOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "abbreviation"
+                ],
+                "type": "object"
+            },
+            "RecipeListIngredientItemOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredient": {
+                        "$ref": "#/components/schemas/RecipeListIngredientOut"
+                    },
+                    "portionQuantityDisplay": {
+                        "title": "Portion Quantity Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "portionQuantityUnit": {
+                        "$ref": "#/components/schemas/RecipeListIngredientItemPortionUnitOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "ingredient",
+                    "portionQuantityDisplay",
+                    "portionQuantityUnit"
+                ],
+                "type": "object"
+            },
+            "RecipeListIngredientItemGroupOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeListIngredientItemOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "ingredientItems"
+                ],
+                "type": "object"
+            },
+            "RecipeListOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "defaultNumPortions": {
+                        "title": "Default Num Portions",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredientItemGroups": {
+                        "title": "Ingredient Item Groups",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeListIngredientItemGroupOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "defaultNumPortions",
+                    "ingredientItemGroups"
+                ],
+                "type": "object"
+            },
+            "RecipeListOutAPIResponse": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeListOut"
                         },
                         "component": "MultiSelect"
                     }

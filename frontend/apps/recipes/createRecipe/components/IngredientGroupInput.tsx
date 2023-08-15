@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react'
 import { ActionIcon, Select, TextInput, Text } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { UnitOption } from '../../../../contexts/UnitsProvider'
-import { FormError } from '../createRecipeIngredients'
+import { FormError } from '../CreateRecipeIngredients'
 import { Draggable } from 'react-beautiful-dnd'
 
 export interface IngredientOptionType {

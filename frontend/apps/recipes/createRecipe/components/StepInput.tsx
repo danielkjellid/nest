@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
-import { Step } from '../createRecipeSteps'
+import { Step } from '../CreateRecipeSteps'
 import {
   ActionIcon,
   Checkbox,
@@ -130,7 +130,11 @@ function StepInput({
               checked={step.isPreparationStep}
               onChange={(event) => handleStepInputChange('isPreparationStep', event)}
             />
-            <Input.Wrapper label="Duration" required>
+            <Input.Wrapper
+              label="Duration"
+              required
+              description="Duration of step from start to completion. In minutes."
+            >
               <div className="flex items-end space-x-2">
                 <ActionIcon
                   color={theme.primaryColor}

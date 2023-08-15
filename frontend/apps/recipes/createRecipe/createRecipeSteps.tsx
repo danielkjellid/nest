@@ -4,10 +4,16 @@ import View from '../../../components/View'
 import { Card } from '../../../components/Card'
 
 import { useFetch } from '../../../hooks/fetcher'
-import { RecipeIngredientItemGroupListOutAPIResponse } from '../../../types'
-import { TextInput, Textarea } from '@mantine/core'
+import {
+  RecipeIngredientItemGroupListOutAPIResponse,
+  RecipeListOut,
+  RecipeListOutAPIResponse,
+} from '../../../types'
 import { IngredientItemOptionType, StepInput } from './components/StepInput'
 import { Button } from '../../../components/Button'
+import { RecipeSearchModal } from './components/RecipeSearchModal'
+import { useParams } from 'react-router-dom'
+import invariant from 'tiny-invariant'
 
 export interface Step {
   instruction: string
@@ -17,25 +23,31 @@ export interface Step {
 }
 
 interface CreateStepsForm {
+  recipes: RecipeListOut[]
   steps: Step[]
   ingredientItemOptions: IngredientItemOptionType[]
   onStepInputAdd: () => void
   onStepInputChange: (index: number, data: Step) => void
   onStepInputDelete: (index: number) => void
+  onRecipeStepsCopy: (recipe: RecipeListOut) => void
 }
 
 function CreateStepsForm({
+  recipes,
   steps,
   ingredientItemOptions,
   onStepInputAdd,
   onStepInputChange,
   onStepInputDelete,
+  onRecipeStepsCopy,
 }: CreateStepsForm) {
+  const [modalOpened, setModalOpened] = useState(false)
+
   return (
     <div>
       <div className="flex items-center justify-end mb-1 space-x-2">
-        <Button variant="light" compact>
-          Add recipe as step
+        <Button variant="light" compact onClick={() => setModalOpened(true)}>
+          Copy steps from existing recipe
         </Button>
         <Button variant="light" compact onClick={onStepInputAdd}>
           Add step
@@ -54,18 +66,30 @@ function CreateStepsForm({
           />
         ))}
       </div>
+      <RecipeSearchModal
+        opened={modalOpened}
+        recipes={recipes}
+        onClose={() => setModalOpened(false)}
+        onRecipeSelect={onRecipeStepsCopy}
+      />
     </div>
   )
 }
 
 interface RecipeStepsCreateInnerProps {
+  recipeId: string | number
   results: {
+    recipes: RecipeListOutAPIResponse
     ingredientGroups: RecipeIngredientItemGroupListOutAPIResponse
   }
 }
 
-function RecipeStepsCreateInner({ results }: RecipeStepsCreateInnerProps) {
+function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerProps) {
   const { data: ingredientGroups } = results.ingredientGroups
+  const { data: recipes } = results.recipes
+
+  // Remove current recipe from list of recipes.
+  const modifiedRecipes = recipes?.filter((recipe) => recipe.id.toString() !== recipeId)
 
   const defaultStep = {
     instruction: '',
@@ -114,6 +138,14 @@ function RecipeStepsCreateInner({ results }: RecipeStepsCreateInnerProps) {
     setSteps(stepsData)
   }
 
+  const handleRecipeStepCopy = (data: RecipeListOut) => {
+    // const stepData = [...steps]
+    // stepData.push({
+    //   instruction: data.
+    // })
+    // TODO: Need to handle after you can add steps to recipe
+  }
+
   return (
     <div className="space-y-10">
       <Header title="Add steps for recipe" />
@@ -123,11 +155,13 @@ function RecipeStepsCreateInner({ results }: RecipeStepsCreateInnerProps) {
           subtitle="Add steps to recipe"
           form={
             <CreateStepsForm
+              recipes={modifiedRecipes || []}
               steps={steps}
               ingredientItemOptions={ingredientItemOptions || []}
               onStepInputAdd={handleStepInputAdd}
               onStepInputChange={handleStepInputChange}
               onStepInputDelete={handleStepInputDelete}
+              onRecipeStepsCopy={handleRecipeStepCopy}
             />
           }
         />
@@ -137,15 +171,19 @@ function RecipeStepsCreateInner({ results }: RecipeStepsCreateInnerProps) {
 }
 
 function RecipeStepsCreate() {
+  const { recipeId } = useParams()
+  invariant(recipeId)
+
+  const recipes = useFetch<RecipeListOutAPIResponse>('/api/v1/recipes/')
   const ingredientGroups = useFetch<RecipeIngredientItemGroupListOutAPIResponse>(
     '/api/v1/recipes/5/ingredients/'
   )
 
   return (
     <View<object, RecipeStepsCreateInnerProps>
-      results={{ ingredientGroups }}
+      results={{ recipes, ingredientGroups }}
       component={RecipeStepsCreateInner}
-      componentProps={{}}
+      componentProps={{ recipeId }}
       loadingProps={{ description: 'Loading steps' }}
       errorProps={{ description: 'There was an error loading steps, please try again.' }}
     />

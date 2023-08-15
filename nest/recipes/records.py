@@ -8,38 +8,6 @@ from nest.core.utils import ensure_prefetched_relations
 from nest.units.records import UnitRecord
 
 
-class RecipeRecord(BaseModel):
-    id: int
-    title: str
-    slug: str
-    default_num_portions: int
-    search_keywords: str | None
-    external_id: int | None
-    external_url: str | None
-    status: RecipeStatus
-    difficulty: RecipeDifficulty
-    is_partial_recipe: bool
-    is_vegetarian: bool
-    is_pescatarian: bool
-
-    @classmethod
-    def from_recipe(cls, recipe: Recipe) -> RecipeRecord:
-        return cls(
-            id=recipe.id,
-            title=recipe.title,
-            slug=recipe.slug,
-            default_num_portions=recipe.default_num_portions,
-            search_keywords=recipe.search_keywords,
-            external_id=recipe.external_id,
-            external_url=recipe.external_url,
-            status=recipe.status,
-            difficulty=recipe.difficulty,
-            is_partial_recipe=recipe.is_partial_recipe,
-            is_vegetarian=recipe.is_vegetarian,
-            is_pescatarian=recipe.is_pescatarian,
-        )
-
-
 class RecipeIngredientRecord(BaseModel):
     id: int
     title: str
@@ -113,6 +81,56 @@ class RecipeIngredientItemGroupRecord(BaseModel):
         )
 
 
+class RecipeRecord(BaseModel):
+    id: int
+    title: str
+    slug: str
+    default_num_portions: int
+    search_keywords: str | None
+    external_id: int | None
+    external_url: str | None
+    status: RecipeStatus
+    difficulty: RecipeDifficulty
+    is_partial_recipe: bool
+    is_vegetarian: bool
+    is_pescatarian: bool
+
+    @classmethod
+    def from_recipe(cls, recipe: Recipe) -> RecipeRecord:
+        return cls(
+            id=recipe.id,
+            title=recipe.title,
+            slug=recipe.slug,
+            default_num_portions=recipe.default_num_portions,
+            search_keywords=recipe.search_keywords,
+            external_id=recipe.external_id,
+            external_url=recipe.external_url,
+            status=recipe.status,
+            difficulty=recipe.difficulty,
+            is_partial_recipe=recipe.is_partial_recipe,
+            is_vegetarian=recipe.is_vegetarian,
+            is_pescatarian=recipe.is_pescatarian,
+        )
+
+
+class RecipeDetailRecord(RecipeRecord):
+    ingredient_item_groups: list[RecipeIngredientItemGroupRecord]
+
+    @classmethod
+    def from_recipe(cls, recipe: Recipe) -> RecipeDetailRecord:
+        ensure_prefetched_relations(
+            instance=recipe, prefetch_keys=["ingredient_groups"]
+        )
+        print(RecipeRecord.from_recipe(recipe))
+        return cls(
+            **RecipeRecord.from_recipe(recipe).dict(),
+            ingredient_item_groups=[
+                RecipeIngredientItemGroupRecord.from_group(group)
+                for group in recipe.ingredient_groups.all()
+            ],
+        )
+
+
 # TODO: -------------
 
 
@@ -135,10 +153,10 @@ class RecipeGlycemicRecord(BaseModel):
     glycemic_load: Decimal
 
 
-class RecipeDetailRecord(BaseModel):
-    title: str
-    default_num_portions: int
-
-    health_score: RecipeHealthScoreRecord
-    nutrition: list[RecipeTableRecord]
-    glycemic_values: RecipeGlycemicRecord
+# class RecipeDetailRecord(BaseModel):
+#     title: str
+#     default_num_portions: int
+#
+#     health_score: RecipeHealthScoreRecord
+#     nutrition: list[RecipeTableRecord]
+#     glycemic_values: RecipeGlycemicRecord
