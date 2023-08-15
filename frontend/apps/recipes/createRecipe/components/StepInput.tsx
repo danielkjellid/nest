@@ -51,7 +51,7 @@ const IngredientItemOption: TransferListItemComponent = ({
 
 interface StepInputProps {
   step: Step
-  index: number
+  stepNumber: number
   ingredientItemOptions: IngredientItemOptionType[]
   canBeDeleted?: boolean
   onInputChange: (data: Step) => void
@@ -60,7 +60,7 @@ interface StepInputProps {
 
 function StepInput({
   step,
-  index,
+  stepNumber,
   ingredientItemOptions,
   canBeDeleted,
   onInputChange,
@@ -114,7 +114,7 @@ function StepInput({
             <div
               className={`flex items-center justify-center flex-none w-8 h-8 ${classes.stepCircle} rounded-full`}
             >
-              {index}
+              {stepNumber}
             </div>
             <Textarea
               label="Instruction"

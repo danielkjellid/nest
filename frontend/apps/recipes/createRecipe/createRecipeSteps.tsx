@@ -16,6 +16,8 @@ import { useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
 
 export interface Step {
+  recipeId?: number
+  stepNumber: number
   instruction: string
   duration: number
   isPreparationStep: boolean
@@ -54,17 +56,19 @@ function CreateStepsForm({
         </Button>
       </div>
       <div className="space-y-6">
-        {steps.map((step, index) => (
-          <StepInput
-            key={index}
-            step={step}
-            index={index + 1}
-            ingredientItemOptions={ingredientItemOptions}
-            canBeDeleted={steps.length > 1}
-            onInputChange={(data) => onStepInputChange(index, data)}
-            onInputDelete={() => onStepInputDelete(index)}
-          />
-        ))}
+        {steps
+          .sort((a, b) => a.stepNumber - b.stepNumber)
+          .map((step, index) => (
+            <StepInput
+              key={index}
+              step={step}
+              stepNumber={step.stepNumber}
+              ingredientItemOptions={ingredientItemOptions}
+              canBeDeleted={steps.length > 1}
+              onInputChange={(data) => onStepInputChange(index, data)}
+              onInputDelete={() => onStepInputDelete(index)}
+            />
+          ))}
       </div>
       <RecipeSearchModal
         opened={modalOpened}
@@ -91,13 +95,14 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
   // Remove current recipe from list of recipes.
   const modifiedRecipes = recipes?.filter((recipe) => recipe.id.toString() !== recipeId)
 
-  const defaultStep = {
+  const defaultStep = (steps?: Step[]): Step => ({
+    stepNumber: steps ? steps.length + 1 : 1,
     instruction: '',
     duration: 0,
     isPreparationStep: false,
     ingredientItems: [],
-  }
-  const [steps, setSteps] = useState<Step[]>([defaultStep])
+  })
+  const [steps, setSteps] = useState<Step[]>([defaultStep()])
 
   const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
 
@@ -122,7 +127,7 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 
   const handleStepInputAdd = () => {
     const stepsData = [...steps]
-    setSteps([...stepsData, defaultStep])
+    setSteps([...stepsData, defaultStep(steps)])
   }
 
   const handleStepInputChange = (index: number, data: Step) => {
