@@ -14,10 +14,6 @@ class RecipeStepQuerySet(BaseQuerySet["models.RecipeStep"]):
     ...
 
 
-class RecipeStepItemQuerySet(BaseQuerySet["models.RecipeStepItem"]):
-    ...
-
-
 class RecipeIngredientItemGroupQuerySet(
     BaseQuerySet["models.RecipeIngredientItemGroup"]
 ):

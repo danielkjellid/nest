@@ -263,7 +263,7 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
         ordering: index + 1,
       }))
 
-      await performPost({ url: '/api/v1/recipes/5/ingredients/create/', data: payload })
+      await performPost({ url: '/api/v1/recipes/1/ingredients/create/', data: payload })
     }
   }
 
@@ -273,7 +273,7 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
       <Card>
         <Card.Form
           title="Add ingredients"
-          subtitle="Add ingredients and amounts to recipe. If one ingredient is needed withing multiple groups, add it to each group respectively."
+          subtitle="Add ingredients and amounts to recipe. If one ingredient is needed within multiple groups, add it to each group respectively."
           form={
             <CreateIngredientsForm
               ingredientGroups={ingredientGroups}

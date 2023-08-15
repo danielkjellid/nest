@@ -44,6 +44,7 @@ export type { RecipeListIngredientProductOut } from './models/RecipeListIngredie
 export type { RecipeListOut } from './models/RecipeListOut';
 export { RecipeListOutAPIResponse } from './models/RecipeListOutAPIResponse';
 export { RecipeStatus } from './models/RecipeStatus';
+export { RecipeStepType } from './models/RecipeStepType';
 export type { TableRecord } from './models/TableRecord';
 export type { UnitListOut } from './models/UnitListOut';
 export { UnitListOutAPIResponse } from './models/UnitListOutAPIResponse';

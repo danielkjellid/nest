@@ -34,7 +34,7 @@ def get_remote_request_user(
     from nest.users.records import UserRecord
 
     if isinstance(request_or_user, User):
-        return UserRecord.from_user(request_or_user), None
+        return UserRecord.from_user(request_or_user, skip_check=True), None
 
     if isinstance(request_or_user, UserRecord):
         return request_or_user, None
@@ -44,7 +44,7 @@ def get_remote_request_user(
             return None, request_or_user
 
         return (
-            UserRecord.from_user(request_or_user.user),
+            UserRecord.from_user(request_or_user.user, skip_check=True),
             request_or_user,
         )
 

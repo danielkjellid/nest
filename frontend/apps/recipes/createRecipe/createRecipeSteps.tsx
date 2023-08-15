@@ -14,13 +14,12 @@ import { Button } from '../../../components/Button'
 import { RecipeSearchModal } from './components/RecipeSearchModal'
 import { useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
+import { useCommonStyles } from '../../../styles/common'
 
 export interface Step {
-  recipeId?: number
-  stepNumber: number
   instruction: string
   duration: number
-  isPreparationStep: boolean
+  type: string
   ingredientItems: IngredientItemOptionType[]
 }
 
@@ -56,19 +55,17 @@ function CreateStepsForm({
         </Button>
       </div>
       <div className="space-y-6">
-        {steps
-          .sort((a, b) => a.stepNumber - b.stepNumber)
-          .map((step, index) => (
-            <StepInput
-              key={index}
-              step={step}
-              stepNumber={step.stepNumber}
-              ingredientItemOptions={ingredientItemOptions}
-              canBeDeleted={steps.length > 1}
-              onInputChange={(data) => onStepInputChange(index, data)}
-              onInputDelete={() => onStepInputDelete(index)}
-            />
-          ))}
+        {steps.map((step, index) => (
+          <StepInput
+            key={index}
+            step={step}
+            stepNumber={index + 1}
+            ingredientItemOptions={ingredientItemOptions}
+            canBeDeleted={steps.length > 1}
+            onInputChange={(data) => onStepInputChange(index, data)}
+            onInputDelete={() => onStepInputDelete(index)}
+          />
+        ))}
       </div>
       <RecipeSearchModal
         opened={modalOpened}
@@ -92,17 +89,18 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
   const { data: ingredientGroups } = results.ingredientGroups
   const { data: recipes } = results.recipes
 
+  const { classes } = useCommonStyles()
+
   // Remove current recipe from list of recipes.
   const modifiedRecipes = recipes?.filter((recipe) => recipe.id.toString() !== recipeId)
 
-  const defaultStep = (steps?: Step[]): Step => ({
-    stepNumber: steps ? steps.length + 1 : 1,
+  const defaultStep = {
     instruction: '',
     duration: 0,
-    isPreparationStep: false,
+    type: '',
     ingredientItems: [],
-  })
-  const [steps, setSteps] = useState<Step[]>([defaultStep()])
+  }
+  const [steps, setSteps] = useState<Step[]>([defaultStep])
 
   const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
 
@@ -127,7 +125,7 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 
   const handleStepInputAdd = () => {
     const stepsData = [...steps]
-    setSteps([...stepsData, defaultStep(steps)])
+    setSteps([...stepsData, defaultStep])
   }
 
   const handleStepInputChange = (index: number, data: Step) => {
@@ -151,6 +149,20 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     // TODO: Need to handle after you can add steps to recipe
   }
 
+  const preparePayload = () => {
+    return steps.map((step, index) => ({
+      stepNumber: index + 1,
+      instruction: step.instruction,
+      duration: step.duration,
+      type: step.type,
+      ingredientItems: step.ingredientItems.map((ingredientItem) => ingredientItem.value),
+    }))
+  }
+
+  const addSteps = () => {
+    console.log(preparePayload())
+  }
+
   return (
     <div className="space-y-10">
       <Header title="Add steps for recipe" />
@@ -170,6 +182,10 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
             />
           }
         />
+        <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
+          <Button variant="default">Cancel</Button>
+          <Button onClick={() => addSteps()}>Continue</Button>
+        </div>
       </Card>
     </div>
   )
@@ -181,7 +197,7 @@ function RecipeStepsCreate() {
 
   const recipes = useFetch<RecipeListOutAPIResponse>('/api/v1/recipes/')
   const ingredientGroups = useFetch<RecipeIngredientItemGroupListOutAPIResponse>(
-    '/api/v1/recipes/5/ingredients/'
+    '/api/v1/recipes/1/ingredients/'
   )
 
   return (

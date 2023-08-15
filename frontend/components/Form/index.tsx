@@ -16,6 +16,7 @@ import {
   TextInput,
   Textarea,
 } from '@mantine/core'
+import { Counter } from '../Counter'
 import { FormElement, FormElementObj, FormElementOptions, FormEnum } from './types'
 import React, { ForwardRefExoticComponent, useEffect, useState } from 'react'
 
@@ -28,6 +29,7 @@ const supportedComponents = {
   Checkbox,
   Chip,
   ColorInput,
+  Counter,
   FileInput,
   MultiSelect,
   PasswordInput,
@@ -87,9 +89,9 @@ function Form<T extends object>({
     elementsOptions && elementsOptions[elementKey]
 
   const getDefaultForElement = ({ element }: { element: FormElementObj }) => {
-    if ((element as FormElementObj).component === FrontendComponents.CHECKBOX) {
+    if ((element as FormElementObj).component === FrontendComponents.Checkbox) {
       return (element.defaultValue ? element.defaultValue : false) as T[K]
-    } else if ((element as FormElementObj).component === FrontendComponents.FILE_INPUT) {
+    } else if ((element as FormElementObj).component === FrontendComponents.FileInput) {
       return (element.defaultValue ? element.defaultValue : null) as T[K]
     } else {
       return (element.defaultValue ? element.defaultValue : '') as T[K]
@@ -162,7 +164,11 @@ function Form<T extends object>({
     let value
 
     if (eventOrValue) {
-      if (typeof eventOrValue === 'string' || eventOrValue instanceof File) {
+      if (
+        typeof eventOrValue === 'string' ||
+        typeof eventOrValue === 'number' ||
+        eventOrValue instanceof File
+      ) {
         value = eventOrValue
       } else {
         const eventTarget = eventOrValue.currentTarget as HTMLInputElement
@@ -238,13 +244,14 @@ function Form<T extends object>({
     itemComponent?: ForwardRefExoticComponent<any>
   }) => {
     // The checkbox component uses slightly different properties than the other supported components.
-    if (element.component === FrontendComponents.CHECKBOX) {
+    if (element.component === FrontendComponents.Checkbox) {
       return createCheckboxComponent({ elementKey, element })
     }
 
     // Sanitize options, all values need to be string.
     if (options) {
       options = options.map((option) => ({
+        ...option,
         label: option.label,
         value: option.value.toString(),
       }))
@@ -266,9 +273,11 @@ function Form<T extends object>({
         searchable: searchable ? searchable : undefined,
         itemComponent: itemComponent ? itemComponent : undefined,
         onChange: (e: any) => handleInputChange(elementKey, e),
+        min: element.min ? element.min : undefined,
+        max: element.max ? element.max : undefined,
         value: formValues[elementKey as K],
         icon:
-          element.component === FrontendComponents.FILE_INPUT ? (
+          element.component === FrontendComponents.FileInput ? (
             <IconUpload className="w-4 h-4" />
           ) : undefined,
       })
@@ -351,6 +360,8 @@ function Form<T extends object>({
               }
             }
           })}
+
+        {}
       </div>
     </form>
   )

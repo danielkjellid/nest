@@ -9,10 +9,10 @@ export type RecipeCreateIn = {
     title: string;
     searchKeywords?: string;
     defaultNumPortions: string;
-    externalId?: string;
-    externalUrl?: string;
     status: (RecipeStatus | string);
     difficulty: (RecipeDifficulty | string);
+    externalId?: string;
+    externalUrl?: string;
     isPartialRecipe?: boolean;
     isVegetarian?: boolean;
     isPescatarian?: boolean;

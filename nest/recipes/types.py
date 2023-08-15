@@ -12,3 +12,11 @@ class RecipeIngredientItemGroupDict(TypedDict):
     title: str
     ordering: int
     ingredients: list[RecipeIngredientItemDict]
+
+
+class RecipeStepDict(TypedDict):
+    number: int
+    duration: int
+    instruction: str
+    type: int
+    ingredient_items: list[int]

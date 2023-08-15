@@ -4,6 +4,7 @@ from .models import (
     Recipe,
     RecipeIngredientItem,
     RecipeIngredientItemGroup,
+    RecipeStep,
 )
 from nest.audit_logs.services import log_create_or_updated
 from django.http import HttpRequest
@@ -11,8 +12,10 @@ from django.utils.text import slugify
 from .enums import RecipeDifficulty, RecipeStatus
 from django.db import transaction
 from decimal import Decimal
-from .types import RecipeIngredientItemDict, RecipeIngredientItemGroupDict
+from .types import RecipeIngredientItemGroupDict, RecipeStepDict
 from nest.core.exceptions import ApplicationError
+from datetime import timedelta
+from .enums import RecipeStepType
 
 
 def create_ingredient(
@@ -128,3 +131,51 @@ def link_ingredient_item_groups_to_recipe(
         # Once groups has been created, use callback to create associated
         # ingredient_items.
         transaction.on_commit(create_ingredient_items)
+
+
+def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]):
+    ingredient_items_to_update = []
+    ingredient_item_ids = [
+        item_id for step in steps for item_id in step["ingredient_items"]
+    ]
+    ingredient_items = list(
+        RecipeIngredientItem.objects.filter(
+            ingredient_group__recipe_id=recipe_id, id__in=ingredient_item_ids
+        )
+    )
+
+    recipe_steps_to_create = [
+        RecipeStep(
+            recipe_id=recipe_id,
+            number=step["number"],
+            duration=timedelta(minutes=step["duration"]),
+            instruction=step["instruction"],
+            type=RecipeStepType(int(step["type"])),
+        )
+        for step in steps
+    ]
+    created_recipe_steps = RecipeStep.objects.bulk_create(recipe_steps_to_create)
+
+    for step in steps:
+        created_step = next(
+            (
+                created_step
+                for created_step in created_recipe_steps
+                if step["number"] == created_step.number
+                and step["instruction"] == created_step.instruction
+            ),
+            None,
+        )
+
+        if not created_step:
+            continue
+
+        items = [
+            item for item in ingredient_items if item.id in step["ingredient_items"]
+        ]
+
+        for item in items:
+            item.step = created_step.id
+            ingredient_items_to_update.append(item)
+
+    RecipeIngredientItem.objects.bulk_update(ingredient_items_to_update, ["step"])

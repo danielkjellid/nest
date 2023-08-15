@@ -20,6 +20,9 @@ import {
 } from '@mantine/core'
 import { IconX, IconPlus, IconMinus } from '@tabler/icons-react'
 import { Button } from '../../../../components/Button'
+import { Counter } from '../../../../components/Counter'
+import { RecipeStepType } from '../../../../types'
+import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 
 export interface IngredientItemOptionType {
   label: string
@@ -44,7 +47,13 @@ const IngredientItemOption: TransferListItemComponent = ({
           </Text>
         </div>
       </div>
-      <Checkbox checked={selected} tabIndex={-1} sx={{ pointerEvents: 'none' }} />
+      <Checkbox
+        checked={selected}
+        tabIndex={-1}
+        sx={{ pointerEvents: 'none' }}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onChange={() => {}}
+      />
     </div>
   </div>
 )
@@ -67,7 +76,6 @@ function StepInput({
   onInputDelete,
 }: StepInputProps) {
   const { classes } = useStepsStyles()
-  const theme = useMantineTheme()
 
   const handleIngredientItemTransfer = (
     eventData: [IngredientItemOptionType[], IngredientItemOptionType[]]
@@ -80,31 +88,32 @@ function StepInput({
 
   const handleStepInputChange = (
     key: keyof Step,
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | number | ''
+    eventOrValue: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | number | string | ''
   ) => {
-    if (!event) {
+    if (!eventOrValue || key === 'ingredientItems') {
       return
     }
 
     const data = { ...step }
 
-    if (typeof event === 'number') {
-      if (key === 'duration') {
-        data[key] = event
-      }
-    } else if (event instanceof HTMLInputElement || event instanceof HTMLTextAreaElement) {
-      if (
-        key === 'isPreparationStep' &&
-        event.target instanceof HTMLInputElement &&
-        event.target.type === 'checkbox'
-      ) {
-        data[key] = event.target.checked
-      } else if (key === 'instruction') {
-        data[key] = event.target.value.toString()
-      }
+    if (
+      typeof eventOrValue !== 'string' &&
+      typeof eventOrValue !== 'number' &&
+      eventOrValue.target &&
+      (eventOrValue.target instanceof HTMLInputElement ||
+        eventOrValue.target instanceof HTMLTextAreaElement)
+    ) {
+      //@ts-ignore
+      data[key] = eventOrValue.target.value.toString()
+    } else {
+      //@ts-ignore
+      data[key] = eventOrValue
     }
+
     onInputChange(data)
   }
+
+  const stepTypes = useEnumToOptions(RecipeStepType)
 
   return (
     <div>
@@ -125,44 +134,22 @@ function StepInput({
             />
           </div>
           <div className="ml-12 space-y-3">
-            <Checkbox
-              label="Is preparation step"
-              checked={step.isPreparationStep}
-              onChange={(event) => handleStepInputChange('isPreparationStep', event)}
+            <Select
+              label="Step type"
+              required
+              value={step.type}
+              data={stepTypes}
+              onChange={(event) => handleStepInputChange('type', event || '')}
             />
-            <Input.Wrapper
+            <Counter
               label="Duration"
               required
               description="Duration of step from start to completion. In minutes."
-            >
-              <div className="flex items-end space-x-2">
-                <ActionIcon
-                  color={theme.primaryColor}
-                  variant="outline"
-                  size="lg"
-                  disabled={step.duration <= 0}
-                  onClick={() => handleStepInputChange('duration', step.duration - 1)}
-                >
-                  <IconMinus />
-                </ActionIcon>
-                <NumberInput
-                  hideControls
-                  className="w-full"
-                  value={step.duration}
-                  onChange={(event) => handleStepInputChange('duration', event)}
-                  styles={{ input: { textAlign: 'center' } }}
-                />
-                <ActionIcon
-                  color={theme.primaryColor}
-                  variant="outline"
-                  size="lg"
-                  disabled={step.duration >= 60}
-                  onClick={() => handleStepInputChange('duration', step.duration + 1)}
-                >
-                  <IconPlus />
-                </ActionIcon>
-              </div>
-            </Input.Wrapper>
+              value={step.duration}
+              min={1}
+              max={60}
+              onChange={(event) => handleStepInputChange('duration', event)}
+            />
             <TransferList
               value={[ingredientItemOptions, step.ingredientItems]}
               onChange={handleIngredientItemTransfer}

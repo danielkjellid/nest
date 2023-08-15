@@ -10,7 +10,9 @@ def get_ingredients() -> list[RecipeIngredientRecord]:
     """
     Get a list of all ingredients in the application.
     """
-    ingredients = RecipeIngredient.objects.all().select_related("product")
+    ingredients = RecipeIngredient.objects.all().select_related(
+        "product", "product__unit"
+    )
     records = [
         RecipeIngredientRecord.from_ingredient(ingredient=ingredient)
         for ingredient in ingredients

@@ -1,12 +1,11 @@
 from django.db import models
 from nest.core.models import BaseModel
 from django.db.models.fields.mixins import FieldCacheMixin
-from .enums import RecipeDifficulty, RecipeStatus
+from .enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 
 from .managers import (
     RecipeQuerySet,
     RecipeIngredientQuerySet,
-    RecipeStepItemQuerySet,
     RecipeIngredientItemGroupQuerySet,
     RecipeIngredientItemQuerySet,
     RecipeStepQuerySet,
@@ -71,21 +70,10 @@ class RecipeStep(BaseModel):
     recipe = models.ForeignKey(
         "recipes.Recipe", related_name="steps", on_delete=models.CASCADE
     )
-    index = models.PositiveIntegerField()
-    step_item = models.ForeignKey(
-        "recipes.RecipeStepItem",
-        related_name="steps",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
-    step_recipe = models.ForeignKey(
-        "recipes.Recipe",
-        related_name="+",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
+    number = models.PositiveIntegerField()
+    duration = models.DurationField()
+    instruction = models.TextField()
+    type = models.PositiveIntegerField(choices=RecipeStepType.choices)
 
     objects = _RecipeStepManager()
 
@@ -94,39 +82,7 @@ class RecipeStep(BaseModel):
         verbose_name_plural = "steps"
 
     def __str__(self) -> str:
-        return f"Step {self.index}, recipe {self.recipe_id}"
-
-
-_RecipeStepItemManager = models.Manager.from_queryset(RecipeStepItemQuerySet)
-
-
-class RecipeStepItem(BaseModel):
-    recipe_step = models.ForeignKey(
-        "recipes.RecipeStep", related_name="items", on_delete=models.CASCADE
-    )
-    instruction = models.TextField()
-
-    # Experiment with this, might keep and might delete
-    ingredient_item = models.ForeignKey(
-        "recipes.RecipeIngredientItem",
-        related_name="step_items",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
-    ingredient_quantity = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
-    )
-
-    step_duration = models.DurationField()
-    is_preparation_step = models.BooleanField(default=False)
-    is_cooking_step = models.BooleanField(default=False)
-
-    objects = _RecipeStepItemManager()
-
-    class Meta:
-        verbose_name = "step item"
-        verbose_name_plural = "step items"
+        return f"Step {self.number}, recipe {self.recipe_id}"
 
 
 _RecipeIngredientItemGroupManager = models.Manager.from_queryset(
@@ -166,6 +122,13 @@ class RecipeIngredientItem(BaseModel):
         "recipes.RecipeIngredient",
         related_name="ingredient_items",
         on_delete=models.CASCADE,
+    )
+    step = models.ForeignKey(
+        "recipes.RecipeStep",
+        related_name="ingredient_items",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
     )
 
     additional_info = models.CharField(max_length=255)

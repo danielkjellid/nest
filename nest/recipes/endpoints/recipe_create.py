@@ -16,24 +16,44 @@ from .router import router
 class RecipeCreateIn(Schema):
     title: str = FormField(..., order=1, help_text="Name of the recipe.")
     search_keywords: str | None = FormField(
-        None, order=3, help_text="Separate with spaces. Title is included by default."
+        None, order=2, help_text="Separate with spaces. Title is included by default."
     )
-    default_num_portions: str = FormField(..., default_value=4, order=4)
+    default_num_portions: str = FormField(
+        ...,
+        default_value=4,
+        order=3,
+        component=FrontendComponents.COUNTER.value,
+        min=1,
+        max=10,
+        col_span=4,
+    )
+    status: RecipeStatus | str = FormField(..., order=4, col_span=2)
+    difficulty: RecipeDifficulty | str = FormField(..., order=5, col_span=2)
     external_id: str | None = FormField(
-        None, order=5, help_text="Recipe identifier on a provider's site."
+        None, order=6, help_text="Providers identifier.", col_span=1
     )
     external_url: str | None = FormField(
-        None, order=6, help_text="Direct link to the recipe on a provider's site"
+        None,
+        order=7,
+        help_text="Direct link to the recipe on a provider's site",
+        col_span=3,
     )
-    status: RecipeStatus | str
-    difficulty: RecipeDifficulty | str
     is_partial_recipe: bool = FormField(
-        False, help_text="Designates if the recipe can be considered a full meal."
+        False,
+        help_text="Designates if the recipe can be considered a full meal.",
+        order=8,
     )
     is_vegetarian: bool = FormField(
-        False, help_text="The recipe does not conatin any meat or fish products."
+        False,
+        help_text="The recipe does not conatin any meat or fish products.",
+        order=9,
     )
-    is_pescatarian: bool = FormField(False, help_text="The recipe contains fish.")
+    is_pescatarian: bool = FormField(
+        False, help_text="The recipe contains fish.", order=10
+    )
+
+    class FormMeta:
+        columns = 4
 
 
 class RecipeCreateOut(Schema):

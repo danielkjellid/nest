@@ -3,7 +3,7 @@ import Drawer from '../../../../components/Drawer'
 import { useForm } from '../../../../hooks/forms'
 import Form from '../../../../components/Form'
 import { IngredientCreateIn, ProductListOut } from '../../../../types'
-import { Text } from '@mantine/core'
+import { Select, Text } from '@mantine/core'
 import { Button } from '../../../../components/Button'
 import { urls } from '../../../urls'
 
@@ -31,6 +31,8 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
     await form.performPost({ url: urls.recipes.ingredients.create() })
     refetch()
   }
+
+  console.log(productsOptions)
 
   return (
     <Drawer
@@ -65,7 +67,7 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
 }
 
 interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
-  image?: string | null
+  image: string | null
   label: string
   description: string
 }
