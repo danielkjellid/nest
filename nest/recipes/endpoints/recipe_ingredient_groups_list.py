@@ -37,7 +37,7 @@ class RecipeIngredientItemGroupListOut(Schema):
 
 
 @router.get(
-    "{recipe_id}/ingredients/",
+    "{recipe_id}/ingredient-groups/",
     response=APIResponse[list[RecipeIngredientItemGroupListOut]],
 )
 def recipe_ingredient_group_items_api(request: HttpRequest, recipe_id: int):

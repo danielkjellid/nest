@@ -18,5 +18,5 @@ class RecipeStepDict(TypedDict):
     number: int
     duration: int
     instruction: str
-    type: int
-    ingredient_items: list[int]
+    step_type: str
+    ingredient_items: list[str]

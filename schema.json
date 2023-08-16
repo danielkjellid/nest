@@ -338,7 +338,7 @@
                 ]
             }
         },
-        "/api/v1/recipes/{recipe_id}/ingredients/create/": {
+        "/api/v1/recipes/{recipe_id}/ingredient-groups/create/": {
             "post": {
                 "operationId": "recipe_ingredients_create_api",
                 "summary": "Recipe Ingredients Create Api",
@@ -390,7 +390,7 @@
                 ]
             }
         },
-        "/api/v1/recipes/{recipe_id}/ingredients/": {
+        "/api/v1/recipes/{recipe_id}/ingredient-groups/": {
             "get": {
                 "operationId": "recipe_ingredient_group_items_api",
                 "summary": "Recipe Ingredient Group Items Api",
@@ -449,6 +449,58 @@
                 "tags": [
                     "Recipes"
                 ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/{recipe_id}/steps/create/": {
+            "post": {
+                "operationId": "recipe_steps_create_api",
+                "summary": "Recipe Steps Create Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create steps related to a single recipe.",
+                "tags": [
+                    "Recipes"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "Payload",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/RecipeStepsCreateIn"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "SessionAuth": []
@@ -2464,6 +2516,47 @@
                 },
                 "required": [
                     "status"
+                ],
+                "type": "object"
+            },
+            "RecipeStepsCreateIn": {
+                "title": "RecipeStepsCreateIn",
+                "properties": {
+                    "number": {
+                        "title": "Number",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "duration": {
+                        "title": "Duration",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "instruction": {
+                        "title": "Instruction",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "stepType": {
+                        "title": "Step Type",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "number",
+                    "duration",
+                    "instruction",
+                    "stepType",
+                    "ingredientItems"
                 ],
                 "type": "object"
             },

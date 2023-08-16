@@ -73,7 +73,7 @@ class RecipeStep(BaseModel):
     number = models.PositiveIntegerField()
     duration = models.DurationField()
     instruction = models.TextField()
-    type = models.PositiveIntegerField(choices=RecipeStepType.choices)
+    step_type = models.PositiveIntegerField(choices=RecipeStepType.choices)
 
     objects = _RecipeStepManager()
 
@@ -131,7 +131,7 @@ class RecipeIngredientItem(BaseModel):
         blank=True,
     )
 
-    additional_info = models.CharField(max_length=255)
+    additional_info = models.CharField(max_length=255, null=True, blank=True)
 
     # The per-portion quantity of the ingredient The portion quantity is multiplied
     # with the number of portions to calculate the quantity of the final product.

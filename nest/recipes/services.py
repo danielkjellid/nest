@@ -76,11 +76,23 @@ def create_recipe(
 
 
 # TODO: return linked records?
-# TODO: Should log?
-# TODO: Should make sure that title and ordering are unique
-def link_ingredient_item_groups_to_recipe(
+def create_ingredient_item_groups(
     *, recipe_id: int | str, ingredient_group_items: list[RecipeIngredientItemGroupDict]
 ) -> None:
+    # Sanity check that we only are dealing with unique ordering properties.
+    ordering = [group["ordering"] for group in ingredient_group_items]
+    if not len(set(ordering)) == len(ordering):
+        raise ApplicationError(
+            message="Ordering for ingredient group items has to be unique"
+        )
+
+    # Sanity check that we are only dealing with unique instructions.
+    titles = [group["title"] for group in ingredient_group_items]
+    if not len(set(titles)) == len(titles):
+        raise ApplicationError(
+            message="Titles for ingredient group items has to be unique"
+        )
+
     # Create a list of which ingredient_group_items to bulk create.
     recipe_ingredient_groups_to_create = [
         RecipeIngredientItemGroup(
@@ -113,9 +125,9 @@ def link_ingredient_item_groups_to_recipe(
                     ingredient_id=ingredient_item["ingredient_id"],
                     additional_info=ingredient_item["additional_info"],
                     portion_quantity=Decimal(ingredient_item["portion_quantity"]),
-                    portion_quantity_unit_id=ingredient_item[
-                        "portion_quantity_unit_id"
-                    ],
+                    portion_quantity_unit_id=int(
+                        ingredient_item["portion_quantity_unit_id"]
+                    ),
                 )
                 for item_group in ingredient_group_items
                 for ingredient_item in item_group["ingredients"]
@@ -133,10 +145,28 @@ def link_ingredient_item_groups_to_recipe(
         transaction.on_commit(create_ingredient_items)
 
 
-def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]):
+# TODO: Return records?
+def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]) -> None:
+    # Get all step numbers from payload to run som sanity checks.
+    step_numbers = sorted([step["number"] for step in steps])
+
+    # Sanity check that there is a "step 1" in the payload.
+    if not step_numbers[0] == 1:
+        raise ApplicationError(
+            message="Steps payload has to include step with number 1"
+        )
+
+    # Sanity check that step numbers are in sequence.
+    if not set(step_numbers) == set(range(min(step_numbers), max(step_numbers) + 1)):
+        raise ApplicationError(message="Step numbers has to be in sequence.")
+
+    # Sanity check that all instruction fields have content.
+    if any(not step["instruction"] for step in steps):
+        raise ApplicationError(message="All steps has to have instructions defined.")
+
     ingredient_items_to_update = []
     ingredient_item_ids = [
-        item_id for step in steps for item_id in step["ingredient_items"]
+        int(item_id) for step in steps for item_id in step["ingredient_items"]
     ]
     ingredient_items = list(
         RecipeIngredientItem.objects.filter(
@@ -150,13 +180,15 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]):
             number=step["number"],
             duration=timedelta(minutes=step["duration"]),
             instruction=step["instruction"],
-            type=RecipeStepType(int(step["type"])),
+            step_type=RecipeStepType(int(step["step_type"])),
         )
         for step in steps
     ]
     created_recipe_steps = RecipeStep.objects.bulk_create(recipe_steps_to_create)
 
     for step in steps:
+        # Find related step that has been created to get appropriate id to attach to
+        # the ingredient item.
         created_step = next(
             (
                 created_step
@@ -175,7 +207,11 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]):
         ]
 
         for item in items:
-            item.step = created_step.id
+            if item.step_id is not None:
+                continue
+
+            item.step_id = created_step.id
             ingredient_items_to_update.append(item)
 
+    # Update ingredient items with new step_ids in bulk.
     RecipeIngredientItem.objects.bulk_update(ingredient_items_to_update, ["step"])

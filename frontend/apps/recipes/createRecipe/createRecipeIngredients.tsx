@@ -18,6 +18,9 @@ import {
 } from './components/IngredientGroupInput'
 import { performPost } from '../../../hooks/fetcher/http'
 import { useDragAndDropSingleList } from '../../../hooks/drag-and-drop'
+import { useNavigate, useParams } from 'react-router-dom'
+import { routes } from '../routes'
+import invariant from 'tiny-invariant'
 
 export interface FormError {
   index: number
@@ -110,11 +113,13 @@ interface RecipeIngredientsCreateInnerProps {
   results: {
     ingredients: IngredientListOutAPIResponse
   }
+  recipeId: string | number
 }
 
-function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerProps) {
+function RecipeIngredientsCreateInner({ recipeId, results }: RecipeIngredientsCreateInnerProps) {
   const { classes } = useCommonStyles()
   const { unitsOptions } = useUnits()
+  const navigate = useNavigate()
 
   /**********
    ** Data **
@@ -263,7 +268,15 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
         ordering: index + 1,
       }))
 
-      await performPost({ url: '/api/v1/recipes/1/ingredients/create/', data: payload })
+      try {
+        await performPost({
+          url: urls.recipes.createIngredientGroups({ id: recipeId }),
+          data: payload,
+        })
+        navigate(routes.createRecipeIngredients.build({ recipeId }))
+      } catch (e) {
+        // TODO set notification
+      }
     }
   }
 
@@ -301,13 +314,16 @@ function RecipeIngredientsCreateInner({ results }: RecipeIngredientsCreateInnerP
 }
 
 function RecipeIngredientsCreate() {
+  const { recipeId } = useParams()
+  invariant(recipeId)
+
   const ingredients = useFetch<IngredientListOutAPIResponse>(urls.recipes.ingredients.list())
 
   return (
     <View<object, RecipeIngredientsCreateInnerProps>
       results={{ ingredients }}
       component={RecipeIngredientsCreateInner}
-      componentProps={{}}
+      componentProps={{ recipeId }}
       loadingProps={{ description: 'Loading ingredients' }}
       errorProps={{ description: 'There was an error loading ingredients, please try again.' }}
     />

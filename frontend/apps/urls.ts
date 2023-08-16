@@ -13,6 +13,10 @@ const urls = {
   },
   recipes: {
     create: () => '/api/v1/recipes/create/',
+    createSteps: ({ id }: { id: Param }) => `/api/v1/recipes/${id}/steps/create/`,
+    listIngredientGroups: ({ id }: { id: Param }) => `/api/v1/recipes/${id}/ingredient-groups/`,
+    createIngredientGroups: ({ id }: { id: Param }) =>
+      `/api/v1/recipes/${id}/ingredient-groups/create/`,
     ingredients: {
       list: () => '/api/v1/recipes/ingredients/',
       create: () => '/api/v1/recipes/ingredients/create/',

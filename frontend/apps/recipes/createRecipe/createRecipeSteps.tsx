@@ -12,9 +12,12 @@ import {
 import { IngredientItemOptionType, StepInput } from './components/StepInput'
 import { Button } from '../../../components/Button'
 import { RecipeSearchModal } from './components/RecipeSearchModal'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
 import { useCommonStyles } from '../../../styles/common'
+import { performPost } from '../../../hooks/fetcher/http'
+import { urls } from '../../urls'
+import { routes } from '../routes'
 
 export interface Step {
   instruction: string
@@ -88,6 +91,7 @@ interface RecipeStepsCreateInnerProps {
 function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerProps) {
   const { data: ingredientGroups } = results.ingredientGroups
   const { data: recipes } = results.recipes
+  const navigate = useNavigate()
 
   const { classes } = useCommonStyles()
 
@@ -151,16 +155,24 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 
   const preparePayload = () => {
     return steps.map((step, index) => ({
-      stepNumber: index + 1,
+      number: index + 1,
       instruction: step.instruction,
       duration: step.duration,
-      type: step.type,
+      stepType: step.type,
       ingredientItems: step.ingredientItems.map((ingredientItem) => ingredientItem.value),
     }))
   }
 
-  const addSteps = () => {
-    console.log(preparePayload())
+  // TODO: validate that all ingredients are used
+  // TODO: validate that all inputs are filled
+  const addSteps = async () => {
+    const payload = preparePayload()
+    try {
+      await performPost({ url: urls.recipes.createSteps({ id: recipeId }), data: payload })
+      navigate(routes.overview.build())
+    } catch (e) {
+      // TODO: set notification
+    }
   }
 
   return (
@@ -197,7 +209,7 @@ function RecipeStepsCreate() {
 
   const recipes = useFetch<RecipeListOutAPIResponse>('/api/v1/recipes/')
   const ingredientGroups = useFetch<RecipeIngredientItemGroupListOutAPIResponse>(
-    '/api/v1/recipes/1/ingredients/'
+    urls.recipes.listIngredientGroups({ id: recipeId })
   )
 
   return (
