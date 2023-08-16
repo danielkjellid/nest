@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Header } from './components/Header'
 import View from '../../../components/View'
 import { Card } from '../../../components/Card'
+import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { useFetch } from '../../../hooks/fetcher'
 import {
@@ -18,6 +19,7 @@ import { useCommonStyles } from '../../../styles/common'
 import { performPost } from '../../../hooks/fetcher/http'
 import { urls } from '../../urls'
 import { routes } from '../routes'
+import { useDragAndDropSingleList } from '../../../hooks/drag-and-drop'
 
 export interface Step {
   instruction: string
@@ -30,6 +32,7 @@ interface CreateStepsForm {
   recipes: RecipeListOut[]
   steps: Step[]
   ingredientItemOptions: IngredientItemOptionType[]
+  onSequenceChange: (steps: Step[]) => void
   onStepInputAdd: () => void
   onStepInputChange: (index: number, data: Step) => void
   onStepInputDelete: (index: number) => void
@@ -40,36 +43,52 @@ function CreateStepsForm({
   recipes,
   steps,
   ingredientItemOptions,
+  onSequenceChange,
   onStepInputAdd,
   onStepInputChange,
   onStepInputDelete,
   onRecipeStepsCopy,
 }: CreateStepsForm) {
+  const { onDragEnd, onDragStart } = useDragAndDropSingleList({ items: steps, onSequenceChange })
   const [modalOpened, setModalOpened] = useState(false)
 
   return (
     <div>
-      <div className="flex items-center justify-end mb-1 space-x-2">
-        <Button variant="light" compact onClick={() => setModalOpened(true)}>
-          Copy steps from existing recipe
-        </Button>
-        <Button variant="light" compact onClick={onStepInputAdd}>
-          Add step
-        </Button>
-      </div>
-      <div className="space-y-6">
-        {steps.map((step, index) => (
-          <StepInput
-            key={index}
-            step={step}
-            stepNumber={index + 1}
-            ingredientItemOptions={ingredientItemOptions}
-            canBeDeleted={steps.length > 1}
-            onInputChange={(data) => onStepInputChange(index, data)}
-            onInputDelete={() => onStepInputDelete(index)}
-          />
-        ))}
-      </div>
+      <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+        <div className="flex items-center justify-end mb-1 space-x-2">
+          <Button variant="light" compact onClick={() => setModalOpened(true)}>
+            Copy steps from existing recipe
+          </Button>
+          <Button variant="light" compact onClick={onStepInputAdd}>
+            Add step
+          </Button>
+        </div>
+        <Droppable droppableId="steps" ignoreContainerClipping isDropDisabled={steps.length <= 1}>
+          {(droppableProvided, droppableSnapshot) => (
+            <div
+              ref={droppableProvided.innerRef}
+              {...droppableProvided.droppableProps}
+              className="space-y-6"
+            >
+              {steps.map((step, index) => (
+                <StepInput
+                  draggableId={index.toString()}
+                  isDragDisabled={steps.length <= 1}
+                  key={index}
+                  step={step}
+                  stepNumber={index + 1}
+                  ingredientItemOptions={ingredientItemOptions}
+                  canBeDeleted={steps.length > 1}
+                  onInputChange={(data) => onStepInputChange(index, data)}
+                  onInputDelete={() => onStepInputDelete(index)}
+                />
+              ))}
+              {droppableProvided.placeholder}
+              {!droppableSnapshot.isDraggingOver}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <RecipeSearchModal
         opened={modalOpened}
         recipes={recipes}
@@ -153,6 +172,10 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     // TODO: Need to handle after you can add steps to recipe
   }
 
+  const handleSequenceChange = (data: Step[]) => {
+    setSteps([...data])
+  }
+
   const preparePayload = () => {
     return steps.map((step, index) => ({
       number: index + 1,
@@ -187,6 +210,7 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
               recipes={modifiedRecipes || []}
               steps={steps}
               ingredientItemOptions={ingredientItemOptions || []}
+              onSequenceChange={handleSequenceChange}
               onStepInputAdd={handleStepInputAdd}
               onStepInputChange={handleStepInputChange}
               onStepInputDelete={handleStepInputDelete}

@@ -231,7 +231,7 @@ function IngredientGroupInput({
           <ActionIcon
             color="green"
             variant="light"
-            className="mt-3 ml-10"
+            className="mt-3 ml-8"
             onClick={onIngredientInputAdd}
           >
             <IconPlus />
