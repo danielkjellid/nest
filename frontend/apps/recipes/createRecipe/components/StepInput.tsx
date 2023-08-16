@@ -131,7 +131,7 @@ function StepInput({
         >
           <div className="flex items-start w-full space-x-2">
             <div className="w-full space-y-3">
-              <div className="flex items-start space-x-4 rounded-md appearance-none cursor-pointer">
+              <div className=" flex items-start space-x-4 rounded-md appearance-none">
                 <div
                   className={`flex items-center justify-center flex-none w-8 h-8 ${classes.stepCircle} rounded-full`}
                 >

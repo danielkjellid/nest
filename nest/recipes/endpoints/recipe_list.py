@@ -1,6 +1,7 @@
 from django.http import HttpRequest
 from ninja import Schema
-
+from datetime import timedelta
+from decimal import Decimal
 from nest.api.responses import APIResponse
 from ..selectors import get_recipes
 
@@ -35,10 +36,20 @@ class RecipeListIngredientItemGroupOut(Schema):
     ingredient_items: list[RecipeListIngredientItemOut]
 
 
+class RecipeListStepsOut(Schema):
+    id: int
+    number: int
+    duration: timedelta
+    instruction: str
+    step_type: int
+    ingredient_items: list[RecipeListIngredientItemOut]
+
+
 class RecipeListOut(Schema):
     id: int
     title: str
     default_num_portions: int
+    steps: list[RecipeListStepsOut]
     ingredient_item_groups: list[RecipeListIngredientItemGroupOut]
 
 

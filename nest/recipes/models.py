@@ -25,8 +25,11 @@ class Recipe(BaseModel):
         help_text="Separate with spaces. Title is included by default.",
     )
 
-    external_id = models.PositiveIntegerField(
-        null=True, blank=True, help_text="Recipe identifier on a provider's site"
+    external_id = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        help_text="Recipe identifier on a provider's site",
     )
     external_url = models.URLField(
         null=True,
@@ -39,11 +42,6 @@ class Recipe(BaseModel):
     )
     difficulty = models.SmallIntegerField(
         choices=RecipeDifficulty.choices, default=RecipeDifficulty.EASY
-    )
-
-    is_partial_recipe = models.BooleanField(
-        default=False,
-        help_text="Designates if the recipe can be considered a full meal",
     )
     is_vegetarian = models.BooleanField(default=False)
     is_pescatarian = models.BooleanField(default=False)

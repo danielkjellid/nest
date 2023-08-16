@@ -12,7 +12,6 @@ import {
 } from '../../../types'
 import { IngredientItemOptionType, StepInput } from './components/StepInput'
 import { Button } from '../../../components/Button'
-import { RecipeSearchModal } from './components/RecipeSearchModal'
 import { useNavigate, useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
 import { useCommonStyles } from '../../../styles/common'
@@ -29,36 +28,28 @@ export interface Step {
 }
 
 interface CreateStepsForm {
-  recipes: RecipeListOut[]
   steps: Step[]
   ingredientItemOptions: IngredientItemOptionType[]
   onSequenceChange: (steps: Step[]) => void
   onStepInputAdd: () => void
   onStepInputChange: (index: number, data: Step) => void
   onStepInputDelete: (index: number) => void
-  onRecipeStepsCopy: (recipe: RecipeListOut) => void
 }
 
 function CreateStepsForm({
-  recipes,
   steps,
   ingredientItemOptions,
   onSequenceChange,
   onStepInputAdd,
   onStepInputChange,
   onStepInputDelete,
-  onRecipeStepsCopy,
 }: CreateStepsForm) {
   const { onDragEnd, onDragStart } = useDragAndDropSingleList({ items: steps, onSequenceChange })
-  const [modalOpened, setModalOpened] = useState(false)
 
   return (
     <div>
       <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <div className="flex items-center justify-end mb-1 space-x-2">
-          <Button variant="light" compact onClick={() => setModalOpened(true)}>
-            Copy steps from existing recipe
-          </Button>
           <Button variant="light" compact onClick={onStepInputAdd}>
             Add step
           </Button>
@@ -89,12 +80,6 @@ function CreateStepsForm({
           )}
         </Droppable>
       </DragDropContext>
-      <RecipeSearchModal
-        opened={modalOpened}
-        recipes={recipes}
-        onClose={() => setModalOpened(false)}
-        onRecipeSelect={onRecipeStepsCopy}
-      />
     </div>
   )
 }
@@ -102,20 +87,15 @@ function CreateStepsForm({
 interface RecipeStepsCreateInnerProps {
   recipeId: string | number
   results: {
-    recipes: RecipeListOutAPIResponse
     ingredientGroups: RecipeIngredientItemGroupListOutAPIResponse
   }
 }
 
 function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerProps) {
   const { data: ingredientGroups } = results.ingredientGroups
-  const { data: recipes } = results.recipes
   const navigate = useNavigate()
 
   const { classes } = useCommonStyles()
-
-  // Remove current recipe from list of recipes.
-  const modifiedRecipes = recipes?.filter((recipe) => recipe.id.toString() !== recipeId)
 
   const defaultStep = {
     instruction: '',
@@ -164,14 +144,6 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     setSteps(stepsData)
   }
 
-  const handleRecipeStepCopy = (data: RecipeListOut) => {
-    // const stepData = [...steps]
-    // stepData.push({
-    //   instruction: data.
-    // })
-    // TODO: Need to handle after you can add steps to recipe
-  }
-
   const handleSequenceChange = (data: Step[]) => {
     setSteps([...data])
   }
@@ -188,6 +160,7 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 
   // TODO: validate that all ingredients are used
   // TODO: validate that all inputs are filled
+  // TODO: validate that duration > 0
   const addSteps = async () => {
     const payload = preparePayload()
     try {
@@ -207,20 +180,18 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
           subtitle="Add steps to recipe"
           form={
             <CreateStepsForm
-              recipes={modifiedRecipes || []}
               steps={steps}
               ingredientItemOptions={ingredientItemOptions || []}
               onSequenceChange={handleSequenceChange}
               onStepInputAdd={handleStepInputAdd}
               onStepInputChange={handleStepInputChange}
               onStepInputDelete={handleStepInputDelete}
-              onRecipeStepsCopy={handleRecipeStepCopy}
             />
           }
         />
         <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
           <Button variant="default">Cancel</Button>
-          <Button onClick={() => addSteps()}>Continue</Button>
+          <Button onClick={() => addSteps()}>Finish</Button>
         </div>
       </Card>
     </div>
@@ -230,15 +201,13 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 function RecipeStepsCreate() {
   const { recipeId } = useParams()
   invariant(recipeId)
-
-  const recipes = useFetch<RecipeListOutAPIResponse>('/api/v1/recipes/')
   const ingredientGroups = useFetch<RecipeIngredientItemGroupListOutAPIResponse>(
     urls.recipes.listIngredientGroups({ id: recipeId })
   )
 
   return (
     <View<object, RecipeStepsCreateInnerProps>
-      results={{ recipes, ingredientGroups }}
+      results={{ ingredientGroups }}
       component={RecipeStepsCreateInner}
       componentProps={{ recipeId }}
       loadingProps={{ description: 'Loading steps' }}
