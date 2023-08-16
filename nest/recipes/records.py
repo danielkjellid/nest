@@ -8,10 +8,11 @@ from .models import (
     RecipeStep,
     RecipeIngredientItem,
 )
+from isodate import duration_isoformat
 from decimal import Decimal
 from .enums import RecipeStatus, RecipeDifficulty, RecipeStepType
-from nest.core.utils import ensure_prefetched_relations
 from nest.units.records import UnitRecord
+from nest.core.decorators import ensure_prefetched_relations, ensure_annotated_values
 from datetime import timedelta
 
 
@@ -183,35 +184,25 @@ from datetime import timedelta
 #         )
 
 
-class RecipeRecord(BaseModel):
-    id: int
-    title: str
-    slug: str
-    default_num_portions: int
-    search_keywords: str | None
-    external_id: str | None
-    external_url: str | None
-    status: RecipeStatus
-    difficulty: RecipeDifficulty
-    difficulty_display: str
-    is_vegetarian: bool
-    is_pescatarian: bool
-    duration: RecipeDurationRecord
-    glycemic_data: RecipeGlycemicData | None
-    health_score: RecipeHealthScore | None
-    ingredient_groups: list[RecipeIngredientItemGroup]
-    ingredient_groups_display: list[RecipeIngredientItemGroupDisplayRecord]
-    steps: list[RecipeStepRecord]
-    steps_display: list[RecipeStepDisplayRecord]
-
-
 class RecipeStepRecord(BaseModel):
     id: int
     number: int
     duration: timedelta
     instruction: str
     step_type: RecipeStepType
-    ingredient_items: list[RecipeIngredientItemRecord]
+    ingredient_items: list[int]
+
+    @classmethod
+    @ensure_prefetched_relations(instance="step", skip_fields=["recipe"])
+    def from_step(cls, step: RecipeStep, skip_check: bool = False) -> RecipeStepRecord:
+        return cls(
+            id=step.id,
+            number=step.number,
+            duration=step.duration,
+            instruction=step.instruction,
+            step_type=step.step_type,
+            ingredient_items=[1],
+        )
 
 
 class RecipeStepDisplayRecord(BaseModel):
@@ -220,6 +211,21 @@ class RecipeStepDisplayRecord(BaseModel):
     instruction: str
     ingredients: list[RecipeMergedIngredientItemDisplayRecord]
 
+    @classmethod
+    @ensure_prefetched_relations(instance="step", skip_fields=["recipe"])
+    def from_step(
+        cls, step: RecipeStep, skip_check: bool = False
+    ) -> RecipeStepDisplayRecord:
+        return cls(
+            id=step.id,
+            number=step.number,
+            instruction=step.instruction,
+            ingredients=[
+                RecipeMergedIngredientItemDisplayRecord.from_item(item)
+                for item in step.ingredient_items.all()
+            ],
+        )
+
 
 class RecipeIngredientItemGroupRecord(BaseModel):
     id: int
@@ -227,11 +233,36 @@ class RecipeIngredientItemGroupRecord(BaseModel):
     ordering: int
     ingredient_items: list[RecipeIngredientItemRecord]
 
+    @classmethod
+    @ensure_prefetched_relations(instance="group")
+    def from_group(cls, group: RecipeIngredientItemGroup, skip_check: bool = False):
+        return cls(
+            id=group.id,
+            title=group.title,
+            ordering=group.ordering,
+            ingredient_items=[
+                RecipeIngredientItemRecord.from_item(item)
+                for item in group.ingredient_items.all()
+            ],
+        )
+
 
 class RecipeIngredientItemGroupDisplayRecord(BaseModel):
     id: int
     title: str
     ingredients: list[RecipeMergedIngredientItemDisplayRecord]
+
+    @classmethod
+    @ensure_prefetched_relations(instance="group")
+    def from_group(cls, group: RecipeIngredientItemGroup, skip_check: bool = False):
+        return cls(
+            id=group.id,
+            title=group.title,
+            ingredients=[
+                RecipeMergedIngredientItemDisplayRecord.from_item(item)
+                for item in group.ingredient_items.all()
+            ],
+        )
 
 
 class RecipeIngredientItemRecord(BaseModel):
@@ -242,32 +273,87 @@ class RecipeIngredientItemRecord(BaseModel):
     portion_quantity: Decimal
     portion_quantity_unit: UnitRecord
 
+    @classmethod
+    @ensure_prefetched_relations(instance="item", skip_fields=["step"])
+    def from_item(cls, item: RecipeIngredientItem) -> RecipeIngredientItemRecord:
+        return cls(
+            id=item.id,
+            group_title=item.ingredient_group.title,
+            ingredient=RecipeIngredientRecord.from_ingredient(item.ingredient),
+            additional_info=item.additional_info,
+            portion_quantity=item.portion_quantity,
+            portion_quantity_unit=UnitRecord.from_unit(item.portion_quantity_unit),
+        )
+
 
 class RecipeIngredientRecord(BaseModel):
     id: int
     title: str
     product: ProductRecord
 
+    @classmethod
+    @ensure_prefetched_relations(instance="ingredient")
+    def from_ingredient(
+        cls, ingredient: RecipeIngredient, skip_check: bool = False
+    ) -> RecipeIngredientRecord:
+        return cls(
+            id=ingredient.id,
+            title=ingredient.title,
+            product=ProductRecord.from_product(ingredient.product),
+        )
+
 
 class RecipeMergedIngredientItemDisplayRecord(BaseModel):
     id: int
-    ingredient_it: int
+    ingredient_id: int
     title: str
     quantity_display: str
     unit_display: str
-    additional_info: None
+    additional_info: str | None
+
+    @classmethod
+    @ensure_prefetched_relations(
+        instance="item", skip_fields=["ingredient_group", "step"]
+    )
+    def from_item(
+        cls, item: RecipeIngredientItem, skip_check: bool = False
+    ) -> RecipeMergedIngredientItemDisplayRecord:
+        return cls(
+            id=item.id,
+            ingredient_id=item.ingredient_id,
+            title=item.ingredient.title,
+            quantity_display="{:f}".format(item.portion_quantity.normalize()),
+            unit_display=item.portion_quantity_unit.abbreviation,
+            additional_info=item.additional_info,
+        )
 
 
 class RecipeDurationRecord(BaseModel):
     preparation_time: timedelta
     preparation_time_iso8601: str
-    preparation_time_display: str
     cooking_time: timedelta
     cooking_time_iso8601: str
-    cooking_time_display: str
     total_time: timedelta
-    total_time_display: str
     total_time_iso8601: str
+
+    @classmethod
+    @ensure_annotated_values(
+        instance="recipe",
+        annotations=["preparation_time", "cooking_time", "total_time"],
+    )
+    def from_recipe(cls, recipe: Recipe) -> RecipeDurationRecord:
+        return cls(
+            preparation_time=recipe.preparation_time,  # type: ignore
+            preparation_time_iso8601=(
+                duration_isoformat(recipe.preparation_time)  # type: ignore
+            ),
+            cooking_time=recipe.cooking_time,  # type: ignore
+            cooking_time_iso8601=(
+                duration_isoformat(recipe.cooking_time)  # type: ignore
+            ),
+            total_time=recipe.total_time,  # type: ignore
+            total_time_iso8601=duration_isoformat(recipe.total_time),  # type: ignore
+        )
 
 
 class RecipeGlycemicData(BaseModel):
@@ -293,6 +379,28 @@ class RecipeHealthScore(BaseModel):
     rating: Decimal
     positive_impact: list[RecipeHealthScoreImpactRecord]
     negative_impact: list[RecipeHealthScoreImpactRecord]
+
+
+class RecipeRecord(BaseModel):
+    id: int
+    title: str
+    slug: str
+    default_num_portions: int
+    search_keywords: str | None
+    external_id: str | None
+    external_url: str | None
+    status: RecipeStatus
+    difficulty: RecipeDifficulty
+    difficulty_display: str
+    is_vegetarian: bool
+    is_pescatarian: bool
+    duration: RecipeDurationRecord
+    glycemic_data: RecipeGlycemicData | None
+    health_score: RecipeHealthScore | None
+    ingredient_groups: list[RecipeIngredientItemGroupRecord]
+    ingredient_groups_display: list[RecipeIngredientItemGroupDisplayRecord]
+    steps: list[RecipeStepRecord]
+    steps_display: list[RecipeStepDisplayRecord]
 
 
 # TODO: -------------

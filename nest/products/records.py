@@ -64,7 +64,7 @@ class ProductRecord(BaseModel):
 
     @classmethod
     def from_product(cls, product: Product) -> ProductRecord:
-        ensure_prefetched_relations(instance=product, prefetch_keys=["unit"])
+        # ensure_prefetched_relations(instance=product, prefetch_keys=["unit"])
 
         return cls(
             id=product.id,

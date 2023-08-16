@@ -1,4 +1,4 @@
-from .records import RecipeIngredientRecord
+# from .records import RecipeIngredientRecord
 from .models import (
     RecipeIngredient,
     Recipe,
@@ -20,7 +20,7 @@ from .enums import RecipeStepType
 
 def create_ingredient(
     *, title: str, product_id: int | str, request: HttpRequest | None = None
-) -> RecipeIngredientRecord:
+) -> None:
     """
     Create a single ingredient instance.
     """
@@ -30,7 +30,7 @@ def create_ingredient(
     ingredient.save()
 
     log_create_or_updated(old=None, new=ingredient, request_or_user=request)
-    return RecipeIngredientRecord.from_ingredient(ingredient=ingredient)
+    return None  # TODO: Update record
 
 
 def create_recipe(
