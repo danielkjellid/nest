@@ -75,7 +75,6 @@ def create_recipe(
     return recipe.id
 
 
-# TODO: return linked records?
 def create_ingredient_item_groups(
     *, recipe_id: int | str, ingredient_group_items: list[RecipeIngredientItemGroupDict]
 ) -> None:
@@ -123,7 +122,11 @@ def create_ingredient_item_groups(
                         and group.ordering == item_group["ordering"]
                     ),
                     ingredient_id=ingredient_item["ingredient_id"],
-                    additional_info=ingredient_item["additional_info"],
+                    additional_info=(
+                        ingredient_item["additional_info"]
+                        if ingredient_item["additional_info"]
+                        else None
+                    ),
                     portion_quantity=Decimal(ingredient_item["portion_quantity"]),
                     portion_quantity_unit_id=int(
                         ingredient_item["portion_quantity_unit_id"]
@@ -145,7 +148,6 @@ def create_ingredient_item_groups(
         transaction.on_commit(create_ingredient_items)
 
 
-# TODO: Return records?
 def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]) -> None:
     # Get all step numbers from payload to run som sanity checks.
     step_numbers = sorted([step["number"] for step in steps])

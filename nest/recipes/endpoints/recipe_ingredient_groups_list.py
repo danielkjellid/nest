@@ -26,7 +26,6 @@ class RecipeIngredientItemPortionUnitListOut(Schema):
 class RecipeIngredientItemListOut(Schema):
     id: int
     ingredient: RecipeIngredientListOut
-    portion_quantity_display: str
     portion_quantity_unit: RecipeIngredientItemPortionUnitListOut
 
 

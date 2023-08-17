@@ -55,7 +55,9 @@ def ensure_prefetched_relations(*, instance: str, skip_fields: list | None = Non
             skip_check = kwargs.get("skip_check", False)
 
             if not skip_check:
-                arg_instance = next(arg for arg in args if issubclass(type(arg), Model))
+                arg_instance = next(
+                    (arg for arg in args if issubclass(type(arg), Model)), None
+                )
                 kwarg_instance = kwargs.get(instance, None)
                 instance_ = next(
                     (arg for arg in [arg_instance, kwarg_instance] if arg is not None),
@@ -93,9 +95,9 @@ def ensure_prefetched_relations(*, instance: str, skip_fields: list | None = Non
                 for name in fields_to_prefetch:
                     if name not in instance_._prefetched_objects_cache.keys():
                         raise RuntimeError(
-                            f"The relation {name} on the instance {instance_} has not "
-                            f"been prefetched. Unable to use method without using "
-                            f'.prefetch_related("{name}") first.'
+                            f"The relation {type(instance_)}.{name} on the instance "
+                            f"{instance_} has not been prefetched. Unable to use "
+                            f'method without using .prefetch_related("{name}") first.'
                         )
 
                 fields_to_prefetch.clear()
@@ -113,9 +115,9 @@ def ensure_prefetched_relations(*, instance: str, skip_fields: list | None = Non
                 for name in fields_to_select:
                     if name not in instance_._state.fields_cache:
                         raise RuntimeError(
-                            f"The relation {name} on the instance {instance_} has not "
-                            f"been selected. Unable to use method without using "
-                            f'.select_related("{name}") first.'
+                            f"The relation {type(instance_)}.{name} on the instance "
+                            f"{instance_} has not been selected. Unable to use method "
+                            f'without using .select_related("{name}") first.'
                         )
 
                 fields_to_select.clear()
@@ -135,7 +137,9 @@ def ensure_annotated_values(*, instance: str, annotations: list[str]):
             skip_check = kwargs.get("skip_check", False)
 
             if not skip_check:
-                arg_instance = next(arg for arg in args if issubclass(type(arg), Model))
+                arg_instance = next(
+                    (arg for arg in args if issubclass(type(arg), Model)), None
+                )
                 kwarg_instance = kwargs.get(instance, None)
                 instance_ = next(
                     (arg for arg in [arg_instance, kwarg_instance] if arg is not None),

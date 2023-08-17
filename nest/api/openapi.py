@@ -285,7 +285,8 @@ class OpenAPISchema(NinjaOpenAPISchema):
                             props[property]["enum"] = mapping["enum"]
                             props[property][
                                 "component"
-                            ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[  # type: ignore
+                            ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
+                                # type: ignore
                                 "enum"
                             ].value
 
@@ -344,6 +345,8 @@ class OpenAPISchema(NinjaOpenAPISchema):
                 meta["title"] = f"{val.__name__}"
 
                 if hasattr(val, "FormMeta"):
-                    meta["columns"] = getattr(value.FormMeta, "columns", 1)  # type: ignore
+                    meta["columns"] = getattr(
+                        value.FormMeta, "columns", 1
+                    )  # type: ignore
 
         return meta
