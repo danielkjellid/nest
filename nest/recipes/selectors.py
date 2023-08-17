@@ -4,6 +4,10 @@ from .records import (
     RecipeDetailRecord,
 )
 from .models import RecipeIngredient, Recipe, RecipeIngredientItemGroup
+from django.db.models import Sum, Q, F, DurationField
+from django.db.models.functions import Coalesce
+from datetime import timedelta
+from .enums import RecipeStepType
 
 
 def get_ingredients() -> list[RecipeIngredientRecord]:
@@ -39,12 +43,17 @@ def get_ingredient_group_items_for_recipe(
 
 
 def get_recipes() -> list[RecipeDetailRecord]:
-    recipes = Recipe.objects.all().prefetch_related(
-        "steps__ingredient_items__portion_quantity_unit",
-        "steps__ingredient_items__ingredient__product__unit",
-        "ingredient_groups__ingredient_items__portion_quantity_unit",
-        "ingredient_groups__ingredient_items__ingredient__product__unit",
+    recipes = (
+        Recipe.objects.all()
+        .prefetch_related(
+            "steps__ingredient_items__portion_quantity_unit",
+            "steps__ingredient_items__ingredient__product__unit",
+            "ingredient_groups__ingredient_items__portion_quantity_unit",
+            "ingredient_groups__ingredient_items__ingredient__product__unit",
+        )
+        .annotate_duration()
     )
+
     records = [RecipeDetailRecord.from_recipe(recipe) for recipe in recipes]
 
     return records

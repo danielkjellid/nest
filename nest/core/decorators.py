@@ -130,7 +130,7 @@ def ensure_prefetched_relations(*, instance: str, skip_fields: list | None = Non
 
 
 def ensure_annotated_values(*, instance: str, annotations: list[str]):
-    missing_annotations: []
+    missing_annotations = []
 
     def decorator(func: Any):
         def inner(*args: Any, **kwargs: Any):

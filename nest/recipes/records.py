@@ -11,8 +11,9 @@ from .models import (
 from decimal import Decimal
 from .enums import RecipeStatus, RecipeDifficulty, RecipeStepType
 from nest.units.records import UnitRecord
-from nest.core.decorators import ensure_prefetched_relations
+from nest.core.decorators import ensure_prefetched_relations, ensure_annotated_values
 from datetime import timedelta
+from isodate import duration_isoformat
 
 
 ###############
@@ -196,6 +197,25 @@ class RecipeDurationRecord(BaseModel):
     total_time: timedelta
     total_time_iso8601: str
 
+    @classmethod
+    @ensure_annotated_values(
+        instance="recipe",
+        annotations=["preparation_time", "cooking_time", "total_time"],
+    )
+    def from_recipe(cls, recipe: Recipe) -> RecipeDurationRecord:
+        preparation_time = getattr(recipe, "preparation_time", timedelta(seconds=0))
+        cooking_time = getattr(recipe, "cooking_time", timedelta(seconds=0))
+        total_time = getattr(recipe, "total_time", timedelta(seconds=0))
+
+        return cls(
+            preparation_time=preparation_time,
+            preparation_time_iso8601=duration_isoformat(preparation_time),
+            cooking_time=cooking_time,
+            cooking_time_iso8601=duration_isoformat(cooking_time),
+            total_time=total_time,
+            total_time_iso8601=duration_isoformat(total_time),
+        )
+
 
 class RecipeGlycemicData(BaseModel):
     glycemic_index: Decimal
@@ -270,7 +290,7 @@ class RecipeDetailRecord(RecipeRecord):
         ingredient_item_groups = recipe.ingredient_groups.all()
         return cls(
             **RecipeRecord.from_recipe(recipe).dict(),
-            duration=None,
+            duration=RecipeDurationRecord.from_recipe(recipe),
             glycemic_data=None,
             health_score=None,
             ingredient_groups=[
