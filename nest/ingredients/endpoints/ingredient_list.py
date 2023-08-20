@@ -19,7 +19,7 @@ class IngredientListOut(Schema):
     product: IngredientListProductOut
 
 
-@router.get("ingredients/", response=APIResponse[list[IngredientListOut]])
+@router.get("/", response=APIResponse[list[IngredientListOut]])
 def ingredient_list_api(request: HttpRequest) -> APIResponse[list[IngredientListOut]]:
     """
     Get a list off all ingredients in the application

@@ -48,7 +48,3 @@ class RecipeIngredientItemGroupQuerySet(
 
 class RecipeIngredientItemQuerySet(BaseQuerySet["models.RecipeIngredientItem"]):
     ...
-
-
-class RecipeIngredientQuerySet(BaseQuerySet["models.RecipeIngredient"]):
-    ...

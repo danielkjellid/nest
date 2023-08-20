@@ -68,5 +68,5 @@ def recipe_create_api(
     """
     Create a recipe.
     """
-    recipe_id = create_recipe(**payload.dict(), request=request)
-    return APIResponse(status="success", data=RecipeCreateOut(recipe_id=recipe_id))
+    recipe = create_recipe(**payload.dict(), request=request)
+    return APIResponse(status="success", data=RecipeCreateOut(recipe_id=recipe.id))

@@ -25,10 +25,4 @@ export const routes = {
       return generatePath(this.path, { recipeId })
     },
   },
-  ingredientsOverview: {
-    path: '/recipes/ingredients',
-    build() {
-      return generatePath(this.path)
-    },
-  },
 }

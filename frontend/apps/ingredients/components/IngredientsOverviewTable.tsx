@@ -1,7 +1,7 @@
-import Table from '../../../../components/Table'
+import Table from '../../../components/Table'
 import React from 'react'
-import { IngredientListOut } from '../../../../types'
-import { routes as productRoutes } from '../../../products/routes'
+import { IngredientListOut } from '../../../types'
+import { routes as productRoutes } from '../../products/routes'
 import { Anchor } from '@mantine/core'
 interface IngredientsOverviewTableProps {
   data: IngredientListOut[]

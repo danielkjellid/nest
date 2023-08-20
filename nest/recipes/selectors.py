@@ -1,22 +1,7 @@
 from .records import (
-    RecipeIngredientRecord,
     RecipeIngredientItemGroupRecord,
-    RecipeDetailRecord,
 )
-from .models import RecipeIngredient, Recipe, RecipeIngredientItemGroup
-
-
-def get_ingredients() -> list[RecipeIngredientRecord]:
-    """
-    Get a list of all ingredients in the application.
-    """
-    ingredients = RecipeIngredient.objects.all().select_related("product__unit")
-    records = [
-        RecipeIngredientRecord.from_ingredient(ingredient=ingredient)
-        for ingredient in ingredients
-    ]
-
-    return records
+from .models import RecipeIngredientItemGroup
 
 
 def get_ingredient_group_items_for_recipe(
@@ -34,22 +19,5 @@ def get_ingredient_group_items_for_recipe(
         .order_by("ordering")
     )
     records = [RecipeIngredientItemGroupRecord.from_group(group) for group in groups]
-
-    return records
-
-
-def get_recipes() -> list[RecipeDetailRecord]:
-    recipes = (
-        Recipe.objects.all()
-        .prefetch_related(
-            "steps__ingredient_items__portion_quantity_unit",
-            "steps__ingredient_items__ingredient__product__unit",
-            "ingredient_groups__ingredient_items__portion_quantity_unit",
-            "ingredient_groups__ingredient_items__ingredient__product__unit",
-        )
-        .annotate_duration()
-    )
-
-    records = [RecipeDetailRecord.from_recipe(recipe) for recipe in recipes]
 
     return records

@@ -1,6 +1,4 @@
-# from .records import RecipeIngredientRecord
 from .models import (
-    RecipeIngredient,
     Recipe,
     RecipeIngredientItem,
     RecipeIngredientItemGroup,
@@ -16,21 +14,7 @@ from .types import RecipeIngredientItemGroupDict, RecipeStepDict
 from nest.core.exceptions import ApplicationError
 from datetime import timedelta
 from .enums import RecipeStepType
-
-
-def create_ingredient(
-    *, title: str, product_id: int | str, request: HttpRequest | None = None
-) -> None:
-    """
-    Create a single ingredient instance.
-    """
-
-    ingredient = RecipeIngredient(title=title, product_id=product_id)
-    ingredient.full_clean()
-    ingredient.save()
-
-    log_create_or_updated(old=None, new=ingredient, request_or_user=request)
-    return None  # TODO: Update record
+from .records import RecipeRecord
 
 
 def create_recipe(
@@ -46,7 +30,10 @@ def create_recipe(
     is_vegetarian: bool = False,
     is_pescatarian: bool = False,
     request: HttpRequest | None = None,
-) -> int:  # TODO: Change
+) -> RecipeRecord:
+    """
+    Create a single recipe instance.
+    """
     slug = slugify(value=title)
 
     if isinstance(status, str):
@@ -72,12 +59,17 @@ def create_recipe(
     recipe.save()
 
     log_create_or_updated(old=None, new=recipe, request_or_user=request)
-    return recipe.id
+    return RecipeRecord.from_recipe(recipe)
 
 
 def create_ingredient_item_groups(
     *, recipe_id: int | str, ingredient_group_items: list[RecipeIngredientItemGroupDict]
 ) -> None:
+    """
+    Create ingredient item groups and related ingredient items and associate them with a
+    recipe.
+    """
+
     # Sanity check that we only are dealing with unique ordering properties.
     ordering = [group["ordering"] for group in ingredient_group_items]
     if not len(set(ordering)) == len(ordering):
@@ -149,6 +141,10 @@ def create_ingredient_item_groups(
 
 
 def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]) -> None:
+    """
+    Create steps related to a single recipe instance.
+    """
+
     # Get all step numbers from payload to run som sanity checks.
     step_numbers = sorted([step["number"] for step in steps])
 

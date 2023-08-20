@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { RecipeOverview } from './overview'
-import { RecipeIngredientsOverview } from './ingredients/overview'
 import { routes } from './routes'
 import { useStrippedRoute } from '../../hooks/route'
 import { RecipeCreate } from './create'
@@ -20,10 +19,6 @@ export function RecipesApp() {
         element={<RecipeIngredientsCreate />}
       />
       <Route path={baseRoute(routes.createRecipeSteps.path)} element={<RecipeStepsCreate />} />
-      <Route
-        path={baseRoute(routes.ingredientsOverview.path)}
-        element={<RecipeIngredientsOverview />}
-      />
     </Routes>
   )
 }

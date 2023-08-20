@@ -6,6 +6,72 @@
         "description": ""
     },
     "paths": {
+        "/api/v1/ingredients/create/": {
+            "post": {
+                "operationId": "ingredient_create_api",
+                "summary": "Ingredient Create Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create an ingredient.",
+                "tags": [
+                    "Ingredients"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngredientCreateIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/ingredients/": {
+            "get": {
+                "operationId": "ingredient_list_api",
+                "summary": "Ingredient List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list off all ingredients in the application",
+                "tags": [
+                    "Ingredients"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/products/create/": {
             "post": {
                 "operationId": "product_create_api",
@@ -234,72 +300,6 @@
                 ]
             }
         },
-        "/api/v1/recipes/ingredients/create/": {
-            "post": {
-                "operationId": "ingredient_create_api",
-                "summary": "Ingredient Create Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Create an ingredient.",
-                "tags": [
-                    "Recipes"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IngredientCreateIn"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/recipes/ingredients/": {
-            "get": {
-                "operationId": "ingredient_list_api",
-                "summary": "Ingredient List Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list off all ingredients in the application",
-                "tags": [
-                    "Recipes"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/recipes/create/": {
             "post": {
                 "operationId": "recipe_create_api",
@@ -418,34 +418,6 @@
                     }
                 },
                 "description": "Get a list of all RecipeIngredientItemGroups for a recipe.",
-                "tags": [
-                    "Recipes"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/recipes/": {
-            "get": {
-                "operationId": "recipe_list_api",
-                "summary": "Recipe List Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RecipeListOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list of all recipes in the application.",
                 "tags": [
                     "Recipes"
                 ],
@@ -591,6 +563,124 @@
                 "required": [
                     "status",
                     "data"
+                ],
+                "type": "object"
+            },
+            "IngredientCreateIn": {
+                "title": "IngredientCreateIn",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "helpText": "User friendly title. E.g. Red tomatoes.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "product": {
+                        "title": "Product",
+                        "helpText": null,
+                        "component": "Select",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 2,
+                        "min": null,
+                        "max": null,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "IngredientListProductOut": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "fullName"
+                ],
+                "type": "object"
+            },
+            "IngredientListOut": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/IngredientListProductOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "IngredientListOutAPIResponse": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IngredientListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
                 ],
                 "type": "object"
             },
@@ -1739,124 +1829,6 @@
                 ],
                 "type": "object"
             },
-            "IngredientCreateIn": {
-                "title": "IngredientCreateIn",
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "helpText": "User friendly title. E.g. Red tomatoes.",
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 1,
-                        "min": null,
-                        "max": null,
-                        "type": "string"
-                    },
-                    "product": {
-                        "title": "Product",
-                        "helpText": null,
-                        "component": "Select",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 2,
-                        "min": null,
-                        "max": null,
-                        "type": "integer"
-                    }
-                },
-                "required": [
-                    "title",
-                    "product"
-                ],
-                "type": "object"
-            },
-            "IngredientListProductOut": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id",
-                    "fullName"
-                ],
-                "type": "object"
-            },
-            "IngredientListOut": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "product": {
-                        "$ref": "#/components/schemas/IngredientListProductOut"
-                    }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "product"
-                ],
-                "type": "object"
-            },
-            "IngredientListOutAPIResponse": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/IngredientListOut"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "status"
-                ],
-                "type": "object"
-            },
             "RecipeCreateOut": {
                 "title": "RecipeCreateOutAPIResponse",
                 "properties": {
@@ -2324,51 +2296,6 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientItemGroupListOut"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "status"
-                ],
-                "type": "object"
-            },
-            "RecipeListOut": {
-                "title": "RecipeListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id"
-                ],
-                "type": "object"
-            },
-            "RecipeListOutAPIResponse": {
-                "title": "RecipeListOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeListOut"
                         },
                         "component": "MultiSelect"
                     }

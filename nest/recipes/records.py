@@ -1,8 +1,6 @@
 from __future__ import annotations
 from pydantic import BaseModel
-from nest.products.records import ProductRecord
 from .models import (
-    RecipeIngredient,
     Recipe,
     RecipeIngredientItemGroup,
     RecipeStep,
@@ -14,30 +12,7 @@ from nest.units.records import UnitRecord
 from nest.core.decorators import ensure_prefetched_relations, ensure_annotated_values
 from datetime import timedelta
 from isodate import duration_isoformat
-
-
-###############
-# Ingredients #
-###############
-
-
-class RecipeIngredientRecord(BaseModel):
-    id: int
-    title: str
-    product: ProductRecord
-
-    @classmethod
-    @ensure_prefetched_relations(
-        instance="ingredient", skip_fields=["ingredient_items"]
-    )
-    def from_ingredient(
-        cls, ingredient: RecipeIngredient, skip_check: bool = False
-    ) -> RecipeIngredientRecord:
-        return cls(
-            id=ingredient.id,
-            title=ingredient.title,
-            product=ProductRecord.from_product(ingredient.product),
-        )
+from nest.ingredients.records import IngredientRecord
 
 
 ####################
@@ -48,7 +23,7 @@ class RecipeIngredientRecord(BaseModel):
 class RecipeIngredientItemRecord(BaseModel):
     id: int
     group_title: str
-    ingredient: RecipeIngredientRecord
+    ingredient: IngredientRecord
     additional_info: str | None
     portion_quantity: Decimal
     portion_quantity_unit: UnitRecord
@@ -60,7 +35,7 @@ class RecipeIngredientItemRecord(BaseModel):
         return cls(
             id=item.id,
             group_title=item.ingredient_group.title,
-            ingredient=RecipeIngredientRecord.from_ingredient(item.ingredient),
+            ingredient=IngredientRecord.from_ingredient(item.ingredient),
             additional_info=item.additional_info,
             portion_quantity=item.portion_quantity,
             portion_quantity_unit=UnitRecord.from_unit(item.portion_quantity_unit),

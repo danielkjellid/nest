@@ -1,11 +1,11 @@
 import React, { forwardRef } from 'react'
-import Drawer from '../../../../components/Drawer'
-import { useForm } from '../../../../hooks/forms'
-import Form from '../../../../components/Form'
-import { IngredientCreateIn, ProductListOut } from '../../../../types'
+import Drawer from '../../../components/Drawer'
+import { useForm } from '../../../hooks/forms'
+import Form from '../../../components/Form'
+import { IngredientCreateIn, ProductListOut } from '../../../types'
 import { Select, Text } from '@mantine/core'
-import { Button } from '../../../../components/Button'
-import { urls } from '../../../urls'
+import { Button } from '../../../components/Button'
+import { urls } from '../../urls'
 
 interface IngredientAddDrawerProps {
   opened: boolean
@@ -28,7 +28,7 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
   }
 
   const addIngredient = async () => {
-    await form.performPost({ url: urls.recipes.ingredients.create() })
+    await form.performPost({ url: urls.ingredients.create() })
     refetch()
   }
 

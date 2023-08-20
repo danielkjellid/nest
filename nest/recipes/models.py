@@ -5,7 +5,6 @@ from .enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 
 from .managers import (
     RecipeQuerySet,
-    RecipeIngredientQuerySet,
     RecipeIngredientItemGroupQuerySet,
     RecipeIngredientItemQuerySet,
     RecipeStepQuerySet,
@@ -117,7 +116,7 @@ class RecipeIngredientItem(BaseModel):
         on_delete=models.CASCADE,
     )
     ingredient = models.ForeignKey(
-        "recipes.RecipeIngredient",
+        "ingredients.Ingredient",
         related_name="ingredient_items",
         on_delete=models.CASCADE,
     )
@@ -143,21 +142,3 @@ class RecipeIngredientItem(BaseModel):
     class Meta:
         verbose_name = "ingredient item"
         verbose_name_plural = "ingredient items"
-
-
-_RecipeIngredientManager = models.Manager.from_queryset(RecipeIngredientQuerySet)
-
-
-class RecipeIngredient(BaseModel):
-    # A friendly (alternative) title for ingredient, used in cases where the title is
-    # 'Tomatoes, red' and the friendly/display name would be 'Red tomatoes'.
-    title = models.CharField(max_length=255)
-    product = models.ForeignKey(
-        "products.Product", related_name="recipe_ingredients", on_delete=models.CASCADE
-    )
-
-    objects = _RecipeIngredientManager()
-
-    class Meta:
-        verbose_name = "ingredient"
-        verbose_name_plural = "ingredients"
