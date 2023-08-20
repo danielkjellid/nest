@@ -7,37 +7,36 @@ from ..selectors import get_ingredient_item_groups_for_recipe
 from .router import router
 
 
-class RecipeIngredientProductListOut(Schema):
+class RecipeIngredientGroupsListIngredientProductOut(Schema):
     full_name: str
     thumbnail_url: str | None
 
 
-# TODO: Naming!
-class RecipeIngredientListOut(Schema):
+class RecipeIngredientGroupsListIngredientOut(Schema):
     id: int
     title: str
-    product: RecipeIngredientProductListOut
+    product: RecipeIngredientGroupsListIngredientProductOut
 
 
-class RecipeIngredientItemPortionUnitListOut(Schema):
+class RecipeIngredientGroupsListItemPortionQuantityUnitOut(Schema):
     abbreviation: str
 
 
-class RecipeIngredientItemListOut(Schema):
+class RecipeIngredientGroupsListItemOut(Schema):
     id: int
-    ingredient: RecipeIngredientListOut
-    portion_quantity_unit: RecipeIngredientItemPortionUnitListOut
+    ingredient: RecipeIngredientGroupsListIngredientOut
+    portion_quantity_unit: RecipeIngredientGroupsListItemPortionQuantityUnitOut
 
 
-class RecipeIngredientItemGroupListOut(Schema):
+class RecipeIngredientGroupsListOut(Schema):
     id: int
     title: str
-    ingredient_items: list[RecipeIngredientItemListOut]
+    ingredient_items: list[RecipeIngredientGroupsListItemOut]
 
 
 @router.get(
     "{recipe_id}/ingredient-groups/",
-    response=APIResponse[list[RecipeIngredientItemGroupListOut]],
+    response=APIResponse[list[RecipeIngredientGroupsListOut]],
 )
 def recipe_ingredient_groups_list_api(request: HttpRequest, recipe_id: int):
     """
@@ -45,6 +44,6 @@ def recipe_ingredient_groups_list_api(request: HttpRequest, recipe_id: int):
     """
 
     groups = get_ingredient_item_groups_for_recipe(recipe_id=recipe_id)
-    data = [RecipeIngredientItemGroupListOut(**group.dict()) for group in groups]
+    data = [RecipeIngredientGroupsListOut(**group.dict()) for group in groups]
 
     return APIResponse(status="success", data=data)

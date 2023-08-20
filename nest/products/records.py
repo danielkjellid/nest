@@ -8,7 +8,6 @@ from pydantic import BaseModel
 from nest.units.records import UnitRecord
 
 from .models import Product
-from nest.core.utils import ensure_prefetched_relations
 
 
 class ProductClassifiersRecord(BaseModel):
@@ -64,8 +63,6 @@ class ProductRecord(BaseModel):
 
     @classmethod
     def from_product(cls, product: Product) -> ProductRecord:
-        # ensure_prefetched_relations(instance=product, prefetch_keys=["unit"])
-
         return cls(
             id=product.id,
             name=product.name,

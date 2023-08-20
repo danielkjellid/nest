@@ -411,7 +411,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeIngredientItemGroupListOutAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeIngredientGroupsListOutAPIResponse"
                                 }
                             }
                         }
@@ -2151,8 +2151,8 @@
                 ],
                 "type": "object"
             },
-            "RecipeIngredientProductListOut": {
-                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+            "RecipeIngredientGroupsListIngredientProductOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
                 "properties": {
                     "fullName": {
                         "title": "Full Name",
@@ -2170,8 +2170,8 @@
                 ],
                 "type": "object"
             },
-            "RecipeIngredientListOut": {
-                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+            "RecipeIngredientGroupsListIngredientOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
@@ -2184,7 +2184,7 @@
                         "component": "TextInput"
                     },
                     "product": {
-                        "$ref": "#/components/schemas/RecipeIngredientProductListOut"
+                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientProductOut"
                     }
                 },
                 "required": [
@@ -2194,8 +2194,8 @@
                 ],
                 "type": "object"
             },
-            "RecipeIngredientItemPortionUnitListOut": {
-                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+            "RecipeIngredientGroupsListItemPortionQuantityUnitOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
                 "properties": {
                     "abbreviation": {
                         "title": "Abbreviation",
@@ -2208,8 +2208,8 @@
                 ],
                 "type": "object"
             },
-            "RecipeIngredientItemListOut": {
-                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+            "RecipeIngredientGroupsListItemOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
@@ -2217,10 +2217,10 @@
                         "component": "TextInput"
                     },
                     "ingredient": {
-                        "$ref": "#/components/schemas/RecipeIngredientListOut"
+                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientOut"
                     },
                     "portionQuantityUnit": {
-                        "$ref": "#/components/schemas/RecipeIngredientItemPortionUnitListOut"
+                        "$ref": "#/components/schemas/RecipeIngredientGroupsListItemPortionQuantityUnitOut"
                     }
                 },
                 "required": [
@@ -2230,8 +2230,8 @@
                 ],
                 "type": "object"
             },
-            "RecipeIngredientItemGroupListOut": {
-                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+            "RecipeIngredientGroupsListOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
                 "properties": {
                     "id": {
                         "title": "Id",
@@ -2247,7 +2247,7 @@
                         "title": "Ingredient Items",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientItemListOut"
+                            "$ref": "#/components/schemas/RecipeIngredientGroupsListItemOut"
                         },
                         "component": "MultiSelect"
                     }
@@ -2259,8 +2259,8 @@
                 ],
                 "type": "object"
             },
-            "RecipeIngredientItemGroupListOutAPIResponse": {
-                "title": "RecipeIngredientItemGroupListOutAPIResponse",
+            "RecipeIngredientGroupsListOutAPIResponse": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
                 "properties": {
                     "status": {
                         "title": "Status",
@@ -2280,7 +2280,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientItemGroupListOut"
+                            "$ref": "#/components/schemas/RecipeIngredientGroupsListOut"
                         },
                         "component": "MultiSelect"
                     }

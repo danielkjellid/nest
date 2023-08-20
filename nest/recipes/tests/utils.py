@@ -28,7 +28,7 @@ def create_recipe(
     """
     Create a recipe to use in tests.
     """
-    recipe, _created = Recipe.objects.get_or_create(
+    recipe = Recipe.objects.create(
         title=title,
         slug=slugify(title),
         default_num_portions=default_num_portions,

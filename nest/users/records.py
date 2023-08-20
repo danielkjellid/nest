@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 from nest.homes.records import HomeRecord
 from nest.users.models import User
-from nest.core.utils import ensure_prefetched_relations
 
 
 class UserRecord(BaseModel):
@@ -20,10 +19,7 @@ class UserRecord(BaseModel):
     home: HomeRecord | None
 
     @classmethod
-    def from_user(cls, user: User, skip_check: bool = False) -> UserRecord:
-        if not skip_check:
-            ensure_prefetched_relations(instance=user, prefetch_keys=["home"])
-
+    def from_user(cls, user: User) -> UserRecord:
         is_hijacked = getattr(user, "is_hijacked", False)
 
         return cls(
