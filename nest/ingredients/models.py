@@ -8,9 +8,11 @@ _IngredientManager = models.Manager.from_queryset(IngredientQuerySet)
 class Ingredient(BaseModel):
     # A friendly (alternative) title for ingredient, used in cases where the title is
     # 'Tomatoes, red' and the friendly/display name would be 'Red tomatoes'.
-    title = models.CharField(max_length=255)
-    product = models.ForeignKey(
-        "products.Product", related_name="recipe_ingredients", on_delete=models.CASCADE
+    title = models.CharField(max_length=255, unique=True)
+    product = models.OneToOneField(
+        "products.Product",
+        related_name="recipe_ingredients",
+        on_delete=models.CASCADE,
     )
 
     objects = _IngredientManager()

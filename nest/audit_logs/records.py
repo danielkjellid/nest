@@ -25,7 +25,9 @@ class LogEntryRecord(BaseModel):
             id=log_entry.id,
             action=log_entry.action,
             changes=log_entry.changes,
-            user=UserRecord.from_user(log_entry.user, skip_check=True),
+            user=UserRecord.from_user(log_entry.user, skip_check=True)
+            if log_entry.user
+            else None,
             remote_addr=log_entry.remote_addr,
             source=log_entry.source,
             created_at=log_entry.created_at,

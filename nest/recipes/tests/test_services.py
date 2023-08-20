@@ -1,7 +1,8 @@
 import pytest
 import nest.recipes.tests.utils as utils
 from nest.products.tests.utils import create_product
-from ..models import RecipeStep, RecipeIngredientItemGroup, RecipeIngredientItem
+from nest.ingredients.tests.utils import create_ingredient
+from ..models import RecipeStep, RecipeIngredientItemGroup, RecipeIngredientItem, Recipe
 from ..services import create_recipe_steps, create_ingredient_item_groups
 from nest.units.tests.utils import get_unit
 from nest.core.exceptions import ApplicationError
@@ -10,9 +11,6 @@ pytestmark = pytest.mark.django_db
 
 
 class TestRecipeServices:
-    def test_service_create_ingredient(self, django_assert_num_queries):
-        assert False
-
     def test_service_create_ingredient_item_groups(
         self, immediate_on_commit, django_assert_num_queries
     ):
@@ -27,7 +25,7 @@ class TestRecipeServices:
                 "ordering": 1,
                 "ingredients": [
                     {
-                        "ingredient_id": utils.create_recipe_ingredient(
+                        "ingredient_id": create_ingredient(
                             title="Green peppers",
                             product=create_product(name="Peppers, green"),
                         ).id,
@@ -36,7 +34,7 @@ class TestRecipeServices:
                         "portion_quantity_unit_id": get_unit("g").id,
                     },
                     {
-                        "ingredient_id": utils.create_recipe_ingredient(
+                        "ingredient_id": create_ingredient(
                             title="Cod", product=create_product(name="Fresh luxury cod")
                         ).id,
                         "additional_info": "Descaled",
@@ -50,7 +48,7 @@ class TestRecipeServices:
                 "ordering": 2,
                 "ingredients": [
                     {
-                        "ingredient_id": utils.create_recipe_ingredient(
+                        "ingredient_id": create_ingredient(
                             title="Parsly",
                             product=create_product(name="Fresh parsly"),
                         ).id,
@@ -147,20 +145,20 @@ class TestRecipeServices:
                 "ingredient_items": [
                     utils.create_recipe_ingredient_item(
                         ingredient_group=item_group_1,
-                        ingredient=utils.create_recipe_ingredient(
+                        ingredient=create_ingredient(
                             title="Green peppers",
                             product=create_product(name="Peppers, green"),
                         ),
                     ).id,
                     utils.create_recipe_ingredient_item(
                         ingredient_group=item_group_1,
-                        ingredient=utils.create_recipe_ingredient(
+                        ingredient=create_ingredient(
                             title="Cod", product=create_product(name="Fresh luxury cod")
                         ),
                     ).id,
                     utils.create_recipe_ingredient_item(
                         ingredient_group=item_group_2,
-                        ingredient=utils.create_recipe_ingredient(
+                        ingredient=create_ingredient(
                             title="Parsly",
                             product=create_product(name="Fresh parsly"),
                         ),
@@ -175,7 +173,7 @@ class TestRecipeServices:
                 "ingredient_items": [
                     utils.create_recipe_ingredient_item(
                         ingredient_group=item_group_2,
-                        ingredient=utils.create_recipe_ingredient(
+                        ingredient=create_ingredient(
                             title="Salt",
                             product=create_product(name="Kosher salt"),
                         ),

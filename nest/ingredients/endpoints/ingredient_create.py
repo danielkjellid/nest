@@ -18,14 +18,14 @@ class IngredientCreateIn(Schema):
     )
 
 
-@router.post("create/", response=APIResponse[None])
+@router.post("create/", response={201: APIResponse[None]})
 @staff_required
 def ingredient_create_api(
     request: HttpRequest, payload: IngredientCreateIn
-) -> APIResponse[None]:
+) -> tuple[int, APIResponse[None]]:
     """
     Create an ingredient.
     """
 
     create_ingredient(**payload.dict(), request=request)
-    return APIResponse(status="success", data=None)
+    return 201, APIResponse(status="success", data=None)

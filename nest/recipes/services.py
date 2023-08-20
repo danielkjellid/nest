@@ -203,7 +203,8 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]) ->
         items = [
             item
             for item in ingredient_items
-            if str(item.id) in step["ingredient_items"]
+            if item.id
+            in [int(step_item_id) for step_item_id in step["ingredient_items"]]
         ]
 
         for item in items:

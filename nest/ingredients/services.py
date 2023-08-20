@@ -6,7 +6,7 @@ from nest.audit_logs.services import log_create_or_updated
 
 def create_ingredient(
     *, title: str, product_id: int | str, request: HttpRequest | None = None
-) -> None:
+) -> IngredientRecord:
     """
     Create a single ingredient instance.
     """

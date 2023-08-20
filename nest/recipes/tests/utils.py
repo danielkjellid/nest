@@ -3,15 +3,14 @@ from ..models import (
     Recipe,
     RecipeIngredientItem,
     RecipeIngredientItemGroup,
-    RecipeIngredient,
     RecipeStep,
 )
 from datetime import timedelta
-from nest.products.models import Product
-from nest.products.tests.utils import create_product
 from nest.units.tests.utils import get_unit
 from decimal import Decimal
 from django.utils.text import slugify
+from nest.ingredients.tests.utils import create_ingredient
+from nest.ingredients.models import Ingredient
 
 
 def create_recipe(
@@ -23,7 +22,6 @@ def create_recipe(
     external_url: str | None = None,
     status: RecipeStatus = RecipeStatus.PUBLISHED,
     difficulty: RecipeDifficulty = RecipeDifficulty.MEDIUM,
-    is_partial_recipe: bool = False,
     is_vegetarian: bool = False,
     is_pescatarian: bool = False,
 ) -> Recipe:
@@ -39,7 +37,6 @@ def create_recipe(
         external_url=external_url,
         status=status,
         difficulty=difficulty,
-        is_partial_recipe=is_partial_recipe,
         is_vegetarian=is_vegetarian,
         is_pescatarian=is_pescatarian,
     )
@@ -67,7 +64,7 @@ def create_recipe_ingredient_item_group(
 def create_recipe_ingredient_item(
     *,
     ingredient_group: RecipeIngredientItemGroup | None = None,
-    ingredient: RecipeIngredient | None = None,
+    ingredient: Ingredient | None = None,
     step: RecipeStep | None = None,
     additional_info: str | None = None,
     portion_quantity: str = "100.00",
@@ -80,7 +77,7 @@ def create_recipe_ingredient_item(
         ingredient_group = create_recipe_ingredient_item_group()
 
     if not ingredient:
-        ingredient = create_recipe_ingredient()
+        ingredient = create_ingredient()
 
     ingredient_item = RecipeIngredientItem.objects.create(
         ingredient_group=ingredient_group,
@@ -92,22 +89,6 @@ def create_recipe_ingredient_item(
     )
 
     return ingredient_item
-
-
-def create_recipe_ingredient(
-    *, title: str = "Test ingredient", product: Product | None = None
-) -> RecipeIngredient:
-    """
-    Create a recipe ingredient to use in tests.
-    """
-    if not product:
-        product = create_product()
-
-    ingredient, _created = RecipeIngredient.objects.get_or_create(
-        title=title, product=product
-    )
-
-    return ingredient
 
 
 def create_recipe_step(
