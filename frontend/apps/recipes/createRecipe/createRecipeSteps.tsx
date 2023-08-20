@@ -29,6 +29,7 @@ export interface Step {
 
 interface CreateStepsForm {
   steps: Step[]
+  errors?: InputError[]
   ingredientItemOptions: IngredientItemOptionType[]
   onSequenceChange: (steps: Step[]) => void
   onStepInputAdd: () => void
@@ -38,6 +39,7 @@ interface CreateStepsForm {
 
 function CreateStepsForm({
   steps,
+  errors,
   ingredientItemOptions,
   onSequenceChange,
   onStepInputAdd,
@@ -67,6 +69,7 @@ function CreateStepsForm({
                   isDragDisabled={steps.length <= 1}
                   key={index}
                   step={step}
+                  error={errors?.find((error) => error.index === index)}
                   stepNumber={index + 1}
                   ingredientItemOptions={ingredientItemOptions}
                   canBeDeleted={steps.length > 1}
@@ -82,6 +85,13 @@ function CreateStepsForm({
       </DragDropContext>
     </div>
   )
+}
+
+export interface InputError {
+  index: number
+  unusedIngredientOptions?: boolean
+  emptyFields?: (keyof Step)[]
+  durationBellowZero?: boolean
 }
 
 interface RecipeStepsCreateInnerProps {
@@ -154,13 +164,53 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
       instruction: step.instruction,
       duration: step.duration,
       stepType: step.type,
+      // Get an array of ingredient item ids.
       ingredientItems: step.ingredientItems.map((ingredientItem) => ingredientItem.value),
     }))
   }
 
-  // TODO: validate that all ingredients are used
-  // TODO: validate that all inputs are filled
-  // TODO: validate that duration > 0
+  const [inputErrors, setInputErrors] = useState<InputError[]>()
+
+  const validate = () => {
+    const errors: InputError[] = []
+    const unusedIngredientOptions = ingredientItemOptions?.filter((itemOption) =>
+      steps.map((step) => step.ingredientItems.includes(itemOption))
+    )
+
+    steps.map((step, index) => {
+      const error: InputError = {
+        index: index,
+        unusedIngredientOptions: !!unusedIngredientOptions?.length,
+        durationBellowZero: false,
+      }
+
+      Object.keys(step).map((key) => {
+        const stepKey = key as keyof Step
+        if (step[stepKey] === '') {
+          if (!error.emptyFields) {
+            error.emptyFields = [stepKey]
+          } else {
+            error.emptyFields.push(stepKey)
+          }
+        }
+      })
+
+      if (step.duration <= 0) {
+        error.durationBellowZero = true
+      }
+
+      if (
+        unusedIngredientOptions?.length ||
+        error.emptyFields?.length ||
+        error.durationBellowZero
+      ) {
+        errors.push(error)
+      }
+    })
+
+    setInputErrors(errors)
+  }
+
   const addSteps = async () => {
     const payload = preparePayload()
     try {
@@ -175,12 +225,16 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     <div className="space-y-10">
       <Header title="Add steps for recipe" />
       <Card>
+        {JSON.stringify(inputErrors)}
+        <hr />
+        <button onClick={() => validate()}>validate</button>
         <Card.Form
           title="Add steps"
           subtitle="Add steps to recipe"
           form={
             <CreateStepsForm
               steps={steps}
+              errors={inputErrors}
               ingredientItemOptions={ingredientItemOptions || []}
               onSequenceChange={handleSequenceChange}
               onStepInputAdd={handleStepInputAdd}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
-import { Step } from '../CreateRecipeSteps'
+import { InputError, Step } from '../CreateRecipeSteps'
 import {
   ActionIcon,
   Checkbox,
@@ -63,6 +63,7 @@ interface StepInputProps {
   draggableId: string
   isDragDisabled?: boolean
   step: Step
+  error?: InputError
   stepNumber: number
   ingredientItemOptions: IngredientItemOptionType[]
   canBeDeleted?: boolean
@@ -74,6 +75,7 @@ function StepInput({
   draggableId,
   isDragDisabled,
   step,
+  error,
   stepNumber,
   ingredientItemOptions,
   canBeDeleted,
@@ -120,6 +122,26 @@ function StepInput({
 
   const stepTypes = useEnumToOptions(RecipeStepType)
 
+  const getErrorMessage = (key: keyof Step) => {
+    if (!error) {
+      return undefined
+    }
+
+    if (error.emptyFields?.includes(key)) {
+      return 'This field cannot be empty.'
+    }
+
+    if (key === 'duration' && error.durationBellowZero) {
+      return 'Duration cannot be equal to or bellow zero.'
+    }
+
+    if (key === 'ingredientItems' && error.unusedIngredientOptions) {
+      return 'All ingredient items has to be assigned to a step.'
+    }
+
+    return undefined
+  }
+
   return (
     <Draggable draggableId={draggableId} index={stepNumber - 1} isDragDisabled={isDragDisabled}>
       {(draggableProvided, _draggableSnapshot) => (
@@ -143,6 +165,7 @@ function StepInput({
                   className="w-full text-sm"
                   value={step.instruction}
                   onChange={(event) => handleStepInputChange('instruction', event)}
+                  error={getErrorMessage('instruction')}
                 />
               </div>
               <div className="ml-12 space-y-3">
@@ -152,6 +175,7 @@ function StepInput({
                   value={step.type}
                   data={stepTypes}
                   onChange={(event) => handleStepInputChange('type', event || '')}
+                  error={getErrorMessage('type')}
                 />
                 <Counter
                   label="Duration"
@@ -161,20 +185,23 @@ function StepInput({
                   min={1}
                   max={60}
                   onChange={(event) => handleStepInputChange('duration', event)}
+                  error={getErrorMessage('duration')}
                 />
-                <TransferList
-                  value={[ingredientItemOptions, step.ingredientItems]}
-                  onChange={handleIngredientItemTransfer}
-                  searchPlaceholder="Search ingredients"
-                  nothingFound="No ingredients matching query"
-                  titles={['Available ingredients', 'Ingredients related to step']}
-                  listHeight={300}
-                  itemComponent={IngredientItemOption}
-                  filter={(query, item) =>
-                    item.label.toLowerCase().includes(query.toLowerCase().trim()) ||
-                    item.description.toLowerCase().includes(query.toLowerCase().trim())
-                  }
-                />
+                <Input.Wrapper error={getErrorMessage('ingredientItems')}>
+                  <TransferList
+                    value={[ingredientItemOptions, step.ingredientItems]}
+                    onChange={handleIngredientItemTransfer}
+                    searchPlaceholder="Search ingredients"
+                    nothingFound="No ingredients matching query"
+                    titles={['Available ingredients', 'Ingredients related to step']}
+                    listHeight={300}
+                    itemComponent={IngredientItemOption}
+                    filter={(query, item) =>
+                      item.label.toLowerCase().includes(query.toLowerCase().trim()) ||
+                      item.description.toLowerCase().includes(query.toLowerCase().trim())
+                    }
+                  />
+                </Input.Wrapper>
               </div>
             </div>
             <ActionIcon

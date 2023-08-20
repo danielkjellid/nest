@@ -275,7 +275,7 @@ class RecipeRecord(BaseModel):
 
 
 class RecipeDetailRecord(RecipeRecord):
-    duration: RecipeDurationRecord | None  # TODO: Needs to be annotated
+    duration: RecipeDurationRecord
     glycemic_data: RecipeGlycemicData | None  # TODO: Needs to be annotated
     health_score: RecipeHealthScore | None  # TODO: Needs to be annotated
     ingredient_groups: list[RecipeIngredientItemGroupRecord]
