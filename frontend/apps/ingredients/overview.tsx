@@ -1,6 +1,5 @@
 import React from 'react'
 import View from '../../components/View'
-import { OverviewHeader } from '../recipes/components/OverviewHeader'
 import { IngredientsOverviewTable } from './components/IngredientsOverviewTable'
 import { useFetch } from '../../hooks/fetcher'
 import { IngredientListOutAPIResponse, ProductListOutAPIResponse } from '../../types'
