@@ -6,7 +6,6 @@ from nest.products.tests.utils import create_product
 pytestmark = pytest.mark.django_db
 
 
-@pytest.mark.django_db
 class TestEndpointIngredientCreate:
     ENDPOINT = reverse("api-1.0.0:ingredient_create_api")
 
@@ -24,7 +23,7 @@ class TestEndpointIngredientCreate:
         )
         product = create_product()
         payload = {"title": "Ingredient 1", "product": product.id}
-        print(self.ENDPOINT)
+
         with django_assert_num_queries(2):
             response = client.post(
                 self.ENDPOINT, data=payload, content_type="application/json"
