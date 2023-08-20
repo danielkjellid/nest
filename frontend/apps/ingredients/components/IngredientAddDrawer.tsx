@@ -3,7 +3,7 @@ import Drawer from '../../../components/Drawer'
 import { useForm } from '../../../hooks/forms'
 import Form from '../../../components/Form'
 import { IngredientCreateIn, ProductListOut } from '../../../types'
-import { Select, Text } from '@mantine/core'
+import { Text } from '@mantine/core'
 import { Button } from '../../../components/Button'
 import { urls } from '../../urls'
 
@@ -30,9 +30,8 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
   const addIngredient = async () => {
     await form.performPost({ url: urls.ingredients.create() })
     refetch()
+    onClose()
   }
-
-  console.log(productsOptions)
 
   return (
     <Drawer
