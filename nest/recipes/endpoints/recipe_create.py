@@ -38,11 +38,6 @@ class RecipeCreateIn(Schema):
         help_text="Direct link to the recipe on a provider's site",
         col_span=3,
     )
-    is_partial_recipe: bool = FormField(
-        False,
-        help_text="Designates if the recipe can be considered a full meal.",
-        order=8,
-    )
     is_vegetarian: bool = FormField(
         False,
         help_text="The recipe does not conatin any meat or fish products.",
@@ -60,7 +55,7 @@ class RecipeCreateOut(Schema):
     recipe_id: int
 
 
-@router.post("create/", response=APIResponse[RecipeCreateOut])
+@router.post("create/", response={201: APIResponse[RecipeCreateOut]})
 @staff_required
 def recipe_create_api(
     request: HttpRequest, payload: RecipeCreateIn
@@ -69,4 +64,4 @@ def recipe_create_api(
     Create a recipe.
     """
     recipe = create_recipe(**payload.dict(), request=request)
-    return APIResponse(status="success", data=RecipeCreateOut(recipe_id=recipe.id))
+    return 201, APIResponse(status="success", data=RecipeCreateOut(recipe_id=recipe.id))

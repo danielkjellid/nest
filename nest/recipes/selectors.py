@@ -4,7 +4,7 @@ from .records import (
 from .models import RecipeIngredientItemGroup
 
 
-def get_ingredient_group_items_for_recipe(
+def get_ingredient_item_groups_for_recipe(
     *, recipe_id: str | int
 ) -> list[RecipeIngredientItemGroupRecord]:
     """

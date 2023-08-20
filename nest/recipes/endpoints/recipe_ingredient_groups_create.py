@@ -27,9 +27,9 @@ class RecipeIngredientsCreateIn(Schema):
     ingredients: list[RecipeIngredientsCreateIngredientIn]
 
 
-@router.post("{recipe_id}/ingredient-groups/create/", response=APIResponse[None])
+@router.post("{recipe_id}/ingredient-groups/create/", response={201: APIResponse[None]})
 @staff_required
-def recipe_ingredients_create_api(
+def recipe_ingredient_groups_create_api(
     request: HttpRequest, recipe_id: int, payload: list[RecipeIngredientsCreateIn]
 ) -> APIResponse[None]:
     """
@@ -38,4 +38,4 @@ def recipe_ingredients_create_api(
     create_ingredient_item_groups(
         recipe_id=recipe_id, ingredient_group_items=[p.dict() for p in payload]
     )
-    return APIResponse(status="success", data=None)
+    return 201, APIResponse(status="success", data=None)

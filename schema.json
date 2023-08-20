@@ -306,8 +306,8 @@
                 "summary": "Recipe Create Api",
                 "parameters": [],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -340,8 +340,8 @@
         },
         "/api/v1/recipes/{recipe_id}/ingredient-groups/create/": {
             "post": {
-                "operationId": "recipe_ingredients_create_api",
-                "summary": "Recipe Ingredients Create Api",
+                "operationId": "recipe_ingredient_groups_create_api",
+                "summary": "Recipe Ingredient Groups Create Api",
                 "parameters": [
                     {
                         "in": "path",
@@ -354,8 +354,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -392,8 +392,8 @@
         },
         "/api/v1/recipes/{recipe_id}/ingredient-groups/": {
             "get": {
-                "operationId": "recipe_ingredient_group_items_api",
-                "summary": "Recipe Ingredient Group Items Api",
+                "operationId": "recipe_ingredient_groups_list_api",
+                "summary": "Recipe Ingredient Groups List Api",
                 "parameters": [
                     {
                         "in": "path",
@@ -444,8 +444,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -2032,21 +2032,6 @@
                         "min": null,
                         "max": null,
                         "type": "string"
-                    },
-                    "isPartialRecipe": {
-                        "title": "Is Partial Recipe",
-                        "default": false,
-                        "helpText": "Designates if the recipe can be considered a full meal.",
-                        "component": "Checkbox",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 8,
-                        "min": null,
-                        "max": null,
-                        "type": "boolean"
                     },
                     "isVegetarian": {
                         "title": "Is Vegetarian",

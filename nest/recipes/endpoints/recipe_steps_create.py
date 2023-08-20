@@ -14,7 +14,7 @@ class RecipeStepsCreateIn(Schema):
     ingredient_items: list[str]
 
 
-@router.post("{recipe_id}/steps/create/", response=APIResponse[None])
+@router.post("{recipe_id}/steps/create/", response={201: APIResponse[None]})
 @staff_required
 def recipe_steps_create_api(
     request: HttpRequest, recipe_id: int, payload: list[RecipeStepsCreateIn]
@@ -23,4 +23,4 @@ def recipe_steps_create_api(
     Create steps related to a single recipe.
     """
     create_recipe_steps(recipe_id=recipe_id, steps=[p.dict() for p in payload])
-    return APIResponse(status="success", data=None)
+    return 201, APIResponse(status="success", data=None)

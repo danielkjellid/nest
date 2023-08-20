@@ -12,6 +12,10 @@ if TYPE_CHECKING:
 
 class RecipeQuerySet(BaseQuerySet["models.Recipe"]):
     def annotate_duration(self) -> BaseQuerySet["models.Recipe"]:
+        """
+        Annotate a recipes duration by calculating the associated steps in the
+        respective preparation and cooking step types.
+        """
         return self.annotate(
             preparation_time=Coalesce(
                 Sum(

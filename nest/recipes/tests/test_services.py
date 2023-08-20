@@ -3,14 +3,44 @@ import nest.recipes.tests.utils as utils
 from nest.products.tests.utils import create_product
 from nest.ingredients.tests.utils import create_ingredient
 from ..models import RecipeStep, RecipeIngredientItemGroup, RecipeIngredientItem, Recipe
-from ..services import create_recipe_steps, create_ingredient_item_groups
+from ..services import create_recipe_steps, create_ingredient_item_groups, create_recipe
 from nest.units.tests.utils import get_unit
 from nest.core.exceptions import ApplicationError
+from ..enums import RecipeDifficulty, RecipeStatus
 
 pytestmark = pytest.mark.django_db
 
 
 class TestRecipeServices:
+    def test_service_create_recipe(self, django_assert_num_queries):
+        """
+        Test that the create_recipe service successfully creates a recipe with expected
+        output.
+        """
+
+        assert Recipe.objects.count() == 0
+
+        fields = {
+            "title": "A new recipe",
+            "default_num_portions": 3,
+            "status": "1",
+            "difficulty": RecipeDifficulty.MEDIUM,
+            "is_vegetarian": True,
+        }
+
+        with django_assert_num_queries(3):
+            recipe = create_recipe(**fields)
+
+        assert Recipe.objects.count() == 1
+
+        assert recipe.title == fields["title"]
+        assert recipe.default_num_portions == fields["default_num_portions"]
+        assert recipe.status == RecipeStatus.DRAFT
+        assert recipe.difficulty == RecipeDifficulty.MEDIUM
+        assert recipe.is_vegetarian is True
+        assert recipe.external_id is None
+        assert recipe.external_url is None
+
     def test_service_create_ingredient_item_groups(
         self, immediate_on_commit, django_assert_num_queries
     ):
@@ -121,9 +151,6 @@ class TestRecipeServices:
                     },
                 ],
             )
-
-    def test_service_create_recipe(self, django_assert_num_queries):
-        assert False
 
     def test_service_create_recipe_steps(self, django_assert_num_queries):
         """
