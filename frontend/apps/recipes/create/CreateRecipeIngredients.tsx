@@ -14,6 +14,7 @@ import { performPost } from '../../../hooks/fetcher/http'
 import { useNavigate, useParams } from 'react-router-dom'
 import { routes } from '../routes'
 import invariant from 'tiny-invariant'
+import { Notifications, notifications } from '@mantine/notifications'
 
 export interface FormError {
   index: number
@@ -184,9 +185,14 @@ function RecipeIngredientsCreateInner({ recipeId, results }: RecipeIngredientsCr
           url: urls.recipes.createIngredientGroups({ id: recipeId }),
           data: payload,
         })
+        notifications.show({
+          color: 'green',
+          title: 'Ingredient groups created',
+          message: 'Ingredient groups and ingredients was successfully saved.',
+        })
         navigate(routes.createRecipeIngredients.build({ recipeId }))
       } catch (e) {
-        // TODO set notification
+        console.log(e)
       }
     }
   }

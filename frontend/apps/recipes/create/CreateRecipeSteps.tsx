@@ -13,6 +13,7 @@ import { performPost } from '../../../hooks/fetcher/http'
 import { urls } from '../../urls'
 import { routes } from '../routes'
 import { Step, StepInputError, RecipeStepsForm } from '../forms/RecipeStepsForm'
+import { notifications } from '@mantine/notifications'
 
 interface RecipeStepsCreateInnerProps {
   recipeId: string | number
@@ -147,11 +148,20 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 
   const addSteps = async () => {
     const payload = preparePayload()
-    try {
-      await performPost({ url: urls.recipes.createSteps({ id: recipeId }), data: payload })
-      navigate(routes.overview.build())
-    } catch (e) {
-      // TODO: set notification
+    validate()
+
+    if (!inputErrors) {
+      try {
+        await performPost({ url: urls.recipes.createSteps({ id: recipeId }), data: payload })
+        notifications.show({
+          title: 'Recipe created',
+          message: 'Recipe was successfully created.',
+          color: 'green',
+        })
+        navigate(routes.overview.build())
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 
@@ -159,9 +169,6 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     <div className="space-y-10">
       <Header title="Add steps for recipe" />
       <Card>
-        {JSON.stringify(inputErrors)}
-        <hr />
-        <button onClick={() => validate()}>validate</button>
         <Card.Form
           title="Add steps"
           subtitle="Add steps to recipe"
