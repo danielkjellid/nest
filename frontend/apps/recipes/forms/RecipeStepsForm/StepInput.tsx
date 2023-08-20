@@ -1,37 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
-import { InputError, Step } from '../CreateRecipeSteps'
+import { StepInputError, Step } from './types'
 import {
   ActionIcon,
   Checkbox,
   Select,
   Text,
-  Group,
-  Avatar,
-  TextInput,
   Textarea,
   TransferList,
-  TransferListData,
   TransferListItemComponent,
   TransferListItemComponentProps,
-  useMantineTheme,
   Input,
-  NumberInput,
 } from '@mantine/core'
-import { IconX, IconPlus, IconMinus } from '@tabler/icons-react'
-import { Button } from '../../../../components/Button'
+import { IconX } from '@tabler/icons-react'
 import { Counter } from '../../../../components/Counter'
 import { RecipeStepType } from '../../../../types'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { Draggable } from 'react-beautiful-dnd'
-
-export interface IngredientItemOptionType {
-  label: string
-  value: string
-  image?: string
-  description: string
-  group: string
-}
+import { IngredientItemOptionType } from './types'
 
 const IngredientItemOption: TransferListItemComponent = ({
   data,
@@ -63,7 +49,7 @@ interface StepInputProps {
   draggableId: string
   isDragDisabled?: boolean
   step: Step
-  error?: InputError
+  error?: StepInputError
   stepNumber: number
   ingredientItemOptions: IngredientItemOptionType[]
   canBeDeleted?: boolean

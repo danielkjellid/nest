@@ -17,7 +17,7 @@ function Stepper({ loadingStep }: StepperProps) {
       label: 'Create recipe',
       description: 'Add basic recipe information',
       path: routes.createRecipe.path,
-      buildPath(recipeId: string | number) {
+      buildPath(_recipeId: string | number) {
         return routes.createRecipe.build()
       },
     },

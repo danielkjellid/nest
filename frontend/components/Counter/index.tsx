@@ -57,11 +57,12 @@ function Counter({
           value={value}
           onChange={(val) => onChange(val)}
           handlersRef={handlers}
+          error={!!error}
           styles={{ input: { textAlign: 'center' } }}
           {...props}
         />
         <ActionIcon
-          color={theme.primaryColor}
+          color={error ? 'red' : theme.primaryColor}
           variant="outline"
           size="lg"
           onClick={() => handlers.current?.increment()}

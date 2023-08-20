@@ -3,15 +3,10 @@ import React, { forwardRef } from 'react'
 import { ActionIcon, Select, TextInput, Text } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { UnitOption } from '../../../../contexts/UnitsProvider'
-import { FormError } from '../CreateRecipeIngredients'
+import { FormError } from '../../create/CreateRecipeIngredients'
 import { Draggable } from 'react-beautiful-dnd'
 
-export interface IngredientOptionType {
-  label: string
-  value: string
-  image?: string | null
-  description: string
-}
+import { IngredientOptionType, Ingredient, IngredientGroup } from './types'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
   image?: string | null
@@ -36,13 +31,6 @@ const IngredientOption = forwardRef<HTMLDivElement, IngredientOptionProps>(
 )
 
 IngredientOption.displayName = 'IngredientOption'
-
-export interface Ingredient {
-  ingredient: string
-  portionQuantity: string
-  additionalInfo: string
-  unit: UnitOption['value']
-}
 
 interface IngredientInputProps {
   units: UnitOption[]
@@ -132,11 +120,6 @@ function IngredientInput({
       </div>
     </div>
   )
-}
-
-export interface IngredientGroup {
-  title: string
-  ingredients: Ingredient[]
 }
 
 interface IngredientGroupInputProps {

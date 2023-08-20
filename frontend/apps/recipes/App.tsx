@@ -4,9 +4,9 @@ import { RecipeOverview } from './overview'
 import { RecipeIngredientsOverview } from './ingredients/overview'
 import { routes } from './routes'
 import { useStrippedRoute } from '../../hooks/route'
-import { RecipeCreate } from './createRecipe'
-import { RecipeIngredientsCreate } from './createRecipe/CreateRecipeIngredients'
-import { RecipeStepsCreate } from './createRecipe/CreateRecipeSteps'
+import { RecipeCreate } from './create'
+import { RecipeIngredientsCreate } from './create/CreateRecipeIngredients'
+import { RecipeStepsCreate } from './create/CreateRecipeSteps'
 
 export function RecipesApp() {
   const baseRoute = useStrippedRoute('/recipes')

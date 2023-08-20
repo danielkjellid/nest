@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { Card } from '../../../components/Card'
 import { Button } from '../../../components/Button'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Header } from './components/Header'
 import { useCommonStyles } from '../../../styles/common'
@@ -9,15 +8,9 @@ import View from '../../../components/View'
 import { useFetch } from '../../../hooks/fetcher'
 import { IngredientListOutAPIResponse } from '../../../types'
 import { urls } from '../../urls'
-import { useUnits, UnitOption } from '../../../contexts/UnitsProvider'
-import {
-  Ingredient,
-  IngredientGroup,
-  IngredientOptionType,
-  IngredientGroupInput,
-} from './components/IngredientGroupInput'
+import { useUnits } from '../../../contexts/UnitsProvider'
+import { RecipeIngredientsForm, Ingredient, IngredientGroup } from '../forms/RecipeIngredientsForm'
 import { performPost } from '../../../hooks/fetcher/http'
-import { useDragAndDropSingleList } from '../../../hooks/drag-and-drop'
 import { useNavigate, useParams } from 'react-router-dom'
 import { routes } from '../routes'
 import invariant from 'tiny-invariant'
@@ -25,88 +18,6 @@ import invariant from 'tiny-invariant'
 export interface FormError {
   index: number
   message: string
-}
-
-interface CreateIngredientFormProps {
-  units: UnitOption[]
-  ingredientGroups: IngredientGroup[]
-  ingredientGroupsErrors: FormError[]
-  ingredientOptions: IngredientOptionType[]
-  ingredientErrors: FormError[]
-  onSequenceChange: (ingredientGroups: IngredientGroup[]) => void
-  onIngredientInputAdd: (index: number) => void
-  onIngredientInputChange: (index: number, ingredientIndex: number, data: Ingredient) => void
-  onIngredientInputDelete: (index: number, ingredientIndex: number) => void
-  onIngredientGroupInputAdd: () => void
-  onIngredientGroupInputChange: (index: number, data: IngredientGroup) => void
-  onIngredientGroupInputDelete: (index: number) => void
-}
-
-function CreateIngredientsForm({
-  ingredientGroups,
-  ingredientGroupsErrors,
-  ingredientOptions,
-  ingredientErrors,
-  units,
-  onSequenceChange,
-  onIngredientInputAdd,
-  onIngredientInputChange,
-  onIngredientInputDelete,
-  onIngredientGroupInputAdd,
-  onIngredientGroupInputChange,
-  onIngredientGroupInputDelete,
-}: CreateIngredientFormProps) {
-  const { onDragEnd, onDragStart } = useDragAndDropSingleList({
-    items: ingredientGroups,
-    onSequenceChange,
-  })
-
-  return (
-    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-      <div className="flex items-center justify-end mb-1 space-x-2">
-        <Button variant="light" compact onClick={onIngredientGroupInputAdd}>
-          Add group
-        </Button>
-      </div>
-      <div>
-        <Droppable
-          droppableId="ingredientGroups"
-          ignoreContainerClipping
-          isDropDisabled={ingredientGroups.length <= 1}
-        >
-          {(provided, snapshot) => (
-            <div ref={provided.innerRef} {...provided.droppableProps} className="space-y-4">
-              {ingredientGroups.map((ingredientGroup, index) => (
-                <IngredientGroupInput
-                  key={index}
-                  isDragDisabled={ingredientGroups.length <= 1}
-                  draggableId={index.toString()}
-                  order={index}
-                  ingredientGroup={ingredientGroup}
-                  error={ingredientGroupsErrors.find((error) => error.index === index)}
-                  ingredientErrors={ingredientErrors}
-                  ingredientOptions={ingredientOptions}
-                  units={units}
-                  canBeDeleted={ingredientGroups.length > 1}
-                  onIngredientInputAdd={() => onIngredientInputAdd(index)}
-                  onIngredientInputChange={(ingredientIndex, data) =>
-                    onIngredientInputChange(index, ingredientIndex, data)
-                  }
-                  onIngredientInputDelete={(ingredientIndex) =>
-                    onIngredientInputDelete(index, ingredientIndex)
-                  }
-                  onIngredientGroupInputChange={(data) => onIngredientGroupInputChange(index, data)}
-                  onIngredientGroupInputDelete={() => onIngredientGroupInputDelete(index)}
-                />
-              ))}
-              {provided.placeholder}
-              {!snapshot.isDraggingOver}
-            </div>
-          )}
-        </Droppable>
-      </div>
-    </DragDropContext>
-  )
 }
 
 interface RecipeIngredientsCreateInnerProps {
@@ -288,7 +199,7 @@ function RecipeIngredientsCreateInner({ recipeId, results }: RecipeIngredientsCr
           title="Add ingredients"
           subtitle="Add ingredients and amounts to recipe. If one ingredient is needed within multiple groups, add it to each group respectively."
           form={
-            <CreateIngredientsForm
+            <RecipeIngredientsForm
               ingredientGroups={ingredientGroups}
               ingredientErrors={ingredientErrors}
               ingredientGroupsErrors={ingredientGroupErrors}

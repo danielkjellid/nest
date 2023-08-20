@@ -2,15 +2,9 @@ import React, { useState } from 'react'
 import { Header } from './components/Header'
 import View from '../../../components/View'
 import { Card } from '../../../components/Card'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { useFetch } from '../../../hooks/fetcher'
-import {
-  RecipeIngredientItemGroupListOutAPIResponse,
-  RecipeListOut,
-  RecipeListOutAPIResponse,
-} from '../../../types'
-import { IngredientItemOptionType, StepInput } from './components/StepInput'
+import { RecipeIngredientItemGroupListOutAPIResponse } from '../../../types'
 import { Button } from '../../../components/Button'
 import { useNavigate, useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
@@ -18,81 +12,7 @@ import { useCommonStyles } from '../../../styles/common'
 import { performPost } from '../../../hooks/fetcher/http'
 import { urls } from '../../urls'
 import { routes } from '../routes'
-import { useDragAndDropSingleList } from '../../../hooks/drag-and-drop'
-
-export interface Step {
-  instruction: string
-  duration: number
-  type: string
-  ingredientItems: IngredientItemOptionType[]
-}
-
-interface CreateStepsForm {
-  steps: Step[]
-  errors?: InputError[]
-  ingredientItemOptions: IngredientItemOptionType[]
-  onSequenceChange: (steps: Step[]) => void
-  onStepInputAdd: () => void
-  onStepInputChange: (index: number, data: Step) => void
-  onStepInputDelete: (index: number) => void
-}
-
-function CreateStepsForm({
-  steps,
-  errors,
-  ingredientItemOptions,
-  onSequenceChange,
-  onStepInputAdd,
-  onStepInputChange,
-  onStepInputDelete,
-}: CreateStepsForm) {
-  const { onDragEnd, onDragStart } = useDragAndDropSingleList({ items: steps, onSequenceChange })
-
-  return (
-    <div>
-      <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-        <div className="flex items-center justify-end mb-1 space-x-2">
-          <Button variant="light" compact onClick={onStepInputAdd}>
-            Add step
-          </Button>
-        </div>
-        <Droppable droppableId="steps" ignoreContainerClipping isDropDisabled={steps.length <= 1}>
-          {(droppableProvided, droppableSnapshot) => (
-            <div
-              ref={droppableProvided.innerRef}
-              {...droppableProvided.droppableProps}
-              className="space-y-6"
-            >
-              {steps.map((step, index) => (
-                <StepInput
-                  draggableId={index.toString()}
-                  isDragDisabled={steps.length <= 1}
-                  key={index}
-                  step={step}
-                  error={errors?.find((error) => error.index === index)}
-                  stepNumber={index + 1}
-                  ingredientItemOptions={ingredientItemOptions}
-                  canBeDeleted={steps.length > 1}
-                  onInputChange={(data) => onStepInputChange(index, data)}
-                  onInputDelete={() => onStepInputDelete(index)}
-                />
-              ))}
-              {droppableProvided.placeholder}
-              {!droppableSnapshot.isDraggingOver}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </div>
-  )
-}
-
-export interface InputError {
-  index: number
-  unusedIngredientOptions?: boolean
-  emptyFields?: (keyof Step)[]
-  durationBellowZero?: boolean
-}
+import { Step, StepInputError, RecipeStepsForm } from '../forms/RecipeStepsForm'
 
 interface RecipeStepsCreateInnerProps {
   recipeId: string | number
@@ -145,12 +65,14 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     const stepsData = [...steps]
     stepsData[index] = data
 
+    clearErrorForIndex({ index })
     setSteps(stepsData)
   }
 
   const handleStepInputDelete = (index: number) => {
     const stepsData = [...steps]
     stepsData.splice(index, 1)
+    clearErrorForIndex({ index })
     setSteps(stepsData)
   }
 
@@ -169,16 +91,28 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     }))
   }
 
-  const [inputErrors, setInputErrors] = useState<InputError[]>()
+  const [inputErrors, setInputErrors] = useState<StepInputError[]>()
+
+  const clearErrorForIndex = ({ index }: { index: number }) => {
+    if (inputErrors?.length) {
+      const errorsData = [...inputErrors]
+      const errorIndex = errorsData.findIndex((error) => error.index === index)
+
+      if (errorIndex !== -1) {
+        errorsData.splice(errorIndex, 1)
+        setInputErrors(errorsData)
+      }
+    }
+  }
 
   const validate = () => {
-    const errors: InputError[] = []
+    const errors: StepInputError[] = []
     const unusedIngredientOptions = ingredientItemOptions?.filter((itemOption) =>
       steps.map((step) => step.ingredientItems.includes(itemOption))
     )
 
     steps.map((step, index) => {
-      const error: InputError = {
+      const error: StepInputError = {
         index: index,
         unusedIngredientOptions: !!unusedIngredientOptions?.length,
         durationBellowZero: false,
@@ -232,7 +166,7 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
           title="Add steps"
           subtitle="Add steps to recipe"
           form={
-            <CreateStepsForm
+            <RecipeStepsForm
               steps={steps}
               errors={inputErrors}
               ingredientItemOptions={ingredientItemOptions || []}
