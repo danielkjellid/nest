@@ -48,6 +48,7 @@ class TestRecipeServices:
         Test that creating ingredient item groups using the create_ingredient_item_groups
         service works as expected within query limits.
         """
+
         recipe = utils.create_recipe()
         payload = [
             {
@@ -106,14 +107,18 @@ class TestRecipeServices:
         assert item_groups[0].title == payload[0]["title"]
         assert item_groups[0].ordering == payload[0]["ordering"]
         assert set(
-            item_groups[0].ingredient_items.all().values_list("id", flat=True)
+            item_groups[0]
+            .ingredient_items.all()
+            .values_list("ingredient__id", flat=True)
         ) == set(item["ingredient_id"] for item in payload[0]["ingredients"])
 
         assert item_groups[1].recipe_id == recipe.id
         assert item_groups[1].title == payload[1]["title"]
         assert item_groups[1].ordering == payload[1]["ordering"]
         assert set(
-            item_groups[1].ingredient_items.all().values_list("id", flat=True)
+            item_groups[1]
+            .ingredient_items.all()
+            .values_list("ingredient__id", flat=True)
         ) == set(item["ingredient_id"] for item in payload[1]["ingredients"])
 
         # Test that ApplicationError is raised when ordering is not unique.
