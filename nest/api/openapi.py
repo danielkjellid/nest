@@ -174,7 +174,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
             self.schemas.update({m_schema["title"]: m_schema})
 
-    def enum_process_schema(self, enum: Type[IntegerChoices]):
+    def enum_process_schema(self, enum: Type[IntegerChoices]) -> dict[str, Any]:
         """
         Process enum and create a dict of openapi spec.
         """
@@ -281,14 +281,16 @@ class OpenAPISchema(NinjaOpenAPISchema):
                 if enum_mapping:
                     for mapping in enum_mapping:
                         if mapping["field"] == property:
-                            props[property]["title"] = mapping["field"].title()
+                            props[property]["title"] = mapping[
+                                "field"
+                            ].title()  # type: ignore
                             props[property]["enum"] = mapping["enum"]
-                            props[property][
-                                "component"
-                            ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
-                                # type: ignore
-                                "enum"
-                            ].value
+
+                            component_defaults = (
+                                settings.FORM_COMPONENT_MAPPING_DEFAULTS  # type: ignore
+                            )
+                            component = component_defaults["enum"].value
+                            props[property]["component"] = component
 
                 if property_type and props[property].get("component", None) is None:
                     try:
@@ -346,7 +348,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
                 if hasattr(val, "FormMeta"):
                     meta["columns"] = getattr(
-                        value.FormMeta, "columns", 1
-                    )  # type: ignore
+                        value.FormMeta, "columns", 1  # type: ignore
+                    )
 
         return meta

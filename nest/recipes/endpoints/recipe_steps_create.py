@@ -20,7 +20,7 @@ class RecipeStepsCreateIn(Schema):
 @staff_required
 def recipe_steps_create_api(
     request: HttpRequest, recipe_id: int, payload: list[RecipeStepsCreateIn]
-) -> APIResponse[None]:
+) -> tuple[int, APIResponse[None]]:
     """
     Create steps related to a single recipe.
     """

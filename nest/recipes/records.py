@@ -18,6 +18,7 @@ from .models import (
     RecipeStep,
 )
 
+
 ####################
 # Ingredient items #
 ####################
@@ -84,7 +85,9 @@ class RecipeIngredientItemGroupRecord(BaseModel):
 
     @classmethod
     @ensure_prefetched_relations(arg_or_kwarg="group", skip_fields=["recipe"])
-    def from_group(cls, group: RecipeIngredientItemGroup, skip_check: bool = False):
+    def from_group(
+        cls, group: RecipeIngredientItemGroup, skip_check: bool = False
+    ) -> RecipeIngredientItemGroupRecord:
         return cls(
             id=group.id,
             title=group.title,
@@ -103,7 +106,9 @@ class RecipeIngredientItemGroupDisplayRecord(BaseModel):
 
     @classmethod
     @ensure_prefetched_relations(arg_or_kwarg="group")
-    def from_group(cls, group: RecipeIngredientItemGroup, skip_check: bool = False):
+    def from_group(
+        cls, group: RecipeIngredientItemGroup, skip_check: bool = False
+    ) -> RecipeIngredientItemGroupDisplayRecord:
         return cls(
             id=group.id,
             title=group.title,
@@ -135,7 +140,7 @@ class RecipeStepRecord(BaseModel):
             number=step.number,
             duration=step.duration,
             instruction=step.instruction,
-            step_type=step.step_type,
+            step_type=RecipeStepType(step.step_type),
             ingredient_items=[1],
         )
 
@@ -231,7 +236,7 @@ class RecipeRecord(BaseModel):
     is_pescatarian: bool
 
     @classmethod
-    def from_recipe(cls, recipe: Recipe):
+    def from_recipe(cls, recipe: Recipe) -> RecipeRecord:
         return cls(
             id=recipe.id,
             title=recipe.title,
@@ -259,7 +264,9 @@ class RecipeDetailRecord(RecipeRecord):
 
     @classmethod
     @ensure_prefetched_relations(arg_or_kwarg="recipe")
-    def from_recipe(cls, recipe: Recipe, *, skip_check: bool = False):
+    def from_recipe(
+        cls, recipe: Recipe, *, skip_check: bool = False
+    ) -> RecipeDetailRecord:
         steps = recipe.steps.all()
         ingredient_item_groups = recipe.ingredient_groups.all()
         return cls(

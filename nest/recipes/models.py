@@ -101,7 +101,7 @@ class RecipeIngredientItemGroup(BaseModel, FieldCacheMixin):
         verbose_name = "ingredient group"
         verbose_name_plural = "ingredient groups"
 
-    def __str__(self) -> None:
+    def __str__(self) -> str:
         return f"{self.title} ({self.id}), recipe {self.recipe_id}"
 
 

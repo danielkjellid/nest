@@ -41,7 +41,7 @@ def staff_required(func: Any) -> Callable[[Callable[..., Any]], Callable[..., An
 
 
 def ensure_prefetched_relations(  # noqa: C901
-    *, arg_or_kwarg: str, skip_fields: list | None = None
+    *, arg_or_kwarg: str, skip_fields: list[str] | None = None
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     fields_to_prefetch = []
     accepted_prefetch_types = (
@@ -60,8 +60,8 @@ def ensure_prefetched_relations(  # noqa: C901
     if not skip_fields:
         skip_fields = []
 
-    def decorator(func: Any):  # noqa: C901
-        def inner(*args: Any, **kwargs: Any):  # noqa: C901, PLR0912
+    def decorator(func: Any) -> Callable[..., Any]:  # noqa: C901
+        def inner(*args: Any, **kwargs: Any) -> Any:  # noqa: C901, PLR0912
             skip_check = kwargs.get("skip_check", False)
 
             if not skip_check:

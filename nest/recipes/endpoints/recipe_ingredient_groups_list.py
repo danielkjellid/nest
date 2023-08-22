@@ -38,7 +38,9 @@ class RecipeIngredientGroupsListOut(Schema):
     "{recipe_id}/ingredient-groups/",
     response=APIResponse[list[RecipeIngredientGroupsListOut]],
 )
-def recipe_ingredient_groups_list_api(request: HttpRequest, recipe_id: int):
+def recipe_ingredient_groups_list_api(
+    request: HttpRequest, recipe_id: int
+) -> APIResponse[list[RecipeIngredientGroupsListOut]]:
     """
     Get a list of all RecipeIngredientItemGroups for a recipe.
     """

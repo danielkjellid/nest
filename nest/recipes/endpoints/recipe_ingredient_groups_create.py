@@ -26,7 +26,7 @@ class RecipeIngredientsCreateIn(Schema):
 @staff_required
 def recipe_ingredient_groups_create_api(
     request: HttpRequest, recipe_id: int, payload: list[RecipeIngredientsCreateIn]
-) -> APIResponse[None]:
+) -> tuple[int, APIResponse[None]]:
     """
     Add ingredients to an existing recipe.
     """

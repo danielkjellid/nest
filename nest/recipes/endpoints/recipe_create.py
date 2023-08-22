@@ -57,7 +57,7 @@ class RecipeCreateOut(Schema):
 @staff_required
 def recipe_create_api(
     request: HttpRequest, payload: RecipeCreateIn
-) -> APIResponse[RecipeCreateOut]:
+) -> tuple[int, APIResponse[RecipeCreateOut]]:
     """
     Create a recipe.
     """
