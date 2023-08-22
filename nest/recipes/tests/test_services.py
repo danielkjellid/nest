@@ -159,9 +159,11 @@ class TestRecipeServices:
         """
         recipe = utils.create_recipe()
         item_group_1 = utils.create_recipe_ingredient_item_group(
-            title="Cod with peppers"
+            title="Cod with peppers", recipe=recipe
         )
-        item_group_2 = utils.create_recipe_ingredient_item_group(title="Accessories")
+        item_group_2 = utils.create_recipe_ingredient_item_group(
+            title="Accessories", recipe=recipe
+        )
 
         payload = [
             {
