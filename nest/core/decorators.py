@@ -1,7 +1,7 @@
 import functools
 from typing import Any, Callable
 from django.db.models import Model, fields as django_fields
-from django.db.models.fields.related import ForeignKey, OneToOneRel
+from django.db.models.fields import related as django_related_fields
 from nest.core.exceptions import ApplicationError
 
 
@@ -39,13 +39,17 @@ def staff_required(func: Any) -> Callable[[Callable[..., Any]], Callable[..., An
 
 def ensure_prefetched_relations(*, arg_or_kwarg: str, skip_fields: list | None = None):
     fields_to_prefetch = []
-    accepted_prefetch_types = (django_fields.reverse_related.ManyToManyRel,)
+    accepted_prefetch_types = (
+        django_fields.reverse_related.ManyToManyRel,
+        django_fields.reverse_related.ManyToOneRel,
+        django_fields.reverse_related.ForeignObjectRel,
+    )
 
     fields_to_select = []
     accepted_select_types = (
-        ForeignKey,
-        OneToOneRel,
-        django_fields.reverse_related.ManyToOneRel,
+        django_related_fields.ForeignKey,
+        django_related_fields.OneToOneField,
+        django_fields.reverse_related.OneToOneRel,
     )
 
     if not skip_fields:
@@ -73,16 +77,22 @@ def ensure_prefetched_relations(*, arg_or_kwarg: str, skip_fields: list | None =
 
                 for field in instance_._meta.get_fields():
                     if (
-                        isinstance(field, accepted_prefetch_types)
-                        and field.name not in skip_fields
-                    ):
-                        fields_to_prefetch.append(field.name)
-
-                    if (
                         isinstance(field, accepted_select_types)
                         and field.name not in skip_fields
+                        and field.name not in fields_to_select
                     ):
                         fields_to_select.append(field.name)
+
+                    if (
+                        isinstance(field, accepted_prefetch_types)
+                        and field.name not in skip_fields
+                        and field.name not in fields_to_prefetch
+                        # Also ignore fields that are marked for select here because a
+                        # reverse 1-1 should be select_related, but OneToOne field is
+                        # a child of ForeignKey with a unique constraint.
+                        and field.name not in fields_to_select
+                    ):
+                        fields_to_prefetch.append(field.name)
 
                 if len(fields_to_prefetch) and not hasattr(
                     instance_, "_prefetched_objects_cache"
