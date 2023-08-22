@@ -9,7 +9,7 @@ from .models import (
 from decimal import Decimal
 from .enums import RecipeStatus, RecipeDifficulty, RecipeStepType
 from nest.units.records import UnitRecord
-from nest.core.decorators import ensure_prefetched_relations, ensure_annotated_values
+from nest.core.decorators import ensure_prefetched_relations
 from datetime import timedelta
 from isodate import duration_isoformat
 from nest.ingredients.records import IngredientRecord
@@ -30,7 +30,7 @@ class RecipeIngredientItemRecord(BaseModel):
     portion_quantity_display: str
 
     @classmethod
-    @ensure_prefetched_relations(instance="item", skip_fields=["step"])
+    @ensure_prefetched_relations(arg_or_kwarg="item", skip_fields=["step"])
     def from_item(cls, item: RecipeIngredientItem) -> RecipeIngredientItemRecord:
         return cls(
             id=item.id,
@@ -53,7 +53,7 @@ class RecipeMergedIngredientItemDisplayRecord(BaseModel):
 
     @classmethod
     @ensure_prefetched_relations(
-        instance="item", skip_fields=["ingredient_group", "step"]
+        arg_or_kwarg="item", skip_fields=["ingredient_group", "step"]
     )
     def from_item(
         cls, item: RecipeIngredientItem, skip_check: bool = False
@@ -80,7 +80,7 @@ class RecipeIngredientItemGroupRecord(BaseModel):
     ingredient_items: list[RecipeIngredientItemRecord]
 
     @classmethod
-    @ensure_prefetched_relations(instance="group", skip_fields=["recipe"])
+    @ensure_prefetched_relations(arg_or_kwarg="group", skip_fields=["recipe"])
     def from_group(cls, group: RecipeIngredientItemGroup, skip_check: bool = False):
         return cls(
             id=group.id,
@@ -99,7 +99,7 @@ class RecipeIngredientItemGroupDisplayRecord(BaseModel):
     ingredients: list[RecipeMergedIngredientItemDisplayRecord]
 
     @classmethod
-    @ensure_prefetched_relations(instance="group")
+    @ensure_prefetched_relations(arg_or_kwarg="group")
     def from_group(cls, group: RecipeIngredientItemGroup, skip_check: bool = False):
         return cls(
             id=group.id,
@@ -125,7 +125,7 @@ class RecipeStepRecord(BaseModel):
     ingredient_items: list[int]
 
     @classmethod
-    @ensure_prefetched_relations(instance="step", skip_fields=["recipe"])
+    @ensure_prefetched_relations(arg_or_kwarg="step", skip_fields=["recipe"])
     def from_step(cls, step: RecipeStep, skip_check: bool = False) -> RecipeStepRecord:
         return cls(
             id=step.id,
@@ -144,7 +144,7 @@ class RecipeStepDisplayRecord(BaseModel):
     ingredients: list[RecipeMergedIngredientItemDisplayRecord]
 
     @classmethod
-    @ensure_prefetched_relations(instance="step", skip_fields=["recipe"])
+    @ensure_prefetched_relations(arg_or_kwarg="step", skip_fields=["recipe"])
     def from_step(
         cls, step: RecipeStep, skip_check: bool = False
     ) -> RecipeStepDisplayRecord:
@@ -173,10 +173,6 @@ class RecipeDurationRecord(BaseModel):
     total_time_iso8601: str
 
     @classmethod
-    @ensure_annotated_values(
-        instance="recipe",
-        annotations=["preparation_time", "cooking_time", "total_time"],
-    )
     def from_recipe(cls, recipe: Recipe) -> RecipeDurationRecord:
         preparation_time = getattr(recipe, "preparation_time", timedelta(seconds=0))
         cooking_time = getattr(recipe, "cooking_time", timedelta(seconds=0))
@@ -259,7 +255,7 @@ class RecipeDetailRecord(RecipeRecord):
     steps_display: list[RecipeStepDisplayRecord]
 
     @classmethod
-    @ensure_prefetched_relations(instance="recipe")
+    @ensure_prefetched_relations(arg_or_kwarg="recipe")
     def from_recipe(cls, recipe: Recipe, *, skip_check: bool = False):
         steps = recipe.steps.all()
         ingredient_item_groups = recipe.ingredient_groups.all()

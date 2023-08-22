@@ -12,7 +12,7 @@ class IngredientRecord(BaseModel):
 
     @classmethod
     @ensure_prefetched_relations(
-        instance="ingredient", skip_fields=["ingredient_items"]
+        arg_or_kwarg="ingredient", skip_fields=["ingredient_items"]
     )
     def from_ingredient(
         cls, ingredient: Ingredient, skip_check: bool = False

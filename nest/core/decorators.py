@@ -37,15 +37,16 @@ def staff_required(func: Any) -> Callable[[Callable[..., Any]], Callable[..., An
     return inner
 
 
-def ensure_prefetched_relations(*, instance: str, skip_fields: list | None = None):
+def ensure_prefetched_relations(*, arg_or_kwarg: str, skip_fields: list | None = None):
     fields_to_prefetch = []
-    accepted_prefetch_types = (
-        django_fields.reverse_related.ManyToManyRel,
-        django_fields.reverse_related.ManyToOneRel,
-    )
+    accepted_prefetch_types = (django_fields.reverse_related.ManyToManyRel,)
 
     fields_to_select = []
-    accepted_select_types = (ForeignKey, OneToOneRel)
+    accepted_select_types = (
+        ForeignKey,
+        OneToOneRel,
+        django_fields.reverse_related.ManyToOneRel,
+    )
 
     if not skip_fields:
         skip_fields = []
@@ -58,7 +59,7 @@ def ensure_prefetched_relations(*, instance: str, skip_fields: list | None = Non
                 arg_instance = next(
                     (arg for arg in args if issubclass(type(arg), Model)), None
                 )
-                kwarg_instance = kwargs.get(instance, None)
+                kwarg_instance = kwargs.get(arg_or_kwarg, None)
                 instance_ = next(
                     (arg for arg in [arg_instance, kwarg_instance] if arg is not None),
                     None,
@@ -121,51 +122,6 @@ def ensure_prefetched_relations(*, instance: str, skip_fields: list | None = Non
                         )
 
                 fields_to_select.clear()
-
-            return func(*args, **kwargs)
-
-        return inner
-
-    return decorator
-
-
-def ensure_annotated_values(*, instance: str, annotations: list[str]):
-    missing_annotations = []
-
-    def decorator(func: Any):
-        def inner(*args: Any, **kwargs: Any):
-            skip_check = kwargs.get("skip_check", False)
-
-            if not skip_check:
-                arg_instance = next(
-                    (arg for arg in args if issubclass(type(arg), Model)), None
-                )
-                kwarg_instance = kwargs.get(instance, None)
-                instance_ = next(
-                    (arg for arg in [arg_instance, kwarg_instance] if arg is not None),
-                    None,
-                )
-
-                if not instance_:
-                    raise RuntimeError(
-                        "Passed instance parameter was not found in neither args or "
-                        "kwargs."
-                    )
-
-                model_fields = set(field.name for field in instance_._meta.get_fields())
-                annotations_to_check = set(annotations) - model_fields
-
-                for annotation in annotations_to_check:
-                    if not hasattr(instance_, annotation):
-                        missing_annotations.append(annotation)
-
-                if len(missing_annotations):
-                    raise RuntimeError(
-                        f"Instance {instance_} is missing one or more annotations. "
-                        f"Expected annotated values: {missing_annotations}"
-                    )
-
-                missing_annotations.clear()
 
             return func(*args, **kwargs)
 

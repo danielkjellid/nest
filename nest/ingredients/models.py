@@ -11,7 +11,7 @@ class Ingredient(BaseModel):
     title = models.CharField(max_length=255, unique=True)
     product = models.OneToOneField(
         "products.Product",
-        related_name="recipe_ingredients",
+        related_name="ingredient",
         on_delete=models.CASCADE,
     )
 
