@@ -2,8 +2,8 @@ from django.http import HttpRequest
 from ninja import Schema
 
 from nest.api.responses import APIResponse
-from ..selectors import get_ingredients
 
+from ..selectors import get_ingredients
 from .router import router
 
 

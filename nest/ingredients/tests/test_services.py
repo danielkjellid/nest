@@ -1,8 +1,10 @@
 import pytest
+from django.core.exceptions import ValidationError
+
+from nest.products.tests.utils import create_product
+
 from ..models import Ingredient
 from ..services import create_ingredient
-from nest.products.tests.utils import create_product
-from django.core.exceptions import ValidationError
 
 pytestmark = pytest.mark.django_db
 

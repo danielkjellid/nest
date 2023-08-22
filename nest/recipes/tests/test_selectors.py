@@ -1,7 +1,8 @@
 import pytest
-from ..selectors import get_ingredient_item_groups_for_recipe
-from .utils import create_recipe_ingredient_item_group, create_recipe
+
 from ..records import RecipeIngredientItemGroupRecord
+from ..selectors import get_ingredient_item_groups_for_recipe
+from .utils import create_recipe, create_recipe_ingredient_item_group
 
 pytestmark = pytest.mark.django_db
 

@@ -1,8 +1,10 @@
 import pytest
-from ..utils import create_recipe
+
 from nest.recipes.endpoints.recipe_ingredient_groups_list import (
     recipe_ingredient_groups_list_api,
 )
+
+from ..utils import create_recipe
 
 pytestmark = pytest.mark.django_db
 

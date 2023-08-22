@@ -16,11 +16,11 @@ import {
   TextInput,
   Textarea,
 } from '@mantine/core'
-import { Counter } from '../Counter'
 import { FormElement, FormElementObj, FormElementOptions, FormEnum } from './types'
 import React, { ForwardRefExoticComponent, useEffect, useState } from 'react'
 
 import { ButtonProps } from '../Button'
+import { Counter } from '../Counter'
 import { FrontendComponents } from '../../types/'
 import { IconUpload } from '@tabler/icons-react'
 

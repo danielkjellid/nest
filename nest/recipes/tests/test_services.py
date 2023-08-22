@@ -1,12 +1,14 @@
 import pytest
-import nest.recipes.tests.utils as utils
-from nest.products.tests.utils import create_product
-from nest.ingredients.tests.utils import create_ingredient
-from ..models import RecipeStep, RecipeIngredientItemGroup, RecipeIngredientItem, Recipe
-from ..services import create_recipe_steps, create_ingredient_item_groups, create_recipe
-from nest.units.tests.utils import get_unit
+
 from nest.core.exceptions import ApplicationError
+from nest.ingredients.tests.utils import create_ingredient
+from nest.products.tests.utils import create_product
+from nest.recipes.tests import utils
+from nest.units.tests.utils import get_unit
+
 from ..enums import RecipeDifficulty, RecipeStatus
+from ..models import Recipe, RecipeIngredientItem, RecipeIngredientItemGroup, RecipeStep
+from ..services import create_ingredient_item_groups, create_recipe, create_recipe_steps
 
 pytestmark = pytest.mark.django_db
 
@@ -110,7 +112,7 @@ class TestRecipeServices:
             item_groups[0]
             .ingredient_items.all()
             .values_list("ingredient__id", flat=True)
-        ) == set(item["ingredient_id"] for item in payload[0]["ingredients"])
+        ) == {item["ingredient_id"] for item in payload[0]["ingredients"]}
 
         assert item_groups[1].recipe_id == recipe.id
         assert item_groups[1].title == payload[1]["title"]
@@ -119,7 +121,7 @@ class TestRecipeServices:
             item_groups[1]
             .ingredient_items.all()
             .values_list("ingredient__id", flat=True)
-        ) == set(item["ingredient_id"] for item in payload[1]["ingredients"])
+        ) == {item["ingredient_id"] for item in payload[1]["ingredients"]}
 
         # Test that ApplicationError is raised when ordering is not unique.
         with pytest.raises(ApplicationError):

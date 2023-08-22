@@ -1,3 +1,12 @@
+from datetime import timedelta
+from decimal import Decimal
+
+from django.utils.text import slugify
+
+from nest.ingredients.models import Ingredient
+from nest.ingredients.tests.utils import create_ingredient
+from nest.units.tests.utils import get_unit
+
 from ..enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 from ..models import (
     Recipe,
@@ -5,12 +14,6 @@ from ..models import (
     RecipeIngredientItemGroup,
     RecipeStep,
 )
-from datetime import timedelta
-from nest.units.tests.utils import get_unit
-from decimal import Decimal
-from django.utils.text import slugify
-from nest.ingredients.tests.utils import create_ingredient
-from nest.ingredients.models import Ingredient
 
 
 def create_recipe(

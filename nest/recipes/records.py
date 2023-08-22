@@ -1,19 +1,22 @@
 from __future__ import annotations
+
+from datetime import timedelta
+from decimal import Decimal
+
+from isodate import duration_isoformat
 from pydantic import BaseModel
+
+from nest.core.decorators import ensure_prefetched_relations
+from nest.ingredients.records import IngredientRecord
+from nest.units.records import UnitRecord
+
+from .enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 from .models import (
     Recipe,
+    RecipeIngredientItem,
     RecipeIngredientItemGroup,
     RecipeStep,
-    RecipeIngredientItem,
 )
-from decimal import Decimal
-from .enums import RecipeStatus, RecipeDifficulty, RecipeStepType
-from nest.units.records import UnitRecord
-from nest.core.decorators import ensure_prefetched_relations
-from datetime import timedelta
-from isodate import duration_isoformat
-from nest.ingredients.records import IngredientRecord
-
 
 ####################
 # Ingredient items #

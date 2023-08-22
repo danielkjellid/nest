@@ -1,7 +1,7 @@
+from .models import RecipeIngredientItemGroup
 from .records import (
     RecipeIngredientItemGroupRecord,
 )
-from .models import RecipeIngredientItemGroup
 
 
 def get_ingredient_item_groups_for_recipe(

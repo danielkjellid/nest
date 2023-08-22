@@ -1,5 +1,5 @@
-import { RecipeTable } from '../Table'
 import React from 'react'
+import { RecipeTable } from '../Table'
 
 interface RecipeTableRecord {
   key: string

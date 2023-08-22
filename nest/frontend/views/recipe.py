@@ -1,11 +1,13 @@
 import json
-from .base import ReactView
+from typing import Any
+
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpRequest
-from typing import Any
+
 from nest.core.utils import camelize
 
 from ..selectors import get_initial_props
+from .base import ReactView
 
 
 class RecipeView(ReactView):

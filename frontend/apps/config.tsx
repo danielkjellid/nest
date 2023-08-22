@@ -1,10 +1,10 @@
 import {
   IconHome,
+  IconListDetails,
   IconNews,
   IconSettings,
   IconShoppingCart,
   IconUsers,
-  IconListDetails,
 } from '@tabler/icons-react'
 
 import React from 'react'

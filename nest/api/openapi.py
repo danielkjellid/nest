@@ -5,12 +5,12 @@ from enum import Enum
 from typing import (
     Any,
     Collection,
+    Iterable,
     Sequence,
     Type,
     cast,
     get_args,
     get_type_hints,
-    Iterable,
 )
 
 from django.conf import settings
@@ -27,7 +27,7 @@ from ninja.openapi.schema import (
 from ninja.params_models import TModel, TModels
 from ninja.types import DictStrAny
 from pydantic import BaseModel
-from pydantic.schema import enum_process_schema, model_schema
+from pydantic.schema import model_schema
 
 from nest.api.files import UploadedFile, UploadedImageFile
 from nest.core.utils import camelize

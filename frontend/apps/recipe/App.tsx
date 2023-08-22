@@ -1,9 +1,9 @@
+import { CommonContextType, CommonProvider } from '../../contexts/CommonProvider'
 import React, { useState } from 'react'
+
 import BaseApp from '../../components/BaseApp/BaseApp'
 import Header from '../../components/Header'
 import { Recipe } from './components/Recipe'
-
-import { CommonProvider, CommonContextType } from '../../contexts/CommonProvider'
 
 function RecipeAppInner() {
   return <Recipe />

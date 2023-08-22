@@ -1,8 +1,10 @@
+from datetime import timedelta
+
 import pytest
-from .utils import create_recipe, create_recipe_step
+
 from ..enums import RecipeStepType
 from ..models import Recipe
-from datetime import timedelta
+from .utils import create_recipe, create_recipe_step
 
 pytestmark = pytest.mark.django_db
 

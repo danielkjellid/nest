@@ -1,7 +1,9 @@
 import pytest
+
+from nest.products.tests.utils import create_product
+
 from ..selectors import get_ingredients
 from .utils import create_ingredient
-from nest.products.tests.utils import create_product
 
 pytestmark = pytest.mark.django_db
 

@@ -40,6 +40,15 @@
         "indent": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/ban-ts-comment": "off",
-        "react/prop-types": "off" // https://github.com/TanStack/table/issues/1207
+        "react/prop-types": "off", // https://github.com/TanStack/table/issues/1207
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            { 
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ]
     }
 }

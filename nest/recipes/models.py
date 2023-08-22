@@ -1,12 +1,13 @@
 from django.db import models
-from nest.core.models import BaseModel
 from django.db.models.fields.mixins import FieldCacheMixin
-from .enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 
+from nest.core.models import BaseModel
+
+from .enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 from .managers import (
-    RecipeQuerySet,
     RecipeIngredientItemGroupQuerySet,
     RecipeIngredientItemQuerySet,
+    RecipeQuerySet,
     RecipeStepQuerySet,
 )
 

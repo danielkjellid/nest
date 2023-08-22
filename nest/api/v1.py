@@ -8,9 +8,9 @@ from nest.core.exceptions import ApplicationError
 from nest.core.utils import camelize
 from nest.ingredients.endpoints import ingredients_router
 from nest.products.endpoints import products_router
+from nest.recipes.endpoints import recipes_router
 from nest.units.endpoints import units_router
 from nest.users.endpoints import users_router
-from nest.recipes.endpoints import recipes_router
 
 from .base import NestAPI
 from .responses import APIResponse

@@ -1,20 +1,20 @@
+import { Ingredient, IngredientGroup, RecipeIngredientsForm } from '../forms/RecipeIngredientsForm'
 import React, { useMemo, useState } from 'react'
-import { Card } from '../../../components/Card'
-import { Button } from '../../../components/Button'
-
-import { Header } from './components/Header'
-import { useCommonStyles } from '../../../styles/common'
-import View from '../../../components/View'
-import { useFetch } from '../../../hooks/fetcher'
-import { IngredientListOutAPIResponse } from '../../../types'
-import { urls } from '../../urls'
-import { useUnits } from '../../../contexts/UnitsProvider'
-import { RecipeIngredientsForm, Ingredient, IngredientGroup } from '../forms/RecipeIngredientsForm'
-import { performPost } from '../../../hooks/fetcher/http'
 import { useNavigate, useParams } from 'react-router-dom'
-import { routes } from '../routes'
+
+import { Button } from '../../../components/Button'
+import { Card } from '../../../components/Card'
+import { Header } from './components/Header'
+import { IngredientListOutAPIResponse } from '../../../types'
+import View from '../../../components/View'
 import invariant from 'tiny-invariant'
-import { Notifications, notifications } from '@mantine/notifications'
+import { notifications } from '@mantine/notifications'
+import { performPost } from '../../../hooks/fetcher/http'
+import { routes } from '../routes'
+import { urls } from '../../urls'
+import { useCommonStyles } from '../../../styles/common'
+import { useFetch } from '../../../hooks/fetcher'
+import { useUnits } from '../../../contexts/UnitsProvider'
 
 export interface FormError {
   index: number
@@ -234,7 +234,7 @@ function RecipeIngredientsCreate() {
   const { recipeId } = useParams()
   invariant(recipeId)
 
-  const ingredients = useFetch<IngredientListOutAPIResponse>(urls.recipes.ingredients.list())
+  const ingredients = useFetch<IngredientListOutAPIResponse>(urls.ingredients.list())
 
   return (
     <View<object, RecipeIngredientsCreateInnerProps>

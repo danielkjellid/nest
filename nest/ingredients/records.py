@@ -1,7 +1,10 @@
 from __future__ import annotations
+
 from pydantic import BaseModel
-from nest.products.records import ProductRecord
+
 from nest.core.decorators import ensure_prefetched_relations
+from nest.products.records import ProductRecord
+
 from .models import Ingredient
 
 

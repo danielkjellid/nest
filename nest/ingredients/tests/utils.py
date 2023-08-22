@@ -1,6 +1,7 @@
-from ..models import Ingredient
-from nest.products.tests.utils import create_product
 from nest.products.models import Product
+from nest.products.tests.utils import create_product
+
+from ..models import Ingredient
 
 
 def create_ingredient(

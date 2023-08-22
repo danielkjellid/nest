@@ -1,6 +1,7 @@
 import pytest
-from nest.ingredients.endpoints.ingredient_create import ingredient_create_api
 from django.urls import reverse
+
+from nest.ingredients.endpoints.ingredient_create import ingredient_create_api
 from nest.products.tests.utils import create_product
 
 pytestmark = pytest.mark.django_db

@@ -1,7 +1,9 @@
 import pytest
-from nest.products.tests.utils import create_product
-from ..decorators import ensure_prefetched_relations
+
 from nest.products.models import Product
+from nest.products.tests.utils import create_product
+
+from ..decorators import ensure_prefetched_relations
 
 pytestmark = pytest.mark.django_db
 

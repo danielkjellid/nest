@@ -3,9 +3,8 @@ import {
   Input,
   NumberInput,
   NumberInputHandlers,
-  useMantineTheme,
-  InputProps,
   NumberInputProps,
+  useMantineTheme,
 } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import React, { useRef } from 'react'

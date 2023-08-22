@@ -1,7 +1,10 @@
 import functools
 from typing import Any, Callable
-from django.db.models import Model, fields as django_fields
+
+from django.db.models import Model
+from django.db.models import fields as django_fields
 from django.db.models.fields import related as django_related_fields
+
 from nest.core.exceptions import ApplicationError
 
 
@@ -37,7 +40,9 @@ def staff_required(func: Any) -> Callable[[Callable[..., Any]], Callable[..., An
     return inner
 
 
-def ensure_prefetched_relations(*, arg_or_kwarg: str, skip_fields: list | None = None):
+def ensure_prefetched_relations(  # noqa: C901
+    *, arg_or_kwarg: str, skip_fields: list | None = None
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     fields_to_prefetch = []
     accepted_prefetch_types = (
         django_fields.reverse_related.ManyToManyRel,
@@ -55,26 +60,37 @@ def ensure_prefetched_relations(*, arg_or_kwarg: str, skip_fields: list | None =
     if not skip_fields:
         skip_fields = []
 
-    def decorator(func: Any):
-        def inner(*args: Any, **kwargs: Any):
+    def decorator(func: Any):  # noqa: C901
+        def inner(*args: Any, **kwargs: Any):  # noqa: C901, PLR0912
             skip_check = kwargs.get("skip_check", False)
 
             if not skip_check:
+                # We allow the instance we're checking to be passed both from args and
+                # kwargs, so we need to find out which of them to use. For the args
+                # part, it's highly likely that it's the first one that is of subclass
+                # models.Model, but that is just an educated guess.
                 arg_instance = next(
                     (arg for arg in args if issubclass(type(arg), Model)), None
                 )
+                # Look for defined arg_or_kwarg in passed kwargs.
                 kwarg_instance = kwargs.get(arg_or_kwarg, None)
+
+                # Attempt to find the instance we're looking for by either checking
+                # selecting the first best option.
                 instance_ = next(
                     (arg for arg in [arg_instance, kwarg_instance] if arg is not None),
                     None,
                 )
 
+                # If we don't find an instance to check on, raise error.
                 if not instance_:
                     raise RuntimeError(
                         "Passed instance parameter was not found in neither args or "
                         "kwargs."
                     )
 
+                # Iterate over all model fields, extracting the fields that we know
+                # should be prefetched or selected.
                 for field in instance_._meta.get_fields():
                     if (
                         isinstance(field, accepted_select_types)
@@ -94,44 +110,57 @@ def ensure_prefetched_relations(*, arg_or_kwarg: str, skip_fields: list | None =
                     ):
                         fields_to_prefetch.append(field.name)
 
-                if len(fields_to_prefetch) and not hasattr(
-                    instance_, "_prefetched_objects_cache"
-                ):
-                    raise RuntimeError(
-                        f"No relations seems to have been prefetched on {instance_}. "
-                        f"Did you run .prefetch_related(...) on the queryset before "
-                        f"passing the instance? Expected fields: {fields_to_prefetch}"
-                    )
-
-                for name in fields_to_prefetch:
-                    if name not in instance_._prefetched_objects_cache.keys():
+                if len(fields_to_prefetch):
+                    # Prefetched fields are stored in the _prefetched_objects_cache
+                    # property, so check if that exists as long as we have fields that
+                    # should be prefetched.
+                    if not hasattr(instance_, "_prefetched_objects_cache"):
                         raise RuntimeError(
-                            f"The relation {type(instance_)}.{name} on the instance "
-                            f"{instance_} has not been prefetched. Unable to use "
-                            f'method without using .prefetch_related("{name}") first.'
+                            f"No relations seems to have been prefetched on "
+                            f"{instance_}. Did you run .prefetch_related(...) on the "
+                            f"queryset before passing the instance? "
+                            f"Expected fields: {fields_to_prefetch}"
                         )
 
-                fields_to_prefetch.clear()
+                    # Iterate over said fields and check if field name exists as a key
+                    # in the _prefetched_objects_cache dict, if not, raise error.
+                    for name in fields_to_prefetch:
+                        if name not in instance_._prefetched_objects_cache.keys():
+                            raise RuntimeError(
+                                f"The relation {type(instance_)}.{name} on the "
+                                f"instance {instance_} has not been prefetched. "
+                                f"Unable to use method without using "
+                                f'.prefetch_related("{name}") first.'
+                            )
 
-                if len(fields_to_select) and (
-                    not hasattr(instance_, "_state")
-                    or not hasattr(instance_._state, "fields_cache")
-                ):
-                    raise RuntimeError(
-                        f"No relations seems to have been selected on {instance_}. "
-                        f"Did you run .select_related(...) on the queryset before "
-                        f"passing the instance? Expected fields: {fields_to_select}"
-                    )
+                    # Finally, clear the list to not retain data between runs.
+                    fields_to_prefetch.clear()
 
-                for name in fields_to_select:
-                    if name not in instance_._state.fields_cache:
+                if len(fields_to_select):
+                    # Selected related fields are stored in the _state.fields_cache
+                    # property, so check if that exists as long as we have fields that
+                    # should be select_related.
+                    if not hasattr(instance_, "_state") or not hasattr(
+                        instance_._state, "fields_cache"
+                    ):
                         raise RuntimeError(
-                            f"The relation {type(instance_)}.{name} on the instance "
-                            f"{instance_} has not been selected. Unable to use method "
-                            f'without using .select_related("{name}") first.'
+                            f"No relations seems to have been selected on {instance_}. "
+                            f"Did you run .select_related(...) on the queryset before "
+                            f"passing the instance? Expected fields: {fields_to_select}"
                         )
 
-                fields_to_select.clear()
+                    # Iterate over said fields and check if field name exists as a key
+                    # in the fields_cache dict, if not, raise error.
+                    for name in fields_to_select:
+                        if name not in instance_._state.fields_cache.keys():
+                            raise RuntimeError(
+                                f"The relation {type(instance_)}.{name} on the "
+                                f"instance {instance_} has not been selected. "
+                                f"Unable to use method without using "
+                                f'.select_related("{name}") first.'
+                            )
+
+                    fields_to_select.clear()
 
             return func(*args, **kwargs)
 
