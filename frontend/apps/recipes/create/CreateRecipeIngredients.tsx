@@ -1,4 +1,9 @@
-import { Ingredient, IngredientGroup, RecipeIngredientsForm } from '../forms/RecipeIngredientsForm'
+import {
+  Ingredient,
+  IngredientGroup,
+  RecipeIngredientsForm,
+  FormError,
+} from '../forms/RecipeIngredientsForm'
 import React, { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -15,11 +20,6 @@ import { urls } from '../../urls'
 import { useCommonStyles } from '../../../styles/common'
 import { useFetch } from '../../../hooks/fetcher'
 import { useUnits } from '../../../contexts/UnitsProvider'
-
-export interface FormError {
-  index: number
-  message: string
-}
 
 interface RecipeIngredientsCreateInnerProps {
   results: {

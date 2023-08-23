@@ -1,2 +1,2 @@
 export { RecipeIngredientsForm } from './Form'
-export type { Ingredient, IngredientGroup } from './types'
+export type { Ingredient, IngredientGroup, FormError } from './types'

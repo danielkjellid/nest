@@ -23,3 +23,8 @@ export interface IngredientGroupFormError {
   index: number
   message: string
 }
+
+export interface FormError {
+  index: number
+  message: string
+}

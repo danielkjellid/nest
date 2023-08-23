@@ -1,10 +1,9 @@
 import { ActionIcon, Select, Text, TextInput } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import { Ingredient, IngredientGroup, IngredientOptionType } from './types'
+import { Ingredient, IngredientGroup, IngredientOptionType, FormError } from './types'
 import React, { forwardRef } from 'react'
 
 import { Draggable } from 'react-beautiful-dnd'
-import { FormError } from '../../create/CreateRecipeIngredients'
 import { UnitOption } from '../../../../contexts/UnitsProvider'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
