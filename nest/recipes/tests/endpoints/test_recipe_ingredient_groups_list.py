@@ -25,7 +25,8 @@ class TestEndpointRecipeIngredientGroupsList:
         client = authenticated_client
         selector_mock = mocker.patch(
             f"{recipe_ingredient_groups_list_api.__module__}"
-            f".get_ingredient_item_groups_for_recipe"
+            f".get_ingredient_item_groups_for_recipe",
+            return_value=[],
         )
 
         with django_assert_num_queries(2):
