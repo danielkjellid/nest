@@ -1,6 +1,6 @@
 import { DragStart, DraggableLocation, DropResult } from 'react-beautiful-dnd'
 
-export function useDragAndDropSingleList<T>({
+function useDragAndDropSingleList<T>({
   items,
   onSequenceChange,
 }: {
@@ -40,7 +40,7 @@ export function useDragAndDropSingleList<T>({
   }
 }
 
-export function useDragAndDropMultipleLists<T>(
+function useDragAndDropMultipleLists<T>(
   itemsLists: { [key: string]: T[] },
   onSequenceChange: (itemsLists: { [key: string]: T[] }) => void,
   onDragStarted: (draggableLocation: DraggableLocation) => void
@@ -114,3 +114,5 @@ function move<T>(
 
   return result
 }
+
+export { useDragAndDropMultipleLists, useDragAndDropSingleList }
