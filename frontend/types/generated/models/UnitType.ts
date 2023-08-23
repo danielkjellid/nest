@@ -6,9 +6,9 @@
  * An enumeration.
  */
 export enum UnitType {
-    PIECES = 'pieces',
-    WEIGHT = 'weight',
-    VOLUME = 'volume',
-    LENGTH = 'length',
-    USAGE = 'usage',
+    Pieces = 'pieces',
+    Weight = 'weight',
+    Volume = 'volume',
+    Length = 'length',
+    Usage = 'usage',
 }

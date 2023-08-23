@@ -76,7 +76,7 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
         supplier={product.supplier}
         actions={
           <>
-            {currentUser.isStaff && (
+            {currentUser && currentUser.isStaff && (
               <div className="lg:order-2 justify-self-start lg:justify-self-end self-center order-1 space-x-1">
                 {product.isOdaProduct && <Button variant="default">Update from Oda</Button>}
                 {currentUser.isSuperuser && (

@@ -1,11 +1,12 @@
+import { IngredientCreateIn, ProductListOut } from '../../../types'
 import React, { forwardRef } from 'react'
-import Drawer from '../../../../components/Drawer'
-import { useForm } from '../../../../hooks/forms'
-import Form from '../../../../components/Form'
-import { IngredientCreateIn, ProductListOut } from '../../../../types'
+
+import { Button } from '../../../components/Button'
+import Drawer from '../../../components/Drawer'
+import Form from '../../../components/Form'
 import { Text } from '@mantine/core'
-import { Button } from '../../../../components/Button'
-import { urls } from '../../../urls'
+import { urls } from '../../urls'
+import { useForm } from '../../../hooks/forms'
 
 interface IngredientAddDrawerProps {
   opened: boolean
@@ -28,8 +29,9 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
   }
 
   const addIngredient = async () => {
-    await form.performPost({ url: urls.recipes.ingredients.create() })
+    await form.performPost({ url: urls.ingredients.create() })
     refetch()
+    onClose()
   }
 
   return (
@@ -65,7 +67,7 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
 }
 
 interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
-  image: string
+  image: string | null
   label: string
   description: string
 }
@@ -74,7 +76,7 @@ const ProductOption = forwardRef<HTMLDivElement, ProductOptionProps>(
   ({ image, label, description, ...others }: ProductOptionProps, ref) => (
     <div ref={ref} {...others}>
       <div className="flex items-center space-x-3">
-        <img src={image} className="object-contain w-12 h-12 rounded-md" />
+        <img src={image || ''} className="object-contain w-12 h-12 rounded-md" />
         <div>
           <Text size="sm">{label}</Text>
           <Text size="xs" opacity={0.65}>

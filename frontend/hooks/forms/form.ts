@@ -86,6 +86,11 @@ export function useForm<T extends object>({
       return { data: buildMultipartForm<T>(data), options: { isMultipart: true } }
     }
 
+    // Convert empty string values to null.
+    Object.entries(data).map(([key, val]) => {
+      if (val === '') data[key as keyof T] = null as T[keyof T]
+    })
+
     return { data, options: {} }
 
     // return data
@@ -101,10 +106,10 @@ export function useForm<T extends object>({
    ** Http **
    **********/
 
-  const performPost = async ({ url }: { url: string }) => {
+  async function performPost<T>({ url }: { url: string }) {
     try {
       setLoadingState('loading')
-      await httpPost({
+      const response = await httpPost<T>({
         url,
         ...buildPayload(),
       })
@@ -114,11 +119,12 @@ export function useForm<T extends object>({
         color: 'green',
       })
       setLoadingState('success')
+      return response
     } catch (e) {
       const error = e as any
       setLoadingState('error')
       if (error && error.response && error.response.data) {
-        setErrors(error.response.data)
+        setErrors(error.response.data.data)
       }
       console.log(e)
     }

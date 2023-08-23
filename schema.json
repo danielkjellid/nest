@@ -6,6 +6,72 @@
         "description": ""
     },
     "paths": {
+        "/api/v1/ingredients/create/": {
+            "post": {
+                "operationId": "ingredient_create_api",
+                "summary": "Ingredient Create Api",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create an ingredient.",
+                "tags": [
+                    "Ingredients"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngredientCreateIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/ingredients/": {
+            "get": {
+                "operationId": "ingredient_list_api",
+                "summary": "Ingredient List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list off all ingredients in the application",
+                "tags": [
+                    "Ingredients"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/products/create/": {
             "post": {
                 "operationId": "product_create_api",
@@ -234,80 +300,14 @@
                 ]
             }
         },
-        "/api/v1/recipes/ingredients/create/": {
-            "post": {
-                "operationId": "ingredient_create_api",
-                "summary": "Ingredient Create Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Create an ingredient.",
-                "tags": [
-                    "Recipes"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IngredientCreateIn"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/recipes/ingredients/": {
-            "get": {
-                "operationId": "ingredient_list_api",
-                "summary": "Ingredient List Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list off all ingredients in the application",
-                "tags": [
-                    "Recipes"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/recipes/create/": {
             "post": {
                 "operationId": "recipe_create_api",
                 "summary": "Recipe Create Api",
                 "parameters": [],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -326,6 +326,148 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/RecipeCreateIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/{recipe_id}/ingredient-groups/create/": {
+            "post": {
+                "operationId": "recipe_ingredient_groups_create_api",
+                "summary": "Recipe Ingredient Groups Create Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Add ingredients to an existing recipe.",
+                "tags": [
+                    "Recipes"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "Payload",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/RecipeIngredientsCreateIn"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/{recipe_id}/ingredient-groups/": {
+            "get": {
+                "operationId": "recipe_ingredient_groups_list_api",
+                "summary": "Recipe Ingredient Groups List Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeIngredientGroupsListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all RecipeIngredientItemGroups for a recipe.",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/{recipe_id}/steps/create/": {
+            "post": {
+                "operationId": "recipe_steps_create_api",
+                "summary": "Recipe Steps Create Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create steps related to a single recipe.",
+                "tags": [
+                    "Recipes"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "Payload",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/RecipeStepsCreateIn"
+                                }
                             }
                         }
                     },
@@ -424,6 +566,124 @@
                 ],
                 "type": "object"
             },
+            "IngredientCreateIn": {
+                "title": "IngredientCreateIn",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "helpText": "User friendly title. E.g. Red tomatoes.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "product": {
+                        "title": "Product",
+                        "helpText": null,
+                        "component": "Select",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 2,
+                        "min": null,
+                        "max": null,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "IngredientListProductOut": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "fullName"
+                ],
+                "type": "object"
+            },
+            "IngredientListOut": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/IngredientListProductOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "IngredientListOutAPIResponse": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IngredientListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
             "ProductCreateIn": {
                 "title": "ProductCreateIn",
                 "properties": {
@@ -437,6 +697,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 1,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "grossPrice": {
@@ -449,6 +711,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 2,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "unitQuantity": {
@@ -461,6 +725,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 3,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "unit": {
@@ -473,6 +739,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 4,
+                        "min": null,
+                        "max": null,
                         "type": "integer"
                     },
                     "supplier": {
@@ -485,6 +753,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 5,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "gtin": {
@@ -497,6 +767,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 6,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "ingredients": {
@@ -509,6 +781,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 7,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "allergens": {
@@ -521,6 +795,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 8,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fat": {
@@ -533,6 +809,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 9,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fatSaturated": {
@@ -545,6 +823,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 10,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fatMonounsaturated": {
@@ -557,6 +837,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 11,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
@@ -569,6 +851,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 12,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydrates": {
@@ -581,6 +865,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 13,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydratesSugars": {
@@ -593,6 +879,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 14,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
@@ -605,6 +893,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 15,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydratesStarch": {
@@ -617,6 +907,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 16,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fibres": {
@@ -629,6 +921,8 @@
                         "colSpan": 2,
                         "section": null,
                         "order": 17,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "salt": {
@@ -641,6 +935,8 @@
                         "colSpan": 2,
                         "section": null,
                         "order": 18,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "sodium": {
@@ -653,6 +949,8 @@
                         "colSpan": 2,
                         "section": null,
                         "order": 19,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "isAvailable": {
@@ -665,6 +963,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 20,
+                        "min": null,
+                        "max": null,
                         "type": "boolean"
                     },
                     "thumbnail": {
@@ -1012,6 +1312,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 1,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "grossPrice": {
@@ -1024,6 +1326,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 2,
+                        "min": null,
+                        "max": null,
                         "type": "number"
                     },
                     "unitQuantity": {
@@ -1036,6 +1340,8 @@
                         "colSpan": 2,
                         "section": null,
                         "order": 3,
+                        "min": null,
+                        "max": null,
                         "type": "number"
                     },
                     "unit": {
@@ -1048,6 +1354,8 @@
                         "colSpan": 2,
                         "section": null,
                         "order": 4,
+                        "min": null,
+                        "max": null,
                         "type": "integer"
                     },
                     "supplier": {
@@ -1060,6 +1368,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 5,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "gtin": {
@@ -1072,6 +1382,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 6,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "odaId": {
@@ -1084,6 +1396,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 7,
+                        "min": null,
+                        "max": null,
                         "type": "integer"
                     },
                     "odaUrl": {
@@ -1096,6 +1410,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 8,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fat": {
@@ -1108,6 +1424,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 9,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fatSaturated": {
@@ -1120,6 +1438,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 10,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fatMonounsaturated": {
@@ -1132,6 +1452,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 11,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
@@ -1144,6 +1466,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 12,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydrates": {
@@ -1156,6 +1480,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 13,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydratesSugars": {
@@ -1168,6 +1494,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 14,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
@@ -1180,6 +1508,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 15,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "carbohydratesStarch": {
@@ -1192,6 +1522,8 @@
                         "colSpan": 1,
                         "section": null,
                         "order": 16,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "fibres": {
@@ -1204,6 +1536,8 @@
                         "colSpan": 4,
                         "section": null,
                         "order": 17,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "salt": {
@@ -1216,6 +1550,8 @@
                         "colSpan": 4,
                         "section": null,
                         "order": 18,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "sodium": {
@@ -1228,6 +1564,8 @@
                         "colSpan": 4,
                         "section": null,
                         "order": 19,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "isAvailable": {
@@ -1240,6 +1578,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 20,
+                        "min": null,
+                        "max": null,
                         "type": "boolean"
                     },
                     "isSynced": {
@@ -1252,6 +1592,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 21,
+                        "min": null,
+                        "max": null,
                         "type": "boolean"
                     },
                     "thumbnail": {
@@ -1463,6 +1805,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 1,
+                        "min": null,
+                        "max": null,
                         "type": "integer"
                     }
                 },
@@ -1482,120 +1826,6 @@
                 },
                 "required": [
                     "odaProductId"
-                ],
-                "type": "object"
-            },
-            "IngredientCreateIn": {
-                "title": "IngredientCreateIn",
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "helpText": "User friendly title. E.g. Red tomatoes.",
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 1,
-                        "type": "string"
-                    },
-                    "product": {
-                        "title": "Product",
-                        "helpText": null,
-                        "component": "Select",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 2,
-                        "type": "integer"
-                    }
-                },
-                "required": [
-                    "title",
-                    "product"
-                ],
-                "type": "object"
-            },
-            "IngredientListProductOut": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id",
-                    "fullName"
-                ],
-                "type": "object"
-            },
-            "IngredientListOut": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "product": {
-                        "$ref": "#/components/schemas/IngredientListProductOut"
-                    }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "product"
-                ],
-                "type": "object"
-            },
-            "IngredientListOutAPIResponse": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/IngredientListOut"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "status"
                 ],
                 "type": "object"
             },
@@ -1643,6 +1873,7 @@
                 "title": "RecipeCreateIn",
                 "properties": null,
                 "required": null,
+                "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
                     1,
@@ -1654,6 +1885,7 @@
                 "title": "RecipeCreateIn",
                 "properties": null,
                 "required": null,
+                "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
                     1,
@@ -1675,18 +1907,8 @@
                         "colSpan": null,
                         "section": null,
                         "order": 1,
-                        "type": "string"
-                    },
-                    "slug": {
-                        "title": "Slug",
-                        "helpText": null,
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 2,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "searchKeywords": {
@@ -1698,48 +1920,45 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
-                        "order": 3,
+                        "order": 2,
+                        "min": null,
+                        "max": null,
                         "type": "string"
                     },
                     "defaultNumPortions": {
                         "title": "Default Num Portions",
                         "helpText": null,
-                        "component": "TextInput",
+                        "component": "Counter",
                         "defaultValue": 4,
                         "placeholder": null,
                         "hiddenLabel": false,
-                        "colSpan": null,
+                        "colSpan": 4,
                         "section": null,
-                        "order": 4,
-                        "type": "string"
-                    },
-                    "externalId": {
-                        "title": "External Id",
-                        "helpText": "Recipe identifier on a provider's site.",
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 5,
-                        "type": "string"
-                    },
-                    "externalUrl": {
-                        "title": "External Url",
-                        "helpText": "Direct link to the recipe on a provider's site",
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 6,
+                        "order": 3,
+                        "min": 1,
+                        "max": 10,
                         "type": "string"
                     },
                     "status": {
-                        "$ref": "#/components/schemas/RecipeStatus",
                         "title": "Status",
+                        "helpText": null,
+                        "component": "Select",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 2,
+                        "section": null,
+                        "order": 4,
+                        "min": null,
+                        "max": null,
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeStatus"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
                         "enum": [
                             {
                                 "label": "Draft",
@@ -1749,12 +1968,28 @@
                                 "label": "Published",
                                 "value": 2
                             }
-                        ],
-                        "component": "Select"
+                        ]
                     },
                     "difficulty": {
-                        "$ref": "#/components/schemas/RecipeDifficulty",
                         "title": "Difficulty",
+                        "helpText": null,
+                        "component": "Select",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 2,
+                        "section": null,
+                        "order": 5,
+                        "min": null,
+                        "max": null,
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeDifficulty"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ],
                         "enum": [
                             {
                                 "label": "Easy",
@@ -1768,21 +2003,35 @@
                                 "label": "Hard",
                                 "value": 3
                             }
-                        ],
-                        "component": "Select"
+                        ]
                     },
-                    "isPartialRecipe": {
-                        "title": "Is Partial Recipe",
-                        "default": false,
-                        "helpText": "Designates if the recipe can be considered a full meal.",
-                        "component": "Checkbox",
+                    "externalId": {
+                        "title": "External Id",
+                        "helpText": "Providers identifier.",
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
-                        "colSpan": null,
+                        "colSpan": 1,
                         "section": null,
-                        "order": 1,
-                        "type": "boolean"
+                        "order": 6,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "externalUrl": {
+                        "title": "External Url",
+                        "helpText": "Direct link to the recipe on a provider's site",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": 3,
+                        "section": null,
+                        "order": 7,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
                     },
                     "isVegetarian": {
                         "title": "Is Vegetarian",
@@ -1794,7 +2043,9 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
-                        "order": 1,
+                        "order": 9,
+                        "min": null,
+                        "max": null,
                         "type": "boolean"
                     },
                     "isPescatarian": {
@@ -1807,16 +2058,276 @@
                         "hiddenLabel": false,
                         "colSpan": null,
                         "section": null,
-                        "order": 1,
+                        "order": 10,
+                        "min": null,
+                        "max": null,
                         "type": "boolean"
                     }
                 },
                 "required": [
                     "title",
-                    "slug",
                     "defaultNumPortions",
                     "status",
                     "difficulty"
+                ],
+                "columns": 4,
+                "type": "object"
+            },
+            "RecipeIngredientsCreateIngredientIn": {
+                "title": "RecipeIngredientsCreateIn",
+                "properties": {
+                    "ingredient": {
+                        "title": "Ingredient",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "portionQuantity": {
+                        "title": "Portion Quantity",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "unit": {
+                        "title": "Unit",
+                        "helpText": null,
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "additionalInfo": {
+                        "title": "Additional Info",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "ingredient",
+                    "portionQuantity",
+                    "unit"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientsCreateIn": {
+                "title": "RecipeIngredientsCreateIn",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ordering": {
+                        "title": "Ordering",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredients": {
+                        "title": "Ingredients",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientsCreateIngredientIn"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "title",
+                    "ordering",
+                    "ingredients"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientGroupsListIngredientProductOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
+                "properties": {
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "fullName"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientGroupsListIngredientOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientProductOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientGroupsListItemPortionQuantityUnitOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
+                "properties": {
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "abbreviation"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientGroupsListItemOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredient": {
+                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientOut"
+                    },
+                    "portionQuantityUnit": {
+                        "$ref": "#/components/schemas/RecipeIngredientGroupsListItemPortionQuantityUnitOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "ingredient",
+                    "portionQuantityUnit"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientGroupsListOut": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientGroupsListItemOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "ingredientItems"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientGroupsListOutAPIResponse": {
+                "title": "RecipeIngredientGroupsListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientGroupsListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "RecipeStepsCreateIn": {
+                "title": "RecipeStepsCreateIn",
+                "properties": {
+                    "number": {
+                        "title": "Number",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "duration": {
+                        "title": "Duration",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "instruction": {
+                        "title": "Instruction",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "stepType": {
+                        "title": "Step Type",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "number",
+                    "duration",
+                    "instruction",
+                    "stepType",
+                    "ingredientItems"
                 ],
                 "type": "object"
             },
@@ -1989,6 +2500,26 @@
                     "Checkbox",
                     "Chip",
                     "ColorInput",
+                    "Counter",
+                    "FileInput",
+                    "MultiSelect",
+                    "NumberInput",
+                    "PasswordInput",
+                    "PinInput",
+                    "Radio",
+                    "Rating",
+                    "Select",
+                    "Slider",
+                    "Switch",
+                    "Textarea",
+                    "TextInput"
+                ],
+                "x-enum-varnames": [
+                    "Autocomplete",
+                    "Checkbox",
+                    "Chip",
+                    "ColorInput",
+                    "Counter",
                     "FileInput",
                     "MultiSelect",
                     "NumberInput",
@@ -2003,6 +2534,18 @@
                     "TextInput"
                 ]
             },
+            "RecipeStepType": {
+                "title": "RecipeStepType",
+                "description": "An enumeration.",
+                "enum": [
+                    1,
+                    2
+                ],
+                "x-enum-varnames": [
+                    "Cooking Step",
+                    "Preparation"
+                ]
+            },
             "UnitType": {
                 "title": "UnitType",
                 "description": "An enumeration.",
@@ -2013,7 +2556,13 @@
                     "length",
                     "usage"
                 ],
-                "type": "string"
+                "x-enum-varnames": [
+                    "Pieces",
+                    "Weight",
+                    "Volume",
+                    "Length",
+                    "Usage"
+                ]
             }
         },
         "securitySchemes": {

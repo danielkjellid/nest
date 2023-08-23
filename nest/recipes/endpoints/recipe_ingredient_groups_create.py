@@ -1,0 +1,37 @@
+from django.http import HttpRequest
+from ninja import Schema
+
+from nest.api.fields import FormField
+from nest.api.responses import APIResponse
+from nest.core.decorators import staff_required
+from nest.recipes.services import create_ingredient_item_groups
+
+from .router import router
+
+
+class RecipeIngredientsCreateIngredientIn(Schema):
+    ingredient_id: str = FormField(..., alias="ingredient")
+    portion_quantity: str
+    portion_quantity_unit_id: str = FormField(..., alias="unit")
+    additional_info: str | None
+
+
+class RecipeIngredientsCreateIn(Schema):
+    title: str
+    ordering: int
+    ingredients: list[RecipeIngredientsCreateIngredientIn]
+
+
+@router.post("{recipe_id}/ingredient-groups/create/", response={201: APIResponse[None]})
+@staff_required
+def recipe_ingredient_groups_create_api(
+    request: HttpRequest, recipe_id: int, payload: list[RecipeIngredientsCreateIn]
+) -> tuple[int, APIResponse[None]]:
+    """
+    Add ingredients to an existing recipe.
+    """
+    create_ingredient_item_groups(
+        recipe_id=recipe_id,
+        ingredient_group_items=[p.dict() for p in payload],
+    )
+    return 201, APIResponse(status="success", data=None)

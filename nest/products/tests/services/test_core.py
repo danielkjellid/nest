@@ -36,7 +36,7 @@ class TestProductCoreServices:
             "supplier": "Awesome supplier",
         }
 
-        with django_assert_num_queries(4):
+        with django_assert_num_queries(5):
             product_no_thumbnail = create_product(
                 name="Awesome product",
                 **fields,
@@ -53,7 +53,7 @@ class TestProductCoreServices:
         assert product_no_thumbnail.gross_unit_price == Decimal("70.10")
         assert product_no_thumbnail.thumbnail_url is None
 
-        with django_assert_num_queries(4):
+        with django_assert_num_queries(5):
             product = create_product(
                 name="Another awesome product",
                 thumbnail=create_product_image(name="thumb"),
@@ -105,7 +105,7 @@ class TestProductCoreServices:
 
         assert Product.objects.all().count() == 0
 
-        with django_assert_num_queries(9):
+        with django_assert_num_queries(10):
             update_or_create_product(**defaults)
 
         assert Product.objects.all().count() == 1
@@ -125,7 +125,7 @@ class TestProductCoreServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(9):
+        with django_assert_num_queries(11):
             updated_product = update_or_create_product(
                 pk=existing_product.id, **defaults
             )
@@ -151,7 +151,7 @@ class TestProductCoreServices:
             "supplier": existing_product.supplier,
         }
 
-        with django_assert_num_queries(9):
+        with django_assert_num_queries(11):
             updated_product = update_or_create_product(
                 oda_id=existing_product.oda_id, **defaults
             )

@@ -85,7 +85,7 @@ class TestProductOdaServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(11):
+        with django_assert_num_queries(12):
             imported_product = import_from_oda(oda_product_id=oda_id_mock)
 
         assert Product.objects.all().count() == 1
@@ -118,7 +118,7 @@ class TestProductOdaServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(11):
+        with django_assert_num_queries(13):
             imported_product = import_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product.id == product.id
