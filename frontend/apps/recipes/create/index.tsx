@@ -12,11 +12,24 @@ import { useForm } from '../../../hooks/forms'
 import { useNavigate } from 'react-router-dom'
 
 function RecipeCreate() {
+  const { classes } = useCommonStyles()
+  const navigate = useNavigate()
+
+  /**********
+   ** Data **
+   **********/
+
   const [loadingStep, setLoadingStep] = useState<number | undefined>()
+
+  /**********
+   ** Form **
+   **********/
+
   const form = useForm({ key: 'RecipeCreateIn' })
 
-  const navigate = useNavigate()
-  const { classes } = useCommonStyles()
+  /**************
+   ** Handlers **
+   **************/
 
   const createRecipe = async () => {
     setLoadingStep(1)

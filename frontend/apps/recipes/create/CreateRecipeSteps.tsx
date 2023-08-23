@@ -170,8 +170,9 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
   }
 
   const addSteps = async () => {
-    const payload = preparePayload()
     validate()
+
+    const payload = preparePayload()
 
     if (!inputErrors) {
       try {
@@ -219,6 +220,7 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 function RecipeStepsCreate() {
   const { recipeId } = useParams()
   invariant(recipeId)
+
   const ingredientGroups = useFetch<RecipeIngredientItemGroupListOutAPIResponse>(
     urls.recipes.listIngredientGroups({ id: recipeId })
   )
