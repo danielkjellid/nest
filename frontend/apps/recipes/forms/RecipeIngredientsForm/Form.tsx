@@ -12,7 +12,7 @@ import React from 'react'
 import { UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 
-interface CreateIngredientFormProps {
+interface RecipeIngredientFormProps {
   units: UnitOption[]
   ingredientGroups: IngredientGroup[]
   ingredientGroupsErrors: IngredientGroupFormError[]
@@ -40,7 +40,7 @@ function RecipeIngredientsForm({
   onIngredientGroupInputAdd,
   onIngredientGroupInputChange,
   onIngredientGroupInputDelete,
-}: CreateIngredientFormProps) {
+}: RecipeIngredientFormProps) {
   const { onDragEnd, onDragStart } = useDragAndDropSingleList({
     items: ingredientGroups,
     onSequenceChange,

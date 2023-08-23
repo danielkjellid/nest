@@ -360,8 +360,6 @@ function Form<T extends object>({
               }
             }
           })}
-
-        {}
       </div>
     </form>
   )
