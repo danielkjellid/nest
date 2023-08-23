@@ -30,6 +30,8 @@ export interface FormElementObj {
   type: string
   enum?: FormEnum[]
   order: number
+  min?: number
+  max?: number
 }
 
 export interface FormElement {

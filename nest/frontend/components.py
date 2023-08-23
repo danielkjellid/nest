@@ -9,6 +9,7 @@ class FrontendComponents(Enum):
     CHECKBOX = "Checkbox"
     CHIP = "Chip"
     COLOR_INPUT = "ColorInput"
+    COUNTER = "Counter"
     FILE_INPUT = "FileInput"
     MULTISELECT = "MultiSelect"
     NUMBER_INPUT = "NumberInput"

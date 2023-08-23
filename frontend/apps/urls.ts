@@ -1,6 +1,10 @@
 type Param = string | number
 
 const urls = {
+  ingredients: {
+    list: () => '/api/v1/ingredients/',
+    create: () => '/api/v1/ingredients/create/',
+  },
   products: {
     create: () => '/api/v1/products/create/',
     detail: ({ id }: { id: Param }) => `/api/v1/products/${id}/`,
@@ -12,10 +16,11 @@ const urls = {
     },
   },
   recipes: {
-    ingredients: {
-      list: () => '/api/v1/recipes/ingredients/',
-      create: () => '/api/v1/recipes/ingredients/create/',
-    },
+    create: () => '/api/v1/recipes/create/',
+    createSteps: ({ id }: { id: Param }) => `/api/v1/recipes/${id}/steps/create/`,
+    listIngredientGroups: ({ id }: { id: Param }) => `/api/v1/recipes/${id}/ingredient-groups/`,
+    createIngredientGroups: ({ id }: { id: Param }) =>
+      `/api/v1/recipes/${id}/ingredient-groups/create/`,
   },
   users: {
     list: () => '/api/v1/users/',

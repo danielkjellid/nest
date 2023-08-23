@@ -50,6 +50,8 @@ def FormField(
     col_span: int | None = None,
     section: str | None = None,
     order: int | None = 1,
+    min: int | None = None,
+    max: int | None = None,
     **extra: Any,
 ) -> Any:
     field_info = FieldInfo(
@@ -86,6 +88,8 @@ def FormField(
         col_span=col_span,
         section=section,
         order=order,
+        min=min,
+        max=max,
         **extra,
     )
     field_info._validate()

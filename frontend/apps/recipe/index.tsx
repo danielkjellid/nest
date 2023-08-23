@@ -2,8 +2,8 @@
 import 'vite/modulepreload-polyfill'
 import '../../assets/index.css'
 
-import { RecipeApp } from './App'
 import React from 'react'
+import { RecipeApp } from './App'
 import { createRoot } from 'react-dom/client'
 
 createRoot(document.getElementById('root') as HTMLElement).render(

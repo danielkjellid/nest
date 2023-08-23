@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
-import cx from 'classnames'
-import { Tabs, Title, Text, ActionIcon, useMantineTheme, Badge } from '@mantine/core'
-import { RecipeHealthScoreMeter } from './HealthScore'
-import { RecipeSteps } from './Steps'
-import { RecipeSection } from './Section'
-import { RecipeNutritionTable } from './Nutrition'
-import { useCommonStyles } from '../../../../styles/common'
-import { RecipeIngredientGroup } from './Ingredients'
+import { ActionIcon, Badge, Tabs, Text, Title, useMantineTheme } from '@mantine/core'
 import { IconClock, IconCoin, IconMinus, IconPlus } from '@tabler/icons-react'
+import React, { useState } from 'react'
+
+import { RecipeHealthScoreMeter } from './HealthScore'
+import { RecipeIngredientGroup } from './Ingredients'
+import { RecipeNutritionTable } from './Nutrition'
+import { RecipeSection } from './Section'
+import { RecipeSteps } from './Steps'
+import cx from 'classnames'
+import { useCommonStyles } from '../../../../styles/common'
 
 function Recipe() {
   const theme = useMantineTheme()

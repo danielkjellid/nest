@@ -5,7 +5,8 @@ from nest.api.fields import FormField
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
 from nest.frontend.components import FrontendComponents
-from nest.recipes.services import create_ingredient
+
+from ..services import create_ingredient
 from .router import router
 
 
@@ -18,14 +19,14 @@ class IngredientCreateIn(Schema):
     )
 
 
-@router.post("ingredients/create/", response=APIResponse[None])
+@router.post("create/", response={201: APIResponse[None]})
 @staff_required
 def ingredient_create_api(
     request: HttpRequest, payload: IngredientCreateIn
-) -> APIResponse[None]:
+) -> tuple[int, APIResponse[None]]:
     """
     Create an ingredient.
     """
 
     create_ingredient(**payload.dict(), request=request)
-    return APIResponse(status="success", data=None)
+    return 201, APIResponse(status="success", data=None)

@@ -1,4 +1,5 @@
 import decimal
+from datetime import timedelta
 from typing import Any
 
 import orjson
@@ -11,6 +12,8 @@ from nest.core.utils import camelize
 def default(obj: Any) -> Any:
     if isinstance(obj, decimal.Decimal):
         return str(obj)
+    if isinstance(obj, timedelta):
+        return obj.total_seconds()
     return obj
 
 
