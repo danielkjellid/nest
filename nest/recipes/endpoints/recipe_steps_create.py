@@ -29,6 +29,6 @@ def recipe_steps_create_api(
     """
     create_recipe_steps(
         recipe_id=recipe_id,
-        steps=json.loads(json.dumps(payload, default=pydantic_encoder)),
+        steps=[p.dict() for p in payload],
     )
     return 201, APIResponse(status="success", data=None)
