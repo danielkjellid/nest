@@ -23,10 +23,14 @@ interface RecipeStepsCreateInnerProps {
 }
 
 function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerProps) {
-  const { data: ingredientGroups } = results.ingredientGroups
+  const { classes } = useCommonStyles()
   const navigate = useNavigate()
 
-  const { classes } = useCommonStyles()
+  /**********
+   ** Data **
+   **********/
+
+  const { data: ingredientGroups } = results.ingredientGroups
 
   const defaultStep = {
     instruction: '',
@@ -35,7 +39,6 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     ingredientItems: [],
   }
   const [steps, setSteps] = useState<Step[]>([defaultStep])
-
   const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
 
   // Get a list of available IngredientItem options. This incudes filtering out ingredients
@@ -61,6 +64,28 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     [ingredientGroups, selectedIngredientItems]
   )
 
+  /************
+   ** Errors **
+   ************/
+
+  const [inputErrors, setInputErrors] = useState<StepInputError[]>()
+
+  const clearErrorForIndex = ({ index }: { index: number }) => {
+    if (inputErrors?.length) {
+      const errorsData = [...inputErrors]
+      const errorIndex = errorsData.findIndex((error) => error.index === index)
+
+      if (errorIndex !== -1) {
+        errorsData.splice(errorIndex, 1)
+        setInputErrors(errorsData)
+      }
+    }
+  }
+
+  /**************
+   ** Handlers **
+   **************/
+
   const handleStepInputAdd = () => {
     const stepsData = [...steps]
     setSteps([...stepsData, defaultStep])
@@ -85,30 +110,9 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     setSteps([...data])
   }
 
-  const preparePayload = () => {
-    return steps.map((step, index) => ({
-      number: index + 1,
-      instruction: step.instruction,
-      duration: step.duration,
-      stepType: step.type,
-      // Get an array of ingredient item ids.
-      ingredientItems: step.ingredientItems.map((ingredientItem) => ingredientItem.value),
-    }))
-  }
-
-  const [inputErrors, setInputErrors] = useState<StepInputError[]>()
-
-  const clearErrorForIndex = ({ index }: { index: number }) => {
-    if (inputErrors?.length) {
-      const errorsData = [...inputErrors]
-      const errorIndex = errorsData.findIndex((error) => error.index === index)
-
-      if (errorIndex !== -1) {
-        errorsData.splice(errorIndex, 1)
-        setInputErrors(errorsData)
-      }
-    }
-  }
+  /****************
+   ** Validators **
+   ****************/
 
   const validate = () => {
     const errors: StepInputError[] = []
@@ -148,6 +152,21 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     })
 
     setInputErrors(errors)
+  }
+
+  /********************
+   ** Submit handler **
+   ********************/
+
+  const preparePayload = () => {
+    return steps.map((step, index) => ({
+      number: index + 1,
+      instruction: step.instruction,
+      duration: step.duration,
+      stepType: step.type,
+      // Get an array of ingredient item ids.
+      ingredientItems: step.ingredientItems.map((ingredientItem) => ingredientItem.value),
+    }))
   }
 
   const addSteps = async () => {
