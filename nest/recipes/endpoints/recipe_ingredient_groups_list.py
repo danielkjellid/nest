@@ -1,5 +1,6 @@
 from django.http import HttpRequest
 from ninja import Schema
+from pydantic import parse_obj_as
 
 from nest.api.responses import APIResponse
 
@@ -46,6 +47,6 @@ def recipe_ingredient_groups_list_api(
     """
 
     groups = get_ingredient_item_groups_for_recipe(recipe_id=recipe_id)
-    data = [RecipeIngredientGroupsListOut(**group.dict()) for group in groups]
+    data = parse_obj_as(list[RecipeIngredientGroupsListOut], groups)
 
     return APIResponse(status="success", data=data)
