@@ -1,5 +1,5 @@
 import functools
-from typing import Any, Callable
+from typing import Any, Callable, TypeVar
 
 from django.db.models import Model
 from django.db.models import fields as django_fields
@@ -40,27 +40,29 @@ def staff_required(func: Any) -> Callable[[Callable[..., Any]], Callable[..., An
     return inner
 
 
+T = TypeVar("T")
+
+
 def ensure_prefetched_relations(  # noqa: C901
     *, arg_or_kwarg: str, skip_fields: list[str] | None = None
-) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
-    fields_to_prefetch = []
+) -> Callable[[Callable[..., T]], Callable[..., T]]:
+    fields_to_prefetch: list[str] = []
     accepted_prefetch_types = (
         django_fields.reverse_related.ManyToManyRel,
         django_fields.reverse_related.ManyToOneRel,
         django_fields.reverse_related.ForeignObjectRel,
     )
 
-    fields_to_select = []
+    fields_to_select: list[str] = []
     accepted_select_types = (
         django_related_fields.ForeignKey,
         django_related_fields.OneToOneField,
         django_fields.reverse_related.OneToOneRel,
     )
 
-    if not skip_fields:
-        skip_fields = []
+    fields_to_skip: list[str] = skip_fields if skip_fields else []
 
-    def decorator(func: Any) -> Callable[..., Any]:  # noqa: C901
+    def decorator(func: Any) -> Callable[..., T]:  # noqa: C901
         def inner(*args: Any, **kwargs: Any) -> Any:  # noqa: C901, PLR0912
             skip_check = kwargs.get("skip_check", False)
 
@@ -94,14 +96,14 @@ def ensure_prefetched_relations(  # noqa: C901
                 for field in instance_._meta.get_fields():
                     if (
                         isinstance(field, accepted_select_types)
-                        and field.name not in skip_fields
+                        and field.name not in fields_to_skip
                         and field.name not in fields_to_select
                     ):
                         fields_to_select.append(field.name)
 
                     if (
                         isinstance(field, accepted_prefetch_types)
-                        and field.name not in skip_fields
+                        and field.name not in fields_to_skip
                         and field.name not in fields_to_prefetch
                         # Also ignore fields that are marked for select here because a
                         # reverse 1-1 should be select_related, but OneToOne field is

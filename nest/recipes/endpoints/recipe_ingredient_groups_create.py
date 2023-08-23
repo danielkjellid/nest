@@ -1,5 +1,8 @@
+import json
+
 from django.http import HttpRequest
 from ninja import Schema
+from pydantic.json import pydantic_encoder
 
 from nest.api.fields import FormField
 from nest.api.responses import APIResponse
@@ -31,6 +34,9 @@ def recipe_ingredient_groups_create_api(
     Add ingredients to an existing recipe.
     """
     create_ingredient_item_groups(
-        recipe_id=recipe_id, ingredient_group_items=[p.dict() for p in payload]
+        recipe_id=recipe_id,
+        ingredient_group_items=json.loads(
+            json.dumps(payload, default=pydantic_encoder)
+        ),
     )
     return 201, APIResponse(status="success", data=None)

@@ -1,5 +1,6 @@
 from datetime import timedelta
 from decimal import Decimal
+from typing import Any
 
 from django.db import transaction
 from django.http import HttpRequest
@@ -16,7 +17,6 @@ from .models import (
     RecipeStep,
 )
 from .records import RecipeRecord
-from .types import RecipeIngredientItemGroupDict, RecipeStepDict
 
 
 def create_recipe(
@@ -63,7 +63,7 @@ def create_recipe(
 
 
 def create_ingredient_item_groups(
-    *, recipe_id: int | str, ingredient_group_items: list[RecipeIngredientItemGroupDict]
+    *, recipe_id: int | str, ingredient_group_items: list[dict[str, Any]]
 ) -> None:
     """
     Create ingredient item groups and related ingredient items and associate them with a
@@ -140,7 +140,7 @@ def create_ingredient_item_groups(
         transaction.on_commit(create_ingredient_items)
 
 
-def create_recipe_steps(*, recipe_id: int | str, steps: list[RecipeStepDict]) -> None:
+def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) -> None:
     """
     Create steps related to a single recipe instance.
     """

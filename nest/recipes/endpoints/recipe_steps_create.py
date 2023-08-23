@@ -1,5 +1,8 @@
+import json
+
 from django.http import HttpRequest
 from ninja import Schema
+from pydantic.json import pydantic_encoder
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
@@ -24,5 +27,8 @@ def recipe_steps_create_api(
     """
     Create steps related to a single recipe.
     """
-    create_recipe_steps(recipe_id=recipe_id, steps=[p.dict() for p in payload])
+    create_recipe_steps(
+        recipe_id=recipe_id,
+        steps=json.loads(json.dumps(payload, default=pydantic_encoder)),
+    )
     return 201, APIResponse(status="success", data=None)
