@@ -1,8 +1,5 @@
-import json
-
 from django.http import HttpRequest
 from ninja import Schema
-from pydantic.json import pydantic_encoder
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required

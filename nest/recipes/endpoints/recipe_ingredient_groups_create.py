@@ -1,8 +1,5 @@
-import json
-
 from django.http import HttpRequest
 from ninja import Schema
-from pydantic.json import pydantic_encoder
 
 from nest.api.fields import FormField
 from nest.api.responses import APIResponse
