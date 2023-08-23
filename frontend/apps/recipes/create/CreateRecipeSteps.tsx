@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { RecipeStepsForm, Step, StepInputError } from '../forms/RecipeStepsForm'
 import { useNavigate, useParams } from 'react-router-dom'
 
@@ -40,21 +40,25 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 
   // Get a list of available IngredientItem options. This incudes filtering out ingredients
   // "claimed" by other steps.
-  const ingredientItemOptions = ingredientGroups?.flatMap((ingredientGroup) =>
-    ingredientGroup.ingredientItems
-      .filter(
-        (ingredientItem) =>
-          !selectedIngredientItems
-            .map((selectedItem) => selectedItem.value)
-            .includes(ingredientItem.id.toString())
-      )
-      .map((item) => ({
-        label: item.ingredient.title,
-        image: item.ingredient.product.thumbnailUrl,
-        description: item.ingredient.product.fullName,
-        value: item.id.toString(),
-        group: ingredientGroup.title,
-      }))
+  const ingredientItemOptions = useMemo(
+    () =>
+      ingredientGroups?.flatMap((ingredientGroup) =>
+        ingredientGroup.ingredientItems
+          .filter(
+            (ingredientItem) =>
+              !selectedIngredientItems
+                .map((selectedItem) => selectedItem.value)
+                .includes(ingredientItem.id.toString())
+          )
+          .map((item) => ({
+            label: item.ingredient.title,
+            image: item.ingredient.product.thumbnailUrl,
+            description: item.ingredient.product.fullName,
+            value: item.id.toString(),
+            group: ingredientGroup.title,
+          }))
+      ),
+    [ingredientGroups, selectedIngredientItems]
   )
 
   const handleStepInputAdd = () => {

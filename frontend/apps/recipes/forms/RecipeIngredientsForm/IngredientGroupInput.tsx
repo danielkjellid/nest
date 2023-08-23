@@ -1,6 +1,6 @@
 import { ActionIcon, Select, Text, TextInput } from '@mantine/core'
+import { FormError, Ingredient, IngredientGroup, IngredientOptionType } from './types'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import { Ingredient, IngredientGroup, IngredientOptionType, FormError } from './types'
 import React, { forwardRef } from 'react'
 
 import { Draggable } from 'react-beautiful-dnd'
