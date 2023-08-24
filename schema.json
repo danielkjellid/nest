@@ -428,6 +428,33 @@
                 ]
             }
         },
+        "/api/v1/recipes/": {
+            "get": {
+                "operationId": "recipe_list_api",
+                "summary": "Recipe List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/recipes/{recipe_id}/steps/create/": {
             "post": {
                 "operationId": "recipe_steps_create_api",
@@ -2281,6 +2308,81 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientGroupsListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "RecipeListOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "defaultNumPortions": {
+                        "title": "Default Num Portions",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "statusDisplay": {
+                        "title": "Status Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "difficultyDisplay": {
+                        "title": "Difficulty Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isVegetarian": {
+                        "title": "Is Vegetarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isPescatarian": {
+                        "title": "Is Pescatarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    }
+                },
+                "required": [
+                    "title",
+                    "defaultNumPortions",
+                    "statusDisplay",
+                    "difficultyDisplay",
+                    "isVegetarian",
+                    "isPescatarian"
+                ],
+                "type": "object"
+            },
+            "RecipeListOutAPIResponse": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeListOut"
                         },
                         "component": "MultiSelect"
                     }

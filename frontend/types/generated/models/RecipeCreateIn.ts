@@ -13,7 +13,6 @@ export type RecipeCreateIn = {
     difficulty: (RecipeDifficulty | string);
     externalId?: string;
     externalUrl?: string;
-    isPartialRecipe?: boolean;
     isVegetarian?: boolean;
     isPescatarian?: boolean;
 };

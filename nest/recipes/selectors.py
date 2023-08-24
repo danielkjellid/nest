@@ -1,7 +1,5 @@
-from .models import RecipeIngredientItemGroup
-from .records import (
-    RecipeIngredientItemGroupRecord,
-)
+from .models import RecipeIngredientItemGroup, Recipe
+from .records import RecipeIngredientItemGroupRecord, RecipeRecord
 
 
 def get_ingredient_item_groups_for_recipe(
@@ -19,5 +17,15 @@ def get_ingredient_item_groups_for_recipe(
         .order_by("ordering")
     )
     records = [RecipeIngredientItemGroupRecord.from_group(group) for group in groups]
+
+    return records
+
+
+def get_recipes() -> list[RecipeRecord]:
+    """
+    Get a list off all recipes.
+    """
+    recipes = Recipe.objects.all()
+    records = [RecipeRecord.from_recipe(recipe) for recipe in recipes]
 
     return records
