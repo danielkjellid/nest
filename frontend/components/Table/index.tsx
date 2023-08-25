@@ -119,7 +119,7 @@ function Table<TData extends object>({
         sx: { minWidth: '400px' },
       }}
       mantinePaperProps={{
-        radius: 'lg',
+        radius: '6px',
         withBorder: false,
         shadow: 'sm',
       }}

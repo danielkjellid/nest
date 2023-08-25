@@ -229,6 +229,7 @@ class RecipeRecord(BaseModel):
     external_id: str | None
     external_url: str | None
     status: RecipeStatus
+    status_display: str
     difficulty: RecipeDifficulty
     difficulty_display: str
     is_vegetarian: bool
@@ -245,6 +246,7 @@ class RecipeRecord(BaseModel):
             external_id=recipe.external_id,
             external_url=recipe.external_url,
             status=RecipeStatus(recipe.status),
+            status_display=RecipeStatus(recipe.status).label,
             difficulty=RecipeDifficulty(recipe.difficulty),
             difficulty_display=RecipeDifficulty(recipe.difficulty).label,
             is_vegetarian=recipe.is_vegetarian,

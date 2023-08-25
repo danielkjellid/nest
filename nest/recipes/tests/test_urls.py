@@ -25,6 +25,13 @@ class TestRecipeUrls:
         url = reverse("api-1.0.0:recipe_ingredient_groups_list_api", args=["recipe_id"])
         assert url == "/api/v1/recipes/recipe_id/ingredient-groups/"
 
+    def test_url_recipe_list_api(self):
+        """
+        Test reverse match of the recipe_list endpoint.
+        """
+        url = reverse("api-1.0.0:recipe_list_api")
+        assert url == "/api/v1/recipes/"
+
     def test_url_recipe_steps_create_api(self):
         """
         Test reverse match of the recipe_steps_create endpoint.
