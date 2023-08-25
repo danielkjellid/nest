@@ -16,6 +16,7 @@ const urls = {
     },
   },
   recipes: {
+    list: () => '/api/v1/recipes/',
     create: () => '/api/v1/recipes/create/',
     createSteps: ({ id }: { id: Param }) => `/api/v1/recipes/${id}/steps/create/`,
     listIngredientGroups: ({ id }: { id: Param }) => `/api/v1/recipes/${id}/ingredient-groups/`,

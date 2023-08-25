@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecipeListIngredientItemPortionUnitOut = {
+export type RecipeIngredientGroupsListItemPortionQuantityUnitOut = {
     abbreviation: string;
 };
 

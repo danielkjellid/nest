@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecipeIngredientProductListOut = {
+export type RecipeIngredientGroupsListIngredientProductOut = {
     fullName: string;
     thumbnailUrl?: string;
 };
