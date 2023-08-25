@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+
 from nest.recipes.endpoints.recipe_list import recipe_list_api
 
 pytestmark = pytest.mark.django_db
