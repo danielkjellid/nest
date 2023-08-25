@@ -445,6 +445,7 @@
                         }
                     }
                 },
+                "description": "Get a list of all recipes in the application.",
                 "tags": [
                     "Recipes"
                 ],

@@ -1,4 +1,4 @@
-from .models import RecipeIngredientItemGroup, Recipe
+from .models import Recipe, RecipeIngredientItemGroup
 from .records import RecipeIngredientItemGroupRecord, RecipeRecord
 
 
@@ -25,7 +25,7 @@ def get_recipes() -> list[RecipeRecord]:
     """
     Get a list off all recipes.
     """
-    recipes = Recipe.objects.all()
+    recipes = Recipe.objects.all().order_by("-created_at")
     records = [RecipeRecord.from_recipe(recipe) for recipe in recipes]
 
     return records

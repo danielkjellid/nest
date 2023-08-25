@@ -1,9 +1,11 @@
 from django.http import HttpRequest
 from ninja import Schema
+from pydantic import parse_obj_as
+
 from nest.api.responses import APIResponse
+
 from ..selectors import get_recipes
 from .router import router
-from pydantic import parse_obj_as
 
 
 class RecipeListOut(Schema):
@@ -17,6 +19,9 @@ class RecipeListOut(Schema):
 
 @router.get("/", response=APIResponse[list[RecipeListOut]])
 def recipe_list_api(request: HttpRequest) -> APIResponse[list[RecipeListOut]]:
+    """
+    Get a list of all recipes in the application.
+    """
     recipes = get_recipes()
     data = parse_obj_as(list[RecipeListOut], recipes)
 
