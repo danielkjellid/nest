@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import { Header } from './components/Header'
-import { RecipeIngredientItemGroupListOutAPIResponse } from '../../../types'
+import { RecipeIngredientGroupsListOutAPIResponse } from '../../../types'
 import View from '../../../components/View'
 import invariant from 'tiny-invariant'
 import { notifications } from '@mantine/notifications'
@@ -18,7 +18,7 @@ import { useFetch } from '../../../hooks/fetcher'
 interface RecipeStepsCreateInnerProps {
   recipeId: string | number
   results: {
-    ingredientGroups: RecipeIngredientItemGroupListOutAPIResponse
+    ingredientGroups: RecipeIngredientGroupsListOutAPIResponse
   }
 }
 
@@ -221,7 +221,7 @@ function RecipeStepsCreate() {
   const { recipeId } = useParams()
   invariant(recipeId)
 
-  const ingredientGroups = useFetch<RecipeIngredientItemGroupListOutAPIResponse>(
+  const ingredientGroups = useFetch<RecipeIngredientGroupsListOutAPIResponse>(
     urls.recipes.listIngredientGroups({ id: recipeId })
   )
 
