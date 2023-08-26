@@ -3,6 +3,7 @@ import { IngredientListOut } from '../../../types'
 import React from 'react'
 import Table from '../../../components/Table'
 import { routes as productRoutes } from '../../products/routes'
+
 interface IngredientsOverviewTableProps {
   data: IngredientListOut[]
 }
