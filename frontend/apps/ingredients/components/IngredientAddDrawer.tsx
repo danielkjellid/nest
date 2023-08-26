@@ -8,6 +8,30 @@ import { Text } from '@mantine/core'
 import { urls } from '../../urls'
 import { useForm } from '../../../hooks/forms'
 
+interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
+  image: string | null
+  label: string
+  description: string
+}
+
+const ProductOption = forwardRef<HTMLDivElement, ProductOptionProps>(
+  ({ image, label, description, ...others }: ProductOptionProps, ref) => (
+    <div ref={ref} {...others}>
+      <div className="flex items-center space-x-3">
+        <img src={image || ''} className="object-contain w-12 h-12 rounded-md" />
+        <div>
+          <Text size="sm">{label}</Text>
+          <Text size="xs" opacity={0.65}>
+            {description}
+          </Text>
+        </div>
+      </div>
+    </div>
+  )
+)
+
+ProductOption.displayName = 'ProductOption'
+
 interface IngredientAddDrawerProps {
   opened: boolean
   products: ProductListOut[]
@@ -65,29 +89,5 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
     </Drawer>
   )
 }
-
-interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
-  image: string | null
-  label: string
-  description: string
-}
-
-const ProductOption = forwardRef<HTMLDivElement, ProductOptionProps>(
-  ({ image, label, description, ...others }: ProductOptionProps, ref) => (
-    <div ref={ref} {...others}>
-      <div className="flex items-center space-x-3">
-        <img src={image || ''} className="object-contain w-12 h-12 rounded-md" />
-        <div>
-          <Text size="sm">{label}</Text>
-          <Text size="xs" opacity={0.65}>
-            {description}
-          </Text>
-        </div>
-      </div>
-    </div>
-  )
-)
-
-ProductOption.displayName = 'ProductOption'
 
 export { IngredientAddDrawer }
