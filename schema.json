@@ -1402,8 +1402,7 @@
                 },
                 "required": [
                     "id",
-                    "name",
-                    "displayName"
+                    "name"
                 ],
                 "type": "object"
             },
