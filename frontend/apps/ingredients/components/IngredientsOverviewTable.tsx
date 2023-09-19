@@ -1,14 +1,18 @@
 import { Anchor } from '@mantine/core'
+import { Menu, Title } from '@mantine/core'
+
 import { IngredientListOut } from '../../../types'
 import React from 'react'
 import Table from '../../../components/Table'
 import { routes as productRoutes } from '../../products/routes'
+import { IconTrash } from '@tabler/icons-react'
 
 interface IngredientsOverviewTableProps {
   data: IngredientListOut[]
+  onDeleteIngredient: (id: number) => void
 }
 
-function IngredientsOverviewTable({ data }: IngredientsOverviewTableProps) {
+function IngredientsOverviewTable({ data, onDeleteIngredient }: IngredientsOverviewTableProps) {
   return (
     <Table<IngredientListOut>
       rowIdentifier="id"
@@ -28,6 +32,15 @@ function IngredientsOverviewTable({ data }: IngredientsOverviewTableProps) {
         },
       ]}
       data={data || []}
+      actionMenuItems={({ row }) => [
+        <Menu.Item
+          key="delete"
+          icon={<IconTrash />}
+          onClick={() => onDeleteIngredient(row.original.id)}
+        >
+          Delete
+        </Menu.Item>,
+      ]}
     />
   )
 }

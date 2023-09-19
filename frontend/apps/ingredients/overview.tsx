@@ -10,6 +10,7 @@ import { urls } from '../urls'
 import { useCommonContext } from '../../contexts/CommonProvider'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../hooks/fetcher'
+import { ConfirmationModal } from '../../components/ConfirmationModal'
 
 interface IngredientsOverviewInnerProps {
   results: {
@@ -24,6 +25,12 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
   const { currentUser } = useCommonContext()
 
   const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure()
+  const [
+    deleteConfirmModalOpened,
+    { open: deleteConfirmModalOpen, close: deleteConfirmModalClose },
+  ] = useDisclosure()
+
+  const deleteIngredient = () => {}
 
   return (
     <div className="space-y-6">
@@ -39,13 +46,27 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
           </div>
         )}
       </div>
-      <IngredientsOverviewTable data={ingredients.data || []} />
+      <IngredientsOverviewTable
+        data={ingredients.data || []}
+        onDeleteIngredient={deleteConfirmModalOpen}
+      />
       <IngredientAddDrawer
         opened={addDrawerOpened}
         products={products.data || []}
         onClose={addDrawerClose}
         refetch={refetch}
       />
+      {/* Should probably be moved down so we dont have to store the id up here */}
+      <ConfirmationModal
+        opened={deleteConfirmModalOpened}
+        onClose={deleteConfirmModalClose}
+        title="Are you sure?"
+        onConfirm={() => console.log('confirm')}
+        confirmButtonText="Delete ingredient"
+        confirmButtonColor="red"
+      >
+        <p>Are you sure you want to delete this ingredient? This action is permanent.</p>
+      </ConfirmationModal>
     </div>
   )
 }
