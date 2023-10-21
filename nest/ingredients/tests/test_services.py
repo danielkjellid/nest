@@ -51,7 +51,7 @@ class TestIngredientsServices:
         assert Ingredient.objects.count() == 1
         assert LogEntry.objects.count() == 0
 
-        with django_assert_num_queries(5):
+        with django_assert_num_queries(4):
             delete_ingredient(pk=ingredient.id)
 
         assert Ingredient.objects.filter(id=ingredient.id).first() is None
