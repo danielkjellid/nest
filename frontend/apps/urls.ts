@@ -4,6 +4,7 @@ const urls = {
   ingredients: {
     list: () => '/api/v1/ingredients/',
     create: () => '/api/v1/ingredients/create/',
+    delete: () => '/api/v1/ingredients/delete/',
   },
   products: {
     create: () => '/api/v1/products/create/',

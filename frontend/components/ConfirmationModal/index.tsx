@@ -2,6 +2,11 @@ import React from 'react'
 import { Modal } from '@mantine/core'
 import { Button, ButtonProps } from '../Button'
 
+export interface ConfirmationModalButtonProps {
+  label?: string
+  color?: ButtonProps['color']
+}
+
 interface ConfirmationModalProps {
   title: string
   opened: boolean
@@ -10,6 +15,10 @@ interface ConfirmationModalProps {
   confirmButtonColor?: ButtonProps['color']
   confirmButtonText?: string
   children: React.ReactNode
+  buttons: {
+    confirm?: ConfirmationModalButtonProps
+    cancel?: ConfirmationModalButtonProps
+  }
 }
 
 function ConfirmationModal({
@@ -18,24 +27,28 @@ function ConfirmationModal({
   onConfirm,
   onClose,
   children,
-  confirmButtonText,
-  confirmButtonColor,
+  buttons,
 }: ConfirmationModalProps) {
   return (
     <Modal opened={opened} title={title} onClose={onClose} size="md" centered>
       <div className="space-y-6">
         <div className="max-w-prose text-sm">{children}</div>
         <div className="flex w-full space-x-4">
-          <Button fullWidth variant="default">
-            Cancel
+          <Button
+            fullWidth
+            variant="default"
+            color={(buttons.cancel && buttons.cancel.color) || undefined}
+            onClick={onClose}
+          >
+            {(buttons.cancel && buttons.cancel.label) || 'Cancel'}
           </Button>
           <Button
             fullWidth
             variant="filled"
-            color={confirmButtonColor || 'red'}
+            color={(buttons.confirm && buttons.confirm.color) || 'red'}
             onClick={onConfirm}
           >
-            {confirmButtonText || 'Confirm'}
+            {(buttons.confirm && buttons.confirm.label) || 'Confirm'}
           </Button>
         </div>
       </div>

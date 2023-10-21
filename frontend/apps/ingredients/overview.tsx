@@ -11,6 +11,10 @@ import { useCommonContext } from '../../contexts/CommonProvider'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../hooks/fetcher'
 import { ConfirmationModal } from '../../components/ConfirmationModal'
+import { useConfirmModal } from '../../hooks/confirm-modal'
+import { performDelete } from '../../hooks/fetcher/http'
+import { IngredientDeleteIn } from '../../types'
+import { notifications } from '@mantine/notifications'
 
 interface IngredientsOverviewInnerProps {
   results: {
@@ -25,12 +29,32 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
   const { currentUser } = useCommonContext()
 
   const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure()
-  const [
-    deleteConfirmModalOpened,
-    { open: deleteConfirmModalOpen, close: deleteConfirmModalClose },
-  ] = useDisclosure()
 
-  const deleteIngredient = () => {}
+  const deleteIngredient = async (id: number) => {
+    modal.close()
+    const payload: IngredientDeleteIn = { ingredientId: id }
+    try {
+      await performDelete({ url: urls.ingredients.delete(), data: payload })
+      refetch()
+      notifications.show({
+        color: 'green',
+        title: 'Ingredient deleted',
+        message: 'Ingredient was successfully deleted.',
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const modal = useConfirmModal({
+    title: 'Are you sure?',
+    children: <p>Are you sure you want to delete this ingredient? This action is permanent.</p>,
+    buttons: {
+      confirm: { label: 'Delete ingredient', color: 'red' },
+      cancel: { label: 'Cancel' },
+    },
+    onConfirm: deleteIngredient,
+  })
 
   return (
     <div className="space-y-6">
@@ -48,7 +72,7 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
       </div>
       <IngredientsOverviewTable
         data={ingredients.data || []}
-        onDeleteIngredient={deleteConfirmModalOpen}
+        onDeleteIngredient={(id: number) => modal.open(id)}
       />
       <IngredientAddDrawer
         opened={addDrawerOpened}
@@ -56,17 +80,7 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
         onClose={addDrawerClose}
         refetch={refetch}
       />
-      {/* Should probably be moved down so we dont have to store the id up here */}
-      <ConfirmationModal
-        opened={deleteConfirmModalOpened}
-        onClose={deleteConfirmModalClose}
-        title="Are you sure?"
-        onConfirm={() => console.log('confirm')}
-        confirmButtonText="Delete ingredient"
-        confirmButtonColor="red"
-      >
-        <p>Are you sure you want to delete this ingredient? This action is permanent.</p>
-      </ConfirmationModal>
+      {modal.render()}
     </div>
   )
 }

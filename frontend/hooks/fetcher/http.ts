@@ -5,6 +5,7 @@ import { Getter, RequestOptions, Setter } from './types'
 import { APIResponse } from '../../types'
 import { decamelize } from 'humps'
 import { notifications } from '@mantine/notifications'
+import { S } from 'vitest/dist/types-94cfe4b4'
 
 const csrfToken = window.csrfToken
 
@@ -115,4 +116,5 @@ const queryFactory = (obj: Record<string, any> | undefined) => {
 export const performGet: Getter = getter
 export const performPost: Setter = setter('post')
 export const performPut: Setter = setter('put')
+export const performDelete: Setter = setter('delete')
 export const makeQuery: typeof queryFactory = queryFactory
