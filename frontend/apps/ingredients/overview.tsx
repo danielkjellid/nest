@@ -2,12 +2,16 @@ import { IngredientListOutAPIResponse, ProductListOutAPIResponse } from '../../t
 
 import { Button } from '../../components/Button'
 import { IngredientAddDrawer } from './components/IngredientAddDrawer'
+import { IngredientDeleteIn } from '../../types'
 import { IngredientsOverviewTable } from './components/IngredientsOverviewTable'
 import React from 'react'
 import { Title } from '@mantine/core'
 import View from '../../components/View'
+import { notifications } from '@mantine/notifications'
+import { performDelete } from '../../hooks/fetcher/http'
 import { urls } from '../urls'
 import { useCommonContext } from '../../contexts/CommonProvider'
+import { useConfirmModal } from '../../hooks/confirm-modal'
 import { useDisclosure } from '@mantine/hooks'
 import { useFetch } from '../../hooks/fetcher'
 
@@ -25,6 +29,32 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
 
   const [addDrawerOpened, { open: addDrawerOpen, close: addDrawerClose }] = useDisclosure()
 
+  const deleteIngredient = async (id: number) => {
+    modal.close()
+    const payload: IngredientDeleteIn = { ingredientId: id }
+    try {
+      await performDelete({ url: urls.ingredients.delete(), data: payload })
+      refetch()
+      notifications.show({
+        color: 'green',
+        title: 'Ingredient deleted',
+        message: 'Ingredient was successfully deleted.',
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const modal = useConfirmModal({
+    title: 'Are you sure?',
+    children: <p>Are you sure you want to delete this ingredient? This action is permanent.</p>,
+    buttons: {
+      confirm: { label: 'Delete ingredient', color: 'red' },
+      cancel: { label: 'Cancel' },
+    },
+    onConfirm: deleteIngredient,
+  })
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -39,13 +69,17 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
           </div>
         )}
       </div>
-      <IngredientsOverviewTable data={ingredients.data || []} />
+      <IngredientsOverviewTable
+        data={ingredients.data || []}
+        onDeleteIngredient={(id: number) => modal.open(id)}
+      />
       <IngredientAddDrawer
         opened={addDrawerOpened}
         products={products.data || []}
         onClose={addDrawerClose}
         refetch={refetch}
       />
+      {modal.render()}
     </div>
   )
 }
