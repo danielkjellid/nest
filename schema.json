@@ -44,6 +44,44 @@
                 ]
             }
         },
+        "/api/v1/ingredients/delete/": {
+            "delete": {
+                "operationId": "ingredient_delete_api",
+                "summary": "Ingredient Delete Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Delete an ingredient.",
+                "tags": [
+                    "Ingredients"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngredientDeleteIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/ingredients/": {
             "get": {
                 "operationId": "ingredient_list_api",
@@ -629,6 +667,20 @@
                 "required": [
                     "title",
                     "product"
+                ],
+                "type": "object"
+            },
+            "IngredientDeleteIn": {
+                "title": "IngredientDeleteIn",
+                "properties": {
+                    "ingredientId": {
+                        "title": "Ingredient Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "ingredientId"
                 ],
                 "type": "object"
             },
