@@ -30,5 +30,3 @@ def delete_ingredient(*, pk: int | str, request: HttpRequest | None = None) -> N
     log_delete(instance=ingredient, request=request, changes={})
 
     ingredient.delete()
-
-    return None

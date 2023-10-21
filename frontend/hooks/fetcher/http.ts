@@ -5,7 +5,6 @@ import { Getter, RequestOptions, Setter } from './types'
 import { APIResponse } from '../../types'
 import { decamelize } from 'humps'
 import { notifications } from '@mantine/notifications'
-import { S } from 'vitest/dist/types-94cfe4b4'
 
 const csrfToken = window.csrfToken
 

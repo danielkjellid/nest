@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
 import {
   ConfirmationModal,
   type ConfirmationModalButtonProps,
 } from '../components/ConfirmationModal'
+import React, { useState } from 'react'
+
 import { useDisclosure } from '@mantine/hooks'
 
 interface ModalState {
@@ -13,11 +14,6 @@ interface ModalState {
     cancel: ConfirmationModalButtonProps
   }
   onConfirm: (id: any) => void
-}
-
-interface ModalStateButtonLabels {
-  confirm: string
-  cancel: string
 }
 
 const useConfirmModal = ({ title, children, buttons, onConfirm }: ModalState) => {

@@ -1,12 +1,11 @@
 import pytest
 from django.core.exceptions import ValidationError
 
-from nest.products.tests.utils import create_product
 from nest.audit_logs.models import LogEntry
+from nest.products.tests.utils import create_product
 
 from ..models import Ingredient
 from ..services import create_ingredient, delete_ingredient
-
 from . import utils
 
 pytestmark = pytest.mark.django_db
