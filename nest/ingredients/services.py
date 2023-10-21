@@ -27,7 +27,8 @@ def delete_ingredient(*, pk: int | str, request: HttpRequest | None = None) -> N
     """
 
     ingredient = Ingredient.objects.get(id=pk)
+    log_delete(instance=ingredient, request=request, changes={})
+
     ingredient.delete()
 
-    log_delete(instance=ingredient, request=request)
     return None
