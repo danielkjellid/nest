@@ -9,7 +9,8 @@ import { urls } from '../../urls'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { useNavigate } from 'react-router-dom'
-
+import { RecipeListOut } from '../../../types'
+import { Anchor } from '@mantine/core'
 interface RecipeOverviewInnerProps {
   results: { recipes: RecipeListOutAPIResponse }
 }
@@ -34,10 +35,19 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
           </div>
         )}
       </div>
-      <Table<any>
+      <Table<RecipeListOut>
         rowIdentifier="id"
         columns={[
-          { header: 'Title', accessorKey: 'title' },
+          {
+            header: 'Title',
+            accessorKey: 'title',
+            id: 'title',
+            Cell: ({ row, renderedCellValue }) => (
+              <Anchor href={routes.detail.build({ recipeId: row.original.id })}>
+                {renderedCellValue}
+              </Anchor>
+            ),
+          },
           { header: 'Portions', accessorKey: 'defaultNumPortions' },
           { header: 'Status', accessorKey: 'statusDisplay' },
           { header: 'Difficulty', accessorKey: 'difficultyDisplay' },

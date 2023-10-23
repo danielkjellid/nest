@@ -2694,6 +2694,11 @@
             "RecipeListOut": {
                 "title": "RecipeListOutAPIResponse",
                 "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
                     "title": {
                         "title": "Title",
                         "type": "string",
@@ -2726,6 +2731,7 @@
                     }
                 },
                 "required": [
+                    "id",
                     "title",
                     "defaultNumPortions",
                     "statusDisplay",
