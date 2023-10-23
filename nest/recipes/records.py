@@ -94,7 +94,8 @@ class RecipeStepRecord(BaseModel):
     duration: timedelta
     instruction: str
     step_type: RecipeStepType
-    ingredient_items: list[int]
+    step_type_display: str
+    ingredient_items: list[RecipeIngredientItemRecord]
 
     @classmethod
     def from_db_model(cls, model: RecipeStep) -> RecipeStepRecord:
@@ -106,6 +107,7 @@ class RecipeStepRecord(BaseModel):
             duration=model.duration,
             instruction=model.instruction,
             step_type=RecipeStepType(model.step_type),
+            step_type_display=RecipeStepType(model.step_type).label,
             ingredient_items=[
                 RecipeIngredientItemRecord.from_db_model(ingredient_item)
                 for ingredient_item in ingredient_items.all()

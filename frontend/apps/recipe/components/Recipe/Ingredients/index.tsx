@@ -2,7 +2,7 @@ import React from 'react'
 import { useCommonStyles } from '../../../../../styles/common'
 
 interface RecipeIngredientGroupProps {
-  title: string
+  title?: string
   className?: string
   children: React.ReactNode
 }
@@ -11,7 +11,11 @@ function RecipeIngredientGroup({ title, className, children }: RecipeIngredientG
   const { classes } = useCommonStyles()
   return (
     <div>
-      <h3 className={`mb-2 text-xs font-semibold leading-5 ${classes.muted} uppercase`}>{title}</h3>
+      {title && (
+        <h3 className={`mb-2 text-xs font-semibold leading-5 ${classes.muted} uppercase`}>
+          {title}
+        </h3>
+      )}
       <table className={`min-w-full text-sm ${className}`}>
         <thead className="sr-only">
           <tr>

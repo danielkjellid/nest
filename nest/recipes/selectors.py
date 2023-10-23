@@ -75,7 +75,10 @@ def get_steps_for_recipes(
         records[recipe_id] = []
 
     steps = RecipeStep.objects.filter(recipe_id__in=recipe_ids).prefetch_related(
-        "ingredient_items"
+        "ingredient_items",
+        "ingredient_items__ingredient",
+        "ingredient_items__ingredient__product",
+        "ingredient_items__portion_quantity_unit",
     )
 
     for step in steps:
