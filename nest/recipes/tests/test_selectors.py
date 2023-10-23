@@ -1,14 +1,14 @@
 import pytest
 
 from ..records import RecipeIngredientItemGroupRecord, RecipeRecord
-from ..selectors import get_ingredient_item_groups_for_recipe, get_recipes
+from ..selectors import get_recipe_ingredient_item_groups, get_recipes
 from .utils import create_recipe, create_recipe_ingredient_item_group
 
 pytestmark = pytest.mark.django_db
 
 
 class TestRecipeSelectors:
-    def test_selector_get_ingredient_item_groups_for_recipe(
+    def test_selector_get_recipe_ingredient_item_groups(
         self, django_assert_num_queries
     ):
         """
@@ -24,7 +24,7 @@ class TestRecipeSelectors:
         create_recipe_ingredient_item_group(recipe=recipe, ordering=4, title="Group 4")
 
         with django_assert_num_queries(2):
-            ingredient_item_groups = get_ingredient_item_groups_for_recipe(
+            ingredient_item_groups = get_recipe_ingredient_item_groups(
                 recipe_id=recipe.id
             )
 

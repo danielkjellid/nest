@@ -46,7 +46,7 @@ def recipe_ingredient_groups_list_api(
     Get a list of all RecipeIngredientItemGroups for a recipe.
     """
 
-    groups = get_ingredient_item_groups_for_recipe(recipe_id=recipe_id)
+    groups = get_ingredient_item_groups_for_recipe(recipe_id=recipe_id)["normal"]
     data = parse_obj_as(list[RecipeIngredientGroupsListOut], groups)
 
     return APIResponse(status="success", data=data)

@@ -6,9 +6,14 @@ from decimal import Decimal
 from isodate import duration_isoformat
 from pydantic import BaseModel
 
-from nest.core.decorators import ensure_prefetched_relations
+from nest.core.decorators import (
+    ensure_prefetched_relations,
+    get_related_field,
+    ensure_no_fetch,
+)
 from nest.ingredients.records import IngredientRecord
 from nest.units.records import UnitRecord
+from nest.core.utils import get_related_field
 
 from .enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 from .models import (
@@ -17,6 +22,7 @@ from .models import (
     RecipeIngredientItemGroup,
     RecipeStep,
 )
+
 
 ####################
 # Ingredient items #
@@ -33,16 +39,19 @@ class RecipeIngredientItemRecord(BaseModel):
     portion_quantity_display: str
 
     @classmethod
-    @ensure_prefetched_relations(arg_or_kwarg="item", skip_fields=["step"])
-    def from_item(cls, item: RecipeIngredientItem) -> RecipeIngredientItemRecord:
+    @ensure_no_fetch
+    def from_db_model(cls, model: RecipeIngredientItem) -> RecipeIngredientItemRecord:
+        ingredient = get_related_field(model, "ingredient")
+        portion_quantity_unit = get_related_field(model, "portion_quantity_unit")
+
         return cls(
-            id=item.id,
-            group_title=item.ingredient_group.title,
-            ingredient=IngredientRecord.from_ingredient(item.ingredient),
-            additional_info=item.additional_info,
-            portion_quantity=item.portion_quantity,
-            portion_quantity_unit=UnitRecord.from_unit(item.portion_quantity_unit),
-            portion_quantity_display="{:f}".format(item.portion_quantity.normalize()),
+            id=model.id,
+            group_title=model.ingredient_group.title,
+            ingredient=IngredientRecord.from_db_model(ingredient),
+            additional_info=model.additional_info,
+            portion_quantity=model.portion_quantity,
+            portion_quantity_display="{:f}".format(model.portion_quantity.normalize()),
+            portion_quantity_unit=UnitRecord.from_unit(portion_quantity_unit),
         )
 
 
@@ -55,9 +64,9 @@ class RecipeMergedIngredientItemDisplayRecord(BaseModel):
     additional_info: str | None
 
     @classmethod
-    @ensure_prefetched_relations(
-        arg_or_kwarg="item", skip_fields=["ingredient_group", "step"]
-    )
+    # @ensure_prefetched_relations(
+    #     arg_or_kwarg="item", skip_fields=["ingredient_group", "step"]
+    # )
     def from_item(
         cls, item: RecipeIngredientItem, skip_check: bool = False
     ) -> RecipeMergedIngredientItemDisplayRecord:
@@ -83,17 +92,18 @@ class RecipeIngredientItemGroupRecord(BaseModel):
     ingredient_items: list[RecipeIngredientItemRecord]
 
     @classmethod
-    @ensure_prefetched_relations(arg_or_kwarg="group", skip_fields=["recipe"])
-    def from_group(
-        cls, group: RecipeIngredientItemGroup, skip_check: bool = False
+    def from_db_model(
+        cls,
+        model: RecipeIngredientItemGroup,
     ) -> RecipeIngredientItemGroupRecord:
+        ingredient_items = get_related_field(model, "ingredient_items")
         return cls(
-            id=group.id,
-            title=group.title,
-            ordering=group.ordering,
+            id=model.id,
+            title=model.title,
+            ordering=model.ordering,
             ingredient_items=[
-                RecipeIngredientItemRecord.from_item(item)
-                for item in group.ingredient_items.all()
+                RecipeIngredientItemRecord.from_db_model(item)
+                for item in ingredient_items.all()
             ],
         )
 
@@ -104,16 +114,17 @@ class RecipeIngredientItemGroupDisplayRecord(BaseModel):
     ingredients: list[RecipeMergedIngredientItemDisplayRecord]
 
     @classmethod
-    @ensure_prefetched_relations(arg_or_kwarg="group")
-    def from_group(
-        cls, group: RecipeIngredientItemGroup, skip_check: bool = False
+    # @ensure_prefetched_relations(arg_or_kwarg="group")
+    def from_db_model(
+        cls, model: RecipeIngredientItemGroup, skip_check: bool = False
     ) -> RecipeIngredientItemGroupDisplayRecord:
+        ingredient_items = get_related_field(model, "ingredient_items")
         return cls(
-            id=group.id,
-            title=group.title,
+            id=model.id,
+            title=model.title,
             ingredients=[
                 RecipeMergedIngredientItemDisplayRecord.from_item(item)
-                for item in group.ingredient_items.all()
+                for item in ingredient_items.all()
             ],
         )
 
@@ -132,15 +143,19 @@ class RecipeStepRecord(BaseModel):
     ingredient_items: list[int]
 
     @classmethod
-    @ensure_prefetched_relations(arg_or_kwarg="step", skip_fields=["recipe"])
-    def from_step(cls, step: RecipeStep, skip_check: bool = False) -> RecipeStepRecord:
+    def from_db_model(cls, model: RecipeStep) -> RecipeStepRecord:
+        ingredient_items = get_related_field(model, "ingredient_items")
+
         return cls(
-            id=step.id,
-            number=step.number,
-            duration=step.duration,
-            instruction=step.instruction,
-            step_type=RecipeStepType(step.step_type),
-            ingredient_items=[1],
+            id=model.id,
+            number=model.number,
+            duration=model.duration,
+            instruction=model.instruction,
+            step_type=RecipeStepType(model.step_type),
+            ingredient_items=[
+                RecipeIngredientItemRecord.from_db_model(ingredient_item)
+                for ingredient_item in ingredient_items.all()
+            ],
         )
 
 
@@ -151,17 +166,15 @@ class RecipeStepDisplayRecord(BaseModel):
     ingredients: list[RecipeMergedIngredientItemDisplayRecord]
 
     @classmethod
-    @ensure_prefetched_relations(arg_or_kwarg="step", skip_fields=["recipe"])
-    def from_step(
-        cls, step: RecipeStep, skip_check: bool = False
-    ) -> RecipeStepDisplayRecord:
+    def from_db_model(cls, model: RecipeStep) -> RecipeStepDisplayRecord:
+        ingredient_items = get_related_field(model, "ingredient_items")
         return cls(
-            id=step.id,
-            number=step.number,
-            instruction=step.instruction,
+            id=model.id,
+            number=model.number,
+            instruction=model.instruction,
             ingredients=[
                 RecipeMergedIngredientItemDisplayRecord.from_item(item)
-                for item in step.ingredient_items.all()
+                for item in ingredient_items.all()
             ],
         )
 
@@ -264,25 +277,22 @@ class RecipeDetailRecord(RecipeRecord):
     steps_display: list[RecipeStepDisplayRecord]
 
     @classmethod
-    @ensure_prefetched_relations(arg_or_kwarg="recipe")
-    def from_recipe(
-        cls, recipe: Recipe, *, skip_check: bool = False
+    def from_db_model(
+        cls,
+        *,
+        model: Recipe,
+        ingredient_groups: list[RecipeIngredientItemGroupRecord],
+        ingredient_groups_display: list[RecipeIngredientItemGroupDisplayRecord],
+        steps: list[RecipeStepRecord],
+        steps_display: list[RecipeStepDisplayRecord],
     ) -> RecipeDetailRecord:
-        steps = recipe.steps.all()
-        ingredient_item_groups = recipe.ingredient_groups.all()
         return cls(
-            **RecipeRecord.from_recipe(recipe).dict(),
-            duration=RecipeDurationRecord.from_recipe(recipe),
+            **RecipeRecord.from_recipe(model).dict(),
+            duration=RecipeDurationRecord.from_recipe(model),
             glycemic_data=None,
             health_score=None,
-            ingredient_groups=[
-                RecipeIngredientItemGroupRecord.from_group(group)
-                for group in ingredient_item_groups
-            ],
-            ingredient_groups_display=[
-                RecipeIngredientItemGroupDisplayRecord.from_group(group)
-                for group in ingredient_item_groups
-            ],
-            steps=[RecipeStepRecord.from_step(step) for step in steps],
-            steps_display=[RecipeStepDisplayRecord.from_step(step) for step in steps],
+            ingredient_groups=ingredient_groups,
+            ingredient_groups_display=ingredient_groups_display,
+            steps=steps,
+            steps_display=steps_display,
         )

@@ -376,6 +376,44 @@
                 ]
             }
         },
+        "/api/v1/recipes/{recipe_id}/": {
+            "get": {
+                "operationId": "recipe_detail_api",
+                "summary": "Recipe Detail Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeDetailRecordAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieve a single recipe instance based in recipe id.",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/recipes/{recipe_id}/ingredient-groups/create/": {
             "post": {
                 "operationId": "recipe_ingredient_groups_create_api",
@@ -1950,10 +1988,9 @@
                 "type": "object"
             },
             "RecipeStatus": {
-                "title": "RecipeCreateIn",
+                "title": "RecipeDetailRecordAPIResponse",
                 "properties": null,
                 "required": null,
-                "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
                     1,
@@ -1962,10 +1999,9 @@
                 "type": "integer"
             },
             "RecipeDifficulty": {
-                "title": "RecipeCreateIn",
+                "title": "RecipeDetailRecordAPIResponse",
                 "properties": null,
                 "required": null,
-                "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
                     1,
@@ -2151,6 +2187,885 @@
                     "difficulty"
                 ],
                 "columns": 4,
+                "type": "object"
+            },
+            "RecipeDurationRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "preparationTime": {
+                        "title": "Preparation Time",
+                        "type": "number",
+                        "format": "time-delta",
+                        "component": "TextInput"
+                    },
+                    "preparationTimeIso8601": {
+                        "title": "Preparation Time Iso8601",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "cookingTime": {
+                        "title": "Cooking Time",
+                        "type": "number",
+                        "format": "time-delta",
+                        "component": "TextInput"
+                    },
+                    "cookingTimeIso8601": {
+                        "title": "Cooking Time Iso8601",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "totalTime": {
+                        "title": "Total Time",
+                        "type": "number",
+                        "format": "time-delta",
+                        "component": "TextInput"
+                    },
+                    "totalTimeIso8601": {
+                        "title": "Total Time Iso8601",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "preparationTime",
+                    "preparationTimeIso8601",
+                    "cookingTime",
+                    "cookingTimeIso8601",
+                    "totalTime",
+                    "totalTimeIso8601"
+                ],
+                "type": "object"
+            },
+            "RecipeGlycemicData": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "glycemicIndex": {
+                        "title": "Glycemic Index",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "glycemicIndexRating": {
+                        "title": "Glycemic Index Rating",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "glycemicIndexRatingDisplay": {
+                        "title": "Glycemic Index Rating Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "glycemicLoad": {
+                        "title": "Glycemic Load",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "glycemicLoadRating": {
+                        "title": "Glycemic Load Rating",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "glycemicLoadRatingDisplay": {
+                        "title": "Glycemic Load Rating Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "glycemicIndex",
+                    "glycemicIndexRating",
+                    "glycemicIndexRatingDisplay",
+                    "glycemicLoad",
+                    "glycemicLoadRating",
+                    "glycemicLoadRatingDisplay"
+                ],
+                "type": "object"
+            },
+            "RecipeHealthScoreImpactRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "key": {
+                        "title": "Key",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "value": {
+                        "title": "Value",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "valueDisplay": {
+                        "title": "Value Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "unitDisplay": {
+                        "title": "Unit Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "percentageOfDailyValue": {
+                        "title": "Percentage Of Daily Value",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "percentageOfDailyValueDisplay": {
+                        "title": "Percentage Of Daily Value Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "key",
+                    "title",
+                    "value",
+                    "valueDisplay",
+                    "unitDisplay",
+                    "percentageOfDailyValue",
+                    "percentageOfDailyValueDisplay"
+                ],
+                "type": "object"
+            },
+            "RecipeHealthScore": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "rating": {
+                        "title": "Rating",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "positiveImpact": {
+                        "title": "Positive Impact",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeHealthScoreImpactRecord"
+                        },
+                        "component": "MultiSelect"
+                    },
+                    "negativeImpact": {
+                        "title": "Negative Impact",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeHealthScoreImpactRecord"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "rating",
+                    "positiveImpact",
+                    "negativeImpact"
+                ],
+                "type": "object"
+            },
+            "UnitType": {
+                "title": "UnitType",
+                "description": "An enumeration.",
+                "enum": [
+                    "pieces",
+                    "weight",
+                    "volume",
+                    "length",
+                    "usage"
+                ],
+                "x-enum-varnames": [
+                    "Pieces",
+                    "Weight",
+                    "Volume",
+                    "Length",
+                    "Usage"
+                ]
+            },
+            "UnitRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "namePluralized": {
+                        "title": "Name Pluralized",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "unitType": {
+                        "$ref": "#/components/schemas/UnitType"
+                    },
+                    "baseFactor": {
+                        "title": "Base Factor",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "isBaseUnit": {
+                        "title": "Is Base Unit",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isDefault": {
+                        "title": "Is Default",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "displayName": {
+                        "title": "Display Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "abbreviation",
+                    "unitType",
+                    "baseFactor",
+                    "isBaseUnit",
+                    "isDefault"
+                ],
+                "type": "object"
+            },
+            "ProductClassifiersRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "containsGluten": {
+                        "title": "Contains Gluten",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "containsLactose": {
+                        "title": "Contains Lactose",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    }
+                },
+                "required": [
+                    "containsGluten",
+                    "containsLactose"
+                ],
+                "type": "object"
+            },
+            "ProductRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "grossPrice": {
+                        "title": "Gross Price",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "grossUnitPrice": {
+                        "title": "Gross Unit Price",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "unit": {
+                        "$ref": "#/components/schemas/UnitRecord"
+                    },
+                    "unitQuantity": {
+                        "title": "Unit Quantity",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isSynced": {
+                        "title": "Is Synced",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "lastSyncedAt": {
+                        "title": "Last Synced At",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "gtin": {
+                        "title": "Gtin",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "supplier": {
+                        "title": "Supplier",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "displayPrice": {
+                        "title": "Display Price",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isOdaProduct": {
+                        "title": "Is Oda Product",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "lastDataUpdate": {
+                        "title": "Last Data Update",
+                        "type": "string",
+                        "format": "date-time",
+                        "component": "TextInput"
+                    },
+                    "ingredients": {
+                        "title": "Ingredients",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "allergens": {
+                        "title": "Allergens",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "classifiers": {
+                        "$ref": "#/components/schemas/ProductClassifiersRecord"
+                    },
+                    "energyKj": {
+                        "title": "Energy Kj",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "energyKcal": {
+                        "title": "Energy Kcal",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "fat": {
+                        "title": "Fat",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "fatSaturated": {
+                        "title": "Fat Saturated",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "fatMonounsaturated": {
+                        "title": "Fat Monounsaturated",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "fatPolyunsaturated": {
+                        "title": "Fat Polyunsaturated",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "carbohydrates": {
+                        "title": "Carbohydrates",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "carbohydratesSugars": {
+                        "title": "Carbohydrates Sugars",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "carbohydratesPolyols": {
+                        "title": "Carbohydrates Polyols",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "carbohydratesStarch": {
+                        "title": "Carbohydrates Starch",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "fibres": {
+                        "title": "Fibres",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "protein": {
+                        "title": "Protein",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "salt": {
+                        "title": "Salt",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "sodium": {
+                        "title": "Sodium",
+                        "type": "number",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "fullName",
+                    "grossPrice",
+                    "unit",
+                    "isAvailable",
+                    "isSynced",
+                    "displayPrice",
+                    "isOdaProduct",
+                    "classifiers"
+                ],
+                "type": "object"
+            },
+            "IngredientRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/ProductRecord"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientItemRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "groupTitle": {
+                        "title": "Group Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredient": {
+                        "$ref": "#/components/schemas/IngredientRecord"
+                    },
+                    "additionalInfo": {
+                        "title": "Additional Info",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "portionQuantity": {
+                        "title": "Portion Quantity",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "portionQuantityUnit": {
+                        "$ref": "#/components/schemas/UnitRecord"
+                    },
+                    "portionQuantityDisplay": {
+                        "title": "Portion Quantity Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "groupTitle",
+                    "ingredient",
+                    "portionQuantity",
+                    "portionQuantityUnit",
+                    "portionQuantityDisplay"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientItemGroupRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ordering": {
+                        "title": "Ordering",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientItemRecord"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "ordering",
+                    "ingredientItems"
+                ],
+                "type": "object"
+            },
+            "RecipeMergedIngredientItemDisplayRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredientId": {
+                        "title": "Ingredient Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "quantityDisplay": {
+                        "title": "Quantity Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "unitDisplay": {
+                        "title": "Unit Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "additionalInfo": {
+                        "title": "Additional Info",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "ingredientId",
+                    "title",
+                    "quantityDisplay",
+                    "unitDisplay"
+                ],
+                "type": "object"
+            },
+            "RecipeIngredientItemGroupDisplayRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredients": {
+                        "title": "Ingredients",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeMergedIngredientItemDisplayRecord"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "ingredients"
+                ],
+                "type": "object"
+            },
+            "RecipeStepType": {
+                "title": "RecipeStepType",
+                "description": "An enumeration.",
+                "enum": [
+                    1,
+                    2
+                ],
+                "x-enum-varnames": [
+                    "Cooking Step",
+                    "Preparation"
+                ]
+            },
+            "RecipeStepRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "number": {
+                        "title": "Number",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "duration": {
+                        "title": "Duration",
+                        "type": "number",
+                        "format": "time-delta",
+                        "component": "TextInput"
+                    },
+                    "instruction": {
+                        "title": "Instruction",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "stepType": {
+                        "$ref": "#/components/schemas/RecipeStepType"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "number",
+                    "duration",
+                    "instruction",
+                    "stepType",
+                    "ingredientItems"
+                ],
+                "type": "object"
+            },
+            "RecipeStepDisplayRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "number": {
+                        "title": "Number",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "instruction": {
+                        "title": "Instruction",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredients": {
+                        "title": "Ingredients",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeMergedIngredientItemDisplayRecord"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "number",
+                    "instruction",
+                    "ingredients"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailRecord": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "slug": {
+                        "title": "Slug",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "defaultNumPortions": {
+                        "title": "Default Num Portions",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "searchKeywords": {
+                        "title": "Search Keywords",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "externalId": {
+                        "title": "External Id",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "externalUrl": {
+                        "title": "External Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/RecipeStatus"
+                    },
+                    "statusDisplay": {
+                        "title": "Status Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "difficulty": {
+                        "$ref": "#/components/schemas/RecipeDifficulty"
+                    },
+                    "difficultyDisplay": {
+                        "title": "Difficulty Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isVegetarian": {
+                        "title": "Is Vegetarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isPescatarian": {
+                        "title": "Is Pescatarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "duration": {
+                        "$ref": "#/components/schemas/RecipeDurationRecord"
+                    },
+                    "glycemicData": {
+                        "$ref": "#/components/schemas/RecipeGlycemicData"
+                    },
+                    "healthScore": {
+                        "$ref": "#/components/schemas/RecipeHealthScore"
+                    },
+                    "ingredientGroups": {
+                        "title": "Ingredient Groups",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientItemGroupRecord"
+                        },
+                        "component": "MultiSelect"
+                    },
+                    "ingredientGroupsDisplay": {
+                        "title": "Ingredient Groups Display",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeIngredientItemGroupDisplayRecord"
+                        },
+                        "component": "MultiSelect"
+                    },
+                    "steps": {
+                        "title": "Steps",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeStepRecord"
+                        },
+                        "component": "MultiSelect"
+                    },
+                    "stepsDisplay": {
+                        "title": "Steps Display",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeStepDisplayRecord"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "slug",
+                    "defaultNumPortions",
+                    "status",
+                    "statusDisplay",
+                    "difficulty",
+                    "difficultyDisplay",
+                    "isVegetarian",
+                    "isPescatarian",
+                    "duration",
+                    "ingredientGroups",
+                    "ingredientGroupsDisplay",
+                    "steps",
+                    "stepsDisplay"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailRecordAPIResponse": {
+                "title": "RecipeDetailRecordAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/RecipeDetailRecord"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
                 "type": "object"
             },
             "RecipeIngredientsCreateIngredientIn": {
@@ -2687,36 +3602,6 @@
                     "Switch",
                     "Textarea",
                     "TextInput"
-                ]
-            },
-            "RecipeStepType": {
-                "title": "RecipeStepType",
-                "description": "An enumeration.",
-                "enum": [
-                    1,
-                    2
-                ],
-                "x-enum-varnames": [
-                    "Cooking Step",
-                    "Preparation"
-                ]
-            },
-            "UnitType": {
-                "title": "UnitType",
-                "description": "An enumeration.",
-                "enum": [
-                    "pieces",
-                    "weight",
-                    "volume",
-                    "length",
-                    "usage"
-                ],
-                "x-enum-varnames": [
-                    "Pieces",
-                    "Weight",
-                    "Volume",
-                    "Length",
-                    "Usage"
                 ]
             }
         },
