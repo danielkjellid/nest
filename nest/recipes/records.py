@@ -55,31 +55,6 @@ class RecipeIngredientItemRecord(BaseModel):
         )
 
 
-class RecipeMergedIngredientItemDisplayRecord(BaseModel):
-    id: int
-    ingredient_id: int
-    title: str
-    quantity_display: str
-    unit_display: str
-    additional_info: str | None
-
-    @classmethod
-    # @ensure_prefetched_relations(
-    #     arg_or_kwarg="item", skip_fields=["ingredient_group", "step"]
-    # )
-    def from_item(
-        cls, item: RecipeIngredientItem, skip_check: bool = False
-    ) -> RecipeMergedIngredientItemDisplayRecord:
-        return cls(
-            id=item.id,
-            ingredient_id=item.ingredient_id,
-            title=item.ingredient.title,
-            quantity_display="{:f}".format(item.portion_quantity.normalize()),
-            unit_display=item.portion_quantity_unit.abbreviation,
-            additional_info=item.additional_info,
-        )
-
-
 ##########################
 # Ingredient item groups #
 ##########################
@@ -103,27 +78,6 @@ class RecipeIngredientItemGroupRecord(BaseModel):
             ordering=model.ordering,
             ingredient_items=[
                 RecipeIngredientItemRecord.from_db_model(item)
-                for item in ingredient_items.all()
-            ],
-        )
-
-
-class RecipeIngredientItemGroupDisplayRecord(BaseModel):
-    id: int
-    title: str
-    ingredients: list[RecipeMergedIngredientItemDisplayRecord]
-
-    @classmethod
-    # @ensure_prefetched_relations(arg_or_kwarg="group")
-    def from_db_model(
-        cls, model: RecipeIngredientItemGroup, skip_check: bool = False
-    ) -> RecipeIngredientItemGroupDisplayRecord:
-        ingredient_items = get_related_field(model, "ingredient_items")
-        return cls(
-            id=model.id,
-            title=model.title,
-            ingredients=[
-                RecipeMergedIngredientItemDisplayRecord.from_item(item)
                 for item in ingredient_items.all()
             ],
         )
@@ -159,26 +113,6 @@ class RecipeStepRecord(BaseModel):
         )
 
 
-class RecipeStepDisplayRecord(BaseModel):
-    id: int
-    number: int
-    instruction: str
-    ingredients: list[RecipeMergedIngredientItemDisplayRecord]
-
-    @classmethod
-    def from_db_model(cls, model: RecipeStep) -> RecipeStepDisplayRecord:
-        ingredient_items = get_related_field(model, "ingredient_items")
-        return cls(
-            id=model.id,
-            number=model.number,
-            instruction=model.instruction,
-            ingredients=[
-                RecipeMergedIngredientItemDisplayRecord.from_item(item)
-                for item in ingredient_items.all()
-            ],
-        )
-
-
 ##########
 # Recipe #
 ##########
@@ -193,10 +127,10 @@ class RecipeDurationRecord(BaseModel):
     total_time_iso8601: str
 
     @classmethod
-    def from_recipe(cls, recipe: Recipe) -> RecipeDurationRecord:
-        preparation_time = getattr(recipe, "preparation_time", timedelta(seconds=0))
-        cooking_time = getattr(recipe, "cooking_time", timedelta(seconds=0))
-        total_time = getattr(recipe, "total_time", timedelta(seconds=0))
+    def from_db_model(cls, model: Recipe) -> RecipeDurationRecord:
+        preparation_time = getattr(model, "preparation_time", timedelta(seconds=0))
+        cooking_time = getattr(model, "cooking_time", timedelta(seconds=0))
+        total_time = getattr(model, "total_time", timedelta(seconds=0))
 
         return cls(
             preparation_time=preparation_time,
@@ -272,9 +206,7 @@ class RecipeDetailRecord(RecipeRecord):
     glycemic_data: RecipeGlycemicData | None  # TODO: Needs to be annotated
     health_score: RecipeHealthScore | None  # TODO: Needs to be annotated
     ingredient_groups: list[RecipeIngredientItemGroupRecord]
-    ingredient_groups_display: list[RecipeIngredientItemGroupDisplayRecord]
     steps: list[RecipeStepRecord]
-    steps_display: list[RecipeStepDisplayRecord]
 
     @classmethod
     def from_db_model(
@@ -282,9 +214,7 @@ class RecipeDetailRecord(RecipeRecord):
         *,
         model: Recipe,
         ingredient_groups: list[RecipeIngredientItemGroupRecord],
-        ingredient_groups_display: list[RecipeIngredientItemGroupDisplayRecord],
         steps: list[RecipeStepRecord],
-        steps_display: list[RecipeStepDisplayRecord],
     ) -> RecipeDetailRecord:
         return cls(
             **RecipeRecord.from_recipe(model).dict(),
@@ -292,7 +222,5 @@ class RecipeDetailRecord(RecipeRecord):
             glycemic_data=None,
             health_score=None,
             ingredient_groups=ingredient_groups,
-            ingredient_groups_display=ingredient_groups_display,
             steps=steps,
-            steps_display=steps_display,
         )

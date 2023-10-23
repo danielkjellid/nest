@@ -2752,78 +2752,6 @@
                 ],
                 "type": "object"
             },
-            "RecipeMergedIngredientItemDisplayRecord": {
-                "title": "RecipeDetailRecordAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "ingredientId": {
-                        "title": "Ingredient Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "quantityDisplay": {
-                        "title": "Quantity Display",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "unitDisplay": {
-                        "title": "Unit Display",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "additionalInfo": {
-                        "title": "Additional Info",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id",
-                    "ingredientId",
-                    "title",
-                    "quantityDisplay",
-                    "unitDisplay"
-                ],
-                "type": "object"
-            },
-            "RecipeIngredientItemGroupDisplayRecord": {
-                "title": "RecipeDetailRecordAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "ingredients": {
-                        "title": "Ingredients",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeMergedIngredientItemDisplayRecord"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "ingredients"
-                ],
-                "type": "object"
-            },
             "RecipeStepType": {
                 "title": "RecipeStepType",
                 "description": "An enumeration.",
@@ -2879,41 +2807,6 @@
                     "instruction",
                     "stepType",
                     "ingredientItems"
-                ],
-                "type": "object"
-            },
-            "RecipeStepDisplayRecord": {
-                "title": "RecipeDetailRecordAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "number": {
-                        "title": "Number",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "instruction": {
-                        "title": "Instruction",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "ingredients": {
-                        "title": "Ingredients",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeMergedIngredientItemDisplayRecord"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "id",
-                    "number",
-                    "instruction",
-                    "ingredients"
                 ],
                 "type": "object"
             },
@@ -2998,27 +2891,11 @@
                         },
                         "component": "MultiSelect"
                     },
-                    "ingredientGroupsDisplay": {
-                        "title": "Ingredient Groups Display",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientItemGroupDisplayRecord"
-                        },
-                        "component": "MultiSelect"
-                    },
                     "steps": {
                         "title": "Steps",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeStepRecord"
-                        },
-                        "component": "MultiSelect"
-                    },
-                    "stepsDisplay": {
-                        "title": "Steps Display",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeStepDisplayRecord"
                         },
                         "component": "MultiSelect"
                     }
@@ -3036,9 +2913,7 @@
                     "isPescatarian",
                     "duration",
                     "ingredientGroups",
-                    "ingredientGroupsDisplay",
-                    "steps",
-                    "stepsDisplay"
+                    "steps"
                 ],
                 "type": "object"
             },

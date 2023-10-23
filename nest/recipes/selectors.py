@@ -4,17 +4,12 @@ from .records import (
     RecipeRecord,
     RecipeDetailRecord,
     RecipeStepRecord,
-    RecipeStepDisplayRecord,
-    RecipeIngredientItemGroupDisplayRecord,
-    RecipeIngredientItemRecord,
+    RecipeDurationRecord,
 )
-from nest.ingredients.records import IngredientRecord
-from .enums import RecipeStatus, RecipeDifficulty
 from nest.core.exceptions import ApplicationError
-from nest.units.records import UnitRecord
 from django.db.models import QuerySet
-from nest.core.decorators import ensure_prefetched_relations2
 from nest.core.types import FetchedResult
+from .enums import RecipeDifficulty, RecipeStatus
 
 
 def _get_recipe_ingredient_item_groups(
@@ -35,18 +30,13 @@ def _get_recipe_ingredient_item_groups(
     return groups
 
 
-AnyIngredientGroup = (
-    RecipeIngredientItemGroupRecord | RecipeIngredientItemGroupDisplayRecord
-)
-
-
 def get_ingredient_item_groups_for_recipes(
     recipe_ids: list[int],
-) -> FetchedResult[dict[str, list[AnyIngredientGroup]]]:
-    records: FetchedResult[dict[str, list[AnyIngredientGroup]]] = {}
+) -> FetchedResult[dict[str, list[RecipeIngredientItemGroupRecord]]]:
+    records: FetchedResult[dict[str, list[RecipeIngredientItemGroupRecord]]] = {}
 
     for recipe_id in recipe_ids:
-        records[recipe_id] = {"normal": [], "display": []}
+        records[recipe_id] = []
 
     item_groups = (
         RecipeIngredientItemGroup.objects.filter(recipe_id__in=recipe_ids)
@@ -61,58 +51,45 @@ def get_ingredient_item_groups_for_recipes(
     )
 
     for item_group in item_groups:
-        records[recipe_id]["normal"].append(
+        records[recipe_id].append(
             RecipeIngredientItemGroupRecord.from_db_model(item_group)
-        )
-        records[recipe_id]["display"].append(
-            RecipeIngredientItemGroupDisplayRecord.from_db_model(item_group)
         )
 
     return records
 
 
-def get_ingredient_item_groups_for_recipe(recipe_id) -> dict[str, AnyIngredientGroup]:
+def get_ingredient_item_groups_for_recipe(
+    recipe_id,
+) -> dict[str, RecipeIngredientItemGroupRecord]:
     ingredient_group = get_ingredient_item_groups_for_recipes(recipe_ids=[recipe_id])
 
     return ingredient_group[recipe_id]
 
 
-AnyStep = RecipeStepRecord | RecipeStepDisplayRecord
-
-
 def get_steps_for_recipes(
     recipe_ids: list[int],
-) -> FetchedResult[dict[str, list[AnyStep]]]:
-    records: FetchedResult[dict[str, list[AnyStep]]] = {}
+) -> FetchedResult[dict[str, list[RecipeStepRecord]]]:
+    records: FetchedResult[dict[str, list[RecipeStepRecord]]] = {}
 
     for recipe_id in recipe_ids:
-        records[recipe_id] = {"normal": [], "display": []}
+        records[recipe_id] = []
 
     steps = RecipeStep.objects.filter(recipe_id__in=recipe_ids).prefetch_related(
         "ingredient_items"
     )
 
     for step in steps:
-        records[recipe_id]["normal"].append(RecipeStepRecord.from_db_model(step))
-        records[recipe_id]["display"].append(
-            RecipeStepDisplayRecord.from_db_model(step)
-        )
+        records[recipe_id].append(RecipeStepRecord.from_db_model(step))
 
     return records
 
 
-def get_steps_for_recipe(recipe_id: int) -> FetchedResult[dict[str, list[AnyStep]]]:
+def get_steps_for_recipe(
+    recipe_id: int,
+) -> FetchedResult[dict[str, list[RecipeStepRecord]]]:
     steps = get_steps_for_recipes(recipe_ids=[recipe_id])
 
     return steps[recipe_id]
-
-
-def _get_recipe_steps(*, recipe_id: int) -> QuerySet[RecipeStep]:
-    steps = RecipeStep.objects.filter(recipe_id=recipe_id).prefetch_related(
-        "ingredient_items"
-    )
-
-    return steps
 
 
 def get_recipes() -> list[RecipeRecord]:
@@ -136,10 +113,23 @@ def get_recipe(*, pk: int) -> RecipeDetailRecord:
     if not recipe:
         raise ApplicationError(message="Recipe does not exist.")
 
-    return RecipeDetailRecord.from_db_model(
-        model=recipe,
-        ingredient_groups=ingredient_groups["normal"],
-        ingredient_groups_display=ingredient_groups["display"],
-        steps=steps["normal"],
-        steps_display=steps["display"],
+    return RecipeDetailRecord(
+        id=recipe.id,
+        title=recipe.title,
+        slug=recipe.slug,
+        default_num_portions=recipe.default_num_portions,
+        search_keywords=recipe.search_keywords,
+        external_id=recipe.external_id,
+        external_url=recipe.external_url,
+        status=RecipeStatus(recipe.status),
+        status_display=recipe.get_status_display(),
+        difficulty=RecipeDifficulty(recipe.difficulty),
+        difficulty_display=recipe.get_difficulty_display(),
+        is_vegetarian=recipe.is_vegetarian,
+        is_pescatarian=recipe.is_pescatarian,
+        duration=RecipeDurationRecord.from_db_model(recipe),
+        glycemic_data=None,
+        health_score=None,
+        ingredient_groups=ingredient_groups,
+        steps=steps,
     )
