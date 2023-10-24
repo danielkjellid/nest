@@ -406,11 +406,6 @@
                 "description": "Retrieve a single recipe instance based in recipe id.",
                 "tags": [
                     "Recipes"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
                 ]
             }
         },
@@ -1988,16 +1983,16 @@
                 "type": "object"
             },
             "RecipeStatus": {
-                "title": "RecipeCreateIn",
-                "properties": null,
-                "required": null,
-                "columns": 4,
+                "title": "RecipeStatus",
                 "description": "An enumeration.",
                 "enum": [
                     1,
                     2
                 ],
-                "type": "integer"
+                "x-enum-varnames": [
+                    "Draft",
+                    "Published"
+                ]
             },
             "RecipeDifficulty": {
                 "title": "RecipeCreateIn",
@@ -2393,6 +2388,9 @@
                         "type": "string",
                         "component": "TextInput"
                     },
+                    "status": {
+                        "$ref": "#/components/schemas/RecipeStatus"
+                    },
                     "statusDisplay": {
                         "title": "Status Display",
                         "type": "string",
@@ -2438,6 +2436,7 @@
                     "title",
                     "slug",
                     "defaultNumPortions",
+                    "status",
                     "statusDisplay",
                     "difficultyDisplay",
                     "isVegetarian",

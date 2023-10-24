@@ -1,11 +1,11 @@
 from datetime import timedelta
 from typing import TYPE_CHECKING
 
-from django.db.models import DurationField, Q, Sum
+from django.db.models import DurationField, Q, Sum, F, OuterRef, Subquery
 from django.db.models.functions import Coalesce
 
 from nest.core.managers import BaseQuerySet
-
+from nest.products.models import Product
 from .enums import RecipeStepType
 
 if TYPE_CHECKING:

@@ -1,12 +1,20 @@
-import { CommonContextType, CommonProvider } from '../../contexts/CommonProvider'
-import React, { useState } from 'react'
+import { CommonContextType, CommonProvider, useCommonContext } from '../../contexts/CommonProvider'
+import React, { Suspense, useState } from 'react'
 
 import BaseApp from '../../components/BaseApp/BaseApp'
 import Header from '../../components/Header'
-import { Recipe } from './components/Recipe'
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom'
+import { RecipeDetail } from './detail'
+import { routes } from './routes'
 
 function RecipeAppInner() {
-  return <Recipe />
+  return (
+    <Suspense fallback={<div />}>
+      <Routes>
+        <Route path={routes.detail.path} element={<RecipeDetail />} />
+      </Routes>
+    </Suspense>
+  )
 }
 
 function RecipeApp(props: CommonContextType) {
@@ -27,6 +35,9 @@ function RecipeApp(props: CommonContextType) {
 
   const [currentHome, setCurrentHome] = useState<CommonContextType['currentHome']>(home)
 
+  const params = useParams()
+  console.log(params)
+
   return (
     <CommonProvider
       config={config}
@@ -35,9 +46,11 @@ function RecipeApp(props: CommonContextType) {
       availableHomes={availableHomes}
       setCurrentHome={setCurrentHome}
     >
-      <BaseApp header={<Header />}>
-        <RecipeAppInner />
-      </BaseApp>
+      <BrowserRouter>
+        <BaseApp header={<Header />}>
+          <RecipeAppInner />
+        </BaseApp>
+      </BrowserRouter>
     </CommonProvider>
   )
 }

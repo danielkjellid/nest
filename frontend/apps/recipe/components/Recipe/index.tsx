@@ -9,20 +9,35 @@ import { RecipeSection } from './Section'
 import { RecipeSteps } from './Steps'
 import cx from 'classnames'
 import { useCommonStyles } from '../../../../styles/common'
+import { RecipeDetailOut } from '../../../../types'
+import { Duration } from 'luxon'
 
-function Recipe() {
+interface RecipeProps {
+  recipe: RecipeDetailOut
+}
+
+function Recipe({ recipe }: RecipeProps) {
   const theme = useMantineTheme()
   const { classes } = useCommonStyles()
 
   const defaultNumPortions = 4
-  const [portions, setPortions] = useState<number>(defaultNumPortions)
+  const [portions, setPortions] = useState<number>(recipe.defaultNumPortions)
+
+  const formatDuration = (duration: string) =>
+    Duration.fromISO(duration).toHuman({
+      unitDisplay: 'short',
+    })
+
+  const totalTime = formatDuration(recipe.duration.totalTimeIso8601)
+  const cookTime = formatDuration(recipe.duration.totalTimeIso8601)
+  const prepTime = formatDuration(recipe.duration.preparationTimeIso8601)
 
   return (
     <div className={cx('max-w-7xl py-8 space-y-6 rounded-lg shadow', classes.panel)}>
       <div className="flex items-center justify-between px-12 pt-4">
         <div>
           <Title weight={600} className={classes.title}>
-            Recipe name
+            {recipe.title}
           </Title>
           <div className="w-96 space-3 flex flex-wrap mt-4">
             <Badge className="mb-2 mr-2" color="gray">
@@ -73,13 +88,29 @@ function Recipe() {
       <Tabs value="recipe" className="px-8">
         <Tabs.List>
           <Tabs.Tab value="recipe">Recipe</Tabs.Tab>
-          <Tabs.Tab value="products">Products</Tabs.Tab>
+          <Tabs.Tab value="products" disabled>
+            Products
+          </Tabs.Tab>
         </Tabs.List>
       </Tabs>
       <div className="lg:grid-cols-3 xl:grid-cols-5 grid grid-cols-1 gap-6 px-12">
         <div className="xl:row-span-2 order-1 col-span-1">
           <RecipeSection title="Ingredients">
-            <RecipeIngredientGroup title="Pizzatoast">
+            {recipe.ingredientGroups.map((group) => (
+              <RecipeIngredientGroup key={group.id} title={group.title}>
+                {group.ingredientItems.map((item) => (
+                  <RecipeIngredientGroup.Item
+                    key={item.id}
+                    basePortions={defaultNumPortions}
+                    portions={portions}
+                    title={item.ingredient.title}
+                    amount={item.portionQuantity}
+                    unit={item.portionQuantityUnit.abbreviation}
+                  />
+                ))}
+              </RecipeIngredientGroup>
+            ))}
+            {/* <RecipeIngredientGroup title="Pizzatoast">
               <RecipeIngredientGroup.Item
                 basePortions={defaultNumPortions}
                 portions={portions}
@@ -145,17 +176,19 @@ function Recipe() {
                 amount={70}
                 unit="g"
               />
-            </RecipeIngredientGroup>
+            </RecipeIngredientGroup> */}
           </RecipeSection>
         </div>
         <div className="lg:col-span-2 xl:col-span-3 xl:row-span-2 order-2 col-span-1">
           <RecipeSection title="Steps">
             <RecipeSteps>
-              <RecipeSteps.Item index={1} />
-              <RecipeSteps.Item index={2} />
-              <RecipeSteps.Item index={3} />
-              <RecipeSteps.Item index={4} />
-              <RecipeSteps.Item index={5} />
+              {recipe.steps.map((step) => (
+                <RecipeSteps.Item
+                  key={step.id}
+                  number={step.number}
+                  instruction={step.instruction}
+                />
+              ))}
             </RecipeSteps>
           </RecipeSection>
         </div>
@@ -167,14 +200,13 @@ function Recipe() {
               <div className="flex items-start space-x-2">
                 <IconClock className={classes.icon} />
                 <div>
-                  <Title
-                    weight={500}
-                    size={24}
-                    className={`${classes.subtitle} flex items-center space-x-2 -mt-1`}
-                  >
-                    15 min
-                    <span className={`${classes.muted} text-sm ml-1.5`}>(5 min prep)</span>
+                  <Title weight={500} size={24} className={`${classes.subtitle} -mt-1`}>
+                    {totalTime}
                   </Title>
+                  <div className="mt-1">
+                    <span className={`${classes.muted} text-sm block`}>{cookTime} cook</span>
+                    <span className={`${classes.muted} text-sm block`}>{prepTime} prep</span>
+                  </div>
                 </div>
               </div>
             </RecipeSection>

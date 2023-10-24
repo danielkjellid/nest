@@ -5,6 +5,7 @@
 import type { RecipeDetailDurationOut } from './RecipeDetailDurationOut';
 import type { RecipeDetailIngredientGroupOut } from './RecipeDetailIngredientGroupOut';
 import type { RecipeDetailStepOut } from './RecipeDetailStepOut';
+import type { RecipeStatus } from './RecipeStatus';
 
 export type RecipeDetailOut = {
     id: number;
@@ -14,6 +15,7 @@ export type RecipeDetailOut = {
     searchKeywords?: string;
     externalId?: string;
     externalUrl?: string;
+    status: RecipeStatus;
     statusDisplay: string;
     difficultyDisplay: string;
     isVegetarian: boolean;

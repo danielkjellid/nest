@@ -7,7 +7,6 @@ import { RecipeOverview } from './overview'
 import { RecipeStepsCreate } from './create/CreateRecipeSteps'
 import { routes } from './routes'
 import { useStrippedRoute } from '../../hooks/route'
-import { RecipeDetail } from './detail'
 
 export function RecipesApp() {
   const baseRoute = useStrippedRoute('/recipes')
@@ -15,7 +14,6 @@ export function RecipesApp() {
   return (
     <Routes>
       <Route path={baseRoute(routes.overview.path)} element={<RecipeOverview />} />
-      <Route path={baseRoute(routes.detail.path)} element={<RecipeDetail />} />
       <Route path={baseRoute(routes.createRecipe.path)} element={<RecipeCreate />} />
       <Route
         path={baseRoute(routes.createRecipeIngredients.path)}

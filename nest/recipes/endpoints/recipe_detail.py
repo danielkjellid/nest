@@ -5,6 +5,7 @@ from django.http import HttpRequest
 from ..selectors import get_recipe
 from ..records import RecipeDetailRecord
 from decimal import Decimal
+from ..enums import RecipeStatus
 
 
 class RecipeDetailDurationOut(Schema):
@@ -56,6 +57,7 @@ class RecipeDetailOut(Schema):
     search_keywords: str | None
     external_id: str | None
     external_url: str | None
+    status: RecipeStatus
     status_display: str
     difficulty_display: str
     is_vegetarian: bool
@@ -65,7 +67,7 @@ class RecipeDetailOut(Schema):
     ingredient_groups: list[RecipeDetailIngredientGroupOut]
 
 
-@router.get("{recipe_id}/", response=APIResponse[RecipeDetailOut])
+@router.get("{recipe_id}/", response=APIResponse[RecipeDetailOut], auth=None)
 def recipe_detail_api(
     request: HttpRequest, recipe_id: int
 ) -> APIResponse[RecipeDetailOut]:

@@ -3,6 +3,7 @@ from django.db.models import IntegerChoices
 from nest.api.openapi import add_to_openapi_schema
 
 
+@add_to_openapi_schema
 class RecipeStatus(IntegerChoices):
     DRAFT = 1, "Draft"
     PUBLISHED = 2, "Published"

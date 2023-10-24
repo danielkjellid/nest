@@ -7,12 +7,6 @@ export const routes = {
       return generatePath(this.path)
     },
   },
-  detail: {
-    path: '/recipes/:recipeId',
-    build({ recipeId }: { recipeId: string | number }) {
-      return generatePath(this.path, { recipeId })
-    },
-  },
   createRecipe: {
     path: '/recipes/create',
     build() {
