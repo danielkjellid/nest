@@ -30,12 +30,12 @@ function RecipeDetailInner({ results }: RecipeDetailInnerProps) {
 
   const getRecipeBadge = (status: RecipeStatus) => {
     const badges: Record<RecipeStatus, React.ReactNode> = {
-      1: (
+      draft: (
         <Badge size="lg" radius="sm" color="blue" variant="dot">
           Draft
         </Badge>
       ),
-      2: (
+      published: (
         <Badge size="lg" radius="sm" color="green" variant="dot">
           Published
         </Badge>
