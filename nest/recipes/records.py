@@ -17,7 +17,6 @@ from .models import (
     RecipeStep,
 )
 
-
 ####################
 # Ingredient items #
 ####################
@@ -61,14 +60,13 @@ class RecipeIngredientItemGroupRecord(BaseModel):
         cls,
         model: RecipeIngredientItemGroup,
     ) -> RecipeIngredientItemGroupRecord:
-        ingredient_items = get_related_field(model, "ingredient_items")
         return cls(
             id=model.id,
             title=model.title,
             ordering=model.ordering,
             ingredient_items=[
                 RecipeIngredientItemRecord.from_db_model(item)
-                for item in ingredient_items.all()
+                for item in model.ingredient_items.all()
             ],
         )
 
@@ -89,8 +87,6 @@ class RecipeStepRecord(BaseModel):
 
     @classmethod
     def from_db_model(cls, model: RecipeStep) -> RecipeStepRecord:
-        ingredient_items = get_related_field(model, "ingredient_items")
-
         return cls(
             id=model.id,
             number=model.number,
@@ -100,7 +96,7 @@ class RecipeStepRecord(BaseModel):
             step_type_display=RecipeStepType(model.step_type).label,
             ingredient_items=[
                 RecipeIngredientItemRecord.from_db_model(ingredient_item)
-                for ingredient_item in ingredient_items.all()
+                for ingredient_item in model.ingredient_items.all()
             ],
         )
 

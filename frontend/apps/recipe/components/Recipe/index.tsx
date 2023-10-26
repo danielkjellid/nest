@@ -2,6 +2,8 @@ import { ActionIcon, Badge, Tabs, Text, Title, useMantineTheme } from '@mantine/
 import { IconClock, IconCoin, IconMinus, IconPlus } from '@tabler/icons-react'
 import React, { useState } from 'react'
 
+import { Duration } from 'luxon'
+import { RecipeDetailOut } from '../../../../types'
 import { RecipeHealthScoreMeter } from './HealthScore'
 import { RecipeIngredientGroup } from './Ingredients'
 import { RecipeNutritionTable } from './Nutrition'
@@ -9,8 +11,6 @@ import { RecipeSection } from './Section'
 import { RecipeSteps } from './Steps'
 import cx from 'classnames'
 import { useCommonStyles } from '../../../../styles/common'
-import { RecipeDetailOut } from '../../../../types'
-import { Duration } from 'luxon'
 
 interface RecipeProps {
   recipe: RecipeDetailOut
