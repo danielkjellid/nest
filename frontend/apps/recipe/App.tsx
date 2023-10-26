@@ -1,9 +1,9 @@
-import { CommonContextType, CommonProvider, useCommonContext } from '../../contexts/CommonProvider'
+import { CommonContextType, CommonProvider } from '../../contexts/CommonProvider'
 import React, { Suspense, useState } from 'react'
 
 import BaseApp from '../../components/BaseApp/BaseApp'
 import Header from '../../components/Header'
-import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecipeDetail } from './detail'
 import { routes } from './routes'
 
@@ -34,9 +34,6 @@ function RecipeApp(props: CommonContextType) {
   }
 
   const [currentHome, setCurrentHome] = useState<CommonContextType['currentHome']>(home)
-
-  const params = useParams()
-  console.log(params)
 
   return (
     <CommonProvider
