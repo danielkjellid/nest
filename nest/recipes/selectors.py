@@ -196,11 +196,12 @@ def get_recipe(*, pk: int) -> RecipeDetailRecord:
     Get a recipe instance.
     """
     recipe = Recipe.objects.filter(id=pk).annotate_duration().first()
-    steps = get_steps_for_recipe(recipe_id=pk)
-    ingredient_groups = get_ingredient_item_groups_for_recipe(recipe_id=pk)
 
     if not recipe:
         raise ApplicationError(message="Recipe does not exist.")
+
+    steps = get_steps_for_recipe(recipe_id=pk)
+    ingredient_groups = get_ingredient_item_groups_for_recipe(recipe_id=pk)
 
     return RecipeDetailRecord(
         id=recipe.id,

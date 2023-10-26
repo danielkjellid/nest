@@ -37,11 +37,11 @@ class Recipe(BaseModel):
         help_text="Direct link to the recipe on a provider's site",
     )
 
-    status = models.SmallIntegerField(
-        choices=RecipeStatus.choices, default=RecipeStatus.DRAFT
+    status = models.CharField(
+        choices=RecipeStatus.choices, default=RecipeStatus.DRAFT, max_length=20
     )
-    difficulty = models.SmallIntegerField(
-        choices=RecipeDifficulty.choices, default=RecipeDifficulty.EASY
+    difficulty = models.CharField(
+        choices=RecipeDifficulty.choices, default=RecipeDifficulty.EASY, max_length=20
     )
     is_vegetarian = models.BooleanField(default=False)
     is_pescatarian = models.BooleanField(default=False)
@@ -71,7 +71,7 @@ class RecipeStep(BaseModel):
     number = models.PositiveIntegerField()
     duration = models.DurationField()
     instruction = models.TextField()
-    step_type = models.PositiveIntegerField(choices=RecipeStepType.choices)
+    step_type = models.CharField(choices=RecipeStepType.choices, max_length=20)
 
     objects = _RecipeStepManager()
 
