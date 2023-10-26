@@ -1,11 +1,13 @@
-from ninja import Schema
-from .router import router
-from nest.api.responses import APIResponse
-from django.http import HttpRequest
-from ..selectors import get_recipe
-from ..records import RecipeDetailRecord
 from decimal import Decimal
+
+from django.http import HttpRequest
+from ninja import Schema
+
+from nest.api.responses import APIResponse
+
 from ..enums import RecipeStatus
+from ..selectors import get_recipe
+from .router import router
 
 
 class RecipeDetailDurationOut(Schema):

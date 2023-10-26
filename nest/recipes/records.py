@@ -6,14 +6,8 @@ from decimal import Decimal
 from isodate import duration_isoformat
 from pydantic import BaseModel
 
-from nest.core.decorators import (
-    ensure_prefetched_relations,
-    get_related_field,
-    ensure_no_fetch,
-)
 from nest.ingredients.records import IngredientRecord
 from nest.units.records import UnitRecord
-from nest.core.utils import get_related_field
 
 from .enums import RecipeDifficulty, RecipeStatus, RecipeStepType
 from .models import (
@@ -39,19 +33,15 @@ class RecipeIngredientItemRecord(BaseModel):
     portion_quantity_display: str
 
     @classmethod
-    @ensure_no_fetch
     def from_db_model(cls, model: RecipeIngredientItem) -> RecipeIngredientItemRecord:
-        ingredient = get_related_field(model, "ingredient")
-        portion_quantity_unit = get_related_field(model, "portion_quantity_unit")
-
         return cls(
             id=model.id,
             group_title=model.ingredient_group.title,
-            ingredient=IngredientRecord.from_db_model(ingredient),
+            ingredient=IngredientRecord.from_db_model(model.ingredient),
             additional_info=model.additional_info,
             portion_quantity=model.portion_quantity,
             portion_quantity_display="{:f}".format(model.portion_quantity.normalize()),
-            portion_quantity_unit=UnitRecord.from_unit(portion_quantity_unit),
+            portion_quantity_unit=UnitRecord.from_unit(model.portion_quantity_unit),
         )
 
 
