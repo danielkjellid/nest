@@ -1986,8 +1986,8 @@
                 "title": "RecipeStatus",
                 "description": "An enumeration.",
                 "enum": [
-                    1,
-                    2
+                    "draft",
+                    "published"
                 ],
                 "x-enum-varnames": [
                     "Draft",
@@ -2001,11 +2001,11 @@
                 "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
-                    1,
-                    2,
-                    3
+                    "easy",
+                    "medium",
+                    "hard"
                 ],
-                "type": "integer"
+                "type": "string"
             },
             "RecipeCreateIn": {
                 "title": "RecipeCreateIn",
@@ -2075,11 +2075,11 @@
                         "enum": [
                             {
                                 "label": "Draft",
-                                "value": 1
+                                "value": "draft"
                             },
                             {
                                 "label": "Published",
-                                "value": 2
+                                "value": "published"
                             }
                         ]
                     },
@@ -2106,15 +2106,15 @@
                         "enum": [
                             {
                                 "label": "Easy",
-                                "value": 1
+                                "value": "easy"
                             },
                             {
                                 "label": "Medium",
-                                "value": 2
+                                "value": "medium"
                             },
                             {
                                 "label": "Hard",
-                                "value": 3
+                                "value": "hard"
                             }
                         ]
                     },
@@ -3019,8 +3019,8 @@
                 "title": "RecipeStepType",
                 "description": "An enumeration.",
                 "enum": [
-                    1,
-                    2
+                    "cooking",
+                    "preparation"
                 ],
                 "x-enum-varnames": [
                     "Cooking Step",
