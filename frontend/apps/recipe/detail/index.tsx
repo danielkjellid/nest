@@ -1,20 +1,13 @@
 import { Badge, Button as MButton } from '@mantine/core'
-import {
-  CommonContextType,
-  CommonProvider,
-  useCommonContext,
-} from '../../../contexts/CommonProvider'
-import React, { useState } from 'react'
-import { RecipeDetailOut, RecipeDetailOutAPIResponse, RecipeStatus } from '../../../types'
-import { useFetcher, useNavigate, useParams } from 'react-router-dom'
+import { useCommonContext } from '../../../contexts/CommonProvider'
+import React from 'react'
+import { RecipeDetailOutAPIResponse, RecipeStatus } from '../../../types'
+import { useNavigate, useParams } from 'react-router-dom'
 
-import BaseApp from '../../../components/BaseApp/BaseApp'
 import { Button } from '../../../components/Button'
-import Header from '../../../components/Header'
 import { Recipe } from '../components/Recipe'
 import View from '../../../components/View'
 import invariant from 'tiny-invariant'
-import { routes } from '../routes'
 import { urls } from '../../urls'
 import { useFetch } from '../../../hooks/fetcher'
 
