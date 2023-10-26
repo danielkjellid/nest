@@ -1,5 +1,5 @@
-from typing import TypeVar
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
-FetchedResult = dict[int, T]
+FetchedResult = dict[Any, T]

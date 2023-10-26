@@ -14,7 +14,6 @@ from .models import (
     Recipe,
     RecipeIngredientItem,
     RecipeIngredientItemGroup,
-    RecipeStep,
 )
 
 ####################
@@ -84,21 +83,6 @@ class RecipeStepRecord(BaseModel):
     step_type: RecipeStepType
     step_type_display: str
     ingredient_items: list[RecipeIngredientItemRecord]
-
-    @classmethod
-    def from_db_model(cls, model: RecipeStep) -> RecipeStepRecord:
-        return cls(
-            id=model.id,
-            number=model.number,
-            duration=model.duration,
-            instruction=model.instruction,
-            step_type=RecipeStepType(model.step_type),
-            step_type_display=RecipeStepType(model.step_type).label,
-            ingredient_items=[
-                RecipeIngredientItemRecord.from_db_model(ingredient_item)
-                for ingredient_item in model.ingredient_items.all()
-            ],
-        )
 
 
 ##########
@@ -195,20 +179,3 @@ class RecipeDetailRecord(RecipeRecord):
     health_score: RecipeHealthScore | None  # TODO: Needs to be annotated
     ingredient_groups: list[RecipeIngredientItemGroupRecord]
     steps: list[RecipeStepRecord]
-
-    @classmethod
-    def from_db_model(
-        cls,
-        *,
-        model: Recipe,
-        ingredient_groups: list[RecipeIngredientItemGroupRecord],
-        steps: list[RecipeStepRecord],
-    ) -> RecipeDetailRecord:
-        return cls(
-            **RecipeRecord.from_recipe(model).dict(),
-            duration=RecipeDurationRecord.from_recipe(model),
-            glycemic_data=None,
-            health_score=None,
-            ingredient_groups=ingredient_groups,
-            steps=steps,
-        )

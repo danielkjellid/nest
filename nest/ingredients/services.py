@@ -18,7 +18,7 @@ def create_ingredient(
     ingredient.save()
 
     log_create_or_updated(old=None, new=ingredient, request_or_user=request)
-    return IngredientRecord.from_ingredient(ingredient)
+    return IngredientRecord.from_db_model(ingredient)
 
 
 def delete_ingredient(*, pk: int | str, request: HttpRequest | None = None) -> None:
