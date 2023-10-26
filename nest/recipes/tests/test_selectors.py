@@ -8,30 +8,23 @@ pytestmark = pytest.mark.django_db
 
 
 class TestRecipeSelectors:
-    def test_selector_get_recipe_ingredient_item_groups(
-        self, django_assert_num_queries
-    ):
-        """
-        Test that the get_ingredient_item_groups_for_recipe selector returns expected
-        output within query limits.
-        """
-        recipe = create_recipe()
-        group1 = create_recipe_ingredient_item_group(
-            recipe=recipe, ordering=1, title="Group 1"
-        )
-        create_recipe_ingredient_item_group(recipe=recipe, ordering=2, title="Group 2")
-        create_recipe_ingredient_item_group(recipe=recipe, ordering=3, title="Group 3")
-        create_recipe_ingredient_item_group(recipe=recipe, ordering=4, title="Group 4")
+    def test_selector__get_ingredient_items(self):
+        assert False
 
-        with django_assert_num_queries(2):
-            ingredient_item_groups = get_recipe_ingredient_item_groups(
-                recipe_id=recipe.id
-            )
+    def test_selector_get_ingredient_items_for_groups(self):
+        assert False
 
-        assert len(ingredient_item_groups) == 4
-        assert ingredient_item_groups[0] == RecipeIngredientItemGroupRecord.from_group(
-            group1, skip_check=True
-        )
+    def test_selector_get_ingredient_items_for_steps(self):
+        assert False
+
+    def test_selector_get_ingredient_item_groups_for_recipe(self):
+        assert False
+
+    def test_selector_get_steps_for_recipes(self):
+        assert False
+
+    def test_selector_get_recipe(self):
+        assert False
 
     def test_selector_get_recipes(self, django_assert_num_queries):
         """
