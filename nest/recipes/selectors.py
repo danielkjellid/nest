@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from django.db.models import Q, QuerySet
+from django.db.models import Q
 
 from nest.core.exceptions import ApplicationError
 from nest.core.types import FetchedResult
@@ -19,15 +19,21 @@ from .records import (
 )
 
 
-def _get_ingredient_items(expression: Q) -> QuerySet[RecipeIngredientItem]:
+def _get_ingredient_items(
+    expression: Q | None = None,
+) -> list[RecipeIngredientItem]:
     """
     Get ingredient items with all necessary prefetches to fill out a
     RecipeIngredientItemRecord.
     """
-    ingredient_items = (
-        RecipeIngredientItem.objects.filter(expression)
-        .select_related("ingredient_group", "step")
-        .prefetch_related(
+
+    if expression is None:
+        qs = RecipeIngredientItem.objects.all()
+    else:
+        qs = RecipeIngredientItem.objects.filter(expression)
+
+    ingredient_items = list(
+        qs.select_related("ingredient_group", "step").prefetch_related(
             "portion_quantity_unit",
             "ingredient",
             "ingredient__product",
@@ -123,8 +129,9 @@ def get_ingredient_item_groups_for_recipes(
         recipe_id__in=recipe_ids
     ).order_by("ordering")
 
-    item_group_ids = item_groups.values_list("id", flat=True)
-    ingredient_items = get_ingredient_items_for_groups(group_ids=item_group_ids)
+    ingredient_items = get_ingredient_items_for_groups(
+        group_ids=[item_group.id for item_group in item_groups]
+    )
 
     for item_group in item_groups:
         records[item_group.recipe_id].append(
@@ -163,8 +170,9 @@ def get_steps_for_recipes(
         records[recipe_id] = []
 
     steps = RecipeStep.objects.filter(recipe_id__in=recipe_ids).order_by("number")
-    step_ids = steps.values_list("id", flat=True)
-    ingredient_items = get_ingredient_items_for_steps(step_ids=step_ids)
+    ingredient_items = get_ingredient_items_for_steps(
+        step_ids=[step.id for step in steps]
+    )
 
     for step in steps:
         records[step.recipe_id].append(
