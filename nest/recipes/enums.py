@@ -1,20 +1,21 @@
-from django.db.models import IntegerChoices
+from django.db.models import TextChoices
 
 from nest.api.openapi import add_to_openapi_schema
 
 
-class RecipeStatus(IntegerChoices):
-    DRAFT = 1, "Draft"
-    PUBLISHED = 2, "Published"
+@add_to_openapi_schema
+class RecipeStatus(TextChoices):
+    DRAFT = "draft", "Draft"
+    PUBLISHED = "published", "Published"
 
 
-class RecipeDifficulty(IntegerChoices):
-    EASY = 1, "Easy"
-    MEDIUM = 2, "Medium"
-    HARD = 3, "Hard"
+class RecipeDifficulty(TextChoices):
+    EASY = "easy", "Easy"
+    MEDIUM = "medium", "Medium"
+    HARD = "hard", "Hard"
 
 
 @add_to_openapi_schema
-class RecipeStepType(IntegerChoices):
-    COOKING = 1, "Cooking Step"
-    PREPARATION = 2, "Preparation"
+class RecipeStepType(TextChoices):
+    COOKING = "cooking", "Cooking Step"
+    PREPARATION = "preparation", "Preparation"

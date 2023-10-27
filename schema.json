@@ -376,6 +376,39 @@
                 ]
             }
         },
+        "/api/v1/recipes/{recipe_id}/": {
+            "get": {
+                "operationId": "recipe_detail_api",
+                "summary": "Recipe Detail Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeDetailOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Retrieve a single recipe instance based in recipe id.",
+                "tags": [
+                    "Recipes"
+                ]
+            }
+        },
         "/api/v1/recipes/{recipe_id}/ingredient-groups/create/": {
             "post": {
                 "operationId": "recipe_ingredient_groups_create_api",
@@ -1950,16 +1983,16 @@
                 "type": "object"
             },
             "RecipeStatus": {
-                "title": "RecipeCreateIn",
-                "properties": null,
-                "required": null,
-                "columns": 4,
+                "title": "RecipeStatus",
                 "description": "An enumeration.",
                 "enum": [
-                    1,
-                    2
+                    "draft",
+                    "published"
                 ],
-                "type": "integer"
+                "x-enum-varnames": [
+                    "Draft",
+                    "Published"
+                ]
             },
             "RecipeDifficulty": {
                 "title": "RecipeCreateIn",
@@ -1968,11 +2001,11 @@
                 "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
-                    1,
-                    2,
-                    3
+                    "easy",
+                    "medium",
+                    "hard"
                 ],
-                "type": "integer"
+                "type": "string"
             },
             "RecipeCreateIn": {
                 "title": "RecipeCreateIn",
@@ -2042,11 +2075,11 @@
                         "enum": [
                             {
                                 "label": "Draft",
-                                "value": 1
+                                "value": "draft"
                             },
                             {
                                 "label": "Published",
-                                "value": 2
+                                "value": "published"
                             }
                         ]
                     },
@@ -2073,15 +2106,15 @@
                         "enum": [
                             {
                                 "label": "Easy",
-                                "value": 1
+                                "value": "easy"
                             },
                             {
                                 "label": "Medium",
-                                "value": 2
+                                "value": "medium"
                             },
                             {
                                 "label": "Hard",
-                                "value": 3
+                                "value": "hard"
                             }
                         ]
                     },
@@ -2151,6 +2184,293 @@
                     "difficulty"
                 ],
                 "columns": 4,
+                "type": "object"
+            },
+            "RecipeDetailDurationOut": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "preparationTimeIso8601": {
+                        "title": "Preparation Time Iso8601",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "cookingTimeIso8601": {
+                        "title": "Cooking Time Iso8601",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "totalTimeIso8601": {
+                        "title": "Total Time Iso8601",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "preparationTimeIso8601",
+                    "cookingTimeIso8601",
+                    "totalTimeIso8601"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailIngredientOut": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailIngredientItemUnitOut": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "abbreviation"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailIngredientItemOut": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "ingredient": {
+                        "$ref": "#/components/schemas/RecipeDetailIngredientOut"
+                    },
+                    "portionQuantity": {
+                        "title": "Portion Quantity",
+                        "type": "number",
+                        "component": "TextInput"
+                    },
+                    "portionQuantityDisplay": {
+                        "title": "Portion Quantity Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "portionQuantityUnit": {
+                        "$ref": "#/components/schemas/RecipeDetailIngredientItemUnitOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "ingredient",
+                    "portionQuantity",
+                    "portionQuantityDisplay",
+                    "portionQuantityUnit"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailStepOut": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "number": {
+                        "title": "Number",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "instruction": {
+                        "title": "Instruction",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "stepTypeDisplay": {
+                        "title": "Step Type Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeDetailIngredientItemOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "number",
+                    "instruction",
+                    "stepTypeDisplay",
+                    "ingredientItems"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailIngredientGroupOut": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeDetailIngredientItemOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "ingredientItems"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailOut": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "slug": {
+                        "title": "Slug",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "defaultNumPortions": {
+                        "title": "Default Num Portions",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "searchKeywords": {
+                        "title": "Search Keywords",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "externalId": {
+                        "title": "External Id",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "externalUrl": {
+                        "title": "External Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/RecipeStatus"
+                    },
+                    "statusDisplay": {
+                        "title": "Status Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "difficultyDisplay": {
+                        "title": "Difficulty Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isVegetarian": {
+                        "title": "Is Vegetarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isPescatarian": {
+                        "title": "Is Pescatarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "duration": {
+                        "$ref": "#/components/schemas/RecipeDetailDurationOut"
+                    },
+                    "steps": {
+                        "title": "Steps",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeDetailStepOut"
+                        },
+                        "component": "MultiSelect"
+                    },
+                    "ingredientGroups": {
+                        "title": "Ingredient Groups",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeDetailIngredientGroupOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "slug",
+                    "defaultNumPortions",
+                    "status",
+                    "statusDisplay",
+                    "difficultyDisplay",
+                    "isVegetarian",
+                    "isPescatarian",
+                    "duration",
+                    "steps",
+                    "ingredientGroups"
+                ],
+                "type": "object"
+            },
+            "RecipeDetailOutAPIResponse": {
+                "title": "RecipeDetailOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/RecipeDetailOut"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
                 "type": "object"
             },
             "RecipeIngredientsCreateIngredientIn": {
@@ -2373,6 +2693,11 @@
             "RecipeListOut": {
                 "title": "RecipeListOutAPIResponse",
                 "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
                     "title": {
                         "title": "Title",
                         "type": "string",
@@ -2405,6 +2730,7 @@
                     }
                 },
                 "required": [
+                    "id",
                     "title",
                     "defaultNumPortions",
                     "statusDisplay",
@@ -2693,8 +3019,8 @@
                 "title": "RecipeStepType",
                 "description": "An enumeration.",
                 "enum": [
-                    1,
-                    2
+                    "cooking",
+                    "preparation"
                 ],
                 "x-enum-varnames": [
                     "Cooking Step",

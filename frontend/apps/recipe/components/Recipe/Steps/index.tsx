@@ -12,10 +12,11 @@ function RecipeSteps({ children }: RecipeStepsProps) {
 }
 
 interface RecipeStepItemProps {
-  index: number
+  number: number
+  instruction: string
 }
 
-function RecipeStepItem({ index }: RecipeStepItemProps) {
+function RecipeStepItem({ number, instruction }: RecipeStepItemProps) {
   const { classes } = useStepsStyles()
   const [completed, setCompleted] = useState<boolean>(false)
 
@@ -27,14 +28,9 @@ function RecipeStepItem({ index }: RecipeStepItemProps) {
       <div
         className={`flex items-center justify-center flex-none w-8 h-8 ${classes.stepCircle} rounded-full`}
       >
-        {index}
+        {number}
       </div>
-      <p className={cx('text-sm', { 'line-through': completed })}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquet diam nec pretium
-        ultricies. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nulla vel leo et
-        libero ultrices commodo. Suspendisse eu scelerisque lectus, eu hendrerit elit. Morbi vitae
-        metus eget tellus tincidunt mollis ac vel tellus.
-      </p>
+      <p className={cx('text-sm', { 'line-through': completed })}>{instruction}</p>
     </div>
   )
 }

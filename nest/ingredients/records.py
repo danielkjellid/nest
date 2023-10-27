@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from nest.core.decorators import ensure_prefetched_relations
 from nest.products.records import ProductRecord
 
 from .models import Ingredient
@@ -14,14 +13,9 @@ class IngredientRecord(BaseModel):
     product: ProductRecord
 
     @classmethod
-    @ensure_prefetched_relations(
-        arg_or_kwarg="ingredient", skip_fields=["ingredient_items"]
-    )
-    def from_ingredient(
-        cls, ingredient: Ingredient, skip_check: bool = False
-    ) -> IngredientRecord:
+    def from_db_model(cls, model: Ingredient) -> IngredientRecord:
         return cls(
-            id=ingredient.id,
-            title=ingredient.title,
-            product=ProductRecord.from_product(ingredient.product),
+            id=model.id,
+            title=model.title,
+            product=ProductRecord.from_product(model.product),
         )

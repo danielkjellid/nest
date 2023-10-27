@@ -28,6 +28,14 @@ export { ProductOdaImportOutAPIResponse } from './models/ProductOdaImportOutAPIR
 export type { RecipeCreateIn } from './models/RecipeCreateIn';
 export type { RecipeCreateOut } from './models/RecipeCreateOut';
 export { RecipeCreateOutAPIResponse } from './models/RecipeCreateOutAPIResponse';
+export type { RecipeDetailDurationOut } from './models/RecipeDetailDurationOut';
+export type { RecipeDetailIngredientGroupOut } from './models/RecipeDetailIngredientGroupOut';
+export type { RecipeDetailIngredientItemOut } from './models/RecipeDetailIngredientItemOut';
+export type { RecipeDetailIngredientItemUnitOut } from './models/RecipeDetailIngredientItemUnitOut';
+export type { RecipeDetailIngredientOut } from './models/RecipeDetailIngredientOut';
+export type { RecipeDetailOut } from './models/RecipeDetailOut';
+export { RecipeDetailOutAPIResponse } from './models/RecipeDetailOutAPIResponse';
+export type { RecipeDetailStepOut } from './models/RecipeDetailStepOut';
 export { RecipeDifficulty } from './models/RecipeDifficulty';
 export type { RecipeIngredientGroupsListIngredientOut } from './models/RecipeIngredientGroupsListIngredientOut';
 export type { RecipeIngredientGroupsListIngredientProductOut } from './models/RecipeIngredientGroupsListIngredientProductOut';

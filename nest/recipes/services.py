@@ -38,10 +38,10 @@ def create_recipe(
     slug = slugify(value=title)
 
     if isinstance(status, str):
-        status = RecipeStatus(int(status))
+        status = RecipeStatus(status)
 
     if isinstance(difficulty, str):
-        difficulty = RecipeDifficulty(int(difficulty))
+        difficulty = RecipeDifficulty(difficulty)
 
     recipe = Recipe(
         title=title,
@@ -178,7 +178,7 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) ->
             number=step["number"],
             duration=timedelta(minutes=step["duration"]),
             instruction=step["instruction"],
-            step_type=RecipeStepType(int(step["step_type"])),
+            step_type=RecipeStepType(step["step_type"]),
         )
         for step in steps
     ]

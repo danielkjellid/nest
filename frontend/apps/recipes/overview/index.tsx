@@ -1,9 +1,12 @@
+import { Anchor } from '@mantine/core'
 import { Button } from '../../../components/Button'
 import React from 'react'
+import { RecipeListOut } from '../../../types'
 import { RecipeListOutAPIResponse } from '../../../types'
 import Table from '../../../components/Table'
 import { Title } from '@mantine/core'
 import View from '../../../components/View'
+import { routes as recipeRoutes } from '../../recipe/routes'
 import { routes } from '../routes'
 import { urls } from '../../urls'
 import { useCommonContext } from '../../../contexts/CommonProvider'
@@ -34,10 +37,19 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
           </div>
         )}
       </div>
-      <Table<any>
+      <Table<RecipeListOut>
         rowIdentifier="id"
         columns={[
-          { header: 'Title', accessorKey: 'title' },
+          {
+            header: 'Title',
+            accessorKey: 'title',
+            id: 'title',
+            Cell: ({ row, renderedCellValue }) => (
+              <Anchor href={recipeRoutes.detail.build({ recipeId: row.original.id })}>
+                {renderedCellValue}
+              </Anchor>
+            ),
+          },
           { header: 'Portions', accessorKey: 'defaultNumPortions' },
           { header: 'Status', accessorKey: 'statusDisplay' },
           { header: 'Difficulty', accessorKey: 'difficultyDisplay' },

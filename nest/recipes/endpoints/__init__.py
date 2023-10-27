@@ -1,4 +1,5 @@
 from .recipe_create import *  # noqa
+from .recipe_detail import *  # noqa
 from .recipe_ingredient_groups_create import *  # noqa
 from .recipe_ingredient_groups_list import *  # noqa
 from .recipe_list import *  # noqa

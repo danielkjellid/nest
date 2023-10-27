@@ -25,8 +25,8 @@ class TestRecipeServices:
         fields = {
             "title": "A new recipe",
             "default_num_portions": 3,
-            "status": "1",
-            "difficulty": RecipeDifficulty.MEDIUM,
+            "status": "draft",
+            "difficulty": "medium",
             "is_vegetarian": True,
         }
 
@@ -177,7 +177,7 @@ class TestRecipeServices:
                 "number": 1,
                 "duration": 5,
                 "instruction": "Some instruction for step 1",
-                "step_type": "2",
+                "step_type": "cooking",
                 "ingredient_items": [
                     utils.create_recipe_ingredient_item(
                         ingredient_group=item_group_1,
@@ -205,7 +205,7 @@ class TestRecipeServices:
                 "number": 2,
                 "duration": 3,
                 "instruction": "Some instruction for step 2",
-                "step_type": "2",
+                "step_type": "cooking",
                 "ingredient_items": [
                     utils.create_recipe_ingredient_item(
                         ingredient_group=item_group_2,
@@ -250,14 +250,14 @@ class TestRecipeServices:
                         "number": 1,
                         "duration": 1,
                         "instruction": "Some instruction",
-                        "step_type": "2",
+                        "step_type": "cooking",
                         "ingredient_items": [],
                     },
                     {
                         "number": 3,
                         "duration": 1,
                         "instruction": "Some instruction",
-                        "step_type": "2",
+                        "step_type": "cooking",
                         "ingredient_items": [],
                     },
                 ],
@@ -272,14 +272,14 @@ class TestRecipeServices:
                         "number": 2,
                         "duration": 1,
                         "instruction": "Some instruction",
-                        "step_type": "2",
+                        "step_type": "cooking",
                         "ingredient_items": [],
                     },
                     {
                         "number": 3,
                         "duration": 1,
                         "instruction": "Some instruction",
-                        "step_type": "2",
+                        "step_type": "cooking",
                         "ingredient_items": [],
                     },
                 ],
@@ -294,14 +294,14 @@ class TestRecipeServices:
                         "number": 1,
                         "duration": 1,
                         "instruction": "",
-                        "step_type": "2",
+                        "step_type": "cooking",
                         "ingredient_items": [],
                     },
                     {
                         "number": 1,
                         "duration": 1,
                         "instruction": "Some instruction",
-                        "step_type": "2",
+                        "step_type": "cooking",
                         "ingredient_items": [],
                     },
                 ],
