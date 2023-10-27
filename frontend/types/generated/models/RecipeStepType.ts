@@ -6,6 +6,6 @@
  * An enumeration.
  */
 export enum RecipeStepType {
-    'Cooking Step' = 1,
-    Preparation = 2,
+    'Cooking Step' = 'cooking',
+    Preparation = 'preparation',
 }

@@ -48,7 +48,7 @@ async function getter<T>({
     const error = new RequestError(
       `Got a '${response.status} ${response.statusText}' response.`,
       response,
-      JSON.parse(data)
+      data
     )
 
     if (error && error.response?.data?.message) {

@@ -6,6 +6,6 @@
  * An enumeration.
  */
 export enum RecipeStatus {
-    '_1' = 1,
-    '_2' = 2,
+    Draft = 'draft',
+    Published = 'published',
 }

@@ -1,12 +1,20 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { CommonContextType, CommonProvider } from '../../contexts/CommonProvider'
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 
 import BaseApp from '../../components/BaseApp/BaseApp'
 import Header from '../../components/Header'
-import { Recipe } from './components/Recipe'
+import { RecipeDetail } from './detail'
+import { routes } from './routes'
 
 function RecipeAppInner() {
-  return <Recipe />
+  return (
+    <Suspense fallback={<div />}>
+      <Routes>
+        <Route path={routes.detail.path} element={<RecipeDetail />} />
+      </Routes>
+    </Suspense>
+  )
 }
 
 function RecipeApp(props: CommonContextType) {
@@ -35,9 +43,11 @@ function RecipeApp(props: CommonContextType) {
       availableHomes={availableHomes}
       setCurrentHome={setCurrentHome}
     >
-      <BaseApp header={<Header />}>
-        <RecipeAppInner />
-      </BaseApp>
+      <BrowserRouter>
+        <BaseApp header={<Header />}>
+          <RecipeAppInner />
+        </BaseApp>
+      </BrowserRouter>
     </CommonProvider>
   )
 }

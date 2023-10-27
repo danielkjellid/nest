@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type RecipeListOut = {
+    id: number;
     title: string;
     defaultNumPortions: number;
     statusDisplay: string;

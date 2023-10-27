@@ -9,6 +9,7 @@ from .router import router
 
 
 class RecipeListOut(Schema):
+    id: int
     title: str
     default_num_portions: int
     status_display: str

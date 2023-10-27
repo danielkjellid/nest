@@ -16,7 +16,7 @@ urlpatterns += [
     path("admin/", admin.site.urls),
     path("hijack/", include("hijack.urls")),
     path("login/", LoginView.as_view(), name="login"),
-    path("recipe/", RecipeView.as_view(), name="recipe"),
     path("api/v1/", api_v1.urls),
+    re_path("recipe/", RecipeView.as_view(), name="recipe"),
     re_path("", FrontendView.as_view(), name="index"),
 ]

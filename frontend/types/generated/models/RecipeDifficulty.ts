@@ -6,7 +6,7 @@
  * An enumeration.
  */
 export enum RecipeDifficulty {
-    '_1' = 1,
-    '_2' = 2,
-    '_3' = 3,
+    EASY = 'easy',
+    MEDIUM = 'medium',
+    HARD = 'hard',
 }
