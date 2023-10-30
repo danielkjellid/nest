@@ -82,7 +82,7 @@ class TestRecipeIngredientsSelectors:
 
         step_ids = [4, 5, 6, 7]
         selector_mock = mocker.patch(
-            "nest.recipes.ingredients.selectors._get_ingredient_items"
+            "nest.recipes.ingredients.selectors._get_recipe_ingredient_items"
         )
         ingredient_items = get_recipe_ingredient_items_for_steps(step_ids=step_ids)
 

@@ -14,7 +14,7 @@ def test_url_recipe_detail_api():
     Test reverse match of the recipe_detail endpoint.
     """
     url = reverse("api-1.0.0:recipe_detail_api", args=["recipe_id"])
-    assert url == "/api/v1/recipes/recipe_id/"
+    assert url == "/api/v1/recipes/recipe/recipe_id/"
 
 
 def test_url_recipe_list_api():
