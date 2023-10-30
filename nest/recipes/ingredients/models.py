@@ -3,9 +3,9 @@ from django.db import models
 from nest.core.models import BaseModel
 
 from .managers import (
-    RecipeIngredientQuerySet,
-    RecipeIngredientItemQuerySet,
     RecipeIngredientItemGroupQuerySet,
+    RecipeIngredientItemQuerySet,
+    RecipeIngredientQuerySet,
 )
 
 _RecipeIngredientManager = models.Manager.from_queryset(RecipeIngredientQuerySet)

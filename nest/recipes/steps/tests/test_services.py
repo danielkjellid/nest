@@ -1,14 +1,16 @@
 import pytest
+
+from nest.core.exceptions import ApplicationError
+from nest.products.tests.utils import create_product
 from nest.recipes.core.tests.utils import create_recipe
 from nest.recipes.ingredients.tests.utils import (
-    create_recipe_ingredient_item_group,
     create_recipe_ingredient,
     create_recipe_ingredient_item,
+    create_recipe_ingredient_item_group,
 )
-from nest.products.tests.utils import create_product
-from ..services import create_recipe_steps
+
 from ..models import RecipeStep
-from nest.core.exceptions import ApplicationError
+from ..services import create_recipe_steps
 
 pytestmark = pytest.mark.django_db
 

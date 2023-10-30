@@ -1,7 +1,9 @@
-from pydantic import BaseModel
 from datetime import timedelta
-from .enums import RecipeStepType
+
+from pydantic import BaseModel
+
 from ..ingredients.records import RecipeIngredientItemRecord
+from .enums import RecipeStepType
 
 
 class RecipeStepRecord(BaseModel):

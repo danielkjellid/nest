@@ -1,13 +1,16 @@
-from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
-from .records import (
-    RecipeIngredientRecord,
-    RecipeIngredientItemGroupRecord,
-    RecipeIngredientItemRecord,
-)
-from django.db.models import Q
 from typing import Iterable
+
+from django.db.models import Q
+
 from nest.core.types import FetchedResult
 from nest.units.records import UnitRecord
+
+from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
+from .records import (
+    RecipeIngredientItemGroupRecord,
+    RecipeIngredientItemRecord,
+    RecipeIngredientRecord,
+)
 
 
 def get_recipe_ingredients() -> list[RecipeIngredientRecord]:

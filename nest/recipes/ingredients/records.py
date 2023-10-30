@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+from decimal import Decimal
+
 from pydantic import BaseModel
 
 from nest.products.records import ProductRecord
-from decimal import Decimal
 from nest.units.records import UnitRecord
+
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 
 

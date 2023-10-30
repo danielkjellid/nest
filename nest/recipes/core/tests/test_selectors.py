@@ -1,10 +1,10 @@
 import pytest
+
 from nest.core.exceptions import ApplicationError
 
 from ..records import RecipeRecord
-from .utils import create_recipe
-
 from ..selectors import get_recipe, get_recipes
+from .utils import create_recipe
 
 pytestmark = pytest.mark.django_db
 

@@ -1,7 +1,8 @@
 from ninja import Router
-from .steps.endpoints import router as steps_router
-from .ingredients.endpoints import router as ingredients_router
+
 from .core.endpoints import router as core_router
+from .ingredients.endpoints import router as ingredients_router
+from .steps.endpoints import router as steps_router
 
 recipes_router = Router(tags=["Recipes"])
 

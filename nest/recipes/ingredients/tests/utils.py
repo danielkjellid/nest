@@ -1,11 +1,13 @@
+from decimal import Decimal
+
 from nest.products.models import Product
 from nest.products.tests.utils import create_product
 from nest.recipes.core.models import Recipe
 from nest.recipes.core.tests.utils import create_recipe
-from ..models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from nest.recipes.steps.models import RecipeStep
-from decimal import Decimal
 from nest.units.tests.utils import get_unit
+
+from ..models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 
 
 def create_recipe_ingredient(

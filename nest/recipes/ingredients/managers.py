@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from nest.recipes.ingredients import models  # noqa
 
 
-class RecipeIngredientQuerySet(BaseQuerySet["models.Ingredient"]):
+class RecipeIngredientQuerySet(BaseQuerySet["models.RecipeIngredient"]):
     ...
 
 

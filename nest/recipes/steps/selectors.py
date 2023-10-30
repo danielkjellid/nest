@@ -1,8 +1,10 @@
-from nest.core.types import FetchedResult
 from typing import Iterable
-from .records import RecipeStepRecord
+
+from nest.core.types import FetchedResult
+
 from ..ingredients.selectors import get_recipe_ingredient_items_for_steps
 from .models import RecipeStep
+from .records import RecipeStepRecord
 
 
 def get_steps_for_recipes(

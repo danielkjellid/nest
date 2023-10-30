@@ -1,14 +1,15 @@
 import pytest
 from django.urls import reverse
 
+from nest.products.tests.utils import create_product
+
 from ..endpoints import (
-    recipe_ingredient_list_api,
     recipe_ingredient_create_api,
+    recipe_ingredient_delete_api,
     recipe_ingredient_groups_create_api,
     recipe_ingredient_groups_list_api,
-    recipe_ingredient_delete_api,
+    recipe_ingredient_list_api,
 )
-from nest.products.tests.utils import create_product
 
 pytestmark = pytest.mark.django_db
 

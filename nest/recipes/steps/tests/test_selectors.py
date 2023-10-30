@@ -1,14 +1,15 @@
 import pytest
+
+from nest.products.tests.utils import create_product
 from nest.recipes.core.tests.utils import create_recipe
-from .utils import create_recipe_step
 from nest.recipes.ingredients.tests.utils import (
-    create_recipe_ingredient_item,
     create_recipe_ingredient,
+    create_recipe_ingredient_item,
     create_recipe_ingredient_item_group,
 )
-from nest.products.tests.utils import create_product
 
 from ..selectors import get_steps_for_recipes
+from .utils import create_recipe_step
 
 pytestmark = pytest.mark.django_db
 

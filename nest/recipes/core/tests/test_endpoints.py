@@ -1,14 +1,15 @@
+from datetime import timedelta
+
 import pytest
 from django.urls import reverse
 
 from ..endpoints import (
     recipe_create_api,
-    recipe_list_api,
     recipe_detail_api,
+    recipe_list_api,
 )
-from ..records import RecipeDetailRecord, RecipeDurationRecord
 from ..enums import RecipeDifficulty, RecipeStatus
-from datetime import timedelta
+from ..records import RecipeDetailRecord, RecipeDurationRecord
 
 pytestmark = pytest.mark.django_db
 

@@ -2,17 +2,17 @@ import pytest
 from django.core.exceptions import ValidationError
 
 from nest.audit_logs.models import LogEntry
+from nest.core.exceptions import ApplicationError
 from nest.products.tests.utils import create_product
+from nest.units.tests.utils import get_unit
 
 from ..models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from ..services import (
     create_recipe_ingredient,
-    delete_recipe_ingredient,
     create_recipe_ingredient_item_groups,
+    delete_recipe_ingredient,
 )
 from . import utils
-from nest.units.tests.utils import get_unit
-from nest.core.exceptions import ApplicationError
 
 pytestmark = pytest.mark.django_db
 

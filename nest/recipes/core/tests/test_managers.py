@@ -3,9 +3,10 @@ from datetime import timedelta
 import pytest
 
 from nest.recipes.steps.enums import RecipeStepType
+from nest.recipes.steps.tests.utils import create_recipe_step
+
 from ..models import Recipe
 from .utils import create_recipe
-from nest.recipes.steps.tests.utils import create_recipe_step
 
 pytestmark = pytest.mark.django_db
 

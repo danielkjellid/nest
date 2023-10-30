@@ -1,8 +1,10 @@
-from ..models import RecipeStep
-from ..enums import RecipeStepType
+from datetime import timedelta
+
 from nest.recipes.core.models import Recipe
 from nest.recipes.core.tests.utils import create_recipe
-from datetime import timedelta
+
+from ..enums import RecipeStepType
+from ..models import RecipeStep
 
 
 def create_recipe_step(

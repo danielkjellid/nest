@@ -6,10 +6,10 @@ from decimal import Decimal
 from isodate import duration_isoformat
 from pydantic import BaseModel
 
+from ..ingredients.records import RecipeIngredientItemGroupRecord
+from ..steps.records import RecipeStepRecord
 from .enums import RecipeDifficulty, RecipeStatus
 from .models import Recipe
-from ..steps.records import RecipeStepRecord
-from ..ingredients.records import RecipeIngredientItemGroupRecord
 
 
 class RecipeDurationRecord(BaseModel):
@@ -38,7 +38,7 @@ class RecipeDurationRecord(BaseModel):
     @classmethod
     def from_datetime(
         cls, preparation_time: timedelta, cooking_time: timedelta, total_time: timedelta
-    ):
+    ) -> RecipeDurationRecord:
         return cls(
             preparation_time=preparation_time,
             preparation_time_iso8601=duration_isoformat(preparation_time),
