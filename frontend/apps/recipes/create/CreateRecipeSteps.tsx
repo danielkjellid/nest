@@ -176,7 +176,7 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
 
     if (!inputErrors) {
       try {
-        await performPost({ url: urls.recipes.createSteps({ id: recipeId }), data: payload })
+        await performPost({ url: urls.recipes.steps.create({ id: recipeId }), data: payload })
         notifications.show({
           title: 'Recipe created',
           message: 'Recipe was successfully created.',
@@ -222,7 +222,7 @@ function RecipeStepsCreate() {
   invariant(recipeId)
 
   const ingredientGroups = useFetch<RecipeIngredientGroupsListOutAPIResponse>(
-    urls.recipes.listIngredientGroups({ id: recipeId })
+    urls.recipes.ingredients.groups.list({ id: recipeId })
   )
 
   return (
