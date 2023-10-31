@@ -3,7 +3,7 @@ from decimal import Decimal
 from nest.core.exceptions import ApplicationError
 from nest.core.records import TableRecord
 
-from .constants import PRODUCT_NUTRITION_IDENTIFIERS
+from ..oda.constants import PRODUCT_NUTRITION_IDENTIFIERS
 from .models import Product
 from .records import ProductRecord
 

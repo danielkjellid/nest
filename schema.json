@@ -6,6 +6,34 @@
         "description": ""
     },
     "paths": {
+        "/api/v1/products/": {
+            "get": {
+                "operationId": "product_list_api",
+                "summary": "Product List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all products in the application.",
+                "tags": [
+                    "Products"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/products/create/": {
             "post": {
                 "operationId": "product_create_api",
@@ -130,34 +158,6 @@
                 ]
             }
         },
-        "/api/v1/products/": {
-            "get": {
-                "operationId": "product_list_api",
-                "summary": "Product List Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list of all products in the application.",
-                "tags": [
-                    "Products"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/products/oda/import/": {
             "post": {
                 "operationId": "product_oda_import_api",
@@ -177,7 +177,7 @@
                 },
                 "description": "Import product data from id. Note: This does not create a product, it only retrieves\ndata.",
                 "tags": [
-                    "Products"
+                    "Oda products"
                 ],
                 "requestBody": {
                     "content": {
@@ -215,7 +215,7 @@
                 },
                 "description": "Import and create a product from Oda based on ID.",
                 "tags": [
-                    "Products"
+                    "Oda products"
                 ],
                 "requestBody": {
                     "content": {
@@ -637,6 +637,101 @@
     },
     "components": {
         "schemas": {
+            "ProductListOut": {
+                "title": "ProductListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "isSynced": {
+                        "title": "Is Synced",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "gtin": {
+                        "title": "Gtin",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isOdaProduct": {
+                        "title": "Is Oda Product",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "displayPrice": {
+                        "title": "Display Price",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "fullName",
+                    "isAvailable",
+                    "isSynced",
+                    "isOdaProduct",
+                    "displayPrice"
+                ],
+                "type": "object"
+            },
+            "ProductListOutAPIResponse": {
+                "title": "ProductListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
             "APIResponse": {
                 "title": "APIResponse",
                 "properties": {
@@ -1595,101 +1690,6 @@
                     "isSynced"
                 ],
                 "columns": 4,
-                "type": "object"
-            },
-            "ProductListOut": {
-                "title": "ProductListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "isAvailable": {
-                        "title": "Is Available",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "odaUrl": {
-                        "title": "Oda Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "odaId": {
-                        "title": "Oda Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "isSynced": {
-                        "title": "Is Synced",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "gtin": {
-                        "title": "Gtin",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "isOdaProduct": {
-                        "title": "Is Oda Product",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "displayPrice": {
-                        "title": "Display Price",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id",
-                    "fullName",
-                    "isAvailable",
-                    "isSynced",
-                    "isOdaProduct",
-                    "displayPrice"
-                ],
-                "type": "object"
-            },
-            "ProductListOutAPIResponse": {
-                "title": "ProductListOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductListOut"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "status"
-                ],
                 "type": "object"
             },
             "ProductOdaImportOut": {
