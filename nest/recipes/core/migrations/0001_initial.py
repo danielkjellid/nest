@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                     "external_id",
                     models.CharField(
                         blank=True,
-                        help_text="Recipe identifier on a provider's site",
+                        help_text="Recipe identifier on a providers site",
                         max_length=50,
                         null=True,
                     ),
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                     "external_url",
                     models.URLField(
                         blank=True,
-                        help_text="Direct link to the recipe on a provider's site",
+                        help_text="Direct link to the recipe on a providers site",
                         null=True,
                     ),
                 ),

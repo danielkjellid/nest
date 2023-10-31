@@ -23,12 +23,12 @@ class Recipe(BaseModel):
         max_length=50,
         null=True,
         blank=True,
-        help_text="Recipe identifier on a provider's site",
+        help_text="Recipe identifier on a providers site",
     )
     external_url = models.URLField(
         null=True,
         blank=True,
-        help_text="Direct link to the recipe on a provider's site",
+        help_text="Direct link to the recipe on a providers site",
     )
 
     status = models.CharField(
