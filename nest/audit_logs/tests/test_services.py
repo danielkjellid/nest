@@ -12,7 +12,7 @@ from nest.audit_logs.services import (
     log_update,
 )
 from nest.core.tests.utils import create_request
-from nest.products.tests.utils import create_product
+from nest.products.core.tests.utils import create_product
 from nest.users.tests.utils import create_user
 
 pytestmark = pytest.mark.django_db

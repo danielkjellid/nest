@@ -20,7 +20,7 @@ const getColors = (val: number, active: boolean): RecipeMeterColor => {
     if (val > 1 && val < 7)
       return { text: 'text-red-500', border: 'border-red-400', background: 'bg-red-400' }
   }
-  console.log(theme.colorScheme)
+
   if (theme.colorScheme === 'dark') {
     return {
       text: 'text-[#909296]',

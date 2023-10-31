@@ -4,7 +4,7 @@ from decimal import Decimal
 
 from pydantic import BaseModel
 
-from nest.products.records import ProductRecord
+from nest.products.core.records import ProductRecord
 from nest.units.records import UnitRecord
 
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup

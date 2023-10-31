@@ -1,6 +1,6 @@
 import pytest
 
-from nest.products.endpoints.product_oda_import_confirm import (
+from nest.products.core.endpoints.product_oda_import_confirm import (
     product_oda_import_confirm_api,
 )
 

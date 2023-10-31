@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from nest.audit_logs.models import LogEntry
 from nest.core.exceptions import ApplicationError
-from nest.products.tests.utils import create_product
+from nest.products.core.tests.utils import create_product
 from nest.units.tests.utils import get_unit
 
 from ..models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup

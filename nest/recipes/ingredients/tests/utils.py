@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-from nest.products.models import Product
-from nest.products.tests.utils import create_product
+from nest.products.core.models import Product
+from nest.products.core.tests.utils import create_product
 from nest.recipes.core.models import Recipe
 from nest.recipes.core.tests.utils import create_recipe
 from nest.recipes.steps.models import RecipeStep

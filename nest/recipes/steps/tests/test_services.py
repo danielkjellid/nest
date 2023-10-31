@@ -1,7 +1,7 @@
 import pytest
 
 from nest.core.exceptions import ApplicationError
-from nest.products.tests.utils import create_product
+from nest.products.core.tests.utils import create_product
 from nest.recipes.core.tests.utils import create_recipe
 from nest.recipes.ingredients.tests.utils import (
     create_recipe_ingredient,

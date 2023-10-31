@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from ninja import Schema
 
 from nest.api.responses import APIResponse
-from nest.products.selectors import get_products
+from nest.products.core.selectors import get_products
 
 from .router import router
 
