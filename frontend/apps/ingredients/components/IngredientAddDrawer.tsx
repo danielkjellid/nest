@@ -53,7 +53,7 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
   }
 
   const addIngredient = async () => {
-    await form.performPost({ url: urls.ingredients.create() })
+    await form.performPost({ url: urls.recipes.ingredients.create() })
     refetch()
     onClose()
   }

@@ -182,7 +182,7 @@ function RecipeIngredientsCreateInner({ recipeId, results }: RecipeIngredientsCr
 
       try {
         await performPost({
-          url: urls.recipes.createIngredientGroups({ id: recipeId }),
+          url: urls.recipes.ingredients.groups.create({ id: recipeId }),
           data: payload,
         })
         notifications.show({
@@ -234,7 +234,7 @@ function RecipeIngredientsCreate() {
   const { recipeId } = useParams()
   invariant(recipeId)
 
-  const ingredients = useFetch<IngredientListOutAPIResponse>(urls.ingredients.list())
+  const ingredients = useFetch<IngredientListOutAPIResponse>(urls.recipes.ingredients.list())
 
   return (
     <View<object, RecipeIngredientsCreateInnerProps>

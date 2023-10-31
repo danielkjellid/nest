@@ -14,7 +14,7 @@ django = "^4.1.7"
 django-ninja = "^0.21.0"
 django-environ = "^0.10.0"
 django-extensions = "^3.2.1"
-django-storages = {version = "^1.13.2", extras = ["aws"]}
+django-storages = { version = "^1.13.2", extras = ["aws"] }
 pydantic = "^1.10.5"
 pyjwt = "^2.6.0"
 django-vite = "^2.0.2"
@@ -109,7 +109,7 @@ select = [
     "I",
     # Pylint rules
     "PLC", "PLE", "PLR", "PLW",
-     "RUF",
+    "RUF",
 ]
 ignore = [
     # C408: Unnecessary <dict/list/tuple> call - rewrite as a literal

@@ -33,7 +33,7 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
     modal.close()
     const payload: IngredientDeleteIn = { ingredientId: id }
     try {
-      await performDelete({ url: urls.ingredients.delete(), data: payload })
+      await performDelete({ url: urls.recipes.ingredients.delete(), data: payload })
       refetch()
       notifications.show({
         color: 'green',
@@ -85,7 +85,7 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
 }
 
 function IngredientsOverview() {
-  const ingredients = useFetch<IngredientListOutAPIResponse>(urls.ingredients.list())
+  const ingredients = useFetch<IngredientListOutAPIResponse>(urls.recipes.ingredients.list())
   const products = useFetch<ProductListOutAPIResponse>(urls.products.list())
 
   const refetch = () => {
