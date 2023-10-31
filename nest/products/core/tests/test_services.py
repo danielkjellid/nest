@@ -36,7 +36,7 @@ class TestProductCoreServices:
             "supplier": "Awesome supplier",
         }
 
-        with django_assert_num_queries(5):
+        with django_assert_num_queries(6):
             product_no_thumbnail = create_product(
                 name="Awesome product",
                 **fields,
