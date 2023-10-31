@@ -2,21 +2,21 @@ from decimal import Decimal
 
 import pytest
 
-from nest.products.oda.clients import OdaClient
-from nest.products.oda.records import OdaProductDetailRecord
-from nest.products.oda.tests.utils import get_oda_product_response_dict
-from nest.products.oda.constants import PRODUCT_NUTRITION_IDENTIFIERS
 from nest.products.core.models import Product
-from nest.products.oda.services import import_from_oda
-from nest.products.oda.services import (
-    _extract_classifier_values_from_response,
-    _extract_nutrition_values_from_response,
-    _validate_oda_response,
-)
 from nest.products.core.tests.utils import (
     create_product as create_product_test_util,
 )
 from nest.products.core.tests.utils import create_product_image
+from nest.products.oda.clients import OdaClient
+from nest.products.oda.constants import PRODUCT_NUTRITION_IDENTIFIERS
+from nest.products.oda.records import OdaProductDetailRecord
+from nest.products.oda.services import (
+    _extract_classifier_values_from_response,
+    _extract_nutrition_values_from_response,
+    _validate_oda_response,
+    import_from_oda,
+)
+from nest.products.oda.tests.utils import get_oda_product_response_dict
 
 pytestmark = pytest.mark.django_db
 

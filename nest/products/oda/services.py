@@ -6,15 +6,15 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 from nest.core.exceptions import ApplicationError
-from .clients import OdaClient
-from .records import OdaProductDetailRecord
 from nest.units.selectors import get_unit_by_abbreviation
 
-from .constants import PRODUCT_NUTRITION_IDENTIFIERS
 from ..core.models import Product
 from ..core.records import ProductRecord
 from ..core.selectors import get_product
 from ..core.services import update_or_create_product
+from .clients import OdaClient
+from .constants import PRODUCT_NUTRITION_IDENTIFIERS
+from .records import OdaProductDetailRecord
 
 logger = structlog.getLogger()
 

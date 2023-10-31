@@ -1,19 +1,21 @@
+from decimal import Decimal
+from typing import Any
+
 from django.http import HttpRequest
-from ninja import File, Form, Schema, Router
+from ninja import File, Form, Router, Schema
 
 from nest.api.fields import FormField
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
-from nest.core.decorators import staff_required
-from nest.frontend.components import FrontendComponents
-from .services import create_product, edit_product
-from typing import Any
-from .selectors import get_nutrition_table, get_product, get_products
-from nest.core.utils import format_datetime
-from nest.core.records import TableRecord
 from nest.audit_logs.selectors import get_log_entries_for_object
+from nest.core.decorators import staff_required
+from nest.core.records import TableRecord
+from nest.core.utils import format_datetime
+from nest.frontend.components import FrontendComponents
+
 from .models import Product
-from decimal import Decimal
+from .selectors import get_nutrition_table, get_product, get_products
+from .services import create_product, edit_product
 
 router = Router(tags=["Products"])
 

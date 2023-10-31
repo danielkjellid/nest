@@ -1,17 +1,20 @@
+from decimal import Decimal
+
 import pytest
+from django.test.client import MULTIPART_CONTENT
 from django.urls import reverse
+
+from nest.units.records import UnitRecord
+from nest.units.tests.utils import get_unit
+
 from ..endpoints import (
     product_create_api,
+    product_detail_api,
     product_edit_api,
     product_list_api,
-    product_detail_api,
 )
-from ..records import ProductRecord, ProductClassifiersRecord
-from nest.units.tests.utils import get_unit
-from django.test.client import MULTIPART_CONTENT
 from ..models import Product
-from decimal import Decimal
-from nest.units.records import UnitRecord
+from ..records import ProductClassifiersRecord, ProductRecord
 
 pytestmark = pytest.mark.django_db
 

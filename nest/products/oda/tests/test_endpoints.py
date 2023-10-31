@@ -1,9 +1,10 @@
 import pytest
+from django.urls import reverse
+
 from ..clients import OdaClient
+from ..endpoints import product_oda_import_confirm_api
 from ..records import OdaProductDetailRecord
 from .utils import get_oda_product_response_dict
-from django.urls import reverse
-from ..endpoints import product_oda_import_confirm_api
 
 pytestmark = pytest.mark.django_db
 
