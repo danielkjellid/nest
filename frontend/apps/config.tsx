@@ -1,4 +1,11 @@
-import { IconHome, IconNews, IconSettings, IconShoppingCart, IconUsers } from '@tabler/icons-react'
+import {
+  IconHome,
+  IconListDetails,
+  IconNews,
+  IconSettings,
+  IconShoppingCart,
+  IconUsers,
+} from '@tabler/icons-react'
 
 import React from 'react'
 
@@ -14,9 +21,16 @@ export default [
   },
   {
     key: 'recipes',
-    path: '/recipes/',
+    path: '/recipes/*',
     element: () => import('./recipes'),
     icon: <IconNews />,
+    end,
+  },
+  {
+    key: 'ingredients',
+    path: '/ingredients/*',
+    element: () => import('./ingredients'),
+    icon: <IconListDetails />,
     end,
   },
   {

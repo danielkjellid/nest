@@ -3,8 +3,8 @@ import { IconCircleCheckFilled, IconCircleXFilled } from '@tabler/icons-react'
 import {
   MRT_ColumnDef,
   MRT_RowSelectionState,
+  MRT_TableOptions,
   MantineReactTable,
-  MantineReactTableProps,
 } from 'mantine-react-table'
 import React, { useEffect, useMemo, useState } from 'react'
 
@@ -26,7 +26,7 @@ interface TableProps<TData extends object> {
   rowIdentifier: string
   columns: Column<TData>[]
   data: TData[]
-  actionMenuItems?: MantineReactTableProps<TData>['renderRowActionMenuItems']
+  actionMenuItems?: MRT_TableOptions<TData>['renderRowActionMenuItems']
   onRowSelectionChange?: (selection: MRT_RowSelectionState) => void
 }
 
@@ -107,10 +107,10 @@ function Table<TData extends object>({
       positionGlobalFilter="left"
       enableFullScreenToggle={false}
       // Selection
-      enableRowSelection={currentUser.isStaff && typeof onRowSelectionChange !== undefined}
+      enableRowSelection={currentUser && currentUser.isStaff && onRowSelectionChange !== undefined}
       onRowSelectionChange={setRowSelection}
       // Actions
-      enableRowActions
+      enableRowActions={actionMenuItems !== undefined}
       positionActionsColumn="last"
       renderRowActionMenuItems={actionMenuItems}
       // Search
@@ -119,7 +119,7 @@ function Table<TData extends object>({
         sx: { minWidth: '400px' },
       }}
       mantinePaperProps={{
-        radius: 'lg',
+        radius: '6px',
         withBorder: false,
         shadow: 'sm',
       }}

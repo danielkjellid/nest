@@ -37,6 +37,9 @@ class TestFrontendSelectors:
                 FrontendMenuItemRecord(key="plans", title="Meal plans", end=True),
                 FrontendMenuItemRecord(key="products", title="Products", end=True),
                 FrontendMenuItemRecord(key="recipes", title="Recipes", end=True),
+                FrontendMenuItemRecord(
+                    key="ingredients", title="Ingredients", end=True
+                ),
                 FrontendMenuItemRecord(key="settings", title="Settings", end=True),
             ],
             config=FrontendConfigRecord(is_production=True),
@@ -55,6 +58,7 @@ class TestFrontendSelectors:
             FrontendMenuItemRecord(key="plans", title="Meal plans", end=True),
             FrontendMenuItemRecord(key="products", title="Products", end=True),
             FrontendMenuItemRecord(key="recipes", title="Recipes", end=True),
+            FrontendMenuItemRecord(key="ingredients", title="Ingredients", end=True),
             FrontendMenuItemRecord(key="settings", title="Settings", end=True),
         ]
 
@@ -68,6 +72,7 @@ class TestFrontendSelectors:
             FrontendMenuItemRecord(key="plans", title="Meal plans", end=True),
             FrontendMenuItemRecord(key="products", title="Products", end=True),
             FrontendMenuItemRecord(key="recipes", title="Recipes", end=True),
+            FrontendMenuItemRecord(key="ingredients", title="Ingredients", end=True),
             FrontendMenuItemRecord(key="settings", title="Settings", end=True),
             FrontendMenuItemRecord(key="users", title="Users", end=True),
         ]

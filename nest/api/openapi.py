@@ -2,7 +2,16 @@ from __future__ import annotations
 
 import inspect
 from enum import Enum
-from typing import Any, Collection, Sequence, Type, cast, get_args, get_type_hints
+from typing import (
+    Any,
+    Collection,
+    Iterable,
+    Sequence,
+    Type,
+    cast,
+    get_args,
+    get_type_hints,
+)
 
 from django.conf import settings
 from django.db.models import IntegerChoices, TextChoices
@@ -18,7 +27,7 @@ from ninja.openapi.schema import (
 from ninja.params_models import TModel, TModels
 from ninja.types import DictStrAny
 from pydantic import BaseModel
-from pydantic.schema import enum_process_schema, model_schema
+from pydantic.schema import model_schema
 
 from nest.api.files import UploadedFile, UploadedImageFile
 from nest.core.utils import camelize
@@ -75,7 +84,9 @@ class OpenAPISchema(NinjaOpenAPISchema):
                     "title": schema_key,
                     "properties": self._populate_definition_properties(
                         properties=properties, enum_mapping=mapped_enums
-                    ),
+                    )
+                    if properties is not None
+                    else None,
                     "required": self._convert_keys_to_camelcase(required),
                     **meta,
                     **value,
@@ -155,13 +166,34 @@ class OpenAPISchema(NinjaOpenAPISchema):
             # Enums has to be treated a bit differently than normal pydantic.BaseModel
             # or ninja.Schema.
             if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
-                m_schema = enum_process_schema(model_or_enum)
+                m_schema = self.enum_process_schema(model_or_enum)
             else:
                 m_schema = self._create_schema_from_model(
                     model_or_enum, remove_level=False
                 )[0]
 
             self.schemas.update({m_schema["title"]: m_schema})
+
+    def enum_process_schema(self, enum: Type[IntegerChoices]) -> dict[str, Any]:
+        """
+        Process enum and create a dict of openapi spec.
+        """
+        import inspect
+
+        schema_: dict[str, Any] = {
+            "title": enum.__name__,
+            # Python assigns all enums a default docstring value of 'An enumeration', so
+            # all enums will have a description field even if not explicitly provided.
+            "description": inspect.cleandoc(enum.__doc__ or "An enumeration."),
+            # Add enum values and the enum field type to the schema.
+            "enum": [item.value for item in cast(Iterable[Enum], enum)],
+            "x-enum-varnames": [
+                getattr(item, "label", item.value)
+                for item in cast(Iterable[Enum], enum)
+            ],
+        }
+
+        return schema_
 
     ###########
     # Helpers #
@@ -249,12 +281,16 @@ class OpenAPISchema(NinjaOpenAPISchema):
                 if enum_mapping:
                     for mapping in enum_mapping:
                         if mapping["field"] == property:
+                            props[property]["title"] = mapping[
+                                "field"
+                            ].title()  # type: ignore
                             props[property]["enum"] = mapping["enum"]
-                            props[property][
-                                "component"
-                            ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[  # type: ignore
-                                "enum"
-                            ].value
+
+                            component_defaults = (
+                                settings.FORM_COMPONENT_MAPPING_DEFAULTS  # type: ignore
+                            )
+                            component = component_defaults["enum"].value
+                            props[property]["component"] = component
 
                 if property_type and props[property].get("component", None) is None:
                     try:
@@ -311,6 +347,8 @@ class OpenAPISchema(NinjaOpenAPISchema):
                 meta["title"] = f"{val.__name__}"
 
                 if hasattr(val, "FormMeta"):
-                    meta["columns"] = getattr(value.FormMeta, "columns", 1)  # type: ignore
+                    meta["columns"] = getattr(
+                        value.FormMeta, "columns", 1  # type: ignore
+                    )
 
         return meta

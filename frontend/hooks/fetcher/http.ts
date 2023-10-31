@@ -48,7 +48,7 @@ async function getter<T>({
     const error = new RequestError(
       `Got a '${response.status} ${response.statusText}' response.`,
       response,
-      JSON.parse(data)
+      data
     )
 
     if (error && error.response?.data?.message) {
@@ -115,4 +115,5 @@ const queryFactory = (obj: Record<string, any> | undefined) => {
 export const performGet: Getter = getter
 export const performPost: Setter = setter('post')
 export const performPut: Setter = setter('put')
+export const performDelete: Setter = setter('delete')
 export const makeQuery: typeof queryFactory = queryFactory

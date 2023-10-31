@@ -99,7 +99,7 @@ function BaseApp({ appShellClassName, navbar, header, children }: BaseAppProps) 
   return (
     <BaseAppCore appShellClassName={appShellClassName} navbar={navbar} header={header}>
       <div className="h-full space-y-5">
-        {currentUser.isHijacked && (
+        {currentUser && currentUser.isHijacked && (
           <Alert color="orange" title="User hijacked" icon={<IconInfoCircle className="w-5 h-5" />}>
             <div className="flex items-center justify-between">
               You&apos;re currently working on behalf of {currentUser.fullName}.

@@ -107,6 +107,8 @@ class Product(BaseModel):
         help_text="The last time the data was automatically updated.",
     )
 
+    objects = _ProductManager()
+
     ADMIN_LIST_DISPLAY = [
         "name",
         "gross_price",

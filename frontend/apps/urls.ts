@@ -11,6 +11,24 @@ const urls = {
       importConfirm: () => '/api/v1/products/oda/import/confirm/',
     },
   },
+  recipes: {
+    list: () => '/api/v1/recipes/',
+    create: () => '/api/v1/recipes/create/',
+    detail: ({ id }: { id: Param }) => `/api/v1/recipes/recipe/${id}/`,
+
+    ingredients: {
+      list: () => '/api/v1/recipes/ingredients/',
+      create: () => '/api/v1/recipes/ingredients/create/',
+      delete: () => '/api/v1/recipes/ingredients/delete/',
+      groups: {
+        list: ({ id }: { id: Param }) => `/api/v1/recipes/ingredients/${id}/groups/`,
+        create: ({ id }: { id: Param }) => `/api/v1/recipes/ingredients/${id}/groups/create/`,
+      },
+    },
+    steps: {
+      create: ({ id }: { id: Param }) => `/api/v1/recipes/steps/${id}/create/`,
+    },
+  },
   users: {
     list: () => '/api/v1/users/',
   },

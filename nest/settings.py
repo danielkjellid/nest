@@ -107,6 +107,9 @@ PROJECT_APPS = [
     "nest.frontend",
     "nest.homes",
     "nest.products",
+    "nest.recipes.core",
+    "nest.recipes.ingredients",
+    "nest.recipes.steps",
     "nest.units",
     "nest.users",
 ]

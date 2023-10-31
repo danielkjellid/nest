@@ -43,10 +43,14 @@ function MainApp(props: AppProps) {
 
   let home: CommonContextType['currentHome']
 
-  if (currentUser.home) {
-    home = currentUser.home
-  } else if (!currentUser.home && availableHomes.length) {
-    home = availableHomes.sort((a, b) => a.id - b.id)[0]
+  if (currentUser) {
+    if (currentUser.home) {
+      home = currentUser.home
+    } else if (!currentUser.home && availableHomes.length) {
+      home = availableHomes.sort((a, b) => a.id - b.id)[0]
+    } else {
+      home = null
+    }
   } else {
     home = null
   }

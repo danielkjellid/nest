@@ -33,7 +33,7 @@ function ProductOverviewInner({ results, refetch }: ProductOverviewInnerProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <Title weight={600}>Products</Title>
-        {currentUser.isStaff && (
+        {currentUser && currentUser.isStaff && (
           <div className="flex items-center space-x-3">
             <Button.Group>
               <Button variant="default" onClick={odaImportDrawerOpen}>

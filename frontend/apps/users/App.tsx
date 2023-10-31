@@ -58,7 +58,8 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
                 icon={<IconEye />}
                 type="submit"
                 disabled={
-                  currentUser.id.toString() === row.id.toString() ||
+                  (currentUser && currentUser.id.toString() === row.id.toString()) ||
+                  !currentUser ||
                   (!currentUser.isSuperuser &&
                     users.data?.find((user) => user.id.toString() === row.id.toString())
                       ?.isSuperuser)
