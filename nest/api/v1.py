@@ -6,7 +6,7 @@ from pydantic.error_wrappers import ValidationError as PydanticValidationError
 
 from nest.core.exceptions import ApplicationError
 from nest.core.utils import camelize
-from nest.products.endpoints import products_router
+from nest.products.router import products_router
 from nest.recipes.router import recipes_router
 from nest.units.endpoints import units_router
 from nest.users.endpoints import users_router

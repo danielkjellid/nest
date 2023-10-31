@@ -2,16 +2,16 @@ from decimal import Decimal
 
 import pytest
 
-from nest.products.models import Product
-from nest.products.services import (
+from nest.products.core.models import Product
+from nest.products.core.services import (
     create_product,
     edit_product,
     update_or_create_product,
 )
-from nest.products.tests.utils import (
+from nest.products.core.tests.utils import (
     create_product as create_product_test_util,
 )
-from nest.products.tests.utils import (
+from nest.products.core.tests.utils import (
     create_product_image,
     get_unit,
     next_oda_id,

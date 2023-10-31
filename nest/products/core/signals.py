@@ -4,7 +4,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from nest.core.utils import s3_asset_cleanup
-from nest.products.models import Product
+from nest.products.core.models import Product
 
 
 @receiver(pre_save, sender=Product)

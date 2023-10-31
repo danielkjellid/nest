@@ -10,9 +10,9 @@ from nest.audit_logs.services import log_create_or_updated
 from nest.core.services import model_update
 from nest.units.models import Unit
 
-from ..models import Product
-from ..records import ProductRecord
-from ..selectors import _get_product
+from .models import Product
+from .records import ProductRecord
+from .selectors import _get_product
 
 logger = structlog.getLogger()
 

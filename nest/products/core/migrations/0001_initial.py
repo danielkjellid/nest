@@ -3,7 +3,7 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
-import nest.products.models
+import nest.products.core.models
 
 
 class Migration(migrations.Migration):
@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                     models.ImageField(
                         blank=True,
                         null=True,
-                        upload_to=nest.products.models.Product.get_product_upload_path,
+                        upload_to=nest.products.core.models.Product.get_product_upload_path,
                     ),
                 ),
                 ("gtin", models.CharField(blank=True, max_length=14, null=True)),

@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from nest.products.tests.utils import create_product
+from nest.products.core.tests.utils import create_product
 
 from ..endpoints import (
     recipe_ingredient_create_api,

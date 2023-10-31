@@ -6,86 +6,10 @@
         "description": ""
     },
     "paths": {
-        "/api/v1/ingredients/create/": {
-            "post": {
-                "operationId": "ingredient_create_api",
-                "summary": "Ingredient Create Api",
-                "parameters": [],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Create an ingredient.",
-                "tags": [
-                    "Ingredients"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IngredientCreateIn"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/ingredients/delete/": {
-            "delete": {
-                "operationId": "ingredient_delete_api",
-                "summary": "Ingredient Delete Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Delete an ingredient.",
-                "tags": [
-                    "Ingredients"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/IngredientDeleteIn"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/ingredients/": {
+        "/api/v1/products/": {
             "get": {
-                "operationId": "ingredient_list_api",
-                "summary": "Ingredient List Api",
+                "operationId": "product_list_api",
+                "summary": "Product List Api",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -93,15 +17,15 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
+                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
                                 }
                             }
                         }
                     }
                 },
-                "description": "Get a list off all ingredients in the application",
+                "description": "Get a list of all products in the application.",
                 "tags": [
-                    "Ingredients"
+                    "Products"
                 ],
                 "security": [
                     {
@@ -234,34 +158,6 @@
                 ]
             }
         },
-        "/api/v1/products/": {
-            "get": {
-                "operationId": "product_list_api",
-                "summary": "Product List Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list of all products in the application.",
-                "tags": [
-                    "Products"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/products/oda/import/": {
             "post": {
                 "operationId": "product_oda_import_api",
@@ -281,7 +177,7 @@
                 },
                 "description": "Import product data from id. Note: This does not create a product, it only retrieves\ndata.",
                 "tags": [
-                    "Products"
+                    "Oda products"
                 ],
                 "requestBody": {
                     "content": {
@@ -319,7 +215,7 @@
                 },
                 "description": "Import and create a product from Oda based on ID.",
                 "tags": [
-                    "Products"
+                    "Oda products"
                 ],
                 "requestBody": {
                     "content": {
@@ -357,7 +253,7 @@
                 },
                 "description": "Create a recipe.",
                 "tags": [
-                    "Recipes"
+                    "Recipe"
                 ],
                 "requestBody": {
                     "content": {
@@ -376,7 +272,7 @@
                 ]
             }
         },
-        "/api/v1/recipes/{recipe_id}/": {
+        "/api/v1/recipes/recipe/{recipe_id}/": {
             "get": {
                 "operationId": "recipe_detail_api",
                 "summary": "Recipe Detail Api",
@@ -405,11 +301,143 @@
                 },
                 "description": "Retrieve a single recipe instance based in recipe id.",
                 "tags": [
-                    "Recipes"
+                    "Recipe"
                 ]
             }
         },
-        "/api/v1/recipes/{recipe_id}/ingredient-groups/create/": {
+        "/api/v1/recipes/": {
+            "get": {
+                "operationId": "recipe_list_api",
+                "summary": "Recipe List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list of all recipes in the application.",
+                "tags": [
+                    "Recipe"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/ingredients/create/": {
+            "post": {
+                "operationId": "recipe_ingredient_create_api",
+                "summary": "Recipe Ingredient Create Api",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Create an ingredient.",
+                "tags": [
+                    "Recipe ingredients"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngredientCreateIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/ingredients/delete/": {
+            "delete": {
+                "operationId": "recipe_ingredient_delete_api",
+                "summary": "Recipe Ingredient Delete Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Delete an ingredient.",
+                "tags": [
+                    "Recipe ingredients"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngredientDeleteIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/ingredients/": {
+            "get": {
+                "operationId": "recipe_ingredient_list_api",
+                "summary": "Recipe Ingredient List Api",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "description": "Get a list off all ingredients in the application",
+                "tags": [
+                    "Recipe ingredients"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/recipes/ingredients/{recipe_id}/groups/create/": {
             "post": {
                 "operationId": "recipe_ingredient_groups_create_api",
                 "summary": "Recipe Ingredient Groups Create Api",
@@ -438,7 +466,7 @@
                 },
                 "description": "Add ingredients to an existing recipe.",
                 "tags": [
-                    "Recipes"
+                    "Recipe ingredients"
                 ],
                 "requestBody": {
                     "content": {
@@ -461,7 +489,7 @@
                 ]
             }
         },
-        "/api/v1/recipes/{recipe_id}/ingredient-groups/": {
+        "/api/v1/recipes/ingredients/{recipe_id}/groups/": {
             "get": {
                 "operationId": "recipe_ingredient_groups_list_api",
                 "summary": "Recipe Ingredient Groups List Api",
@@ -490,7 +518,7 @@
                 },
                 "description": "Get a list of all RecipeIngredientItemGroups for a recipe.",
                 "tags": [
-                    "Recipes"
+                    "Recipe ingredients"
                 ],
                 "security": [
                     {
@@ -499,35 +527,7 @@
                 ]
             }
         },
-        "/api/v1/recipes/": {
-            "get": {
-                "operationId": "recipe_list_api",
-                "summary": "Recipe List Api",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RecipeListOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list of all recipes in the application.",
-                "tags": [
-                    "Recipes"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/recipes/{recipe_id}/steps/create/": {
+        "/api/v1/recipes/steps/{recipe_id}/create/": {
             "post": {
                 "operationId": "recipe_steps_create_api",
                 "summary": "Recipe Steps Create Api",
@@ -556,7 +556,7 @@
                 },
                 "description": "Create steps related to a single recipe.",
                 "tags": [
-                    "Recipes"
+                    "Recipe steps"
                 ],
                 "requestBody": {
                     "content": {
@@ -637,6 +637,101 @@
     },
     "components": {
         "schemas": {
+            "ProductListOut": {
+                "title": "ProductListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isAvailable": {
+                        "title": "Is Available",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "odaUrl": {
+                        "title": "Oda Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "odaId": {
+                        "title": "Oda Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "isSynced": {
+                        "title": "Is Synced",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "gtin": {
+                        "title": "Gtin",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isOdaProduct": {
+                        "title": "Is Oda Product",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "displayPrice": {
+                        "title": "Display Price",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "fullName",
+                    "isAvailable",
+                    "isSynced",
+                    "isOdaProduct",
+                    "displayPrice"
+                ],
+                "type": "object"
+            },
+            "ProductListOutAPIResponse": {
+                "title": "ProductListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
             "APIResponse": {
                 "title": "APIResponse",
                 "properties": {
@@ -662,138 +757,6 @@
                 "required": [
                     "status",
                     "data"
-                ],
-                "type": "object"
-            },
-            "IngredientCreateIn": {
-                "title": "IngredientCreateIn",
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "helpText": "User friendly title. E.g. Red tomatoes.",
-                        "component": "TextInput",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 1,
-                        "min": null,
-                        "max": null,
-                        "type": "string"
-                    },
-                    "product": {
-                        "title": "Product",
-                        "helpText": null,
-                        "component": "Select",
-                        "defaultValue": null,
-                        "placeholder": null,
-                        "hiddenLabel": false,
-                        "colSpan": null,
-                        "section": null,
-                        "order": 2,
-                        "min": null,
-                        "max": null,
-                        "type": "integer"
-                    }
-                },
-                "required": [
-                    "title",
-                    "product"
-                ],
-                "type": "object"
-            },
-            "IngredientDeleteIn": {
-                "title": "IngredientDeleteIn",
-                "properties": {
-                    "ingredientId": {
-                        "title": "Ingredient Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "ingredientId"
-                ],
-                "type": "object"
-            },
-            "IngredientListProductOut": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id",
-                    "fullName"
-                ],
-                "type": "object"
-            },
-            "IngredientListOut": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "product": {
-                        "$ref": "#/components/schemas/IngredientListProductOut"
-                    }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "product"
-                ],
-                "type": "object"
-            },
-            "IngredientListOutAPIResponse": {
-                "title": "IngredientListOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/IngredientListOut"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "status"
                 ],
                 "type": "object"
             },
@@ -1729,101 +1692,6 @@
                 "columns": 4,
                 "type": "object"
             },
-            "ProductListOut": {
-                "title": "ProductListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "isAvailable": {
-                        "title": "Is Available",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "odaUrl": {
-                        "title": "Oda Url",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "odaId": {
-                        "title": "Oda Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "isSynced": {
-                        "title": "Is Synced",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "gtin": {
-                        "title": "Gtin",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "isOdaProduct": {
-                        "title": "Is Oda Product",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "displayPrice": {
-                        "title": "Display Price",
-                        "type": "string",
-                        "component": "TextInput"
-                    }
-                },
-                "required": [
-                    "id",
-                    "fullName",
-                    "isAvailable",
-                    "isSynced",
-                    "isOdaProduct",
-                    "displayPrice"
-                ],
-                "type": "object"
-            },
-            "ProductListOutAPIResponse": {
-                "title": "ProductListOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductListOut"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "status"
-                ],
-                "type": "object"
-            },
             "ProductOdaImportOut": {
                 "title": "ProductOdaImportOutAPIResponse",
                 "properties": {
@@ -1987,10 +1855,12 @@
                 "description": "An enumeration.",
                 "enum": [
                     "draft",
+                    "hidden",
                     "published"
                 ],
                 "x-enum-varnames": [
                     "Draft",
+                    "Hidden",
                     "Published"
                 ]
             },
@@ -2076,6 +1946,10 @@
                             {
                                 "label": "Draft",
                                 "value": "draft"
+                            },
+                            {
+                                "label": "Hidden",
+                                "value": "hidden"
                             },
                             {
                                 "label": "Published",
@@ -2473,6 +2347,219 @@
                 ],
                 "type": "object"
             },
+            "RecipeListOut": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "defaultNumPortions": {
+                        "title": "Default Num Portions",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "statusDisplay": {
+                        "title": "Status Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "difficultyDisplay": {
+                        "title": "Difficulty Display",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "isVegetarian": {
+                        "title": "Is Vegetarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    },
+                    "isPescatarian": {
+                        "title": "Is Pescatarian",
+                        "type": "boolean",
+                        "component": "Checkbox"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "defaultNumPortions",
+                    "statusDisplay",
+                    "difficultyDisplay",
+                    "isVegetarian",
+                    "isPescatarian"
+                ],
+                "type": "object"
+            },
+            "RecipeListOutAPIResponse": {
+                "title": "RecipeListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
+            "IngredientCreateIn": {
+                "title": "IngredientCreateIn",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "helpText": "User friendly title. E.g. Red tomatoes.",
+                        "component": "TextInput",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 1,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "product": {
+                        "title": "Product",
+                        "helpText": null,
+                        "component": "Select",
+                        "defaultValue": null,
+                        "placeholder": null,
+                        "hiddenLabel": false,
+                        "colSpan": null,
+                        "section": null,
+                        "order": 2,
+                        "min": null,
+                        "max": null,
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "IngredientDeleteIn": {
+                "title": "IngredientDeleteIn",
+                "properties": {
+                    "ingredientId": {
+                        "title": "Ingredient Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "ingredientId"
+                ],
+                "type": "object"
+            },
+            "IngredientListProductOut": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "fullName": {
+                        "title": "Full Name",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "thumbnailUrl": {
+                        "title": "Thumbnail Url",
+                        "type": "string",
+                        "component": "TextInput"
+                    }
+                },
+                "required": [
+                    "id",
+                    "fullName"
+                ],
+                "type": "object"
+            },
+            "IngredientListOut": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer",
+                        "component": "TextInput"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "product": {
+                        "$ref": "#/components/schemas/IngredientListProductOut"
+                    }
+                },
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
+                "type": "object"
+            },
+            "IngredientListOutAPIResponse": {
+                "title": "IngredientListOutAPIResponse",
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "enum": [
+                            "success",
+                            "error"
+                        ],
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string",
+                        "component": "TextInput"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IngredientListOut"
+                        },
+                        "component": "MultiSelect"
+                    }
+                },
+                "required": [
+                    "status"
+                ],
+                "type": "object"
+            },
             "RecipeIngredientsCreateIngredientIn": {
                 "title": "RecipeIngredientsCreateIn",
                 "properties": {
@@ -2681,87 +2768,6 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientGroupsListOut"
-                        },
-                        "component": "MultiSelect"
-                    }
-                },
-                "required": [
-                    "status"
-                ],
-                "type": "object"
-            },
-            "RecipeListOut": {
-                "title": "RecipeListOutAPIResponse",
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "defaultNumPortions": {
-                        "title": "Default Num Portions",
-                        "type": "integer",
-                        "component": "TextInput"
-                    },
-                    "statusDisplay": {
-                        "title": "Status Display",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "difficultyDisplay": {
-                        "title": "Difficulty Display",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "isVegetarian": {
-                        "title": "Is Vegetarian",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    },
-                    "isPescatarian": {
-                        "title": "Is Pescatarian",
-                        "type": "boolean",
-                        "component": "Checkbox"
-                    }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "defaultNumPortions",
-                    "statusDisplay",
-                    "difficultyDisplay",
-                    "isVegetarian",
-                    "isPescatarian"
-                ],
-                "type": "object"
-            },
-            "RecipeListOutAPIResponse": {
-                "title": "RecipeListOutAPIResponse",
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "enum": [
-                            "success",
-                            "error"
-                        ],
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string",
-                        "component": "TextInput"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeListOut"
                         },
                         "component": "MultiSelect"
                     }
@@ -3013,18 +3019,6 @@
                     "Switch",
                     "Textarea",
                     "TextInput"
-                ]
-            },
-            "RecipeStepType": {
-                "title": "RecipeStepType",
-                "description": "An enumeration.",
-                "enum": [
-                    "cooking",
-                    "preparation"
-                ],
-                "x-enum-varnames": [
-                    "Cooking Step",
-                    "Preparation"
                 ]
             },
             "UnitType": {

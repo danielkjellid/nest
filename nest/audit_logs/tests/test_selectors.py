@@ -5,8 +5,8 @@ from nest.audit_logs.selectors import (
     get_log_entries_for_object,
 )
 from nest.audit_logs.tests.utils import create_log_entry
-from nest.products.models import Product
-from nest.products.tests.utils import create_product
+from nest.products.core.models import Product
+from nest.products.core.tests.utils import create_product
 from nest.users.models import User
 from nest.users.tests.utils import create_user
 
