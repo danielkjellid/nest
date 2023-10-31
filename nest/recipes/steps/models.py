@@ -32,5 +32,6 @@ class RecipeStep(BaseModel):
     def __str__(self) -> str:
         return f"Step {self.number}, recipe {self.recipe_id}"
 
+    @property
     def get_step_type(self) -> RecipeStepType:
         return RecipeStepType(self.step_type)

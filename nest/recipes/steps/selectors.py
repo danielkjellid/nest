@@ -31,7 +31,7 @@ def get_steps_for_recipes(
                 number=step.number,
                 duration=step.duration,
                 instruction=step.instruction,
-                step_type=step.get_step_type(),
+                step_type=step.get_step_type,
                 step_type_display=step.get_step_type_display(),
                 ingredient_items=ingredient_items[step.id],
             )
