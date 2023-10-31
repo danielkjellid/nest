@@ -12,8 +12,7 @@ _RecipeStepManager = models.Manager.from_queryset(RecipeStepQuerySet)
 
 class RecipeStep(BaseModel):
     """
-    A recipe step can either contain a step item or another recipe in its entirety.
-    In that case, all steps of that recipe will be embedded.
+    A recipe step which gives instructions on a certain part of a recipe.
     """
 
     recipe = models.ForeignKey(
