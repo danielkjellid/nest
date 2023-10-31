@@ -52,7 +52,7 @@ class RecipeIngredientItem(BaseModel):
 
     additional_info = models.CharField(max_length=255, null=True, blank=True)
 
-    # The per-portion quantity of the ingredient The portion quantity is multiplied
+    # The per-portion quantity of the ingredient. The portion quantity is multiplied
     # with the number of portions to calculate the quantity of the final product.
     portion_quantity = models.DecimalField(max_digits=10, decimal_places=2)
     portion_quantity_unit = models.ForeignKey(
