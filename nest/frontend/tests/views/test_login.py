@@ -3,6 +3,8 @@ from unittest.mock import ANY
 from django.test import Client
 from django.urls import reverse
 
+from nest.api import status
+
 
 class TestViewLogin:
     path = reverse("login")
@@ -19,7 +21,7 @@ class TestViewLogin:
         client = Client(enforce_csrf_checks=True)
         response = client.get(self.path, follow=True)
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
 
     def test_login_view_context(self) -> None:
         """

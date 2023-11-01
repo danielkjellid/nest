@@ -1,5 +1,6 @@
 import pytest
 
+from nest.api import status
 from nest.users.core.endpoints import user_list_api
 
 pytestmark = pytest.mark.django_db
@@ -22,7 +23,7 @@ class TestEndpointUsersList:
         with django_assert_num_queries(0):
             response = client.get(self.ENDPOINT)
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert selector_mock.call_count == 0
 
     def test_staff_request_user_list_api(
@@ -38,5 +39,5 @@ class TestEndpointUsersList:
         with django_assert_num_queries(2):
             response = client.get(self.ENDPOINT)
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert selector_mock.call_count == 1

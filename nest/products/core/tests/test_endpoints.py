@@ -4,6 +4,7 @@ import pytest
 from django.test.client import MULTIPART_CONTENT
 from django.urls import reverse
 
+from nest.api import status
 from nest.units.records import UnitRecord
 from nest.units.tests.utils import get_unit
 
@@ -49,7 +50,7 @@ class TestEndpointProductCreateAPI:
                 content_type=MULTIPART_CONTENT,
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_product_create_api(
@@ -78,7 +79,7 @@ class TestEndpointProductCreateAPI:
                 content_type=MULTIPART_CONTENT,
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert service_mock.call_count == 1
 
 
@@ -113,7 +114,7 @@ class TestEndpointProductEditAPI:
                 content_type=MULTIPART_CONTENT,
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_product_edit_api(
@@ -143,7 +144,7 @@ class TestEndpointProductEditAPI:
                 content_type=MULTIPART_CONTENT,
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert service_mock.call_count == 1
 
 
@@ -168,7 +169,7 @@ class TestEndpointProductListAPI:
                 content_type="application/json",
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert selector_mock.call_count == 1
 
 
@@ -239,7 +240,7 @@ class TestEndpointProductDetailAPI:
                 content_type="application/json",
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert product_selector_mock.call_count == 1
         assert nutrition_selector_mock.call_count == 1
         log_selector_mock.assert_called_once_with(model=Product, pk=1)

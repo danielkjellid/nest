@@ -4,6 +4,7 @@ from django.http import HttpRequest
 from ninja import Router, Schema
 from pydantic import parse_obj_as
 
+from nest.api import status
 from nest.api.fields import FormField
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
@@ -67,7 +68,9 @@ def recipe_create_api(
     Create a recipe.
     """
     recipe = create_recipe(**payload.dict(), request=request)
-    return 201, APIResponse(status="success", data=RecipeCreateOut(recipe_id=recipe.id))
+    return status.HTTP_201_CREATED, APIResponse(
+        status="success", data=RecipeCreateOut(recipe_id=recipe.id)
+    )
 
 
 class RecipeDetailDurationOut(Schema):

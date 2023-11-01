@@ -1,6 +1,7 @@
 from django.http import HttpRequest
 from ninja import Router, Schema
 
+from nest.api import status
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
 
@@ -29,4 +30,4 @@ def recipe_steps_create_api(
         recipe_id=recipe_id,
         steps=[p.dict() for p in payload],
     )
-    return 201, APIResponse(status="success", data=None)
+    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)

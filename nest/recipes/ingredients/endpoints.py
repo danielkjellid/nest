@@ -2,6 +2,7 @@ from django.http import HttpRequest
 from ninja import Router, Schema
 from pydantic import parse_obj_as
 
+from nest.api import status
 from nest.api.fields import FormField
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
@@ -39,7 +40,7 @@ def recipe_ingredient_create_api(
     """
 
     create_recipe_ingredient(**payload.dict(), request=request)
-    return 201, APIResponse(status="success", data=None)
+    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
 
 
 class IngredientDeleteIn(Schema):
@@ -110,7 +111,7 @@ def recipe_ingredient_groups_create_api(
         recipe_id=recipe_id,
         ingredient_group_items=[p.dict() for p in payload],
     )
-    return 201, APIResponse(status="success", data=None)
+    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
 
 
 class RecipeIngredientGroupsListIngredientProductOut(Schema):

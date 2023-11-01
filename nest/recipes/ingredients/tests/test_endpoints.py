@@ -1,6 +1,7 @@
 import pytest
 from django.urls import reverse
 
+from nest.api import status
 from nest.products.core.tests.utils import create_product
 
 from ..endpoints import (
@@ -37,7 +38,7 @@ class TestEndpointRecipeIngredientCreateAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_ingredient_create_api(
@@ -58,7 +59,7 @@ class TestEndpointRecipeIngredientCreateAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 201
+        assert response.status_code == status.HTTP_201_CREATED
         assert service_mock.call_count == 1
 
 
@@ -82,7 +83,7 @@ class TestEndpointRecipeIngredientListAPI:
         with django_assert_num_queries(2):
             response = client.get(self.ENDPOINT, content_type="application/json")
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert selector_mock.call_count == 1
 
 
@@ -108,7 +109,7 @@ class TestEndpointRecipeIngredientDeleteAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_ingredient_create_api(
@@ -128,7 +129,7 @@ class TestEndpointRecipeIngredientDeleteAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert service_mock.call_count == 1
 
 
@@ -156,7 +157,7 @@ class TestEndpointRecipeIngredientGroupsCreate:
                 content_type="application/json",
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_recipe_ingredient_groups_create_api(
@@ -180,7 +181,7 @@ class TestEndpointRecipeIngredientGroupsCreate:
                 content_type="application/json",
             )
 
-        assert response.status_code == 201
+        assert response.status_code == status.HTTP_201_CREATED
         assert service_mock.call_count == 1
 
 
@@ -208,5 +209,5 @@ class TestEndpointRecipeIngredientGroupsList:
                 content_type="application/json",
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert selector_mock.call_count == 1
