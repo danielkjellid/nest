@@ -7,8 +7,8 @@ from nest.audit_logs.selectors import (
 from nest.audit_logs.tests.utils import create_log_entry
 from nest.products.core.models import Product
 from nest.products.core.tests.utils import create_product
-from nest.users.models import User
-from nest.users.tests.utils import create_user
+from nest.users.core.models import User
+from nest.users.core.tests.utils import create_user
 
 pytestmark = pytest.mark.django_db
 

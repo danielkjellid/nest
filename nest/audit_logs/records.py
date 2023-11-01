@@ -5,7 +5,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from nest.users.records import UserRecord
+from nest.users.core.records import UserRecord
 
 from .models import LogEntry
 

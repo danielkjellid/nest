@@ -7,7 +7,7 @@ from nest.frontend.records import (
     FrontendMenuItemRecord,
 )
 from nest.homes.selectors import get_homes_for_user
-from nest.users.records import UserRecord
+from nest.users.core.records import UserRecord
 
 from .menu import MENU
 

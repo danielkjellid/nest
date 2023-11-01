@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from nest.homes.records import HomeRecord
-from nest.users.records import UserRecord
+from nest.users.core.records import UserRecord
 
 
 class FrontendMenuItemRecord(BaseModel):

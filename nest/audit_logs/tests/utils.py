@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 
 from nest.audit_logs.models import LogEntry
-from nest.users.models import User
+from nest.users.core.models import User
 
 T_MODEL = TypeVar("T_MODEL", bound=Model)
 

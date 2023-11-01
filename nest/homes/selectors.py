@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 from nest.homes.models import Home
-from nest.users.records import UserRecord
+from nest.users.core.records import UserRecord
 
 from .records import HomeRecord
 
