@@ -1,11 +1,11 @@
 from django.http import HttpRequest
-from ninja import Schema
+from ninja import Router, Schema
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
 from nest.users.core.selectors import get_users
 
-from .router import router
+router = Router(tags=["Users"])
 
 
 class UserListHomeOut(Schema):
