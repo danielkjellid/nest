@@ -9,8 +9,8 @@ from nest.frontend.records import (
 from nest.frontend.selectors import get_initial_props, get_menu_for_user
 from nest.homes.records import HomeRecord
 from nest.homes.tests.utils import create_home
-from nest.users.records import UserRecord
-from nest.users.tests.utils import create_user
+from nest.users.core.records import UserRecord
+from nest.users.core.tests.utils import create_user
 
 pytestmark = pytest.mark.django_db
 

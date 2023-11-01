@@ -112,7 +112,7 @@ PROJECT_APPS = [
     "nest.recipes.ingredients",
     "nest.recipes.steps",
     "nest.units",
-    "nest.users",
+    "nest.users.core",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS

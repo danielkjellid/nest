@@ -10,8 +10,8 @@ from django.http import HttpRequest
 from django.utils.encoding import smart_str
 
 from nest.core.utils import get_remote_request_ip, get_remote_request_user
-from nest.users.models import User
-from nest.users.records import UserRecord
+from nest.users.core.models import User
+from nest.users.core.records import UserRecord
 
 from .models import LogEntry
 from .records import LogEntryRecord

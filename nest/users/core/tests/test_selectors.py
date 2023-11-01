@@ -2,8 +2,8 @@ import pytest
 
 from nest.core.exceptions import ApplicationError
 from nest.homes.tests.utils import create_home
-from nest.users.selectors import get_user, get_users
-from nest.users.tests.utils import create_user
+from nest.users.core.selectors import get_user, get_users
+from nest.users.core.tests.utils import create_user
 
 pytestmark = pytest.mark.django_db
 
