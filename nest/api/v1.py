@@ -52,7 +52,7 @@ def models_validation_error(
     for error in errors:
         location = error["loc"]
         field = camelize(location[len(location) - 1])
-        field_errors[field] = error["msg"].capitalize()
+        field_errors[field] = error["msg"].capitalize()  # type: ignore
 
     return api.create_response(
         request,
