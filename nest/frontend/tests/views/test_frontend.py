@@ -2,6 +2,7 @@ from unittest.mock import ANY
 
 from django.test import Client
 from django.urls import reverse
+from store_kit.http import status
 
 
 class TestViewFrontend:
@@ -20,14 +21,14 @@ class TestViewFrontend:
         client = Client(enforce_csrf_checks=True)
         response = client.get(self.path, follow=True)
 
-        assert response.status_code == 200
-        assert response.redirect_chain == [("/login/?next=/", 302)]
+        assert response.status_code == status.HTTP_200_OK
+        assert response.redirect_chain == [("/login/?next=/", status.HTTP_302_FOUND)]
 
         # Retry after logging in.
         client.login(username=user.email, password="supersecretpassword")
         res = client.get(self.path, follow=True)
 
-        assert res.status_code == 200
+        assert res.status_code == status.HTTP_200_OK
         assert res.redirect_chain == []  # Redirect chain should now be [].
 
     def test_frontend_view_context(self, user_fixture) -> None:

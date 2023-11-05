@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+from store_kit.http import status
 
 from ..clients import OdaClient
 from ..endpoints import product_oda_import_confirm_api
@@ -30,7 +31,7 @@ class TestEndpointProductOdaImportAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_product_oda_import_api(
@@ -57,7 +58,7 @@ class TestEndpointProductOdaImportAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert service_mock.call_count == 1
 
 
@@ -84,7 +85,7 @@ class TestEndpointProductOdaImportConfirmAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_product_oda_import_confirm_api(
@@ -107,5 +108,5 @@ class TestEndpointProductOdaImportConfirmAPI:
                 self.ENDPOINT, data=payload, content_type="application/json"
             )
 
-        assert response.status_code == 200
+        assert response.status_code == status.HTTP_200_OK
         assert service_mock.call_count == 1

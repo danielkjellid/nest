@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+from store_kit.http import status
 
 from ..endpoints import (
     recipe_steps_create_api,
@@ -31,7 +32,7 @@ class TestEndpointRecipeStepsCreateAPI:
                 content_type="application/json",
             )
 
-        assert response.status_code == 401
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
         assert service_mock.call_count == 0
 
     def test_staff_request_recipe_ingredient_groups_create_api(
@@ -53,5 +54,5 @@ class TestEndpointRecipeStepsCreateAPI:
                 content_type="application/json",
             )
 
-        assert response.status_code == 201
+        assert response.status_code == status.HTTP_201_CREATED
         assert service_mock.call_count == 1
