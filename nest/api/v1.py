@@ -3,7 +3,7 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from ninja.errors import ValidationError as NinjaValidationError
 from pydantic.error_wrappers import ValidationError as PydanticValidationError
-from store_kit.humps import camelize
+from store_kit.utils import camelize
 
 from nest.core.exceptions import ApplicationError
 from nest.products.router import products_router
@@ -52,7 +52,7 @@ def models_validation_error(
     for error in errors:
         location = error["loc"]
         field = camelize(location[len(location) - 1])
-        field_errors[field] = error["msg"].capitalize()
+        field_errors[field] = error["msg"].capitalize()  # type: ignore
 
     return api.create_response(
         request,
