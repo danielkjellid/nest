@@ -454,13 +454,13 @@ test = ["black", "django-stubs", "flake8", "isort", "mypy (==0.931)", "psycopg2-
 
 [[package]]
 name = "django-s3-storage"
-version = "0.13.11"
+version = "0.15.0"
 description = "Django Amazon S3 file storage."
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-s3-storage-0.13.11.tar.gz", hash = "sha256:89dfc2245324cafc4bc9af85de2fdddb279612a7e1ba3ac8821b8d42b9704eb3"},
-    {file = "django_s3_storage-0.13.11-py3-none-any.whl", hash = "sha256:712a9953f5f683ed305be9c3c83f0e00dec2d98828d19907dd21fea8ac4914cb"},
+    {file = "django-s3-storage-0.15.0.tar.gz", hash = "sha256:2f81ada72de54f7ba092a079aaf1e03f32e3bd9901ddcf62847ebe7de4fc554c"},
+    {file = "django_s3_storage-0.15.0-py3-none-any.whl", hash = "sha256:d6805d09ce6ffb79c25b97d22dacdad5084bbfa67c361c5f4deaf4bce50ac635"},
 ]
 
 [package.dependencies]
@@ -1697,4 +1697,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11.1"
-content-hash = "8a7a5f6e19b48a5b4c575fce97b5f560805f4b2f61b4a05f6911732a8d88b87d"
+content-hash = "445b1febd3a697e86005de16034bfa61fd9bb19919148a8ea6b5c494fb6fc4e5"
