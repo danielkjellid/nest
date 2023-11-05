@@ -4,7 +4,7 @@ import pytest
 from django.test.client import MULTIPART_CONTENT
 from django.urls import reverse
 
-from nest.api import status
+from store_kit.http import status
 from nest.units.records import UnitRecord
 from nest.units.tests.utils import get_unit
 

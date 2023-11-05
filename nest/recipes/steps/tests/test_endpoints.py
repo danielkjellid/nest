@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from nest.api import status
+from store_kit.http import status
 
 from ..endpoints import (
     recipe_steps_create_api,

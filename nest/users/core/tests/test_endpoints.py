@@ -1,6 +1,6 @@
 import pytest
 
-from nest.api import status
+from store_kit.http import status
 from nest.users.core.endpoints import user_list_api
 
 pytestmark = pytest.mark.django_db

@@ -1,6 +1,6 @@
 from typing import Any
 
-from nest.api import status
+from store_kit.http import status
 
 
 class ApplicationError(Exception):

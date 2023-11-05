@@ -3,7 +3,7 @@ from unittest.mock import ANY
 from django.test import Client
 from django.urls import reverse
 
-from nest.api import status
+from store_kit.http import status
 
 
 class TestViewLogin:
