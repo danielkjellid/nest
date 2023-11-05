@@ -2,7 +2,6 @@ from unittest.mock import ANY
 
 from django.test import Client
 from django.urls import reverse
-
 from store_kit.http import status
 
 

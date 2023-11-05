@@ -1,6 +1,5 @@
 import pytest
 from django.urls import reverse
-
 from store_kit.http import status
 
 from ..endpoints import (
