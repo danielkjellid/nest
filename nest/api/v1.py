@@ -3,7 +3,7 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 from ninja.errors import ValidationError as NinjaValidationError
 from pydantic.error_wrappers import ValidationError as PydanticValidationError
-from store_kit.humps import camelize
+from store_kit.utils import camelize
 
 from nest.core.exceptions import ApplicationError
 from nest.products.router import products_router

@@ -4,7 +4,7 @@ from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpRequest
-from store_kit.humps import camelize
+from store_kit.utils import camelize
 
 from ..selectors import get_initial_props
 from .base import ReactView

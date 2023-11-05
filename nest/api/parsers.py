@@ -3,7 +3,7 @@ from typing import Any
 import orjson
 from django.http import HttpRequest
 from ninja.parser import Parser
-from store_kit.humps import decamelize, is_camelcase
+from store_kit.utils import decamelize, is_camelcase
 
 
 class CamelCaseParser(Parser):
