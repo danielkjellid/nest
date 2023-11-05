@@ -6,7 +6,7 @@ import orjson
 from django.http import HttpRequest
 from ninja.renderers import BaseRenderer
 
-from store_kit.humps import camelize
+from nest.core.utils import camelize
 
 
 def default(obj: Any) -> Any:
