@@ -490,6 +490,20 @@ libcloud = ["apache-libcloud"]
 sftp = ["paramiko (>=1.10.0)"]
 
 [[package]]
+name = "django-store-kit"
+version = "0.1.2"
+description = "Store kit is a package that provides common modules and utilities used for personal e-commerce projects."
+optional = false
+python-versions = ">=3.11,<4.0"
+files = [
+    {file = "django_store_kit-0.1.2-py3-none-any.whl", hash = "sha256:4870ed1aa9cad667da04e830e962a50355a748e96903d2872aba86511d773301"},
+    {file = "django_store_kit-0.1.2.tar.gz", hash = "sha256:9141b1fd5531066b958294665c7d18f1d2c0676c2aeeaa85d484ee5d74563d1e"},
+]
+
+[package.dependencies]
+django = ">=4.1.7,<5.0.0"
+
+[[package]]
 name = "django-stubs"
 version = "1.16.0"
 description = "Mypy stubs for Django"
@@ -1683,4 +1697,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11.1"
-content-hash = "13db35cd7157f7ab90f80e1ade98b5e33187ce61cc47c4d6d52f7491fd58da2f"
+content-hash = "8a7a5f6e19b48a5b4c575fce97b5f560805f4b2f61b4a05f6911732a8d88b87d"

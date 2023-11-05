@@ -3,8 +3,7 @@ from typing import Any
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpRequest
-
-from nest.core.utils import camelize
+from store_kit.humps import camelize
 
 from ..selectors import get_initial_props
 from .base import ReactView

@@ -28,9 +28,9 @@ from ninja.params_models import TModel, TModels
 from ninja.types import DictStrAny
 from pydantic import BaseModel
 from pydantic.schema import model_schema
+from store_kit.humps import camelize
 
 from nest.api.files import UploadedFile, UploadedImageFile
-from nest.core.utils import camelize
 
 MANUALLY_ADDED_SCHEMAS = []
 
