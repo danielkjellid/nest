@@ -15,8 +15,6 @@ import { routes } from '../routes'
 
 import ProductOverViewTable from './components/ProductOverviewTable'
 
-
-
 interface ProductOverviewInnerProps {
   results: {
     products: ProductListOutAPIResponse

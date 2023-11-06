@@ -4,7 +4,6 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { UnitsProvider, useUnits } from '../UnitsProvider'
 
-
 import { unitItemTestUtil } from './utils'
 
 const unitsData = [unitItemTestUtil(), unitItemTestUtil(2, 'Kilogram', 'Kilogram (kg)')]

@@ -6,7 +6,6 @@ import { useStrippedRoute } from '../../hooks/route'
 import { IngredientsOverview } from './overview'
 import { routes } from './routes'
 
-
 export function IngredientsApp() {
   const baseRoute = useStrippedRoute('/ingredients')
 

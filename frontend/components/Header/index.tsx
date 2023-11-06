@@ -6,7 +6,6 @@ import { useCommonContext } from '../../contexts/CommonProvider'
 import ColorSchemeSwitch from '../ColorSchemeSwitch'
 import Logo from '../Logo'
 
-
 interface HomeItemProps {
   address: string
   isActive: boolean

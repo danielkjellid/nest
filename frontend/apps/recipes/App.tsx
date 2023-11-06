@@ -9,7 +9,6 @@ import { RecipeStepsCreate } from './create/CreateRecipeSteps'
 import { RecipeOverview } from './overview'
 import { routes } from './routes'
 
-
 export function RecipesApp() {
   const baseRoute = useStrippedRoute('/recipes')
 

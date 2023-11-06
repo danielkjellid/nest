@@ -25,8 +25,6 @@ import { Counter } from '../Counter'
 
 import { FormElement, FormElementObj, FormElementOptions, FormEnum } from './types'
 
-
-
 const supportedComponents = {
   Autocomplete,
   Checkbox,

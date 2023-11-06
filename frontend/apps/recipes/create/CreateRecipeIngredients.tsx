@@ -22,7 +22,6 @@ import { routes } from '../routes'
 
 import { Header } from './components/Header'
 
-
 interface RecipeIngredientsCreateInnerProps {
   results: {
     ingredients: IngredientListOutAPIResponse

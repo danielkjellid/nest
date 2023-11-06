@@ -12,7 +12,6 @@ import { routes } from '../routes'
 
 import { Header } from './components/Header'
 
-
 function RecipeCreate() {
   const { classes } = useCommonStyles()
   const navigate = useNavigate()

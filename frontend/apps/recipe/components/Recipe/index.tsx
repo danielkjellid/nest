@@ -13,8 +13,6 @@ import { RecipeNutritionTable } from './Nutrition'
 import { RecipeSection } from './Section'
 import { RecipeSteps } from './Steps'
 
-
-
 interface RecipeProps {
   recipe: RecipeDetailOut
 }

@@ -6,7 +6,6 @@ import {
   type ConfirmationModalButtonProps,
 } from '../components/ConfirmationModal'
 
-
 interface ModalState {
   title: string
   children: React.ReactNode

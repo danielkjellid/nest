@@ -1,4 +1,3 @@
-
 import { Modal } from '@mantine/core'
 import React from 'react'
 

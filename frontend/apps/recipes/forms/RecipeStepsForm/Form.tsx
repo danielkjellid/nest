@@ -1,7 +1,6 @@
 import React from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
-
 import { Button } from '../../../../components/Button'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 

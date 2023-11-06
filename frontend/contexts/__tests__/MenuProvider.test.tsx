@@ -4,9 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { MenuProvider, useMenu } from '../MenuProvider'
 
-
 import { menuItemTestUtil } from './utils'
-
 
 const menuData = [
   menuItemTestUtil('users', 'Users', true),

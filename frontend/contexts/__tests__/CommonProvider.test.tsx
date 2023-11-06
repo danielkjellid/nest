@@ -4,9 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import { CommonProvider, useCommonContext } from '../CommonProvider'
 
-
 import { createCommonContextTestData } from './utils'
-
 
 describe('CommonContext context', () => {
   it('should throw an error if used outside provider', () => {

@@ -14,7 +14,6 @@ import { routes as recipeRoutes } from '../../recipe/routes'
 import { urls } from '../../urls'
 import { routes } from '../routes'
 
-
 interface RecipeOverviewInnerProps {
   results: { recipes: RecipeListOutAPIResponse }
 }

@@ -8,7 +8,6 @@ import { ProductEdit } from './edit'
 import { ProductOverview } from './overview'
 import { routes } from './routes'
 
-
 export function ProductsApp() {
   const baseRoute = useStrippedRoute('/products')
 
