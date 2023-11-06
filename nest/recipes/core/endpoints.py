@@ -2,7 +2,6 @@ from decimal import Decimal
 
 from django.http import HttpRequest
 from ninja import Router, Schema
-from pydantic import parse_obj_as
 from store_kit.http import status
 
 from nest.api.fields import FormField
@@ -159,6 +158,6 @@ def recipe_list_api(request: HttpRequest) -> APIResponse[list[RecipeListOut]]:
     Get a list of all recipes in the application.
     """
     recipes = get_recipes()
-    data = parse_obj_as(list[RecipeListOut], recipes)
+    data = [RecipeListOut(**recipe.dict()) for recipe in recipes]
 
     return APIResponse(status="success", data=data)
