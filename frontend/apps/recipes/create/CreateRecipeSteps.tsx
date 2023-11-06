@@ -1,5 +1,5 @@
 import { notifications } from '@mantine/notifications'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
 

@@ -11,7 +11,6 @@ import {
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { Notifications } from '@mantine/notifications'
 import { IconInfoCircle } from '@tabler/icons-react'
-import React from 'react'
 
 import { useCommonContext } from '../../contexts/CommonProvider'
 

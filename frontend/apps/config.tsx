@@ -6,7 +6,6 @@ import {
   IconShoppingCart,
   IconUsers,
 } from '@tabler/icons-react'
-import React from 'react'
 
 const end = true
 

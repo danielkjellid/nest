@@ -1,6 +1,5 @@
 import { Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '../../../components/Button'

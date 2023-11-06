@@ -1,6 +1,6 @@
 import { ScrollArea, Text, rem } from '@mantine/core'
 import cx from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useTableOfContentsStyles } from './TableOfContents.styles'
 

@@ -1,5 +1,4 @@
 import { Badge, Button as MButton } from '@mantine/core'
-import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
 

@@ -1,7 +1,7 @@
 import { Navbar as MNavbar, Stack, Tooltip, UnstyledButton, createStyles } from '@mantine/core'
 import { IconLogout, type TablerIconsProps } from '@tabler/icons-react'
 import cx from 'classnames'
-import React, { type JSXElementConstructor } from 'react'
+import { type JSXElementConstructor } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import apps from '../../apps/config'

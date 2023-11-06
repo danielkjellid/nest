@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react'
+import { createContext, useContext, useMemo, type ReactNode } from 'react'
 
 import { type UnitListOut } from '../types'
 
@@ -27,7 +27,7 @@ export function useUnits() {
 }
 
 interface UnitsProviderProps extends UnitsContextType {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function UnitsProvider({ units, unitsOptions, children }: UnitsProviderProps) {

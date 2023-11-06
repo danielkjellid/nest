@@ -1,7 +1,7 @@
 import { Card, Center, Container, PasswordInput, Stack, TextInput, Title } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { notifications } from '@mantine/notifications'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { BaseAppCore } from '../../components/BaseApp/BaseApp'
 import { Button } from '../../components/Button'

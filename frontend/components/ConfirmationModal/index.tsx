@@ -1,5 +1,4 @@
 import { Modal } from '@mantine/core'
-import React from 'react'
 
 import { Button, type ButtonProps } from '../Button'
 

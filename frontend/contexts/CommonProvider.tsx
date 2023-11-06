@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import { createContext, useContext, type ReactNode } from 'react'
 
 export interface Home {
   id: number
@@ -49,7 +49,7 @@ export function useCommonContext() {
 }
 
 interface CommonProviderProps extends CommonContextType {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function CommonProvider({

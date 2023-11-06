@@ -1,5 +1,5 @@
 import { Badge } from '@mantine/core'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { Button, type ButtonProps } from '../../../components/Button'
 import Drawer from '../../../components/Drawer'
