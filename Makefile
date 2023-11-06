@@ -56,7 +56,7 @@ lint: lint-backend lint-frontend | $(BASE) ; @
 	$Q
 
 .PHONY: lint-backend
-lint-backend: lint-mypy lint-ruff lint-black | $(BASE) ; @
+lint-backend: lint-mypy lint-ruff lint-ruff-format | $(BASE) ; @
 	$Q
 
 .PHONY: lint-frontend
@@ -64,16 +64,17 @@ lint-frontend: lint-tsc lint-eslint lint-prettier lint-import-sort | $(BASE) ; @
 	$Q
 
 .PHONY: lint-ruff
-lint-ruff: ; $(info $(M) running ruff...) @
+lint-ruff: ; $(info $(M) running ruff lint...) @
 	$Q cd $(BASE) && $(POETRY) run ruff $(PACKAGE)
+
+.PHONY: lint-ruff-format
+lint-ruff-format: ; $(info $(M) running ruff format...) @
+	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE) --check
 
 .PHONY: lint-mypy
 lint-mypy: ; $(info $(M) running mypy...) @
 	$Q cd $(BASE) && $(POETRY) run mypy --show-error-code --show-column-numbers $(PACKAGE)
 
-.PHONY: lint-black
-lint-black: ; $(info $(M) running black...) @
-	$Q cd $(BASE) && $(POETRY) run black --check $(PACKAGE)
 
 .PHONY: lint-import-sort
 lint-import-sort: ; $(info $(M) running import-sort...) @
@@ -97,7 +98,7 @@ fix: fix-backend fix-frontend | $(BASE) ; @
 	$Q
 
 .PHONY: fix-backend
-fix-backend: fix-ruff fix-black | $(BASE) ; @
+fix-backend: fix-ruff .fix-ruff-format | $(BASE) ; @
 	$Q
 
 .PHONY: fix-frontend
@@ -108,9 +109,9 @@ fix-frontend: fix-eslint fix-prettier fix-import-sort | $(BASE) ; @
 fix-ruff: ; $(info $(M) running ruff with fix...) @
 	$Q cd $(BASE) && $(POETRY) run ruff $(PACKAGE) --fix
 
-.PHONY: fix-black
-fix-black: ; $(info $(M) running black with fix...) @
-	$Q cd $(BASE) && $(POETRY) run black $(PACKAGE)
+.PHONY: fix-ruff-format
+.fix-ruff-format: ; $(info $(M) running ruff format with fix...) @
+	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE)
 
 .PHONY: fix-eslint
 fix-eslint: ; $(info $(M) running eslint with fix...) @
