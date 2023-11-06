@@ -1,7 +1,8 @@
-import { Button, ButtonProps } from '../Button'
 
 import { Modal } from '@mantine/core'
 import React from 'react'
+
+import { Button, ButtonProps } from '../Button'
 
 export interface ConfirmationModalButtonProps {
   label?: string

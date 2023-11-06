@@ -6,7 +6,6 @@ import {
   Text,
   Transition,
 } from '@mantine/core'
-
 import React from 'react'
 
 interface DrawerProps extends MDrawerProps {

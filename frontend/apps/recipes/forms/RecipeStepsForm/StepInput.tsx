@@ -9,16 +9,17 @@ import {
   TransferListItemComponent,
   TransferListItemComponentProps,
 } from '@mantine/core'
-import { Step, StepInputError } from './types'
+import { IconX } from '@tabler/icons-react'
+import React from 'react'
+import { Draggable } from 'react-beautiful-dnd'
 
 import { Counter } from '../../../../components/Counter'
-import { Draggable } from 'react-beautiful-dnd'
-import { IconX } from '@tabler/icons-react'
-import { IngredientItemOptionType } from './types'
-import React from 'react'
-import { RecipeStepType } from '../../../../types'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
+import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
+
+import { IngredientItemOptionType } from './types'
+import { Step, StepInputError } from './types'
 
 const IngredientItemOption: TransferListItemComponent = ({
   data,

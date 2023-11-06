@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import React from 'react'
+import { describe, expect, it } from 'vitest'
 
+import { createCommonContextTestData } from '../../../contexts/__tests__/utils'
 import { CommonProvider } from '../../../contexts/CommonProvider'
 import PlansApp from '../App'
-import React from 'react'
-import { createCommonContextTestData } from '../../../contexts/__tests__/utils'
 
 describe('Test PageApp app', () => {
   it('empty state provided when currentHome is null and availableHomes is empty', () => {

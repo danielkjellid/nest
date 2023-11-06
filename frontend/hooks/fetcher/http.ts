@@ -1,10 +1,12 @@
+import { notifications } from '@mantine/notifications'
+import { decamelize } from 'humps'
+
+import { APIResponse } from '../../types'
+
 import { Getter, RequestOptions, Setter } from './types'
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable indent */
-import { APIResponse } from '../../types'
-import { decamelize } from 'humps'
-import { notifications } from '@mantine/notifications'
 
 const csrfToken = window.csrfToken
 

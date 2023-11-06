@@ -1,10 +1,10 @@
 import { Stepper as MStepper, Title } from '@mantine/core'
-
 import React from 'react'
-import { routes } from '../../routes'
-import { useCommonStyles } from '../../../../styles/common'
 import { useLocation } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+
+import { useCommonStyles } from '../../../../styles/common'
+import { routes } from '../../routes'
 
 interface StepperProps {
   loadingStep?: number

@@ -1,7 +1,6 @@
-import { Config, Home, User } from '../CommonProvider'
-
-import { MenuItem } from '../MenuProvider'
 import { UnitListOut } from '../../types'
+import { Config, Home, User } from '../CommonProvider'
+import { MenuItem } from '../MenuProvider'
 
 const homeTestUtil = (
   id = 1,

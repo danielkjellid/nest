@@ -1,6 +1,7 @@
 import { IconMoodSad } from '@tabler/icons-react'
-import PageState from '../PageState'
 import React from 'react'
+
+import PageState from '../PageState'
 
 interface EmptyProps {
   title: string

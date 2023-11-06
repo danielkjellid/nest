@@ -1,9 +1,12 @@
-import { MenuProvider, useMenu } from '../MenuProvider'
+import { renderHook } from '@testing-library/react'
+import React from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
-import React from 'react'
+import { MenuProvider, useMenu } from '../MenuProvider'
+
+
 import { menuItemTestUtil } from './utils'
-import { renderHook } from '@testing-library/react'
+
 
 const menuData = [
   menuItemTestUtil('users', 'Users', true),

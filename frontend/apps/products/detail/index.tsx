@@ -1,19 +1,21 @@
-import { ProductDetailAuditLogsOut, ProductDetailOutAPIResponse } from '../../../types'
-import { useNavigate, useParams } from 'react-router-dom'
 
 import { Anchor } from '@mantine/core'
+import { Button as MButton } from '@mantine/core'
+import React from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import invariant from 'tiny-invariant'
+
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
-import { Button as MButton } from '@mantine/core'
-import { ProductDetailHeader } from '../components/ProductDetailHeader'
-import React from 'react'
 import { TableOfContents } from '../../../components/TableOfContents'
 import View from '../../../components/View'
-import invariant from 'tiny-invariant'
-import { routes } from '../routes'
-import { urls } from '../../urls'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
+import { ProductDetailAuditLogsOut, ProductDetailOutAPIResponse } from '../../../types'
+import { urls } from '../../urls'
+import { ProductDetailHeader } from '../components/ProductDetailHeader'
+import { routes } from '../routes'
+
 import { useProductDetailStyles } from './detail.styles'
 
 interface ProductDetailInnerProps {

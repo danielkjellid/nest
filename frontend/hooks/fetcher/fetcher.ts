@@ -1,4 +1,9 @@
 /* eslint-disable indent */
+import { useCallback, useMemo, useRef, useState } from 'react'
+import useSWR from 'swr'
+import { v4 as uuid } from 'uuid'
+
+import { RequestError, makeQuery, performGet, performPost } from './http'
 import {
   LazyRequestHookOptions,
   LazyRequestOptions,
@@ -8,11 +13,6 @@ import {
   RequestTuple,
   URL,
 } from './types'
-import { RequestError, makeQuery, performGet, performPost } from './http'
-import { useCallback, useMemo, useRef, useState } from 'react'
-
-import useSWR from 'swr'
-import { v4 as uuid } from 'uuid'
 
 /**
  * useFetch fetches data on render.
