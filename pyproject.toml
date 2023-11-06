@@ -16,7 +16,7 @@ django-environ = "^0.10.0"
 django-extensions = "^3.2.1"
 django-storages = { version = "^1.13.2", extras = ["aws"] }
 pydantic = "^1.10.5"
-pyjwt = "^2.6.0"
+pyjwt = "^2.8.0"
 django-vite = "^2.0.2"
 django-s3-storage = "^0.15.0"
 orjson = "^3.9.10"
