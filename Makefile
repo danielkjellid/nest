@@ -60,7 +60,7 @@ lint-backend: lint-mypy lint-ruff lint-ruff-format | $(BASE) ; @
 	$Q
 
 .PHONY: lint-frontend
-lint-frontend: lint-tsc lint-eslint lint-prettier lint-import-sort | $(BASE) ; @
+lint-frontend: lint-tsc lint-eslint lint-prettier | $(BASE) ; @
 	$Q
 
 .PHONY: lint-ruff
@@ -74,11 +74,6 @@ lint-ruff-format: ; $(info $(M) running ruff format...) @
 .PHONY: lint-mypy
 lint-mypy: ; $(info $(M) running mypy...) @
 	$Q cd $(BASE) && $(POETRY) run mypy --show-error-code --show-column-numbers $(PACKAGE)
-
-
-.PHONY: lint-import-sort
-lint-import-sort: ; $(info $(M) running import-sort...) @
-	$Q cd $(BASE) && $(NPM) run import-sort:check
 
 .PHONY: lint-eslint
 lint-eslint: ; $(info $(M) running eslint...) @
@@ -102,7 +97,7 @@ fix-backend: fix-ruff .fix-ruff-format | $(BASE) ; @
 	$Q
 
 .PHONY: fix-frontend
-fix-frontend: fix-eslint fix-prettier fix-import-sort | $(BASE) ; @
+fix-frontend: fix-eslint fix-prettier | $(BASE) ; @
 	$Q
 
 .PHONY: fix-ruff
@@ -120,7 +115,3 @@ fix-eslint: ; $(info $(M) running eslint with fix...) @
 .PHONY: fix-prettier
 fix-prettier: ; $(info $(M) running prettier with fix...) @
 	$Q cd $(BASE) && $(NPM) run prettier:fix
-
-.PHONY: fix-import-sort
-fix-import-sort: ; $(info $(M) running import-sort with fix...) @
-	$Q cd $(BASE) && $(NPM) run import-sort:fix
