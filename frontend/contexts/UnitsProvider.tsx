@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react'
 
-import { UnitListOut } from '../types'
+import { type UnitListOut } from '../types'
 
 export interface UnitOption {
   label: string

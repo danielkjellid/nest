@@ -2,8 +2,8 @@ import { notifications } from '@mantine/notifications'
 import { useEffect, useState } from 'react'
 
 import schema from '../../../schema.json'
-import { ButtonProps } from '../../components/Button'
-import { FormElement } from '../../components/Form/types'
+import { type ButtonProps } from '../../components/Button'
+import { type FormElement } from '../../components/Form/types'
 import { performPost as httpPost } from '../fetcher/http'
 
 import { buildMultipartForm, determineIsMultipart } from './multipart'

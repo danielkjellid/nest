@@ -9,7 +9,7 @@ import View from '../../../components/View'
 import { useUnits } from '../../../contexts/UnitsProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { useForm } from '../../../hooks/forms'
-import { ProductDetailOutAPIResponse } from '../../../types'
+import { type ProductDetailOutAPIResponse } from '../../../types'
 import { urls } from '../../urls'
 import { ProductDetailHeader } from '../components/ProductDetailHeader'
 

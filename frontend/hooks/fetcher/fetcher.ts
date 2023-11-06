@@ -3,15 +3,15 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import useSWR from 'swr'
 import { v4 as uuid } from 'uuid'
 
-import { RequestError, makeQuery, performGet, performPost } from './http'
+import { type RequestError, makeQuery, performGet, performPost } from './http'
 import {
-  LazyRequestHookOptions,
-  LazyRequestOptions,
-  RequestHookOptions,
-  RequestQuery,
-  RequestResult,
-  RequestTuple,
-  URL,
+  type LazyRequestHookOptions,
+  type LazyRequestOptions,
+  type RequestHookOptions,
+  type RequestQuery,
+  type RequestResult,
+  type RequestTuple,
+  type URL,
 } from './types'
 
 /**

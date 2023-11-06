@@ -1,9 +1,9 @@
 import { notifications } from '@mantine/notifications'
 import { decamelize } from 'humps'
 
-import { APIResponse } from '../../types'
+import { type APIResponse } from '../../types'
 
-import { Getter, RequestOptions, Setter } from './types'
+import { type Getter, type RequestOptions, type Setter } from './types'
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable indent */

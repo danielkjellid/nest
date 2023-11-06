@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react'
 
-import { RequestResult } from '../../hooks/fetcher'
+import { type RequestResult } from '../../hooks/fetcher'
 
-import Error from './Error'
-import { ErrorProps } from './Error'
-import Loading from './Loading'
-import { LoadingProps } from './Loading'
+import Error, { type ErrorProps } from './Error'
+import Loading, { type LoadingProps } from './Loading'
 
 export type HooksResult<THooks extends object> = {
   [k in keyof THooks]: THooks[k] extends RequestResult<unknown>

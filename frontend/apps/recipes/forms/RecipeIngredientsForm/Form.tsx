@@ -2,15 +2,15 @@ import React from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
-import { UnitOption } from '../../../../contexts/UnitsProvider'
+import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 
 import { IngredientGroupInput } from './IngredientGroupInput'
 import {
-  Ingredient,
-  IngredientGroup,
-  IngredientGroupFormError,
-  IngredientOptionType,
+  type Ingredient,
+  type IngredientGroup,
+  type IngredientGroupFormError,
+  type IngredientOptionType,
 } from './types'
 
 interface RecipeIngredientFormProps {

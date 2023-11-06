@@ -5,7 +5,7 @@ import { Duration } from 'luxon'
 import React, { useState } from 'react'
 
 import { useCommonStyles } from '../../../../styles/common'
-import { RecipeDetailOut } from '../../../../types'
+import { type RecipeDetailOut } from '../../../../types'
 
 import { RecipeHealthScoreMeter } from './HealthScore'
 import { RecipeIngredientGroup } from './Ingredients'

@@ -1,4 +1,4 @@
-import { DragStart, DraggableLocation, DropResult } from 'react-beautiful-dnd'
+import { type DragStart, type DraggableLocation, type DropResult } from 'react-beautiful-dnd'
 
 function useDragAndDropSingleList<T>({
   items,

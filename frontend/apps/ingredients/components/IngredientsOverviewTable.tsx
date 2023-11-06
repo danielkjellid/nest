@@ -1,10 +1,9 @@
-import { Anchor } from '@mantine/core'
-import { Menu } from '@mantine/core'
+import { Anchor, Menu } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 import React from 'react'
 
 import Table from '../../../components/Table'
-import { IngredientListOut } from '../../../types'
+import { type IngredientListOut } from '../../../types'
 import { routes as productRoutes } from '../../products/routes'
 
 interface IngredientsOverviewTableProps {

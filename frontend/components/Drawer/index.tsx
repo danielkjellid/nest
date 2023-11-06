@@ -1,7 +1,7 @@
 import {
   Box,
   Drawer as MDrawer,
-  DrawerProps as MDrawerProps,
+  type DrawerProps as MDrawerProps,
   ModalBase,
   Text,
   Transition,

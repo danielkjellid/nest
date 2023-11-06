@@ -10,12 +10,12 @@ import { useUnits } from '../../../contexts/UnitsProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { performPost } from '../../../hooks/fetcher/http'
 import { useCommonStyles } from '../../../styles/common'
-import { IngredientListOutAPIResponse } from '../../../types'
+import { type IngredientListOutAPIResponse } from '../../../types'
 import { urls } from '../../urls'
 import {
-  FormError,
-  Ingredient,
-  IngredientGroup,
+  type FormError,
+  type Ingredient,
+  type IngredientGroup,
   RecipeIngredientsForm,
 } from '../forms/RecipeIngredientsForm'
 import { routes } from '../routes'

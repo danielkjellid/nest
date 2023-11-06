@@ -5,7 +5,7 @@ import { Button } from '../../../../components/Button'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 
 import { StepInput } from './StepInput'
-import { IngredientItemOptionType, Step, StepInputError } from './types'
+import { type IngredientItemOptionType, type Step, type StepInputError } from './types'
 
 interface RecipeStepsFormProps {
   steps: Step[]

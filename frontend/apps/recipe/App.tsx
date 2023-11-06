@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import BaseApp from '../../components/BaseApp/BaseApp'
 import Header from '../../components/Header'
-import { CommonContextType, CommonProvider } from '../../contexts/CommonProvider'
+import { type CommonContextType, CommonProvider } from '../../contexts/CommonProvider'
 
 import { RecipeDetail } from './detail'
 import { routes } from './routes'

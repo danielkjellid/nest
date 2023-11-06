@@ -1,6 +1,6 @@
-import { UnitListOut } from '../../types'
-import { Config, Home, User } from '../CommonProvider'
-import { MenuItem } from '../MenuProvider'
+import { type UnitListOut } from '../../types'
+import { type Config, type Home, type User } from '../CommonProvider'
+import { type MenuItem } from '../MenuProvider'
 
 const homeTestUtil = (
   id = 1,

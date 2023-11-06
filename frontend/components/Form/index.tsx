@@ -17,13 +17,18 @@ import {
   Textarea,
 } from '@mantine/core'
 import { IconUpload } from '@tabler/icons-react'
-import React, { ForwardRefExoticComponent, useEffect, useState } from 'react'
+import React, { type ForwardRefExoticComponent, useEffect, useState } from 'react'
 
 import { FrontendComponents } from '../../types/'
-import { ButtonProps } from '../Button'
+import { type ButtonProps } from '../Button'
 import { Counter } from '../Counter'
 
-import { FormElement, FormElementObj, FormElementOptions, FormEnum } from './types'
+import {
+  type FormElement,
+  type FormElementObj,
+  type FormElementOptions,
+  type FormEnum,
+} from './types'
 
 const supportedComponents = {
   Autocomplete,
