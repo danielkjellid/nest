@@ -1,12 +1,13 @@
+import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import React from 'react'
+import { useStrippedRoute } from '../../hooks/route'
+
 import { RecipeCreate } from './create'
 import { RecipeIngredientsCreate } from './create/CreateRecipeIngredients'
-import { RecipeOverview } from './overview'
 import { RecipeStepsCreate } from './create/CreateRecipeSteps'
+import { RecipeOverview } from './overview'
 import { routes } from './routes'
-import { useStrippedRoute } from '../../hooks/route'
 
 export function RecipesApp() {
   const baseRoute = useStrippedRoute('/recipes')

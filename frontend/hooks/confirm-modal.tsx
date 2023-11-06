@@ -1,10 +1,10 @@
+import { useDisclosure } from '@mantine/hooks'
+import React, { useState } from 'react'
+
 import {
   ConfirmationModal,
   type ConfirmationModalButtonProps,
 } from '../components/ConfirmationModal'
-import React, { useState } from 'react'
-
-import { useDisclosure } from '@mantine/hooks'
 
 interface ModalState {
   title: string

@@ -1,7 +1,8 @@
-import React from 'react'
-import cx from 'classnames'
-import { useCommonStyles } from '../../../../../styles/common'
 import { useMantineTheme } from '@mantine/core'
+import cx from 'classnames'
+import React from 'react'
+
+import { useCommonStyles } from '../../../../../styles/common'
 
 interface RecipeMeterColor {
   text: string

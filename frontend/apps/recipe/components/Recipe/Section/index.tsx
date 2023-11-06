@@ -1,7 +1,7 @@
 import { ActionIcon, Modal } from '@mantine/core'
+import { IconInfoCircle } from '@tabler/icons-react'
 import React, { useState } from 'react'
 
-import { IconInfoCircle } from '@tabler/icons-react'
 import { useCommonStyles } from '../../../../../styles/common'
 
 interface RecipeSectionProps {

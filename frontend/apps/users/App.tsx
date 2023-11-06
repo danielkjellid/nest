@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Menu, Title } from '@mantine/core'
-import React, { useState } from 'react'
-import { UserListOut, UserListOutAPIResponse } from '../../types'
-
-import { Button } from '../../components/Button'
 import { IconEye } from '@tabler/icons-react'
 import { MRT_RowSelectionState } from 'mantine-react-table'
+import React, { useState } from 'react'
+
+import { Button } from '../../components/Button'
 import Table from '../../components/Table'
 import View from '../../components/View'
-import { urls } from '../urls'
 import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
+import { UserListOut, UserListOutAPIResponse } from '../../types'
+import { urls } from '../urls'
 
 interface UsersAppInnerProps {
   results: { users: UserListOutAPIResponse }

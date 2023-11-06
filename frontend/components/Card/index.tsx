@@ -1,10 +1,11 @@
-import { CardTable, CardTableRow } from './Table'
 import React, { Children } from 'react'
 
+import { useCommonStyles } from '../../styles/common'
+
+import { useCardStyles } from './Card.styles'
 import { CardForm } from './Form'
 import { CardKeyValue } from './KeyValue'
-import { useCardStyles } from './Card.styles'
-import { useCommonStyles } from '../../styles/common'
+import { CardTable, CardTableRow } from './Table'
 
 interface CardProps {
   title?: string

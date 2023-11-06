@@ -1,6 +1,7 @@
 import { IconHeartBroken } from '@tabler/icons-react'
-import PageState from '../PageState'
 import React from 'react'
+
+import PageState from '../PageState'
 
 export interface ErrorProps {
   description: string

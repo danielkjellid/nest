@@ -1,8 +1,9 @@
 import React, { Children, useMemo } from 'react'
 
-import Empty from '../Empty'
-import { useCardStyles } from './Card.styles'
 import { useCommonStyles } from '../../styles/common'
+import Empty from '../Empty'
+
+import { useCardStyles } from './Card.styles'
 
 interface CardTableRowProps {
   headers: Header[]

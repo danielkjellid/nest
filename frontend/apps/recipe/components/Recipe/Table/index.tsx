@@ -1,6 +1,8 @@
-import React from 'react'
 import cx from 'classnames'
+import React from 'react'
+
 import { useCommonStyles } from '../../../../../styles/common'
+
 import { useTableStyles } from './Table.styles'
 
 interface RecipeTableProps {

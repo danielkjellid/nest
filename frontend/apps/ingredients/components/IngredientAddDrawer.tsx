@@ -1,12 +1,12 @@
-import { IngredientCreateIn, ProductListOut } from '../../../types'
+import { Text } from '@mantine/core'
 import React, { forwardRef } from 'react'
 
 import { Button } from '../../../components/Button'
 import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
-import { Text } from '@mantine/core'
-import { urls } from '../../urls'
 import { useForm } from '../../../hooks/forms'
+import { IngredientCreateIn, ProductListOut } from '../../../types'
+import { urls } from '../../urls'
 
 interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
   image: string | null

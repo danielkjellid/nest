@@ -1,6 +1,5 @@
 import { ActionIcon, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { IconMoon, IconSun } from '@tabler/icons-react'
-
 import React from 'react'
 
 function ColorSchemeSwitch() {

@@ -1,17 +1,17 @@
+import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import invariant from 'tiny-invariant'
 
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import Form from '../../../components/Form'
-import { ProductDetailHeader } from '../components/ProductDetailHeader'
-import { ProductDetailOutAPIResponse } from '../../../types'
-import React from 'react'
 import View from '../../../components/View'
-import invariant from 'tiny-invariant'
-import { urls } from '../../urls'
+import { useUnits } from '../../../contexts/UnitsProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { useForm } from '../../../hooks/forms'
-import { useUnits } from '../../../contexts/UnitsProvider'
+import { ProductDetailOutAPIResponse } from '../../../types'
+import { urls } from '../../urls'
+import { ProductDetailHeader } from '../components/ProductDetailHeader'
 
 interface ProductEditInnerProps {
   results: {

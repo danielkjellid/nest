@@ -1,5 +1,5 @@
-import React from 'react'
 import { createStyles } from '@mantine/core'
+import React from 'react'
 
 const useStyles = createStyles((theme) => ({
   logo: {

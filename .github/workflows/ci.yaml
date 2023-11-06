@@ -38,8 +38,6 @@ jobs:
             check: 'eslint:check'
           - name: 'prettier'
             check: 'prettier:check'
-          - name: 'import-sort'
-            check: 'import-sort:check'
           - name: 'tsc'
             check: 'tsc:check'
     name: ${{ matrix.name }}

@@ -1,16 +1,16 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { CommonContextType, CommonProvider } from './contexts/CommonProvider'
-import { MenuContextType, MenuProvider } from './contexts/MenuProvider'
 import React, { Suspense, useEffect, useMemo, useState } from 'react'
-import { UnitListOut, UnitListOutAPIResponse } from './types'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
+import apps from './apps/config'
+import { urls } from './apps/urls'
 import BaseApp from './components/BaseApp/BaseApp'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
+import { CommonContextType, CommonProvider } from './contexts/CommonProvider'
+import { MenuContextType, MenuProvider } from './contexts/MenuProvider'
 import { UnitsProvider } from './contexts/UnitsProvider'
-import apps from './apps/config'
 import { performGet } from './hooks/fetcher/http'
-import { urls } from './apps/urls'
+import { UnitListOut, UnitListOutAPIResponse } from './types'
 
 interface AppProps extends CommonContextType, MenuContextType {}
 

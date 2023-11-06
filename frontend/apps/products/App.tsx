@@ -1,11 +1,12 @@
+import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+
+import { useStrippedRoute } from '../../hooks/route'
 
 import { ProductDetail } from './detail'
 import { ProductEdit } from './edit'
 import { ProductOverview } from './overview'
-import React from 'react'
 import { routes } from './routes'
-import { useStrippedRoute } from '../../hooks/route'
 
 export function ProductsApp() {
   const baseRoute = useStrippedRoute('/products')

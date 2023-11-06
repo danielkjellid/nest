@@ -1,9 +1,10 @@
-import { CommonProvider, useCommonContext } from '../CommonProvider'
+import { renderHook } from '@testing-library/react'
+import React from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
-import React from 'react'
+import { CommonProvider, useCommonContext } from '../CommonProvider'
+
 import { createCommonContextTestData } from './utils'
-import { renderHook } from '@testing-library/react'
 
 describe('CommonContext context', () => {
   it('should throw an error if used outside provider', () => {

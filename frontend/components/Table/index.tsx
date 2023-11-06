@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Box } from '@mantine/core'
 import { IconCircleCheckFilled, IconCircleXFilled } from '@tabler/icons-react'
 import {
   MRT_ColumnDef,
@@ -8,7 +9,6 @@ import {
 } from 'mantine-react-table'
 import React, { useEffect, useMemo, useState } from 'react'
 
-import { Box } from '@mantine/core'
 import { useCommonContext } from '../../contexts/CommonProvider'
 
 interface ColumnOptions {
