@@ -1,6 +1,5 @@
 import { Group, Header as MHeader, Menu, Stack, Text, UnstyledButton } from '@mantine/core'
 import cx from 'classnames'
-import React from 'react'
 
 import { useCommonContext } from '../../contexts/CommonProvider'
 import ColorSchemeSwitch from '../ColorSchemeSwitch'

@@ -1,5 +1,4 @@
 import { IconHeartBroken } from '@tabler/icons-react'
-import React from 'react'
 
 import PageState from '../PageState'
 

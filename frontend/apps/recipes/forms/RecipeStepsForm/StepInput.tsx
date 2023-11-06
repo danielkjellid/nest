@@ -10,7 +10,6 @@ import {
   type TransferListItemComponentProps,
 } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
-import React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 import { Counter } from '../../../../components/Counter'

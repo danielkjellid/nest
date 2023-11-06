@@ -1,5 +1,4 @@
 import { Stepper as MStepper, Title } from '@mantine/core'
-import React from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { useCommonStyles } from '../../../../styles/common'

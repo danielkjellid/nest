@@ -1,6 +1,5 @@
 import { useMantineTheme } from '@mantine/core'
 import cx from 'classnames'
-import React from 'react'
 
 import { useCommonStyles } from '../../../../../styles/common'
 

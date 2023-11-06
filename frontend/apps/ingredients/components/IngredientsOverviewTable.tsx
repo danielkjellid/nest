@@ -1,6 +1,5 @@
 import { Anchor, Menu } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
-import React from 'react'
 
 import Table from '../../../components/Table'
 import { type IngredientListOut } from '../../../types'

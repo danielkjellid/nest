@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Empty from '../../components/Empty'
 import { useCommonContext } from '../../contexts/CommonProvider'
 

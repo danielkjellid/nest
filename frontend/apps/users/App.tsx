@@ -2,7 +2,7 @@
 import { Menu, Title } from '@mantine/core'
 import { IconEye } from '@tabler/icons-react'
 import { type MRT_RowSelectionState } from 'mantine-react-table'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { Button } from '../../components/Button'
 import Table from '../../components/Table'

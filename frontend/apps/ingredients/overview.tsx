@@ -1,7 +1,6 @@
 import { Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import React from 'react'
 
 import { Button } from '../../components/Button'
 import View from '../../components/View'

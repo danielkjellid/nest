@@ -1,10 +1,10 @@
 import cx from 'classnames'
-import React, { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 
 import { useStepsStyles } from './Steps.styles'
 
 interface RecipeStepsProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 function RecipeSteps({ children }: RecipeStepsProps) {

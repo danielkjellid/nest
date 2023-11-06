@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react'
+import { Suspense, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import BaseApp from '../../components/BaseApp/BaseApp'

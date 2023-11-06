@@ -2,7 +2,7 @@ import { ActionIcon, Badge, Tabs, Text, Title, useMantineTheme } from '@mantine/
 import { IconClock, IconCoin, IconMinus, IconPlus } from '@tabler/icons-react'
 import cx from 'classnames'
 import { Duration } from 'luxon'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import { useCommonStyles } from '../../../../styles/common'
 import { type RecipeDetailOut } from '../../../../types'
