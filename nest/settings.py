@@ -367,7 +367,7 @@ FORM_COMPONENT_MAPPING_DEFAULTS = {
 #####################
 
 try:
-    import django_extensions  # noqa: 401
+    import django_extensions  # noqa
 except ImportError:
     DJANGO_EXTENSIONS_INSTALLED = False
 else:
@@ -383,7 +383,7 @@ if DJANGO_EXTENSIONS_INSTALLED:
 DJANGO_DEBUG_TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR_ENABLED", default=True)
 
 try:
-    import debug_toolbar  # noqa: 401
+    import debug_toolbar  # noqa
 except ImportError:
     DJANGO_DEBUG_TOOLBAR_INSTALLED = False
 else:

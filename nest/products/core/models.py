@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from decimal import Decimal
+from typing import ClassVar
 
 from django.db import models
 
@@ -109,7 +110,7 @@ class Product(BaseModel):
 
     objects = _ProductManager()
 
-    ADMIN_LIST_DISPLAY = [
+    ADMIN_LIST_DISPLAY: ClassVar = [
         "name",
         "gross_price",
         "unit",

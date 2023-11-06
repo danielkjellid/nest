@@ -119,7 +119,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
             self.add_schema_definitions(updated_schema)
 
         if remove_level and len(schema["properties"]) == 1:
-            name, details = list(schema["properties"].items())[0]
+            name, details = next(iter(schema["properties"].items()))
             required = name in schema.get("required", {})
             return details, required
         else:

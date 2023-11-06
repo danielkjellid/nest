@@ -32,7 +32,7 @@ django-store-kit = "^0.1.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
-ruff = "^0.0.261"
+ruff = "^0.1.4"
 mypy = "^1.2"
 pytest = "^7.4.3"
 pytest-pretty = "^1.2.0"
@@ -100,7 +100,8 @@ exclude = [
     ".git",
     ".venv",
     "__pycache__",
-    "conftest.py"
+    "conftest.py",
+    "migrations"
 ]
 select = [
     # Regular flake8 rules

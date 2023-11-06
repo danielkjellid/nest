@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -49,6 +51,6 @@ class LogEntry(BaseModel):
 
     class Meta:
         get_latest_by = "created_at"
-        ordering = ["-created_at"]
+        ordering: ClassVar = ["-created_at"]
         verbose_name = "log entry"
         verbose_name_plural = "log entries"
