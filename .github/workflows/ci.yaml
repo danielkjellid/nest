@@ -55,9 +55,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: 'Lockfile consistency'
+          - name: 'lockfile consistency'
             check: 'lock --check'
-          - name: 'Unused dependencies'
+          - name: 'unused dependencies'
             check: 'run deptry .'
     name: ${{ matrix.name }}
     steps:
