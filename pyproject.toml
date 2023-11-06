@@ -7,7 +7,6 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "~3.11.1"
-psycopg2 = "^2.9.5"
 ipython = "^8.17.2"
 structlog = "^23.1.0"
 django = "^4.2.7"
@@ -16,7 +15,6 @@ django-environ = "^0.10.0"
 django-extensions = "^3.2.1"
 django-storages = { version = "^1.13.2", extras = ["aws"] }
 pydantic = "^1.10.5"
-pyjwt = "^2.8.0"
 django-vite = "^2.0.2"
 django-s3-storage = "^0.15.0"
 orjson = "^3.9.10"
@@ -29,6 +27,8 @@ sentry-sdk = "^1.21.1"
 whitenoise = "^6.4.0"
 isodate = "^0.6.1"
 django-store-kit = "^0.1.2"
+urllib3 = "^2.0.7"
+psycopg2 = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.4"
@@ -45,6 +45,7 @@ django-debug-toolbar = "^3.8.1"
 pytest-django = "^4.5.2"
 requests-mock = "^1.10.0"
 types-requests = "^2.31.0.6"
+deptry = "^0.12.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -142,3 +143,25 @@ junit_logging = "system-out"
 DJANGO_SETTINGS_MODULE = "nest.settings"
 # --- pytest-env settings
 env = ["ENV_PATH=.env.test"]
+
+
+##########
+# Deptry #
+##########
+
+[tool.deptry]
+extend_exclude = [".*tests.*"]
+
+[tool.deptry.per_rule_ignores]
+# Installed, but not explicitly imported
+DEP002 = [
+    "psycopg2",
+    "ipython",
+    "django-storages",
+    "django-vite",
+    "pillow",
+    "gunicorn",
+    "whitenoise"
+]
+# Dev dependencies that are imported in the codebase
+DEP004 = ["debug_toolbar"]
