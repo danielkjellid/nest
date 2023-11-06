@@ -52,6 +52,7 @@ RUN chown -R nest:nest /app
 # Set app user and working directory
 USER nest
 WORKDIR /app
+ENV HOME=/app
 
 COPY --chown=nest poetry.lock pyproject.toml poetry.toml manage.py .env.test /app/
 RUN poetry install --no-root --only main --no-interaction --no-ansi
