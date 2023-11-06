@@ -6,11 +6,11 @@ import { urls } from './apps/urls'
 import BaseApp from './components/BaseApp/BaseApp'
 import Header from './components/Header'
 import Navbar from './components/Navbar'
-import { CommonContextType, CommonProvider } from './contexts/CommonProvider'
-import { MenuContextType, MenuProvider } from './contexts/MenuProvider'
+import { type CommonContextType, CommonProvider } from './contexts/CommonProvider'
+import { type MenuContextType, MenuProvider } from './contexts/MenuProvider'
 import { UnitsProvider } from './contexts/UnitsProvider'
 import { performGet } from './hooks/fetcher/http'
-import { UnitListOut, UnitListOutAPIResponse } from './types'
+import { type UnitListOut, type UnitListOutAPIResponse } from './types'
 
 interface AppProps extends CommonContextType, MenuContextType {}
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useCommonStyles } from '../../../styles/common'
-import { ProductDetailOut } from '../../../types'
+import { type ProductDetailOut } from '../../../types'
 
 interface ProductDetailHeaderProps
   extends Pick<ProductDetailOut, 'thumbnailUrl' | 'fullName' | 'supplier'> {

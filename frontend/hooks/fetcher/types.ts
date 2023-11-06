@@ -1,4 +1,4 @@
-import { RequestError } from './http'
+import { type RequestError } from './http'
 
 export type Getter = <T>({ url, options }: { url: string; options?: RequestOptions }) => Promise<T>
 export type Setter = <T>({

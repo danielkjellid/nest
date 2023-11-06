@@ -1,4 +1,4 @@
-import { Button as MButton, ButtonProps as MButtonProps } from '@mantine/core'
+import { Button as MButton, type ButtonProps as MButtonProps } from '@mantine/core'
 import { IconCircleCheck, IconCircleX } from '@tabler/icons-react'
 import React from 'react'
 

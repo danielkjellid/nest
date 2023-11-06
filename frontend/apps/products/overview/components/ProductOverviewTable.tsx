@@ -3,7 +3,7 @@ import { IconEye, IconPencil, IconTrash } from '@tabler/icons-react'
 import React from 'react'
 
 import Table from '../../../../components/Table'
-import { ProductListOut } from '../../../../types'
+import { type ProductListOut } from '../../../../types'
 import { routes } from '../../routes'
 
 interface ProductOverViewTableProps {

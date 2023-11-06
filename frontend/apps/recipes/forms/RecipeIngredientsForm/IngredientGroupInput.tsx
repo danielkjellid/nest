@@ -3,9 +3,14 @@ import { IconPlus, IconX } from '@tabler/icons-react'
 import React, { forwardRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
-import { UnitOption } from '../../../../contexts/UnitsProvider'
+import { type UnitOption } from '../../../../contexts/UnitsProvider'
 
-import { FormError, Ingredient, IngredientGroup, IngredientOptionType } from './types'
+import {
+  type FormError,
+  type Ingredient,
+  type IngredientGroup,
+  type IngredientOptionType,
+} from './types'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
   image?: string | null

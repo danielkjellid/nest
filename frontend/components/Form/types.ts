@@ -1,6 +1,6 @@
-import { ForwardRefExoticComponent } from 'react'
+import { type ForwardRefExoticComponent } from 'react'
 
-import { FrontendComponents } from '../../types'
+import { type FrontendComponents } from '../../types'
 
 export type FormEnum = { label: string; value: string }
 

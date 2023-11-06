@@ -2,9 +2,9 @@
 import { Box } from '@mantine/core'
 import { IconCircleCheckFilled, IconCircleXFilled } from '@tabler/icons-react'
 import {
-  MRT_ColumnDef,
-  MRT_RowSelectionState,
-  MRT_TableOptions,
+  type MRT_ColumnDef,
+  type MRT_RowSelectionState,
+  type MRT_TableOptions,
   MantineReactTable,
 } from 'mantine-react-table'
 import React, { useEffect, useMemo, useState } from 'react'

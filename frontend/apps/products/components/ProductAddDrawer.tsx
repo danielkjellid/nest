@@ -5,7 +5,7 @@ import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { useUnits } from '../../../contexts/UnitsProvider'
 import { useForm } from '../../../hooks/forms'
-import { ProductCreateIn } from '../../../types'
+import { type ProductCreateIn } from '../../../types'
 import { urls } from '../../urls'
 
 interface ProductAddDrawerProps {

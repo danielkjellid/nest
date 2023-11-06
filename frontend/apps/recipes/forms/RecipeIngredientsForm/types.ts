@@ -1,4 +1,4 @@
-import { UnitOption } from '../../../../contexts/UnitsProvider'
+import { type UnitOption } from '../../../../contexts/UnitsProvider'
 
 export interface IngredientOptionType {
   label: string

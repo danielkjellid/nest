@@ -6,7 +6,7 @@ import { Card } from '../../../components/Card'
 import Form from '../../../components/Form'
 import { useForm } from '../../../hooks/forms'
 import { useCommonStyles } from '../../../styles/common'
-import { RecipeCreateOutAPIResponse } from '../../../types'
+import { type RecipeCreateOutAPIResponse } from '../../../types'
 import { urls } from '../../urls'
 import { routes } from '../routes'
 

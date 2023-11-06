@@ -6,8 +6,8 @@ import {
   Text,
   Textarea,
   TransferList,
-  TransferListItemComponent,
-  TransferListItemComponentProps,
+  type TransferListItemComponent,
+  type TransferListItemComponentProps,
 } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 import React from 'react'
@@ -18,8 +18,7 @@ import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
 
-import { IngredientItemOptionType } from './types'
-import { Step, StepInputError } from './types'
+import { type IngredientItemOptionType, type Step, type StepInputError } from './types'
 
 const IngredientItemOption: TransferListItemComponent = ({
   data,

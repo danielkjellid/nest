@@ -5,7 +5,7 @@ import { Button } from '../../../components/Button'
 import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { useForm } from '../../../hooks/forms'
-import { IngredientCreateIn, ProductListOut } from '../../../types'
+import { type IngredientCreateIn, type ProductListOut } from '../../../types'
 import { urls } from '../../urls'
 
 interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {

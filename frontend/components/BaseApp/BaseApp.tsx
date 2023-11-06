@@ -1,7 +1,7 @@
 import {
   Alert,
   AppShell,
-  ColorScheme,
+  type ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
   Text,

@@ -9,8 +9,11 @@ import { useCommonContext } from '../../contexts/CommonProvider'
 import { useConfirmModal } from '../../hooks/confirm-modal'
 import { useFetch } from '../../hooks/fetcher'
 import { performDelete } from '../../hooks/fetcher/http'
-import { IngredientDeleteIn } from '../../types'
-import { IngredientListOutAPIResponse, ProductListOutAPIResponse } from '../../types'
+import {
+  type IngredientDeleteIn,
+  type IngredientListOutAPIResponse,
+  type ProductListOutAPIResponse,
+} from '../../types'
 import { urls } from '../urls'
 
 import { IngredientAddDrawer } from './components/IngredientAddDrawer'

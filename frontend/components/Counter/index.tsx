@@ -2,8 +2,8 @@ import {
   ActionIcon,
   Input,
   NumberInput,
-  NumberInputHandlers,
-  NumberInputProps,
+  type NumberInputHandlers,
+  type NumberInputProps,
   useMantineTheme,
 } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'

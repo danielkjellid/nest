@@ -1,16 +1,16 @@
 import { Badge } from '@mantine/core'
 import React, { useState } from 'react'
 
-import { Button, ButtonProps } from '../../../components/Button'
+import { Button, type ButtonProps } from '../../../components/Button'
 import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { performPost } from '../../../hooks/fetcher/http'
 import { useForm } from '../../../hooks/forms'
 import { useCommonStyles } from '../../../styles/common'
 import {
-  ProductOdaImportIn,
-  ProductOdaImportOut,
-  ProductOdaImportOutAPIResponse,
+  type ProductOdaImportIn,
+  type ProductOdaImportOut,
+  type ProductOdaImportOutAPIResponse,
 } from '../../../types'
 import { urls } from '../../urls'
 

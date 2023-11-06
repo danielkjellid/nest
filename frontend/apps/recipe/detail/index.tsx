@@ -7,7 +7,7 @@ import { Button } from '../../../components/Button'
 import View from '../../../components/View'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
-import { RecipeDetailOutAPIResponse, RecipeStatus } from '../../../types'
+import { type RecipeDetailOutAPIResponse, RecipeStatus } from '../../../types'
 import { urls } from '../../urls'
 import { Recipe } from '../components/Recipe'
 
