@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 Undefined = UndefinedType()
 
 
-def FormField(
+def FormField(  # noqa
     default: Any = Undefined,
     *,
     default_factory: NoArgAnyCallable | None = None,

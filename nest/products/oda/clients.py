@@ -1,4 +1,5 @@
 from tempfile import NamedTemporaryFile
+from typing import ClassVar
 from urllib.request import urlopen
 
 import structlog
@@ -22,7 +23,7 @@ class OdaClient(BaseHTTPClient):
     auth_token = settings.ODA_SERVICE_AUTH_TOKEN
     request_timeout = (5, 5)
 
-    headers = {"X-Client-Token": auth_token}
+    headers: ClassVar = {"X-Client-Token": auth_token}
 
     @classmethod
     def get_product(cls, product_id: int | str) -> OdaProductDetailRecord:

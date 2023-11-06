@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django.db import models
 
 from nest.core.models import BaseModel
@@ -18,7 +20,12 @@ class Home(BaseModel):
 
     objects = _HomeManager()
 
-    ADMIN_LIST_DISPLAY = ["street_address", "zip_code", "zip_place", "is_active"]
+    ADMIN_LIST_DISPLAY: ClassVar = [
+        "street_address",
+        "zip_code",
+        "zip_place",
+        "is_active",
+    ]
 
     class Meta:
         verbose_name = "home"

@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from django.db import models
 
 from nest.core.models import BaseModel
@@ -19,7 +21,7 @@ class Unit(BaseModel):
 
     objects = _UnitManager()
 
-    ADMIN_LIST_DISPLAY = ["name", "unit_type", "base_factor", "is_base_unit"]
+    ADMIN_LIST_DISPLAY: ClassVar = ["name", "unit_type", "base_factor", "is_base_unit"]
 
     @property
     def display_name(self) -> str:

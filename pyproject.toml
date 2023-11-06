@@ -100,7 +100,8 @@ exclude = [
     ".git",
     ".venv",
     "__pycache__",
-    "conftest.py"
+    "conftest.py",
+    "migrations"
 ]
 select = [
     # Regular flake8 rules
