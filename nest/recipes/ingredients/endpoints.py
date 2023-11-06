@@ -1,6 +1,5 @@
 from django.http import HttpRequest
 from ninja import Router, Schema
-from pydantic import parse_obj_as
 from store_kit.http import status
 
 from nest.api.fields import FormField
@@ -153,6 +152,6 @@ def recipe_ingredient_groups_list_api(
     """
 
     groups = get_recipe_ingredient_item_groups_for_recipe(recipe_id=recipe_id)
-    data = parse_obj_as(list[RecipeIngredientGroupsListOut], groups)
+    data = [RecipeIngredientGroupsListOut(**group.dict()) for group in groups]
 
     return APIResponse(status="success", data=data)
