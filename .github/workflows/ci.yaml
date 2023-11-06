@@ -49,6 +49,25 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: npm run ${{ matrix.check }}
 
+  dependencies:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'Lockfile consistency'
+            check: 'lock --check'
+          - name: 'Unused dependencies'
+            check: 'run deptry .'
+    name: ${{ matrix.name }}
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Setup project
+        uses: ./.github/actions/setup-python
+      - name: Run ${{ matrix.name }}
+        run: poetry ${{ matrix.check }}
+
   python-tests:
     name: python tests
     runs-on: ubuntu-20.04
