@@ -281,9 +281,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
                 if enum_mapping:
                     for mapping in enum_mapping:
                         if mapping["field"] == property:
-                            props[property]["title"] = mapping[
-                                "field"
-                            ].title()  # type: ignore
+                            props[property]["title"] = mapping["field"].title()  # type: ignore
                             props[property]["enum"] = mapping["enum"]
 
                             component_defaults = (
@@ -348,7 +346,9 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
                 if hasattr(val, "FormMeta"):
                     meta["columns"] = getattr(
-                        value.FormMeta, "columns", 1  # type: ignore
+                        value.FormMeta,
+                        "columns",
+                        1,  # type: ignore
                     )
 
         return meta

@@ -13,9 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: 'black'
-            check: black nest --check --config=pyproject.toml
-          - name: 'ruff'
+          - name: 'ruff format'
+            check: ruff format nest --check
+          - name: 'ruff lint'
             check: ruff nest
           - name: 'mypy'
             check: mypy nest
@@ -67,7 +67,7 @@ jobs:
           - '9000:9000'
           - '9001:9001'
         volumes:
-         -  'minio_data:/data'
+          - 'minio_data:/data'
       postgres:
         image: postgres:14
         ports:
