@@ -68,7 +68,7 @@
     "import-sort-cli": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "jsdom": "^22.1.0",
-    "openapi-typescript-codegen": "^0.23.0",
+    "openapi-typescript-codegen": "^0.25.0",
     "postcss": "^8.4.31",
     "prettier": "^2.8.7",
     "react-refresh": "^0.14.0",
