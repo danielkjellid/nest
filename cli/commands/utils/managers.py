@@ -2,6 +2,7 @@ import contextlib
 import subprocess
 import sys
 from typing import Iterator, Optional
+
 import click
 
 from .colors import gray, red
