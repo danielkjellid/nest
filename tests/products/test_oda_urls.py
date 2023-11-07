@@ -1,5 +1,5 @@
-import pytest
 from django.urls import reverse
+import pytest
 
 urls = [
     ("product_oda_import_api", "/api/v1/products/oda/import/", None),

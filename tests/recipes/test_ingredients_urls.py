@@ -1,5 +1,5 @@
-import pytest
 from django.urls import reverse
+import pytest
 
 urls = [
     ("recipe_ingredient_create_api", "/api/v1/recipes/ingredients/create/", None),
