@@ -6,7 +6,7 @@ from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
 
 from .clients import OdaClient
-from .services import import_from_oda
+from .services import import_product_from_oda
 
 router = Router(tags=["Oda products"])
 
@@ -66,5 +66,5 @@ def product_oda_import_confirm_api(
     """
     Import and create a product from Oda based on ID.
     """
-    import_from_oda(oda_product_id=payload.oda_product_id)
+    import_product_from_oda(oda_product_id=payload.oda_product_id)
     return APIResponse(status="success", data=None)

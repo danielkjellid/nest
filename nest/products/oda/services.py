@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 from nest.core.exceptions import ApplicationError
-from nest.units.selectors import get_unit_by_abbreviation
+from nest.units.selectors import get_unit_by_abbreviation, get_unit_normalized_quantity
 
 from ..core.models import Product
 from ..core.records import ProductRecord
@@ -19,7 +19,7 @@ from .records import OdaProductDetailRecord
 logger = structlog.getLogger()
 
 
-def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
+def import_product_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     """
     Import a product from Oda based on the Oda product id.
     """
@@ -60,6 +60,9 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     unit_quantity = float(product_response.gross_price) / float(
         product_response.gross_unit_price
     )
+    converted_quantity, converted_unit = get_unit_normalized_quantity(
+        quantity=Decimal(unit_quantity), unit=unit
+    )
 
     # Extract nutrition values.
     nutrition = _extract_nutrition_values_from_response(
@@ -75,8 +78,8 @@ def import_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         "name": product_response.full_name,
         "gross_price": product_response.gross_price,
         "gross_unit_price": product_response.gross_unit_price,
-        "unit_id": unit.id,
-        "unit_quantity": unit_quantity,
+        "unit_id": converted_unit.id,
+        "unit_quantity": converted_quantity,
         "is_available": product_response.availability.is_available,
         "supplier": product_response.brand,
         "thumbnail": get_product_image(),

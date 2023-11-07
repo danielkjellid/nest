@@ -75,7 +75,7 @@ class TestEndpointProductOdaImportConfirmAPI:
 
         client = authenticated_client
         service_mock = mocker.patch(
-            f"{product_oda_import_confirm_api.__module__}.import_from_oda"
+            f"{product_oda_import_confirm_api.__module__}.import_product_from_oda"
         )
 
         payload = {"odaProductId": 459}
@@ -98,7 +98,7 @@ class TestEndpointProductOdaImportConfirmAPI:
 
         client = authenticated_staff_client
         service_mock = mocker.patch(
-            f"{product_oda_import_confirm_api.__module__}.import_from_oda"
+            f"{product_oda_import_confirm_api.__module__}.import_product_from_oda"
         )
 
         payload = {"odaProductId": 459}
