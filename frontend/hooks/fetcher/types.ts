@@ -58,5 +58,5 @@ export interface LazyRequestOptions<TData, TQuery> {
 
 export type RequestTuple<TData, TResponseData> = [
   (url: string, options?: LazyRequestResult<TData>) => Promise<TResponseData | undefined>,
-  LazyRequestResult<TResponseData>
+  LazyRequestResult<TResponseData>,
 ]
