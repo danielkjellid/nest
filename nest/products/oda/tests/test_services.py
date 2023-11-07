@@ -23,7 +23,7 @@ pytestmark = pytest.mark.django_db
 
 class TestProductOdaServices:
     def test_import_product_from_oda_excluded_from_sync(
-            self, django_assert_num_queries, request_mock, mocker
+        self, django_assert_num_queries, mocker
     ):
         """
         Test that products marked as is_synced=False is returned early
@@ -56,7 +56,7 @@ class TestProductOdaServices:
         assert _validate_oda_response_mock.call_count == 1
 
     def test_import_product_from_oda_new_product(
-            self, django_assert_num_queries, request_mock, mocker
+        self, django_assert_num_queries, request_mock, mocker
     ):
         """
         Test that the import_product_from_oda creates a new product if the product
@@ -94,7 +94,7 @@ class TestProductOdaServices:
         assert _validate_oda_response_mock.call_count == 1
 
     def test_import_product_from_oda_existing_product(
-            self, django_assert_num_queries, request_mock, mocker, settings
+        self, django_assert_num_queries, mocker
     ):
         """
         Test that importing an existing product updates the product.
