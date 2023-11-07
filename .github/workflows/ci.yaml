@@ -14,11 +14,11 @@ jobs:
       matrix:
         include:
           - name: 'ruff format'
-            check: ruff format nest --check
+            check: lint-ruff-format
           - name: 'ruff lint'
-            check: ruff nest
+            check: lint-ruff
           - name: 'mypy'
-            check: mypy nest
+            check: lint-mypy
     name: ${{ matrix.name }}
     steps:
       - name: Checkout project
@@ -26,7 +26,7 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup-python
       - name: Run ${{ matrix.name }}
-        run: poetry run ${{ matrix.check }}
+        run: make ${{ matrix.check }}
 
   frontend-lint:
     runs-on: ubuntu-20.04
@@ -35,11 +35,11 @@ jobs:
       matrix:
         include:
           - name: 'eslint'
-            check: 'eslint:check'
+            check: 'lint-eslint'
           - name: 'prettier'
-            check: 'prettier:check'
+            check: 'lint-prettier'
           - name: 'tsc'
-            check: 'tsc:check'
+            check: 'lint-tsc'
     name: ${{ matrix.name }}
     steps:
       - name: Checkout project
@@ -47,7 +47,7 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup-node
       - name: Run ${{ matrix.name }}
-        run: npm run ${{ matrix.check }}
+        run: make ${{ matrix.check }}
 
   dependencies:
     runs-on: ubuntu-20.04

@@ -1,7 +1,8 @@
-PACKAGE 		= nest
+PACKAGE 			= nest
+TESTS				= tests
 BASE 				= $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-POETRY      = poetry
+POETRY      		= poetry
 NPM 				= npm
 
 V 					= 0
@@ -65,11 +66,11 @@ lint-frontend: lint-tsc lint-eslint lint-prettier | $(BASE) ; @
 
 .PHONY: lint-ruff
 lint-ruff: ; $(info $(M) running ruff lint...) @
-	$Q cd $(BASE) && $(POETRY) run ruff $(PACKAGE)
+	$Q cd $(BASE) && $(POETRY) run ruff $(PACKAGE) $(TESTS)
 
 .PHONY: lint-ruff-format
 lint-ruff-format: ; $(info $(M) running ruff format...) @
-	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE) --check
+	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE) $(TESTS) --check
 
 .PHONY: lint-mypy
 lint-mypy: ; $(info $(M) running mypy...) @
@@ -102,11 +103,11 @@ fix-frontend: fix-eslint fix-prettier | $(BASE) ; @
 
 .PHONY: fix-ruff
 fix-ruff: ; $(info $(M) running ruff with fix...) @
-	$Q cd $(BASE) && $(POETRY) run ruff $(PACKAGE) --fix
+	$Q cd $(BASE) && $(POETRY) run ruff $(PACKAGE) $(TESTS) --fix
 
 .PHONY: fix-ruff-format
 .fix-ruff-format: ; $(info $(M) running ruff format with fix...) @
-	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE)
+	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE) $(TESTS)
 
 .PHONY: fix-eslint
 fix-eslint: ; $(info $(M) running eslint with fix...) @
