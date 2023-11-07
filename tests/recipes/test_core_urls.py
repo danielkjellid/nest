@@ -1,5 +1,5 @@
-from django.urls import reverse
 import pytest
+from django.urls import reverse
 
 urls = [
     ("recipe_create_api", "/api/v1/recipes/create/", None),
