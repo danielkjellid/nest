@@ -135,7 +135,7 @@ ban-relative-imports = "parents"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-testpaths = ["nest"]
+testpaths = ["nest", "tests"]
 python_files = "test_*.py"
 # Include captured log messages in system-out in CI report file
 junit_logging = "system-out"
