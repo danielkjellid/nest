@@ -10,13 +10,16 @@ def convert_unit_quantity(
     quantity: Decimal,
     from_unit: UnitRecord,
     to_unit: UnitRecord,
-    weight_piece: Decimal | None = None,
-    weight_ml: Decimal | None = None,
-):
+    piece_weight: Decimal | None = None,
+    ml_weight: Decimal | None = None,
+) -> Decimal | None:
     """
     Try to convert a quantity in one unit to a quantity in another unit.
     Returns None of the conversion was not possible.
     """
+
+    weight_piece = piece_weight or Decimal("1")
+    weight_ml = ml_weight or Decimal("1")
 
     conversions: dict[UnitType, dict[UnitType, Callable[[Decimal], Decimal]]] = {
         UnitType.WEIGHT: {
@@ -50,7 +53,5 @@ def convert_unit_quantity(
         converted_in_base = conversions[from_type][to_type](quantity_in_base)
         return converted_in_base / to_unit.base_factor
 
-    except (TypeError, KeyError, ZeroDivisionError) as exc:
-        raise RuntimeError(
-            f"Failed to convert quantity {quantity} from unit {from_unit} to unit {to_unit}"
-        ) from exc
+    except (TypeError, KeyError, ZeroDivisionError):
+        return None

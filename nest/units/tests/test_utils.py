@@ -39,7 +39,7 @@ def test_util_convert_unit_quantity(
             quantity=quantity,
             from_unit=from_unit,
             to_unit=to_unit,
-            weight_piece=piece_weight,
-            weight_ml=ml_weight,
+            piece_weight=piece_weight,
+            ml_weight=ml_weight,
         )
     assert converted_quantity == expected_quantity
