@@ -11,7 +11,7 @@ from .models import Unit
 class UnitRecord(BaseModel):
     id: int
     name: str
-    name_pluralized: str | None
+    name_pluralized: str | None = None
     abbreviation: str
     unit_type: UnitType
     base_factor: Decimal

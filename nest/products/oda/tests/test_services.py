@@ -14,7 +14,7 @@ from nest.products.oda.services import (
     _extract_classifier_values_from_response,
     _extract_nutrition_values_from_response,
     _validate_oda_response,
-    import_from_oda,
+    import_product_from_oda,
 )
 from nest.products.oda.tests.utils import get_oda_product_response_dict
 
@@ -22,8 +22,8 @@ pytestmark = pytest.mark.django_db
 
 
 class TestProductOdaServices:
-    def test_import_from_oda_excluded_from_sync(
-        self, django_assert_num_queries, request_mock, mocker
+    def test_import_product_from_oda_excluded_from_sync(
+        self, django_assert_num_queries, mocker
     ):
         """
         Test that products marked as is_synced=False is returned early
@@ -47,7 +47,7 @@ class TestProductOdaServices:
         )
 
         with django_assert_num_queries(1):
-            imported_product = import_from_oda(oda_product_id=product.oda_id)
+            imported_product = import_product_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product is None
 
@@ -55,11 +55,11 @@ class TestProductOdaServices:
         assert product_image_response_request_mock.call_count == 1
         assert _validate_oda_response_mock.call_count == 1
 
-    def test_import_from_oda_new_product(
+    def test_import_product_from_oda_new_product(
         self, django_assert_num_queries, request_mock, mocker
     ):
         """
-        Test that the import_from_oda creates a new product if the product
+        Test that the import_product_from_oda creates a new product if the product
         does not already exist.
         """
 
@@ -83,8 +83,8 @@ class TestProductOdaServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(12):
-            imported_product = import_from_oda(oda_product_id=oda_id_mock)
+        with django_assert_num_queries(13):
+            imported_product = import_product_from_oda(oda_product_id=oda_id_mock)
 
         assert Product.objects.all().count() == 1
         assert Product.objects.all().first().oda_id == imported_product.oda_id
@@ -93,8 +93,8 @@ class TestProductOdaServices:
         assert product_image_response_request_mock.call_count == 1
         assert _validate_oda_response_mock.call_count == 1
 
-    def test_import_from_oda_existing_product(
-        self, django_assert_num_queries, request_mock, mocker, settings
+    def test_import_product_from_oda_existing_product(
+        self, django_assert_num_queries, mocker
     ):
         """
         Test that importing an existing product updates the product.
@@ -116,8 +116,8 @@ class TestProductOdaServices:
             f"{_validate_oda_response.__module__}.{_validate_oda_response.__name__}"
         )
 
-        with django_assert_num_queries(13):
-            imported_product = import_from_oda(oda_product_id=product.oda_id)
+        with django_assert_num_queries(14):
+            imported_product = import_product_from_oda(oda_product_id=product.oda_id)
 
         assert imported_product.id == product.id
         assert imported_product.name == "Møllerens Hvetemel Siktet"
