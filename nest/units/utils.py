@@ -1,7 +1,8 @@
 from decimal import Decimal
-from .records import UnitRecord
-from .enums import UnitType
 from typing import Callable
+
+from .enums import UnitType
+from .records import UnitRecord
 
 
 def convert_unit_quantity(
@@ -49,5 +50,7 @@ def convert_unit_quantity(
         converted_in_base = conversions[from_type][to_type](quantity_in_base)
         return converted_in_base / to_unit.base_factor
 
-    except (KeyError, ZeroDivisionError):
-        return None
+    except (TypeError, KeyError, ZeroDivisionError) as exc:
+        raise RuntimeError(
+            f"Failed to convert quantity {quantity} from unit {from_unit} to unit {to_unit}"
+        ) from exc

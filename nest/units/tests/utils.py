@@ -45,14 +45,14 @@ units = [
     Unit(
         name="Milliliter",
         abbreviation="ml",
-        unit_type=UnitType.WEIGHT,
+        unit_type=UnitType.VOLUME,
         base_factor="1.00",
         is_base_unit=True,
     ),
     Unit(
         name="Liter",
         abbreviation="l",
-        unit_type=UnitType.WEIGHT,
+        unit_type=UnitType.VOLUME,
         base_factor="1000.00",
         is_base_unit=False,
     ),
