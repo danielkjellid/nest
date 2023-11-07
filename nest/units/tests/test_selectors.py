@@ -7,36 +7,56 @@ from nest.units.tests.utils import create_units
 pytestmark = pytest.mark.django_db
 
 
-class TestUnitSelector:
-    def test_get_units(self, django_assert_num_queries):
-        """
-        Test that all_units selector returns all units available within query limits.
-        """
-        create_units()  # 26 units.
+def test_get_units(django_assert_num_queries):
+    """
+    Test that all_units selector returns all units available within query limits.
+    """
+    create_units()  # 26 units.
 
-        with django_assert_num_queries(1):
-            units = get_units()
+    with django_assert_num_queries(1):
+        units = get_units()
 
-        assert len(units) == 26
+    assert len(units) == 26
 
-    def test_get_unit_by_abbreviation(self, django_assert_num_queries):
-        """
-        Test that the get_unit_from_abbreviation correctly retrieves the right unit,
-        withing query limits, as well as raises ApplicationError if unit does not exist.
-        """
-        create_units()
 
-        with django_assert_num_queries(1):
-            kg = get_unit_by_abbreviation(abbreviation="kg")
+def test_get_unit_by_abbreviation(django_assert_num_queries):
+    """
+    Test that the get_unit_from_abbreviation correctly retrieves the right unit,
+    withing query limits, as well as raises ApplicationError if unit does not exist.
+    """
+    create_units()
 
-        assert kg is not None
-        assert kg.abbreviation == "kg"
+    with django_assert_num_queries(1):
+        kg = get_unit_by_abbreviation(abbreviation="kg")
 
-        with django_assert_num_queries(1):
-            g = get_unit_by_abbreviation(abbreviation="g")
+    assert kg is not None
+    assert kg.abbreviation == "kg"
 
-        assert g is not None
-        assert g.abbreviation == "g"
+    with django_assert_num_queries(1):
+        g = get_unit_by_abbreviation(abbreviation="g")
 
-        with pytest.raises(ApplicationError):
-            get_unit_by_abbreviation(abbreviation="doesnotexist")
+    assert g is not None
+    assert g.abbreviation == "g"
+
+    with pytest.raises(ApplicationError):
+        get_unit_by_abbreviation(abbreviation="doesnotexist")
+
+
+def test_selector_get_unit_normalized_quantity():
+    assert False
+
+
+def test_selector_get_unit_lowest_normalized_quantity():
+    assert False
+
+
+def test_selector_get_unit_highest_normalized_quantity():
+    assert False
+
+
+def test_selector__get_unit_quantity():
+    assert False
+
+
+def test_selector_get_unit_normalized_price():
+    assert False
