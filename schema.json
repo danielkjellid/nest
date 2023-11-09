@@ -3020,6 +3020,18 @@
                     "TextInput"
                 ]
             },
+            "RecipeStepType": {
+                "title": "RecipeStepType",
+                "description": "An enumeration.",
+                "enum": [
+                    "cooking",
+                    "preparation"
+                ],
+                "x-enum-varnames": [
+                    "Cooking Step",
+                    "Preparation"
+                ]
+            },
             "UnitType": {
                 "title": "UnitType",
                 "description": "An enumeration.",
