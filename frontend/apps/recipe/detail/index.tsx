@@ -39,6 +39,11 @@ function RecipeDetailInner({ results }: RecipeDetailInnerProps) {
           Published
         </Badge>
       ),
+      hidden: (
+        <Badge size="lg" radius="sm" color="orange" variant="dot">
+          Hidden
+        </Badge>
+      ),
     }
 
     return badges[status]
