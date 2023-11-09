@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 from django.test.client import MULTIPART_CONTENT
 from django.urls import reverse
@@ -129,5 +131,5 @@ request_factories = [
 
 @pytest.mark.parametrize("factory", request_factories)
 @pytest.mark.django_db
-def test_products_core_endpoints(factory: EndpointFactory, mocker) -> None:
+def test_products_core_endpoints(factory: EndpointFactory, mocker: MagicMock) -> None:
     factory.make_requests_and_assert(mocker)
