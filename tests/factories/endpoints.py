@@ -1,8 +1,9 @@
 from collections import namedtuple
 from dataclasses import dataclass, field
+from inspect import isclass
 from typing import Any, Callable, Literal
 from unittest.mock import MagicMock
-from inspect import isclass
+
 import structlog
 from django.test.client import Client
 

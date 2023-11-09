@@ -4,11 +4,11 @@ import pytest
 from django.urls import reverse
 from store_kit.http import status
 
-from nest.products.oda.endpoints import (
-    product_oda_import_confirm_api,
-    product_oda_import_api,
-)
 from nest.products.oda.clients import OdaClient
+from nest.products.oda.endpoints import (
+    product_oda_import_api,
+    product_oda_import_confirm_api,
+)
 from nest.products.oda.tests.utils import get_oda_product_response_dict
 
 from ..factories.endpoints import (
