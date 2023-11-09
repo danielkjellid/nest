@@ -1,4 +1,5 @@
 from django.db.models import TextChoices
+
 from nest.api.openapi import add_to_openapi_schema
 
 
