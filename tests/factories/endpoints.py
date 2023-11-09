@@ -2,7 +2,7 @@ from collections import namedtuple
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
 from unittest.mock import MagicMock
-
+from inspect import isclass
 import structlog
 from django.test.client import Client
 
@@ -11,13 +11,14 @@ logger = structlog.get_logger()
 HTTP_METHOD = Literal["GET", "POST", "PUT", "DELETE"]
 
 FactoryMock = namedtuple("FactoryMock", ["caller", "return_value"])
+FactoryObjMock = namedtuple("FactoryObjMock", ["obj", "caller", "return_value"])
 
 
 @dataclass
 class Endpoint:
     url: str
     view_func: Callable
-    mocks: list[FactoryMock] | None = field(default_factory=[])
+    mocks: list[FactoryMock | FactoryObjMock] | None = field(default_factory=[])
     method: HTTP_METHOD = "GET"
     payload: dict[str, Any] | None = None
     content_type: str = "application/json"
@@ -90,11 +91,20 @@ class EndpointFactory:
 
         # Iterate over defined endpoint mocks and add them to a dict with the mock
         # name as key, and the mock itself as value.
-        for mock, return_value in self.endpoint.mocks:
-            caller_mock = mocker.patch(
-                f"{self.endpoint.view_func.__module__}.{mock}",
-                return_value=return_value,
-            )
+        for factory_mocker in self.endpoint.mocks:
+            print(factory_mocker)
+            if isclass(factory_mocker[0]):
+                print(factory_mocker)
+                mock = factory_mocker[1]
+                caller_mock = mocker.patch.object(
+                    factory_mocker[0], mock, return_value=factory_mocker[2]
+                )
+            else:
+                mock = factory_mocker[0]
+                caller_mock = mocker.patch(
+                    f"{self.endpoint.view_func.__module__}.{mock}",
+                    return_value=factory_mocker[1],
+                )
 
             caller_mocks[mock] = caller_mock
 

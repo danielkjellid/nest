@@ -1,7 +1,8 @@
 from decimal import Decimal
-from typing import Literal
+from typing import Literal, List
 
 from pydantic import BaseModel, Field
+
 
 ##############
 # Categories #
