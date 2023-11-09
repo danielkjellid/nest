@@ -15,7 +15,7 @@ class RecipeStepsCreateIn(Schema):
     duration: int
     instruction: str
     step_type: str
-    ingredient_items: list[str]
+    ingredient_items: list[str]  # Ids
 
 
 @router.post("{recipe_id}/create/", response={201: APIResponse[None]})
