@@ -4,8 +4,11 @@ from typing import Any, Callable, Literal
 
 import structlog
 from django.test.client import Client
+from unittest.mock import MagicMock
 
 logger = structlog.get_logger()
+
+HTTP_METHOD = Literal["GET", "POST", "PUT", "DELETE"]
 
 FactoryMock = namedtuple("FactoryMock", ["caller", "return_value"])
 
@@ -15,7 +18,7 @@ class Endpoint:
     url: str
     view_func: Callable
     mocks: list[FactoryMock] | None = field(default_factory=[])
-    method: Literal["GET", "POST", "PUT", "DELETE"] = "GET"
+    method: HTTP_METHOD = "GET"
     payload: dict[str, Any] | None = None
     content_type: str = "application/json"
 
@@ -33,8 +36,17 @@ class EndpointFactory:
         self.requests = requests
 
     def _make_request_and_assert(
-        self, request: Request, method, url, payload, content_type, caller_mocks
+        self,
+        request: Request,
+        method: HTTP_METHOD,
+        url: str,
+        payload: dict[str, Any],
+        content_type: str,
+        caller_mocks: dict[str, MagicMock],
     ):
+        """
+        Make a single request for a member of the "self.requests" dict.
+        """
         client = request.client()
         request_method = getattr(client, method.lower())
 
@@ -50,16 +62,26 @@ class EndpointFactory:
         )
 
         assert response.status_code == request.expected_status_code
+
+        # Each request defines a dict of mocks and expected call count, assert those
+        # values here.
         for mock_name, call_count in request.expected_mock_calls.items():
             mock = caller_mocks[mock_name]
             assert mock.call_count == call_count
 
-            # Since requests are ran iteratively, this has to be reset after assert.
+            # Since requests are ran iteratively, this has to be reset after assert, or
+            # else, you get an n+1.
             mock.reset_mock()
 
-    def make_requests_and_assert(self, mocker):
+    def make_requests_and_assert(self, mocker: MagicMock):
+        """
+        Iterate through "self.requests" making a http request for each of them, asserting
+        the status code and endpoint mock call count.
+        """
         caller_mocks = {}
 
+        # Iterate over defined endpoint mocks and add them to a dict with the mock
+        # name as key, and the mock itself as value.
         for mock, return_value in self.endpoint.mocks:
             caller_mock = mocker.patch(
                 f"{self.endpoint.view_func.__module__}.{mock}",
@@ -68,6 +90,7 @@ class EndpointFactory:
 
             caller_mocks[mock] = caller_mock
 
+        # Make each request defined respectively.
         for key, request in self.requests.items():
             logger.info(
                 "Making request", key=key, request=request, endpoint=self.endpoint
