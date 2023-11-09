@@ -18,11 +18,13 @@ user_list_api_factory = EndpointFactory(
     ),
     requests={
         "authenticated_request": Request(
+            help="Test that normal users are unable to retrieve a list of users.",
             client=authenticated_client,
             expected_status_code=status.HTTP_401_UNAUTHORIZED,
             expected_mock_calls={"get_users": 0},
         ),
         "staff_request": Request(
+            help="Test that staff users are able to successfully retrieve a list of users.",
             client=authenticated_staff_client,
             expected_status_code=status.HTTP_200_OK,
             expected_mock_calls={"get_users": 1},

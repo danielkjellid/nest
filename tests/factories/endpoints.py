@@ -28,6 +28,7 @@ class Request:
     client: Callable[[..., Any], Client]
     expected_status_code: int
     expected_mock_calls: dict[str, int]
+    help: str
 
 
 class EndpointFactory:

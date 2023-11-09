@@ -39,11 +39,13 @@ recipe_create_api_factory = EndpointFactory(
     ),
     requests={
         "authenticated_request": Request(
+            help="Test that normal users are unable to create recipes.",
             client=authenticated_client,
             expected_status_code=status.HTTP_401_UNAUTHORIZED,
             expected_mock_calls={"create_recipe": 0},
         ),
         "staff_request": Request(
+            help="Test that staff users are able to create new recipes.",
             client=authenticated_staff_client,
             expected_status_code=status.HTTP_201_CREATED,
             expected_mock_calls={"create_recipe": 1},
@@ -59,6 +61,7 @@ recipe_list_api_factory = EndpointFactory(
     ),
     requests={
         "authenticated_request": Request(
+            help="Test that normal users are able to get a list of recipes",
             client=authenticated_client,
             expected_status_code=status.HTTP_200_OK,
             expected_mock_calls={"get_recipes": 1},
@@ -74,6 +77,7 @@ recipe_detail_api_factory = EndpointFactory(
     ),
     requests={
         "anonymous_request": Request(
+            help="Test that anonymous users are able to retrieve recipe details.",
             client=anonymous_client,
             expected_status_code=status.HTTP_200_OK,
             expected_mock_calls={"get_recipe": 1},
