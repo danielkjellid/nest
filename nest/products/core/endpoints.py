@@ -125,7 +125,7 @@ class ProductDetailUnitOut(Schema):
     name: str
     abbreviation: str
     unit_type: str
-    display_name: str
+    display_name: str | None
 
 
 class ProductDetailOut(Schema):

@@ -1095,8 +1095,7 @@
                     "id",
                     "name",
                     "abbreviation",
-                    "unitType",
-                    "displayName"
+                    "unitType"
                 ],
                 "type": "object"
             },
