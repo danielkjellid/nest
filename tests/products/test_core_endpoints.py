@@ -25,7 +25,7 @@ product_list_api_factory = EndpointFactory(
     endpoint=Endpoint(
         url=reverse("api-1.0.0:product_list_api"),
         view_func=product_list_api,
-        mocks=[FactoryMock("get_products", [])],
+        mocks=[FactoryMock("get_products", [ProductRecordFactory.build()])],
     ),
     requests={
         "authenticated_request": Request(

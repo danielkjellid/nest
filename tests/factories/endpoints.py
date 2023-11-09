@@ -78,6 +78,13 @@ class EndpointFactory:
         Iterate through "self.requests" making a http request for each of them, asserting
         the status code and endpoint mock call count.
         """
+
+        if self.endpoint.method == "GET" and self.endpoint.payload is not None:
+            raise RuntimeError(
+                "Sending payload with GET method, forgot to set the method on the "
+                "Endpoint dataclass?"
+            )
+
         caller_mocks = {}
 
         # Iterate over defined endpoint mocks and add them to a dict with the mock

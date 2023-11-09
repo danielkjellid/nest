@@ -7,13 +7,14 @@ from store_kit.http import status
 from nest.users.core.endpoints import user_list_api
 
 from ..factories.endpoints import Endpoint, EndpointFactory, FactoryMock, Request
+from ..factories.records import UserRecordFactory
 from ..helpers.clients import authenticated_client, authenticated_staff_client
 
 user_list_api_factory = EndpointFactory(
     endpoint=Endpoint(
         url=reverse("api-1.0.0:user_list_api"),
         view_func=user_list_api,
-        mocks=[FactoryMock("get_users", [])],
+        mocks=[FactoryMock("get_users", [UserRecordFactory.build()])],
     ),
     requests={
         "authenticated_request": Request(
