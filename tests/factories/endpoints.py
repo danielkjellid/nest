@@ -1,10 +1,10 @@
 from collections import namedtuple
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
+from unittest.mock import MagicMock
 
 import structlog
 from django.test.client import Client
-from unittest.mock import MagicMock
 
 logger = structlog.get_logger()
 
