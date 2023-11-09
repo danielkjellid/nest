@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -7,6 +8,6 @@ export type ProductDetailUnitOut = {
     name: string;
     abbreviation: string;
     unitType: string;
-    displayName: string;
+    displayName?: string;
 };
 

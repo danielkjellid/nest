@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do no edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -49,7 +50,6 @@ export type { RecipeListOut } from './models/RecipeListOut';
 export { RecipeListOutAPIResponse } from './models/RecipeListOutAPIResponse';
 export { RecipeStatus } from './models/RecipeStatus';
 export type { RecipeStepsCreateIn } from './models/RecipeStepsCreateIn';
-export { RecipeStepType } from './models/RecipeStepType';
 export type { TableRecord } from './models/TableRecord';
 export type { UnitListOut } from './models/UnitListOut';
 export { UnitListOutAPIResponse } from './models/UnitListOutAPIResponse';
