@@ -1,5 +1,6 @@
-from nest.users.core.models import User
 from django.contrib.auth.models import AnonymousUser
+
+from nest.users.core.models import User
 
 TEST_USER_PASSWORD = "supersecretpassword"
 

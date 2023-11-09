@@ -1,6 +1,6 @@
 from django.test import Client
 
-from .users import TEST_USER_PASSWORD, user, staff_user, superuser
+from .users import TEST_USER_PASSWORD, staff_user, superuser, user
 
 
 def anonymous_client():
