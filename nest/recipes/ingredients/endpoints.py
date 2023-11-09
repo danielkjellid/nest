@@ -144,6 +144,7 @@ class RecipeIngredientGroupsListOut(Schema):
     "{recipe_id}/groups/",
     response=APIResponse[list[RecipeIngredientGroupsListOut]],
 )
+@staff_required
 def recipe_ingredient_groups_list_api(
     request: HttpRequest, recipe_id: int
 ) -> APIResponse[list[RecipeIngredientGroupsListOut]]:
