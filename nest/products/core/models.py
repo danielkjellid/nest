@@ -53,49 +53,6 @@ class Product(BaseModel):
     contains_gluten = models.BooleanField(default=False)
     contains_lactose = models.BooleanField(default=False)
 
-    # Nutritional information (per 100 gr/ml)
-    energy_kj = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    energy_kcal = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-
-    fat = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    fat_saturated = models.DecimalField(  # "hvorav mettede fettsyrer"
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    fat_monounsaturated = models.DecimalField(  # "hvorav enumettede fettsyrer"
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    fat_polyunsaturated = models.DecimalField(  # "hvorav flerumettede fettsyrer"
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-
-    carbohydrates = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    carbohydrates_sugars = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    carbohydrates_polyols = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    carbohydrates_starch = models.DecimalField(
-        max_digits=10, decimal_places=2, blank=True, null=True
-    )
-
-    fibres = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    protein = models.DecimalField(
-        "protein", max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    salt = models.DecimalField(
-        "salt", max_digits=10, decimal_places=2, blank=True, null=True
-    )
-    sodium = models.DecimalField(
-        "sodium", max_digits=10, decimal_places=2, blank=True, null=True
-    )
-
     # Data pools
     oda_id = models.PositiveBigIntegerField(blank=True, null=True, unique=True)
     oda_url = models.CharField(max_length=255, blank=True, null=True)
