@@ -126,10 +126,10 @@ class Product(BaseModel):
     @property
     def full_name(self) -> str:
         if self.unit_quantity is not None:
-            return (
-                f"{self.name}, "
-                f"{Decimal(self.unit_quantity).normalize()} {self.unit.abbreviation}"
+            quantity_str = f"{Decimal(self.unit_quantity).normalize():f}".replace(
+                ".", ","
             )
+            return f"{self.name}, " f"{quantity_str} {self.unit.abbreviation}"
         return self.name
 
     @property
