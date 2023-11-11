@@ -1850,24 +1850,21 @@
                 "type": "object"
             },
             "RecipeStatus": {
-                "title": "RecipeStatus",
+                "title": "bool",
+                "properties": null,
+                "required": null,
                 "description": "An enumeration.",
                 "enum": [
                     "draft",
                     "hidden",
                     "published"
                 ],
-                "x-enum-varnames": [
-                    "Draft",
-                    "Hidden",
-                    "Published"
-                ]
+                "type": "string"
             },
             "RecipeDifficulty": {
-                "title": "RecipeCreateIn",
+                "title": "bool",
                 "properties": null,
                 "required": null,
-                "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
                     "easy",
@@ -3048,6 +3045,152 @@
                     "Volume",
                     "Length",
                     "Usage"
+                ]
+            },
+            "RecipeCreateForm": {
+                "title": "RecipeCreateForm",
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "help_text": "Name of the recipe.",
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "order": 1,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "search_keywords": {
+                        "title": "Search Keywords",
+                        "help_text": "Separate with spaces. Title is included by default.",
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "order": 2,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "default_num_portions": {
+                        "title": "Default Num Portions",
+                        "help_text": null,
+                        "component": "Counter",
+                        "default_value": 4,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": 4,
+                        "section": null,
+                        "order": 3,
+                        "min": 1,
+                        "max": 10,
+                        "type": "string"
+                    },
+                    "status": {
+                        "help_text": null,
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": 2,
+                        "section": null,
+                        "order": 4,
+                        "min": null,
+                        "max": null,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeStatus"
+                            }
+                        ]
+                    },
+                    "difficulty": {
+                        "help_text": null,
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": 2,
+                        "section": null,
+                        "order": 5,
+                        "min": null,
+                        "max": null,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeDifficulty"
+                            }
+                        ]
+                    },
+                    "external_id": {
+                        "title": "External Id",
+                        "help_text": "Providers identifier.",
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": 1,
+                        "section": null,
+                        "order": 6,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "external_url": {
+                        "title": "External Url",
+                        "help_text": "Direct link to the recipe on a provider's site",
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": 3,
+                        "section": null,
+                        "order": 7,
+                        "min": null,
+                        "max": null,
+                        "type": "string"
+                    },
+                    "is_vegetarian": {
+                        "title": "Is Vegetarian",
+                        "default": false,
+                        "help_text": "The recipe does not contain any meat or fish products.",
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "order": 9,
+                        "min": null,
+                        "max": null,
+                        "type": "boolean"
+                    },
+                    "is_pescatarian": {
+                        "title": "Is Pescatarian",
+                        "default": false,
+                        "help_text": "The recipe contains fish.",
+                        "component": null,
+                        "default_value": null,
+                        "placeholder": null,
+                        "hidden_label": false,
+                        "col_span": null,
+                        "section": null,
+                        "order": 10,
+                        "min": null,
+                        "max": null,
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "title",
+                    "default_num_portions",
+                    "status",
+                    "difficulty"
                 ]
             }
         },

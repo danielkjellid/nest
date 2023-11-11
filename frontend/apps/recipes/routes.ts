@@ -13,6 +13,12 @@ export const routes = {
       return generatePath(this.path)
     },
   },
+  createRecipe2: {
+    path: '/recipes/create2',
+    build() {
+      return generatePath(this.path)
+    },
+  },
   createRecipeIngredients: {
     path: '/recipes/create/:recipeId/ingredients',
     build({ recipeId }: { recipeId: string | number }) {

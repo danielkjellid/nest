@@ -12,6 +12,7 @@ from nest.frontend.components import FrontendComponents
 from .enums import RecipeDifficulty, RecipeStatus
 from .selectors import get_recipe, get_recipes
 from .services import create_recipe
+from .forms import RecipeCreateForm  # noqa
 
 router = Router(tags=["Recipe"])
 
