@@ -50,12 +50,13 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
 
   const close = () => {
     onClose()
+    form.resetForm()
   }
 
   const addIngredient = async () => {
     await form.performPost({ url: urls.recipes.ingredients.create() })
     refetch()
-    onClose()
+    close()
   }
 
   return (
