@@ -30,4 +30,4 @@ class ApisConfig(AppConfig):
 
         with open(path, "w", encoding="utf-8"):
             call_command("export_schema", output=path)
-            logger.info("Wrote OpenAPI schema to %s", path)
+            logger.info("Wrote API OpenAPI schema to %s", path)

@@ -1,0 +1,34 @@
+{
+    "RecipeStatus": {
+        "title": "RecipeStatus",
+        "description": "An enumeration.",
+        "enum": [
+            "draft",
+            "hidden",
+            "published"
+        ],
+        "type": "string"
+    },
+    "TestForm": {
+        "title": "TestForm",
+        "type": "object",
+        "properties": {
+            "id": {
+                "title": "Id",
+                "type": "integer"
+            },
+            "name": {
+                "title": "Name",
+                "type": "string"
+            },
+            "status": {
+                "$ref": "#/definitions/RecipeStatus"
+            }
+        },
+        "required": [
+            "id",
+            "name",
+            "status"
+        ]
+    }
+}
