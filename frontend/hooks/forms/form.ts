@@ -38,11 +38,11 @@ const useValidator = () => {
 
 export function useForm<T extends object>({
   key,
-  data = null,
+  initialData = null,
   isMultipart = false,
 }: {
   key: keyof (typeof formsSchema)['definitions']
-  data?: Partial<T> | null
+  initialData?: Partial<T> | null
   isMultipart?: boolean
 }) {
   /**********
@@ -56,11 +56,11 @@ export function useForm<T extends object>({
   validator.compile(schema)
 
   useEffect(() => {
-    if (data) {
-      setFormData(data)
+    if (initialData) {
+      setFormData(initialData)
       setFormKey(key)
     }
-  }, [data])
+  }, [initialData])
 
   const onChange = (val: Partial<T>) => {
     // If we have fields with errors that are part of the onChange payload, we want to "resolve"
@@ -134,7 +134,7 @@ export function useForm<T extends object>({
    ***********/
 
   const resetForm = () => {
-    if (data) setFormData(null)
+    if (formData) setFormData(null)
     if (errors) setErrors(null)
     setLoadingState('initial')
   }
@@ -144,18 +144,18 @@ export function useForm<T extends object>({
    *************/
 
   const buildPayload = (): any => {
-    if (!data) return
+    if (!formData) return
 
     if (isMultipart) {
-      return { data: buildMultipartForm<T>(data), options: { isMultipart: true } }
+      return { data: buildMultipartForm<T>(formData), options: { isMultipart: true } }
     }
 
     // Convert empty string values to null.
-    Object.entries(data).map(([key, val]) => {
-      if (val === '') data[key as keyof T] = null as T[keyof T]
+    Object.entries(formData).map(([key, val]) => {
+      if (val === '') formData[key as keyof T] = null as T[keyof T]
     })
 
-    return { data, options: {} }
+    return { formData, options: {} }
   }
 
   /**********
