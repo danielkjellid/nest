@@ -100,6 +100,7 @@ export function useForm<T extends object>({
     }
 
     if (validator.errors) {
+      console.error(validator.errors)
       validator.errors.map((error) => {
         const pathParts = error.instancePath.split('/')
         const inputKey = pathParts[pathParts.length - 1]
@@ -113,7 +114,7 @@ export function useForm<T extends object>({
     }
 
     setErrors(errors)
-    return Object.keys(errors).length
+    return !Object.keys(errors).length
   }
 
   /*******************
@@ -158,7 +159,7 @@ export function useForm<T extends object>({
       if (val === '') formData[key as keyof T] = null as T[keyof T]
     })
 
-    return { formData, options: {} }
+    return { data: formData, options: {} }
   }
 
   /**********

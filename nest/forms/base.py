@@ -56,6 +56,11 @@ class NestForms:
             if properties is None:
                 continue
 
+            required = attributes.get("required", None)
+
+            if required is not None:
+                attributes["required"] = [camelize(r) for r in required]
+
             for property_key, property_val in properties.items():
                 # Handle property explicitly if the value is supposed to be an enum.
                 if property_key in self.enum_mappings.keys():
