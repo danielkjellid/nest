@@ -4,7 +4,7 @@ from typing import Any
 from django.http import HttpRequest
 from ninja import File, Form, Router, Schema
 
-from nest.api.fields import FormField
+from nest.forms.fields import FormField
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
 from nest.audit_logs.selectors import get_log_entries_for_object
