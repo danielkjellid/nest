@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import ClassVar
 
 from nest.forms.fields import FormField
 from nest.forms.models import Form
@@ -6,7 +7,7 @@ from nest.frontend.components import FrontendComponents
 
 
 class ProductCreateForm(Form):
-    COLUMNS = 2
+    COLUMNS: ClassVar[int] = 2
 
     name: str = FormField(
         ...,
@@ -59,7 +60,7 @@ class ProductCreateForm(Form):
 
 
 class ProductEditForm(Form):
-    COLUMNS = 4
+    COLUMNS: ClassVar[int] = 4
 
     name: str = FormField(
         ...,

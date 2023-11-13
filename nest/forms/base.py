@@ -19,12 +19,15 @@ COMPONENTS = settings.FORM_COMPONENT_MAPPING_DEFAULTS
 class NestForms:
     def __init__(self) -> None:
         self.app_forms: dict[str, AppForms] = {}
-        self.enum_mappings = {}
+        self.enum_mappings: dict[str, list[dict[str, str | int]]] = {}
 
-    def add_forms(self, app_form: AppForms):
+    def add_forms(self, app_form: AppForms) -> None:
         self.app_forms[app_form.app] = app_form
 
-    def generate_schema(self):
+    def generate_schema(self) -> dict[str, Any]:
+        """
+        Generate a schema in OpenAPI format for all registered forms.
+        """
         columns = {}
         forms_to_generate = []
 
@@ -75,15 +78,18 @@ class NestForms:
         return schema
 
     @staticmethod
-    def _get_component(property_val: dict[str, Any]):
-        defined_component = property_val.get("component", None)
+    def _get_component(property_val: dict[str, Any]) -> str:
+        """
+        Get related component based on property type.
+        """
+        defined_component: str = property_val.get("component", None)
 
         if defined_component is not None:
             return defined_component
 
         return COMPONENTS[property_val["type"]].value
 
-    def _extract_enum_from_form(self, form: F):
+    def _extract_enum_from_form(self, form: F) -> dict[str, list[dict[str, str | int]]]:
         enum_mapping = {}
 
         for field_name, val in form.__fields__.items():
@@ -136,7 +142,7 @@ class NestForms:
 class AppForms:
     def __init__(self, app: str) -> None:
         self.app = app
-        self.forms: list[F] = []
+        self.forms: list[Any] = []
 
-    def register_form(self, form: F):
+    def register_form(self, form: Any) -> None:
         self.forms.append(form)
