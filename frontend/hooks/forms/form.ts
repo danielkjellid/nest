@@ -98,7 +98,7 @@ export function useForm<T extends object>({
         }
       })
     }
-    console.log(validator.errors)
+
     if (validator.errors) {
       validator.errors.map((error) => {
         const pathParts = error.instancePath.split('/')
@@ -145,6 +145,9 @@ export function useForm<T extends object>({
 
   const buildPayload = (): any => {
     if (!formData) return
+    const isValid = validate()
+
+    if (!isValid) return
 
     if (isMultipart) {
       return { data: buildMultipartForm<T>(formData), options: { isMultipart: true } }
