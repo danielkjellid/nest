@@ -1,5 +1,15 @@
 {
     "definitions": {
+        "RecipeStatus": {
+            "title": "RecipeStatus",
+            "description": "An enumeration.",
+            "enum": [
+                "draft",
+                "hidden",
+                "published"
+            ],
+            "type": "string"
+        },
         "TestForm": {
             "title": "TestForm",
             "type": "object",
@@ -28,15 +38,49 @@
                     "hiddenLabel": false,
                     "colSpan": null,
                     "section": null,
-                    "order": 2,
+                    "order": 3,
                     "min": null,
                     "max": null,
                     "type": "string"
+                },
+                "status": {
+                    "helpText": null,
+                    "component": "Select",
+                    "defaultValue": null,
+                    "placeholder": null,
+                    "hiddenLabel": false,
+                    "colSpan": null,
+                    "section": null,
+                    "order": 2,
+                    "min": null,
+                    "max": null,
+                    "title": "Status",
+                    "enum": [
+                        {
+                            "label": "Draft",
+                            "value": "draft"
+                        },
+                        {
+                            "label": "Hidden",
+                            "value": "hidden"
+                        },
+                        {
+                            "label": "Published",
+                            "value": "published"
+                        }
+                    ],
+                    "type": "string",
+                    "xEnumVarnames": [
+                        "Draft",
+                        "Hidden",
+                        "Published"
+                    ]
                 }
             },
             "required": [
                 "id",
-                "name"
+                "name",
+                "status"
             ],
             "columns": 2
         }

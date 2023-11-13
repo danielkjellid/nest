@@ -177,6 +177,7 @@ const useValidator = () => {
   ajv.addKeyword('min')
   ajv.addKeyword('max')
   ajv.addKeyword('columns')
+  ajv.addKeyword('xEnumVarnames')
 
   return ajv
 }
@@ -244,7 +245,7 @@ export function useForm2<T extends object>({
         }
       })
     }
-
+    console.log(validator.errors)
     if (!errors && validator.errors) {
       validator.errors.map((error) => {
         const pathParts = error.instancePath.split('/')
