@@ -1,28 +1,5 @@
 import humps from 'humps'
 
-// Recursively iterates the schema and looks for the object key 'multipart/form-data' in
-// any of the paths, then it checks if the reference to that object value corresponds with
-// the current form key.
-export const determineIsMultipart = (obj: Record<string, any>, formKey: string): any => {
-  let foundMultipartKey = false
-
-  for (const pathValue of Object.values(obj)) {
-    for (const operationValue of Object.values(pathValue)) {
-      if ((operationValue as any).requestBody && (operationValue as any).requestBody.content) {
-        if ((operationValue as any).requestBody.content['multipart/form-data']) {
-          foundMultipartKey = (operationValue as any).requestBody.content[
-            'multipart/form-data'
-          ].schema.$ref
-            .split('/')
-            .includes(formKey)
-        }
-      }
-    }
-  }
-
-  return foundMultipartKey
-}
-
 // Takes current form object and converts it to a valid form data.
 export function buildMultipartForm<T extends object>(data: Partial<T>): FormData {
   const fd = new FormData()

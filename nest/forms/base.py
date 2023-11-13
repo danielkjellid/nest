@@ -1,12 +1,15 @@
 from __future__ import annotations
-from typing import TypeVar, Any, get_type_hints, get_args
-from .form import Form
+
 import inspect
 from enum import Enum
-from django.db.models import TextChoices, IntegerChoices
+from typing import Any, TypeVar, get_args
+
+from django.conf import settings
+from django.db.models import IntegerChoices, TextChoices
 from pydantic.schema import schema as pydantic_schema
 from store_kit.utils import camelize
-from django.conf import settings
+
+from .models import Form
 
 F = TypeVar("F", bound=Form)
 
@@ -14,8 +17,9 @@ COMPONENTS = settings.FORM_COMPONENT_MAPPING_DEFAULTS
 
 
 class NestForms:
-    app_forms: dict[str, AppForms] = {}
-    enum_mappings = {}
+    def __init__(self) -> None:
+        self.app_forms: dict[str, AppForms] = {}
+        self.enum_mappings = {}
 
     def add_forms(self, app_form: AppForms):
         self.app_forms[app_form.app] = app_form
@@ -24,7 +28,7 @@ class NestForms:
         columns = {}
         forms_to_generate = []
 
-        for app, app_form in self.app_forms.items():
+        for app_form in self.app_forms.values():
             for form in app_form.forms:
                 columns[form.__name__] = form.COLUMNS
 
@@ -59,7 +63,8 @@ class NestForms:
                     property_val["component"] = COMPONENTS["enum"].value
                     property_val["x-enum-varnames"] = [map["label"] for map in mapping]
 
-                    del property_val["allOf"]
+                    property_val.pop("allOf", None)
+                    property_val.pop("anyOf", None)
                 else:
                     properties[property_key]["component"] = self._get_component(
                         property_val

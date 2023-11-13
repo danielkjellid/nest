@@ -40,7 +40,7 @@ interface IngredientAddDrawerProps {
 }
 
 function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientAddDrawerProps) {
-  const form = useForm({ key: 'IngredientCreateIn' })
+  const form = useForm({ key: 'IngredientCreateForm' })
   const productsOptions = products.map((product) => ({
     image: product.thumbnailUrl,
     label: product.fullName,

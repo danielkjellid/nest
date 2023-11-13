@@ -13,7 +13,7 @@ interface ProductAddDrawerProps {
 }
 
 function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
-  const form = useForm({ key: 'ProductCreateIn' })
+  const form = useForm({ key: 'ProductCreateForm' })
   const { unitsOptions } = useUnits()
 
   const close = () => {

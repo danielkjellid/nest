@@ -1,8 +1,8 @@
 import Form from '../../components/Form'
-import { useForm2 } from '../../hooks/forms/form'
+import { useForm } from '../../hooks/forms/form'
 
 function SettingsApp() {
-  const form = useForm2({ key: 'TestForm' })
+  const form = useForm({ key: 'RecipeCreateForm' })
   return (
     <div>
       <p>{JSON.stringify(form)}</p>

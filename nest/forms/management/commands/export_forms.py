@@ -3,7 +3,7 @@ from typing import Any
 
 from django.core.management.base import BaseCommand, CommandParser
 
-from nest.forms import forms
+from nest.forms.forms import forms
 
 
 class Command(BaseCommand):

@@ -2,11 +2,11 @@ from django.http import HttpRequest
 from ninja import Router, Schema
 from store_kit.http import status
 
-from nest.forms.fields import FormField
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.frontend.components import FrontendComponents
+from nest.forms.fields import FormField
 
+from .forms import IngredientCreateForm
 from .selectors import (
     get_recipe_ingredient_item_groups_for_recipe,
     get_recipe_ingredients,
@@ -20,19 +20,10 @@ from .services import (
 router = Router(tags=["Recipe ingredients"])
 
 
-class IngredientCreateIn(Schema):
-    title: str = FormField(
-        ..., order=1, help_text="User friendly title. E.g. Red tomatoes."
-    )
-    product_id: int = FormField(
-        ..., alias="product", order=2, component=FrontendComponents.SELECT.value
-    )
-
-
 @router.post("create/", response={201: APIResponse[None]})
 @staff_required
 def recipe_ingredient_create_api(
-    request: HttpRequest, payload: IngredientCreateIn
+    request: HttpRequest, payload: IngredientCreateForm
 ) -> tuple[int, APIResponse[None]]:
     """
     Create an ingredient.

@@ -2,163 +2,17 @@ import { notifications } from '@mantine/notifications'
 import Ajv from 'ajv'
 import { useEffect, useState } from 'react'
 
-import formsSchema from '../../../forms.json'
-import schema from '../../../schema.json'
 import { type ButtonProps } from '../../components/Button'
 import { type FormElement } from '../../components/Form/types'
 import { performPost as httpPost } from '../fetcher/http'
 
-import { buildMultipartForm, determineIsMultipart } from './multipart'
+import formsSchema from './forms.json'
+import { buildMultipartForm } from './multipart'
 
 interface FormComponentSchema {
   properties: FormElement
   required: string[]
   columns: number
-}
-
-export function useForm<T extends object>({
-  key,
-  existingObj,
-}: {
-  key: string
-  existingObj?: Partial<T>
-}) {
-  /**********
-   ** Data **
-   **********/
-
-  const [data, setData] = useState<Partial<T> | null>(null)
-
-  useEffect(() => {
-    if (existingObj) {
-      setData(existingObj)
-      setFormKey(key)
-    }
-  }, [existingObj])
-
-  const onChange = (val: Partial<T>) => {
-    // If we have fields with errors that are part of the onChange payload, we want to "resolve"
-    // errors for those fields, but keep errors for fields that have not change since the erroneous
-    // state.
-    if (data && errors) {
-      const updatedErrors = { ...errors }
-      Object.keys(val).map((valueKey) => {
-        const keyFromValue = valueKey as keyof T
-        if (
-          val[keyFromValue] &&
-          val[keyFromValue] !== data[keyFromValue] &&
-          errors[keyFromValue] !== undefined
-        ) {
-          delete updatedErrors[keyFromValue]
-        }
-      })
-
-      setErrors({ ...updatedErrors })
-    }
-
-    // Update the data as well.
-    setLoadingState('initial')
-    setData(val)
-  }
-
-  /************
-   ** Errors **
-   ************/
-
-  const [errors, setErrors] = useState<Partial<Record<keyof T, string>> | null>({})
-  const resetErrors = () => setErrors(null)
-
-  /***********
-   ** Reset **
-   ***********/
-
-  const resetForm = () => {
-    if (data) setData(null)
-    if (errors) setErrors(null)
-    setLoadingState('initial')
-  }
-
-  /*************
-   ** Payload **
-   *************/
-
-  const buildPayload = (): any => {
-    if (!data) return
-
-    if (isMultipart) {
-      return { data: buildMultipartForm<T>(data), options: { isMultipart: true } }
-    }
-
-    // Convert empty string values to null.
-    Object.entries(data).map(([key, val]) => {
-      if (val === '') data[key as keyof T] = null as T[keyof T]
-    })
-
-    return { data, options: {} }
-
-    // return data
-  }
-
-  /*******************
-   ** Loading state **
-   *******************/
-
-  const [loadingState, setLoadingState] = useState<ButtonProps['loadingState']>('initial')
-
-  /**********
-   ** Http **
-   **********/
-
-  async function performPost<T>({ url }: { url: string }) {
-    try {
-      setLoadingState('loading')
-      const response = await httpPost<T>({
-        url,
-        ...buildPayload(),
-      })
-      notifications.show({
-        title: 'Changes were saved successfully',
-        message: 'Your changes were saves successfully.',
-        color: 'green',
-      })
-      setLoadingState('success')
-      return response
-    } catch (e) {
-      const error = e as any
-      setLoadingState('error')
-      if (error && error.response && error.response.data) {
-        setErrors(error.response.data.data)
-      }
-      console.log(e)
-    }
-  }
-
-  /**********
-   ** Misc **
-   **********/
-
-  const [formKey, setFormKey] = useState(new Date().toDateString())
-  const formFromSchema = (schema as any).components.schemas[key] as FormComponentSchema
-  const isMultipart = determineIsMultipart(schema.paths, key)
-
-  return {
-    key: formKey,
-    data,
-    setData,
-    onChange,
-    errors,
-    setErrors,
-    resetErrors,
-    buildPayload,
-    resetForm,
-    loadingState,
-    setLoadingState,
-    performPost,
-    elements: formFromSchema.properties,
-    required: formFromSchema.required,
-    columns: formFromSchema.columns,
-    isMultipart,
-  }
 }
 
 const useValidator = () => {
@@ -182,7 +36,7 @@ const useValidator = () => {
   return ajv
 }
 
-export function useForm2<T extends object>({
+export function useForm<T extends object>({
   key,
   data = null,
   isMultipart = false,
@@ -212,19 +66,18 @@ export function useForm2<T extends object>({
     // If we have fields with errors that are part of the onChange payload, we want to "resolve"
     // errors for those fields, but keep errors for fields that have not change since the erroneous
     // state.
-    if (data && errors) {
+    if (formData && errors) {
       const updatedErrors = { ...errors }
       Object.keys(val).map((valueKey) => {
         const keyFromValue = valueKey as keyof T
         if (
           val[keyFromValue] &&
-          val[keyFromValue] !== data[keyFromValue] &&
+          val[keyFromValue] !== formData[keyFromValue] &&
           errors[keyFromValue] !== undefined
         ) {
           delete updatedErrors[keyFromValue]
         }
       })
-
       setErrors({ ...updatedErrors })
     }
 
@@ -246,7 +99,7 @@ export function useForm2<T extends object>({
       })
     }
     console.log(validator.errors)
-    if (!errors && validator.errors) {
+    if (validator.errors) {
       validator.errors.map((error) => {
         const pathParts = error.instancePath.split('/')
         const inputKey = pathParts[pathParts.length - 1]

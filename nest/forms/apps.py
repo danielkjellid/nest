@@ -1,8 +1,9 @@
+from pathlib import Path
+
+import structlog
 from django.apps import AppConfig
 from django.conf import settings
 from django.core.management import call_command
-import structlog
-from pathlib import Path
 
 logger = structlog.getLogger()
 
@@ -25,7 +26,7 @@ class FormsConfig(AppConfig):
 
         # Make sure folder exist.
         folder_path.mkdir(parents=True, exist_ok=True)
-        path = folder_path / "forms.json"
+        path = folder_path / "frontend" / "hooks" / "forms" / "forms.json"
 
         with open(path, "w", encoding="utf-8"):
             call_command("export_forms", output=path)

@@ -26,7 +26,7 @@ function RecipeCreate() {
    ** Form **
    **********/
 
-  const form = useForm({ key: 'RecipeCreateIn' })
+  const form = useForm({ key: 'RecipeCreateForm' })
 
   /**************
    ** Handlers **
