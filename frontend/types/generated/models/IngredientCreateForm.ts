@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type IngredientCreateIn = {
+export type IngredientCreateForm = {
     title: string;
     product: number;
 };

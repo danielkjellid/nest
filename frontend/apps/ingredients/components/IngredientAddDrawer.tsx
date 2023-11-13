@@ -5,7 +5,7 @@ import { Button } from '../../../components/Button'
 import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { useForm } from '../../../hooks/forms'
-import { type IngredientCreateIn, type ProductListOut } from '../../../types'
+import { type IngredientCreateForm, type ProductListOut } from '../../../types'
 import { urls } from '../../urls'
 
 interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -40,7 +40,7 @@ interface IngredientAddDrawerProps {
 }
 
 function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientAddDrawerProps) {
-  const form = useForm({ key: 'IngredientCreateForm' })
+  const form = useForm<IngredientCreateForm>({ key: 'IngredientCreateForm' })
   const productsOptions = products.map((product) => ({
     image: product.thumbnailUrl,
     label: product.fullName,
@@ -80,7 +80,7 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
       }
     >
       <div className="space-y-5">
-        <Form<IngredientCreateIn>
+        <Form<IngredientCreateForm>
           {...form}
           elementsOptions={{
             product: { options: productsOptions || [], itemComponent: ProductOption },

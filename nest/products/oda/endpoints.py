@@ -3,8 +3,7 @@ from ninja import Router, Schema
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.forms.fields import FormField
-
+from .forms import ProductOdaImportForm
 from .clients import OdaClient
 from .services import import_product_from_oda
 
@@ -22,14 +21,10 @@ class ProductOdaImportOut(Schema):
     thumbnail_url: str
 
 
-class ProductOdaImportIn(Schema):
-    oda_product_id: int = FormField(..., help_text="Product Id at Oda.")
-
-
 @router.post("import/", response=APIResponse[ProductOdaImportOut])
 @staff_required
 def product_oda_import_api(
-    request: HttpRequest, payload: ProductOdaImportIn
+    request: HttpRequest, payload: ProductOdaImportForm
 ) -> APIResponse[ProductOdaImportOut]:
     """
     Import product data from id. Note: This does not create a product, it only retrieves

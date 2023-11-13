@@ -183,7 +183,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductOdaImportIn"
+                                "$ref": "#/components/schemas/ProductOdaImportForm"
                             }
                         }
                     },
@@ -1770,8 +1770,8 @@
                 ],
                 "type": "object"
             },
-            "ProductOdaImportIn": {
-                "title": "ProductOdaImportIn",
+            "ProductOdaImportForm": {
+                "title": "ProductOdaImportForm",
                 "properties": {
                     "odaProductId": {
                         "title": "Oda Product Id",
