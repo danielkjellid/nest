@@ -1,5 +1,5 @@
-from nest.forms.models import Form
 from nest.forms.fields import FormField
+from nest.forms.models import Form
 
 
 class ProductOdaImportForm(Form):
