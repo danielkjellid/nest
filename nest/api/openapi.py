@@ -4,16 +4,13 @@ import inspect
 from enum import Enum
 from typing import (
     Any,
-    Collection,
     Iterable,
-    Sequence,
     Type,
     cast,
     get_args,
     get_type_hints,
 )
 
-from django.conf import settings
 from django.db.models import IntegerChoices, TextChoices
 from ninja import NinjaAPI
 from ninja.openapi.schema import (
