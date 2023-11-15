@@ -642,43 +642,53 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "fullName": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "thumbnailUrl": {
                         "title": "Thumbnail Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isAvailable": {
                         "title": "Is Available",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "odaUrl": {
                         "title": "Oda Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "odaId": {
                         "title": "Oda Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "isSynced": {
                         "title": "Is Synced",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "gtin": {
                         "title": "Gtin",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isOdaProduct": {
                         "title": "Is Oda Product",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "displayPrice": {
                         "title": "Display Price",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -700,18 +710,21 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ProductListOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -728,11 +741,13 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
@@ -751,7 +766,7 @@
                     "name": {
                         "title": "Name",
                         "helpText": "Plain name of product, should not include unit.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -765,7 +780,7 @@
                     "grossPrice": {
                         "title": "Gross Price",
                         "helpText": "Gross price of product, including VAT.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -779,7 +794,7 @@
                     "unitQuantity": {
                         "title": "Unit Quantity",
                         "helpText": "Amount in selected unit type. E.g. 2 if 2 kg.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -807,7 +822,7 @@
                     "supplier": {
                         "title": "Supplier",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -821,7 +836,7 @@
                     "gtin": {
                         "title": "Gtin",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -863,7 +878,7 @@
                     "fat": {
                         "title": "Fat",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -877,7 +892,7 @@
                     "fatSaturated": {
                         "title": "Fat Saturated",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -891,7 +906,7 @@
                     "fatMonounsaturated": {
                         "title": "Fat Monounsaturated",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -905,7 +920,7 @@
                     "fatPolyunsaturated": {
                         "title": "Fat Polyunsaturated",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -919,7 +934,7 @@
                     "carbohydrates": {
                         "title": "Carbohydrates",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -933,7 +948,7 @@
                     "carbohydratesSugars": {
                         "title": "Carbohydrates Sugars",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -947,7 +962,7 @@
                     "carbohydratesPolyols": {
                         "title": "Carbohydrates Polyols",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -961,7 +976,7 @@
                     "carbohydratesStarch": {
                         "title": "Carbohydrates Starch",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -975,7 +990,7 @@
                     "fibres": {
                         "title": "Fibres",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -989,7 +1004,7 @@
                     "salt": {
                         "title": "Salt",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1003,7 +1018,7 @@
                     "sodium": {
                         "title": "Sodium",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1017,7 +1032,7 @@
                     "isAvailable": {
                         "title": "Is Available",
                         "helpText": null,
-                        "component": null,
+                        "component": "Checkbox",
                         "defaultValue": true,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1032,7 +1047,8 @@
                         "title": "Thumbnail",
                         "type": "file",
                         "format": "binary",
-                        "placeholder": "Upload thumbnail"
+                        "placeholder": "Upload thumbnail",
+                        "component": "FileInput"
                     }
                 },
                 "required": [
@@ -1050,23 +1066,28 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "abbreviation": {
                         "title": "Abbreviation",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "unitType": {
                         "title": "Unit Type",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "displayName": {
                         "title": "Display Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1082,19 +1103,23 @@
                 "properties": {
                     "key": {
                         "title": "Key",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "parentKey": {
                         "title": "Parent Key",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "value": {
                         "title": "Value",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1109,11 +1134,13 @@
                 "properties": {
                     "userOrSource": {
                         "title": "User Or Source",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "remoteAddr": {
                         "title": "Remote Addr",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "changes": {
                         "title": "Changes",
@@ -1126,11 +1153,13 @@
                                 {},
                                 {}
                             ]
-                        }
+                        },
+                        "component": "NumberInput"
                     },
                     "createdAt": {
                         "title": "Created At",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1144,134 +1173,164 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "fullName": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isAvailable": {
                         "title": "Is Available",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "thumbnailUrl": {
                         "title": "Thumbnail Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "containsLactose": {
                         "title": "Contains Lactose",
                         "default": false,
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "containsGluten": {
                         "title": "Contains Gluten",
                         "default": false,
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "grossPrice": {
                         "title": "Gross Price",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "grossUnitPrice": {
                         "title": "Gross Unit Price",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "unit": {
                         "$ref": "#/components/schemas/ProductDetailUnitOut"
                     },
                     "unitQuantity": {
                         "title": "Unit Quantity",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "gtin": {
                         "title": "Gtin",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "supplier": {
                         "title": "Supplier",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isSynced": {
                         "title": "Is Synced",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "odaId": {
                         "title": "Oda Id",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "odaUrl": {
                         "title": "Oda Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isOdaProduct": {
                         "title": "Is Oda Product",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "lastDataUpdate": {
                         "title": "Last Data Update",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "fat": {
                         "title": "Fat",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "fatSaturated": {
                         "title": "Fat Saturated",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "fatMonounsaturated": {
                         "title": "Fat Monounsaturated",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "fatPolyunsaturated": {
                         "title": "Fat Polyunsaturated",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "carbohydrates": {
                         "title": "Carbohydrates",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "carbohydratesSugars": {
                         "title": "Carbohydrates Sugars",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "carbohydratesPolyols": {
                         "title": "Carbohydrates Polyols",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "carbohydratesStarch": {
                         "title": "Carbohydrates Starch",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "fibres": {
                         "title": "Fibres",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "salt": {
                         "title": "Salt",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "sodium": {
                         "title": "Sodium",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "nutritionTable": {
                         "title": "Nutrition Table",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/TableRecord"
-                        }
+                        },
+                        "component": "MultiSelect"
                     },
                     "auditLogs": {
                         "title": "Audit Logs",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ProductDetailAuditLogsOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -1297,11 +1356,13 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "$ref": "#/components/schemas/ProductDetailOut"
@@ -1318,7 +1379,7 @@
                     "name": {
                         "title": "Name",
                         "helpText": "Plain name of product, should not include unit.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1332,7 +1393,7 @@
                     "grossPrice": {
                         "title": "Gross Price",
                         "helpText": "Gross price of product, including VAT.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1346,7 +1407,7 @@
                     "unitQuantity": {
                         "title": "Unit Quantity",
                         "helpText": "Amount in selected unit type. E.g. 2 if 2 kg.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1374,7 +1435,7 @@
                     "supplier": {
                         "title": "Supplier",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1388,7 +1449,7 @@
                     "gtin": {
                         "title": "Gtin",
                         "helpText": "Global trade item number. Number bellow barcode.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1402,7 +1463,7 @@
                     "odaId": {
                         "title": "Oda Id",
                         "helpText": "Corresponding product id at Oda.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1416,7 +1477,7 @@
                     "odaUrl": {
                         "title": "Oda Url",
                         "helpText": "Link to product at Oda.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1430,7 +1491,7 @@
                     "fat": {
                         "title": "Fat",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1444,7 +1505,7 @@
                     "fatSaturated": {
                         "title": "Fat Saturated",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1458,7 +1519,7 @@
                     "fatMonounsaturated": {
                         "title": "Fat Monounsaturated",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1472,7 +1533,7 @@
                     "fatPolyunsaturated": {
                         "title": "Fat Polyunsaturated",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1486,7 +1547,7 @@
                     "carbohydrates": {
                         "title": "Carbohydrates",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1500,7 +1561,7 @@
                     "carbohydratesSugars": {
                         "title": "Carbohydrates Sugars",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1514,7 +1575,7 @@
                     "carbohydratesPolyols": {
                         "title": "Carbohydrates Polyols",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1528,7 +1589,7 @@
                     "carbohydratesStarch": {
                         "title": "Carbohydrates Starch",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1542,7 +1603,7 @@
                     "fibres": {
                         "title": "Fibres",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1556,7 +1617,7 @@
                     "salt": {
                         "title": "Salt",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1570,7 +1631,7 @@
                     "sodium": {
                         "title": "Sodium",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1584,7 +1645,7 @@
                     "isAvailable": {
                         "title": "Is Available",
                         "helpText": "Product is available and is actively used in recipes.",
-                        "component": null,
+                        "component": "Checkbox",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1598,7 +1659,7 @@
                     "isSynced": {
                         "title": "Is Synced",
                         "helpText": "Product is synced with external providers",
-                        "component": null,
+                        "component": "Checkbox",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1613,7 +1674,8 @@
                         "title": "Thumbnail",
                         "type": "file",
                         "format": "binary",
-                        "placeholder": "Upload thumbnail"
+                        "placeholder": "Upload thumbnail",
+                        "component": "FileInput"
                     }
                 },
                 "required": [
@@ -1632,35 +1694,43 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "fullName": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "supplier": {
                         "title": "Supplier",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isAvailable": {
                         "title": "Is Available",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "grossPrice": {
                         "title": "Gross Price",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "unit": {
                         "title": "Unit",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "unitQuantity": {
                         "title": "Unit Quantity",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "thumbnailUrl": {
                         "title": "Thumbnail Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1683,11 +1753,13 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "$ref": "#/components/schemas/ProductOdaImportOut"
@@ -1704,7 +1776,7 @@
                     "odaProductId": {
                         "title": "Oda Product Id",
                         "helpText": "Product Id at Oda.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1726,7 +1798,8 @@
                 "properties": {
                     "odaProductId": {
                         "title": "Oda Product Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1739,7 +1812,8 @@
                 "properties": {
                     "recipeId": {
                         "title": "Recipe Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1756,11 +1830,13 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "$ref": "#/components/schemas/RecipeCreateOut"
@@ -1803,7 +1879,7 @@
                     "title": {
                         "title": "Title",
                         "helpText": "Name of the recipe.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1817,7 +1893,7 @@
                     "searchKeywords": {
                         "title": "Search Keywords",
                         "helpText": "Separate with spaces. Title is included by default.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1845,7 +1921,7 @@
                     "status": {
                         "title": "Status",
                         "helpText": null,
-                        "component": null,
+                        "component": "Select",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1861,12 +1937,26 @@
                             {
                                 "type": "string"
                             }
+                        ],
+                        "enum": [
+                            {
+                                "label": "Draft",
+                                "value": "draft"
+                            },
+                            {
+                                "label": "Hidden",
+                                "value": "hidden"
+                            },
+                            {
+                                "label": "Published",
+                                "value": "published"
+                            }
                         ]
                     },
                     "difficulty": {
                         "title": "Difficulty",
                         "helpText": null,
-                        "component": null,
+                        "component": "Select",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1882,12 +1972,26 @@
                             {
                                 "type": "string"
                             }
+                        ],
+                        "enum": [
+                            {
+                                "label": "Easy",
+                                "value": "easy"
+                            },
+                            {
+                                "label": "Medium",
+                                "value": "medium"
+                            },
+                            {
+                                "label": "Hard",
+                                "value": "hard"
+                            }
                         ]
                     },
                     "externalId": {
                         "title": "External Id",
                         "helpText": "Providers identifier.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1901,7 +2005,7 @@
                     "externalUrl": {
                         "title": "External Url",
                         "helpText": "Direct link to the recipe on a provider's site",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1916,7 +2020,7 @@
                         "title": "Is Vegetarian",
                         "default": false,
                         "helpText": "The recipe does not contain any meat or fish products.",
-                        "component": null,
+                        "component": "Checkbox",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1931,7 +2035,7 @@
                         "title": "Is Pescatarian",
                         "default": false,
                         "helpText": "The recipe contains fish.",
-                        "component": null,
+                        "component": "Checkbox",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -1956,15 +2060,18 @@
                 "properties": {
                     "preparationTimeIso8601": {
                         "title": "Preparation Time Iso8601",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "cookingTimeIso8601": {
                         "title": "Cooking Time Iso8601",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "totalTimeIso8601": {
                         "title": "Total Time Iso8601",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1979,11 +2086,13 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -1997,7 +2106,8 @@
                 "properties": {
                     "abbreviation": {
                         "title": "Abbreviation",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -2010,18 +2120,21 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "ingredient": {
                         "$ref": "#/components/schemas/RecipeDetailIngredientOut"
                     },
                     "portionQuantity": {
                         "title": "Portion Quantity",
-                        "type": "number"
+                        "type": "number",
+                        "component": "TextInput"
                     },
                     "portionQuantityDisplay": {
                         "title": "Portion Quantity Display",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "portionQuantityUnit": {
                         "$ref": "#/components/schemas/RecipeDetailIngredientItemUnitOut"
@@ -2041,26 +2154,31 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "number": {
                         "title": "Number",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "instruction": {
                         "title": "Instruction",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "stepTypeDisplay": {
                         "title": "Step Type Display",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "ingredientItems": {
                         "title": "Ingredient Items",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeDetailIngredientItemOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2077,18 +2195,21 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "ingredientItems": {
                         "title": "Ingredient Items",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeDetailIngredientItemOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2103,50 +2224,61 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "slug": {
                         "title": "Slug",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "defaultNumPortions": {
                         "title": "Default Num Portions",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "searchKeywords": {
                         "title": "Search Keywords",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "externalId": {
                         "title": "External Id",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "externalUrl": {
                         "title": "External Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "status": {
                         "$ref": "#/components/schemas/RecipeStatus"
                     },
                     "statusDisplay": {
                         "title": "Status Display",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "difficultyDisplay": {
                         "title": "Difficulty Display",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isVegetarian": {
                         "title": "Is Vegetarian",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "isPescatarian": {
                         "title": "Is Pescatarian",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "duration": {
                         "$ref": "#/components/schemas/RecipeDetailDurationOut"
@@ -2156,14 +2288,16 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeDetailStepOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     },
                     "ingredientGroups": {
                         "title": "Ingredient Groups",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeDetailIngredientGroupOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2191,11 +2325,13 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "$ref": "#/components/schemas/RecipeDetailOut"
@@ -2211,31 +2347,38 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "defaultNumPortions": {
                         "title": "Default Num Portions",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "statusDisplay": {
                         "title": "Status Display",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "difficultyDisplay": {
                         "title": "Difficulty Display",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isVegetarian": {
                         "title": "Is Vegetarian",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "isPescatarian": {
                         "title": "Is Pescatarian",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     }
                 },
                 "required": [
@@ -2258,18 +2401,21 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeListOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2283,7 +2429,7 @@
                     "title": {
                         "title": "Title",
                         "helpText": "User friendly title. E.g. Red tomatoes.",
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -2320,7 +2466,8 @@
                 "properties": {
                     "ingredientId": {
                         "title": "Ingredient Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -2333,15 +2480,18 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "fullName": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "thumbnailUrl": {
                         "title": "Thumbnail Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -2355,11 +2505,13 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "product": {
                         "$ref": "#/components/schemas/IngredientListProductOut"
@@ -2381,18 +2533,21 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/IngredientListOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2406,7 +2561,7 @@
                     "ingredient": {
                         "title": "Ingredient",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -2419,12 +2574,13 @@
                     },
                     "portionQuantity": {
                         "title": "Portion Quantity",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "unit": {
                         "title": "Unit",
                         "helpText": null,
-                        "component": null,
+                        "component": "TextInput",
                         "defaultValue": null,
                         "placeholder": null,
                         "hiddenLabel": false,
@@ -2437,7 +2593,8 @@
                     },
                     "additionalInfo": {
                         "title": "Additional Info",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -2452,18 +2609,21 @@
                 "properties": {
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "ordering": {
                         "title": "Ordering",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "ingredients": {
                         "title": "Ingredients",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientsCreateIngredientIn"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2478,11 +2638,13 @@
                 "properties": {
                     "fullName": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "thumbnailUrl": {
                         "title": "Thumbnail Url",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -2495,11 +2657,13 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "product": {
                         "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientProductOut"
@@ -2517,7 +2681,8 @@
                 "properties": {
                     "abbreviation": {
                         "title": "Abbreviation",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -2530,7 +2695,8 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "ingredient": {
                         "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientOut"
@@ -2551,18 +2717,21 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "title": {
                         "title": "Title",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "ingredientItems": {
                         "title": "Ingredient Items",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientGroupsListItemOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2581,18 +2750,21 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientGroupsListOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2605,26 +2777,31 @@
                 "properties": {
                     "number": {
                         "title": "Number",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "duration": {
                         "title": "Duration",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "instruction": {
                         "title": "Instruction",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "stepType": {
                         "title": "Step Type",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "ingredientItems": {
                         "title": "Ingredient Items",
                         "type": "array",
                         "items": {
                             "type": "string"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2641,15 +2818,18 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "name": {
                         "title": "Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "displayName": {
                         "title": "Display Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     }
                 },
                 "required": [
@@ -2668,18 +2848,21 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/UnitListOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
@@ -2692,15 +2875,18 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "address": {
                         "title": "Address",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isActive": {
                         "title": "Is Active",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     }
                 },
                 "required": [
@@ -2715,27 +2901,33 @@
                 "properties": {
                     "id": {
                         "title": "Id",
-                        "type": "integer"
+                        "type": "integer",
+                        "component": "TextInput"
                     },
                     "email": {
                         "title": "Email",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "fullName": {
                         "title": "Full Name",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "isActive": {
                         "title": "Is Active",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "isStaff": {
                         "title": "Is Staff",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "isSuperuser": {
                         "title": "Is Superuser",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "component": "Checkbox"
                     },
                     "home": {
                         "$ref": "#/components/schemas/UserListHomeOut"
@@ -2760,18 +2952,21 @@
                             "success",
                             "error"
                         ],
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "message": {
                         "title": "Message",
-                        "type": "string"
+                        "type": "string",
+                        "component": "TextInput"
                     },
                     "data": {
                         "title": "Data",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/UserListOut"
-                        }
+                        },
+                        "component": "MultiSelect"
                     }
                 },
                 "required": [
