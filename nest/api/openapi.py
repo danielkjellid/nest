@@ -24,6 +24,8 @@ from ninja.openapi.schema import (
 from ninja.openapi.schema import (
     OpenAPISchema as NinjaOpenAPISchema,
 )
+from nest.core.openapi.schema import NestOpenAPISchema
+from nest.core.openapi.types import Definition
 from ninja.params_models import TModel, TModels
 from ninja.types import DictStrAny
 from pydantic import BaseModel
@@ -54,13 +56,13 @@ def get_schema(api: NinjaAPI, path_prefix: str = "") -> OpenAPISchema:
     return openapi
 
 
-class OpenAPISchema(NinjaOpenAPISchema):
+class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
     def get_components(self) -> DictStrAny:
         self._add_manually_added_schemas_to_schema()
         return super().get_components()
 
     def _update_schema(
-        self, schema: dict[str, Any], models: TModels[Any]
+        self, component_schemas: dict[str, Definition], models: TModels[Any]
     ) -> dict[str, Any]:
         """
         This is where the magic happens. This method is responsible for updating the
@@ -72,7 +74,8 @@ class OpenAPISchema(NinjaOpenAPISchema):
         mapped_enums = self._extract_enum_from_models(models=models)
         meta = self._set_schema_meta(models=models)
 
-        for key, value in schema.copy().items():
+        # Iterate through all the component schemas and replace values accordingly.
+        for key, value in component_schemas.copy().items():
             properties = value.pop("properties", None)
             required = value.pop("required", None)
             schema_key = key if key != "FormParams" else meta.get("title", key)
@@ -87,7 +90,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
                     )
                     if properties is not None
                     else None,
-                    "required": self._convert_keys_to_camelcase(required),
+                    "required": self.convert_keys_to_camelcase(required),
                     **meta,
                     **value,
                 }
@@ -115,7 +118,9 @@ class OpenAPISchema(NinjaOpenAPISchema):
         if schema.get("definitions"):
             definitions = schema.pop("definitions")
             # Intercept schema definition and update it.
-            updated_schema = self._update_schema(schema=definitions, models=[model])
+            updated_schema = self._update_schema(
+                component_schemas=definitions, models=[model]
+            )
             self.add_schema_definitions(updated_schema)
 
         if remove_level and len(schema["properties"]) == 1:
@@ -174,6 +179,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
             self.schemas.update({m_schema["title"]: m_schema})
 
+    @staticmethod
     def enum_process_schema(self, enum: Type[IntegerChoices]) -> dict[str, Any]:
         """
         Process enum and create a dict of openapi spec.
@@ -199,43 +205,6 @@ class OpenAPISchema(NinjaOpenAPISchema):
     # Helpers #
     ###########
 
-    @staticmethod
-    def _format_enum_from_type(typ: Any) -> list[dict[str, str | int]] | None:
-        """
-        Format schema field's enum type into a key - value format, taking advantage
-        of Django's human-readable labels where applicable.
-        """
-
-        type_to_check = typ
-        args_iterable = get_args(typ)
-
-        if args_iterable:
-            type_to_check = next(
-                (
-                    item
-                    for item in args_iterable
-                    if inspect.isclass(item) and issubclass(item, Enum)
-                ),
-                None,
-            )
-
-            if not type_to_check:
-                return None
-
-        # If passed enum is a django choices field, we can take advantaged
-        # of the defined label.
-        if issubclass(type_to_check, IntegerChoices | TextChoices):
-            return [
-                {"label": item.label, "value": item.value} for item in type_to_check
-            ]
-        elif issubclass(type_to_check, Enum):
-            return [
-                {"label": item.name.replace("_", " ").title(), "value": item.value}
-                for item in type_to_check
-            ]
-
-        return None
-
     def _extract_enum_from_models(
         self, models: TModels[Any]
     ) -> list[dict[str, Sequence[Collection[str]]]]:
@@ -248,7 +217,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
         for model in models:
             for _key, val in model.__fields__.items():
                 for field_name, type_ in get_type_hints(val.type_).items():
-                    enum = self._format_enum_from_type(typ=type_)
+                    enum = self.format_enum_from_type(typ=type_)
 
                     if enum:
                         enum_mapping.append(
@@ -273,7 +242,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
         the correct component for the python type.
 
         """
-        props = self._convert_keys_to_camelcase(properties.copy())
+        props = self.convert_keys_to_camelcase(properties.copy())
 
         for property, property_value in props.items():
             property_type = property_value.get("type", None)
@@ -301,19 +270,6 @@ class OpenAPISchema(NinjaOpenAPISchema):
                         pass
 
         return camelize(props)  # type: ignore
-
-    def _convert_keys_to_camelcase(self, data: dict[str, Any] | list[str]) -> Any:
-        """
-        Recursively go through a dataset and convert it to camelcase.
-        """
-        if isinstance(data, dict):
-            return {
-                key: self._convert_keys_to_camelcase(val) for key, val in data.items()
-            }
-        elif isinstance(data, list):
-            return [camelize(val) for val in data]
-        else:
-            return data
 
     @staticmethod
     def _set_schema_meta(models: TModels[Any]) -> dict[str, Any]:

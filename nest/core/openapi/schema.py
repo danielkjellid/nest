@@ -5,54 +5,12 @@ from enum import Enum
 from pydantic import BaseModel
 import structlog
 from django.conf import settings
+from store_kit.utils import camelize
+from .types import Property
 
 logger = structlog.get_logger()
 COMPONENTS = settings.FORM_COMPONENT_MAPPING_DEFAULTS
 T_Model = TypeVar("T_Model", bound=BaseModel)
-
-
-class PropertyBase(TypedDict, total=True):
-    title: str
-    type: NotRequired[str]  # Enum values purposefully leaves the type out.
-
-
-class PropertyExtra(PropertyBase, total=True):
-    help_text: str | None
-    component: str | None
-    default_value: str | None
-    placeholder: str | None
-    hidden_label: bool
-    col_span: int | None
-    order: int
-    min: int | None
-    max: int | None
-
-
-Property: TypeAlias = PropertyBase | PropertyExtra
-
-
-class DefinitionBase(TypedDict):
-    title: str
-    type: str
-    required: NotRequired[list[str]]
-
-
-class DefinitionProperty(DefinitionBase):
-    properties: dict[str, PropertyBase | PropertyExtra]
-
-
-class DefinitionExtra(DefinitionBase):
-    columns: int | None
-
-
-DefinitionEnum = TypedDict(
-    "DefinitionEnum",
-    {"description": str, "enum": list[str | int], "x-enum-varnames": list[str]},
-)
-
-Definition: TypeAlias = (
-    DefinitionBase | DefinitionProperty | DefinitionExtra | DefinitionEnum
-)
 
 
 class EnumDict(TypedDict):
@@ -61,6 +19,19 @@ class EnumDict(TypedDict):
 
 
 class NestOpenAPISchema:
+    def convert_keys_to_camelcase(self, data):
+        """
+        Recursively go through a dataset and convert it to camelcase.
+        """
+        if isinstance(data, dict):
+            return {
+                key: self.convert_keys_to_camelcase(val) for key, val in data.items()
+            }
+        elif isinstance(data, list):
+            return [camelize(val) for val in data]
+        else:
+            return data
+
     @staticmethod
     def get_component(property_: Property) -> str:
         defined_component = property_.get("component", None)
