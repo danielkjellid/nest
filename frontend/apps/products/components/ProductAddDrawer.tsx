@@ -3,7 +3,7 @@ import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { useUnits } from '../../../contexts/UnitsProvider'
 import { useForm } from '../../../hooks/forms'
-import { type ProductCreateIn } from '../../../types'
+import { type ProductCreateForm } from '../../../types'
 import { urls } from '../../urls'
 
 interface ProductAddDrawerProps {
@@ -13,7 +13,7 @@ interface ProductAddDrawerProps {
 }
 
 function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
-  const form = useForm({ key: 'ProductCreateIn' })
+  const form = useForm<ProductCreateForm>({ key: 'ProductCreateForm' })
   const { unitsOptions } = useUnits()
 
   const close = () => {
@@ -47,7 +47,7 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
       }
     >
       <div className="space-y-5">
-        <Form<ProductCreateIn>
+        <Form<ProductCreateForm>
           {...form}
           elementsOptions={{ unit: { options: unitsOptions || [] } }}
         />

@@ -104,6 +104,7 @@ PROJECT_APPS = [
     "nest.api",
     "nest.audit_logs",
     "nest.core",
+    "nest.forms",
     "nest.frontend",
     "nest.homes",
     "nest.products.core",
@@ -315,7 +316,13 @@ HIJACK_INSERT_BEFORE = None
 # OpenAPI Schema #
 ##################
 
-OPENAPI_AUTO_GENERATE = env.str("OPENAPI_AUTO_GENERATE", default=DEBUG)
+OPENAPI_AUTO_GENERATE = env.bool("OPENAPI_AUTO_GENERATE", default=DEBUG)
+
+#########
+# Forms #
+#########
+
+FORMS_AUTO_GENERATE = env.bool("FORMS_AUTO_GENERATE", default=DEBUG)
 
 #######
 # Oda #

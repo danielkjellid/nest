@@ -8,7 +8,7 @@ import { performPost } from '../../../hooks/fetcher/http'
 import { useForm } from '../../../hooks/forms'
 import { useCommonStyles } from '../../../styles/common'
 import {
-  type ProductOdaImportIn,
+  type ProductOdaImportForm,
   type ProductOdaImportOut,
   type ProductOdaImportOutAPIResponse,
 } from '../../../types'
@@ -25,7 +25,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
    ** State **
    ***********/
   const { classes } = useCommonStyles()
-  const form = useForm<ProductOdaImportIn>({ key: 'ProductOdaImportIn' })
+  const form = useForm<ProductOdaImportForm>({ key: 'ProductOdaImportForm' })
   const [fetchedProduct, setFetchedProduct] = useState<ProductOdaImportOut | null>()
   const [importLoadingState, setImportLoadingState] =
     useState<ButtonProps['loadingState']>('initial')
@@ -102,7 +102,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
         </div>
       }
     >
-      <Form<ProductOdaImportIn>
+      <Form<ProductOdaImportForm>
         {...form}
         elementsOptions={{
           odaProductId: {

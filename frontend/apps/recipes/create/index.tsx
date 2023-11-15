@@ -6,7 +6,7 @@ import { Card } from '../../../components/Card'
 import Form from '../../../components/Form'
 import { useForm } from '../../../hooks/forms'
 import { useCommonStyles } from '../../../styles/common'
-import { type RecipeCreateOutAPIResponse } from '../../../types'
+import { type RecipeCreateOutAPIResponse, type RecipeCreateForm } from '../../../types'
 import { urls } from '../../urls'
 import { routes } from '../routes'
 
@@ -26,7 +26,7 @@ function RecipeCreate() {
    ** Form **
    **********/
 
-  const form = useForm({ key: 'RecipeCreateIn' })
+  const form = useForm<RecipeCreateForm>({ key: 'RecipeCreateForm' })
 
   /**************
    ** Handlers **
@@ -51,7 +51,7 @@ function RecipeCreate() {
         <Card.Form
           title="Recipe information"
           subtitle="Add basic recipe information"
-          form={<Form {...form} />}
+          form={<Form<RecipeCreateForm> {...form} />}
         />
         <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
           <Button variant="default" onClick={() => navigate(-1)}>

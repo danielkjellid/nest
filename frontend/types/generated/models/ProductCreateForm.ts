@@ -3,15 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProductEditIn = {
+export type ProductCreateForm = {
     name: string;
-    grossPrice: number;
-    unitQuantity: number;
+    grossPrice: string;
+    unitQuantity: string;
     unit: number;
     supplier: string;
     gtin?: string;
-    odaId?: number;
-    odaUrl?: string;
+    ingredients?: string;
+    allergens?: string;
     fat?: string;
     fatSaturated?: string;
     fatMonounsaturated?: string;
@@ -24,7 +24,6 @@ export type ProductEditIn = {
     salt?: string;
     sodium?: string;
     isAvailable: boolean;
-    isSynced: boolean;
     thumbnail?: Blob;
 };
 

@@ -59,7 +59,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductCreateIn"
+                                "$ref": "#/components/schemas/ProductCreateForm"
                             }
                         }
                     },
@@ -145,7 +145,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductEditIn"
+                                "$ref": "#/components/schemas/ProductEditForm"
                             }
                         }
                     },
@@ -183,7 +183,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductOdaImportIn"
+                                "$ref": "#/components/schemas/ProductOdaImportForm"
                             }
                         }
                     },
@@ -259,7 +259,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/RecipeCreateIn"
+                                "$ref": "#/components/schemas/RecipeCreateForm"
                             }
                         }
                     },
@@ -358,7 +358,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/IngredientCreateIn"
+                                "$ref": "#/components/schemas/IngredientCreateForm"
                             }
                         }
                     },
@@ -760,8 +760,8 @@
                 ],
                 "type": "object"
             },
-            "ProductCreateIn": {
-                "title": "ProductCreateIn",
+            "ProductCreateForm": {
+                "title": "ProductCreateForm",
                 "properties": {
                     "name": {
                         "title": "Name",
@@ -1059,7 +1059,6 @@
                     "supplier",
                     "isAvailable"
                 ],
-                "columns": 2,
                 "type": "object"
             },
             "ProductDetailUnitOut": {
@@ -1374,8 +1373,8 @@
                 ],
                 "type": "object"
             },
-            "ProductEditIn": {
-                "title": "ProductEditIn",
+            "ProductEditForm": {
+                "title": "ProductEditForm",
                 "properties": {
                     "name": {
                         "title": "Name",
@@ -1688,7 +1687,6 @@
                     "isAvailable",
                     "isSynced"
                 ],
-                "columns": 4,
                 "type": "object"
             },
             "ProductOdaImportOut": {
@@ -1772,8 +1770,8 @@
                 ],
                 "type": "object"
             },
-            "ProductOdaImportIn": {
-                "title": "ProductOdaImportIn",
+            "ProductOdaImportForm": {
+                "title": "ProductOdaImportForm",
                 "properties": {
                     "odaProductId": {
                         "title": "Oda Product Id",
@@ -1787,7 +1785,7 @@
                         "order": 1,
                         "min": null,
                         "max": null,
-                        "type": "integer"
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -1864,10 +1862,9 @@
                 ]
             },
             "RecipeDifficulty": {
-                "title": "RecipeCreateIn",
+                "title": "RecipeCreateForm",
                 "properties": null,
                 "required": null,
-                "columns": 4,
                 "description": "An enumeration.",
                 "enum": [
                     "easy",
@@ -1876,8 +1873,8 @@
                 ],
                 "type": "string"
             },
-            "RecipeCreateIn": {
-                "title": "RecipeCreateIn",
+            "RecipeCreateForm": {
+                "title": "RecipeCreateForm",
                 "properties": {
                     "title": {
                         "title": "Title",
@@ -1919,7 +1916,7 @@
                         "order": 3,
                         "min": 1,
                         "max": 10,
-                        "type": "string"
+                        "type": "integer"
                     },
                     "status": {
                         "title": "Status",
@@ -2022,7 +2019,7 @@
                     "isVegetarian": {
                         "title": "Is Vegetarian",
                         "default": false,
-                        "helpText": "The recipe does not conatin any meat or fish products.",
+                        "helpText": "The recipe does not contain any meat or fish products.",
                         "component": "Checkbox",
                         "defaultValue": null,
                         "placeholder": null,
@@ -2056,7 +2053,6 @@
                     "status",
                     "difficulty"
                 ],
-                "columns": 4,
                 "type": "object"
             },
             "RecipeDetailDurationOut": {
@@ -2427,8 +2423,8 @@
                 ],
                 "type": "object"
             },
-            "IngredientCreateIn": {
-                "title": "IngredientCreateIn",
+            "IngredientCreateForm": {
+                "title": "IngredientCreateForm",
                 "properties": {
                     "title": {
                         "title": "Title",

@@ -4,54 +4,15 @@ from django.http import HttpRequest
 from ninja import Router, Schema
 from store_kit.http import status
 
-from nest.api.fields import FormField
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.frontend.components import FrontendComponents
 
-from .enums import RecipeDifficulty, RecipeStatus
+from .enums import RecipeStatus
+from .forms import RecipeCreateForm
 from .selectors import get_recipe, get_recipes
 from .services import create_recipe
 
 router = Router(tags=["Recipe"])
-
-
-class RecipeCreateIn(Schema):
-    title: str = FormField(..., order=1, help_text="Name of the recipe.")
-    search_keywords: str | None = FormField(
-        None, order=2, help_text="Separate with spaces. Title is included by default."
-    )
-    default_num_portions: str = FormField(
-        ...,
-        default_value=4,
-        order=3,
-        component=FrontendComponents.COUNTER.value,
-        min=1,
-        max=10,
-        col_span=4,
-    )
-    status: RecipeStatus | str = FormField(..., order=4, col_span=2)
-    difficulty: RecipeDifficulty | str = FormField(..., order=5, col_span=2)
-    external_id: str | None = FormField(
-        None, order=6, help_text="Providers identifier.", col_span=1
-    )
-    external_url: str | None = FormField(
-        None,
-        order=7,
-        help_text="Direct link to the recipe on a provider's site",
-        col_span=3,
-    )
-    is_vegetarian: bool = FormField(
-        False,
-        help_text="The recipe does not conatin any meat or fish products.",
-        order=9,
-    )
-    is_pescatarian: bool = FormField(
-        False, help_text="The recipe contains fish.", order=10
-    )
-
-    class FormMeta:
-        columns = 4
 
 
 class RecipeCreateOut(Schema):
@@ -61,7 +22,7 @@ class RecipeCreateOut(Schema):
 @router.post("create/", response={201: APIResponse[RecipeCreateOut]})
 @staff_required
 def recipe_create_api(
-    request: HttpRequest, payload: RecipeCreateIn
+    request: HttpRequest, payload: RecipeCreateForm
 ) -> tuple[int, APIResponse[RecipeCreateOut]]:
     """
     Create a recipe.

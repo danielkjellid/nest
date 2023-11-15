@@ -6,10 +6,10 @@
 import type { RecipeDifficulty } from './RecipeDifficulty';
 import type { RecipeStatus } from './RecipeStatus';
 
-export type RecipeCreateIn = {
+export type RecipeCreateForm = {
     title: string;
     searchKeywords?: string;
-    defaultNumPortions: string;
+    defaultNumPortions: number;
     status: (RecipeStatus | string);
     difficulty: (RecipeDifficulty | string);
     externalId?: string;

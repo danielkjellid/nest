@@ -1,2 +1,3 @@
 .static/
 frontend/types/generated/
+frontend/hooks/forms/forms.json
