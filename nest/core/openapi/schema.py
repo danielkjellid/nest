@@ -1,4 +1,14 @@
-from typing import get_args, Any, TypeAlias, TypedDict, TypeVar, NotRequired
+from typing import (
+    get_args,
+    Any,
+    TypeAlias,
+    TypedDict,
+    TypeVar,
+    NotRequired,
+    Type,
+    cast,
+    Iterable,
+)
 from inspect import isclass
 from django.db.models import IntegerChoices, TextChoices
 from enum import Enum
@@ -6,11 +16,11 @@ from pydantic import BaseModel
 import structlog
 from django.conf import settings
 from store_kit.utils import camelize
-from .types import Property
+from .types import Property, DefinitionEnum
 
 logger = structlog.get_logger()
-COMPONENTS = settings.FORM_COMPONENT_MAPPING_DEFAULTS
-T_Model = TypeVar("T_Model", bound=BaseModel)
+TModel = TypeVar("TModel", bound=BaseModel)
+TEnum = TypeVar("TEnum", bound=Enum)
 
 
 class EnumDict(TypedDict):
@@ -39,9 +49,9 @@ class NestOpenAPISchema:
         if defined_component is not None:
             return defined_component
 
-        return COMPONENTS[property_["type"]].value
+        return settings.FORM_COMPONENT_MAPPING_DEFAULTS[property_["type"]].value
 
-    def extract_enum_from_model(self, model: T_Model) -> dict[str, list[EnumDict]]:
+    def extract_enum_from_model(self, model: TModel) -> dict[str, list[EnumDict]]:
         enum_mapping = {}
 
         for field_name, annotation in model.__fields__.items():
@@ -53,6 +63,28 @@ class NestOpenAPISchema:
             enum_mapping[field_name] = enum
 
         return enum_mapping
+
+    @staticmethod
+    def enum_process_schema(enum: Type[TEnum]) -> DefinitionEnum:
+        """
+        Process enum and create a dict of openapi spec.
+        """
+        import inspect
+
+        definition: DefinitionEnum = {
+            "title": enum.__name__,
+            # Python assigns all enums a default docstring value of 'An enumeration', so
+            # all enums will have a description field even if not explicitly provided.
+            "description": inspect.cleandoc(enum.__doc__ or "An enumeration."),
+            # Add enum values and the enum field type to the schema.
+            "enum": [item.value for item in cast(Iterable[Enum], enum)],
+            "x-enum-varnames": [
+                getattr(item, "label", item.value)
+                for item in cast(Iterable[Enum], enum)
+            ],
+        }
+
+        return definition
 
     @staticmethod
     def format_enum_from_type(typ: Any) -> list[EnumDict] | None:

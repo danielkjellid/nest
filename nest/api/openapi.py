@@ -151,7 +151,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
 
         # Intercept schema definition and update it.
         schema = self._update_schema(
-            schema={result["title"]: {"title": result["title"], **result}},
+            component_schemas={result["title"]: {"title": result["title"], **result}},
             models=models,
         )
         self.add_schema_definitions(schema)
@@ -178,28 +178,6 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
                 )[0]
 
             self.schemas.update({m_schema["title"]: m_schema})
-
-    @staticmethod
-    def enum_process_schema(self, enum: Type[IntegerChoices]) -> dict[str, Any]:
-        """
-        Process enum and create a dict of openapi spec.
-        """
-        import inspect
-
-        schema_: dict[str, Any] = {
-            "title": enum.__name__,
-            # Python assigns all enums a default docstring value of 'An enumeration', so
-            # all enums will have a description field even if not explicitly provided.
-            "description": inspect.cleandoc(enum.__doc__ or "An enumeration."),
-            # Add enum values and the enum field type to the schema.
-            "enum": [item.value for item in cast(Iterable[Enum], enum)],
-            "x-enum-varnames": [
-                getattr(item, "label", item.value)
-                for item in cast(Iterable[Enum], enum)
-            ],
-        }
-
-        return schema_
 
     ###########
     # Helpers #
