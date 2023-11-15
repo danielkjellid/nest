@@ -8,7 +8,7 @@ from django.conf import settings
 from django.db.models import IntegerChoices, TextChoices
 from pydantic.schema import schema as pydantic_schema
 from store_kit.utils import camelize
-
+from nest.core.openapi.schema import NestOpenAPISchema
 from .models import Form
 
 F = TypeVar("F", bound=Form)
@@ -16,8 +16,9 @@ F = TypeVar("F", bound=Form)
 COMPONENTS = settings.FORM_COMPONENT_MAPPING_DEFAULTS
 
 
-class NestForms:
+class NestForms(NestOpenAPISchema):
     def __init__(self) -> None:
+        super().__init__()
         self.app_forms: dict[str, AppForms] = {}
         self.enum_mappings: dict[str, list[dict[str, str | int]]] = {}
 
@@ -38,7 +39,7 @@ class NestForms:
                 # Extract all types that represent an enumeration and add them to the
                 # mapping property. This is because we want to later extract them and
                 # replace allOf/anyOf values.
-                self.enum_mappings.update(self._extract_enum_from_form(form))
+                self.enum_mappings.update(self.extract_enum_from_model(form))
 
             forms_to_generate.extend(app_form.forms)
 
@@ -74,74 +75,13 @@ class NestForms:
                     property_val.pop("allOf", None)
                     property_val.pop("anyOf", None)
                 else:
-                    properties[property_key]["component"] = self._get_component(
+                    properties[property_key]["component"] = self.get_component(
                         property_val
                     )
 
             schema_definitions[key]["properties"] = camelize(properties)
 
         return schema
-
-    @staticmethod
-    def _get_component(property_val: dict[str, Any]) -> str:
-        """
-        Get related component based on property type.
-        """
-        defined_component: str = property_val.get("component", None)
-
-        if defined_component is not None:
-            return defined_component
-
-        return COMPONENTS[property_val["type"]].value
-
-    def _extract_enum_from_form(self, form: F) -> dict[str, list[dict[str, str | int]]]:
-        enum_mapping = {}
-
-        for field_name, val in form.__fields__.items():
-            enum = self._format_enum_from_type(typ=val.type_)
-
-            if not enum:
-                continue
-
-            enum_mapping[field_name] = enum
-
-        return enum_mapping
-
-    def _format_enum_from_type(self, typ: Any) -> list[dict[str, str | int]] | None:
-        """
-        Format schema field's enum type into a key - value format, taking advantage
-        of Django's human-readable labels where applicable.
-        """
-
-        type_to_check = typ
-        args_iterable = get_args(typ)
-
-        if args_iterable:
-            type_to_check = next(
-                (
-                    item
-                    for item in args_iterable
-                    if inspect.isclass(item) and issubclass(item, Enum)
-                ),
-                None,
-            )
-
-            if not type_to_check:
-                return None
-
-        # If passed enum is a django choices field, we can take advantaged
-        # of the defined label.
-        if issubclass(type_to_check, IntegerChoices | TextChoices):
-            return [
-                {"label": item.label, "value": item.value} for item in type_to_check
-            ]
-        elif issubclass(type_to_check, Enum):
-            return [
-                {"label": item.name.replace("_", " ").title(), "value": item.value}
-                for item in type_to_check
-            ]
-
-        return None
 
 
 class AppForms:
