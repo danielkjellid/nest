@@ -76,12 +76,14 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
 
         enum_mapping = self.extract_enum_from_models(models)
         meta_mapping = self.extract_meta_from_models(models)
-        # schemas = self.modify_component_definitions(
-        #     definitions=component_schemas,
-        #     meta_mapping=meta_mapping,
-        #     enum_mapping=enum_mapping,
-        #     is_form=False,
-        # )
+
+        schemas2 = self.modify_component_definitions(
+            definitions=component_schemas,
+            meta_mapping=meta_mapping,
+            enum_mapping=enum_mapping,
+            is_form=False,
+        )
+
         # Iterate through all the component schemas and replace values accordingly.
         for key, value in component_schemas.copy().items():
             properties = value.pop("properties", None)

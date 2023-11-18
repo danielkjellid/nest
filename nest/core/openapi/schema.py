@@ -27,6 +27,7 @@ from .types import (
     PropertyExtra,
     EnumDict,
 )
+from copy import deepcopy
 
 logger = structlog.get_logger()
 
@@ -44,7 +45,7 @@ class NestOpenAPISchema:
     ) -> dict[str, Definition]:
         modified_definitions = defaultdict(dict)
 
-        for key, attributes in definitions.items():
+        for key, attributes in deepcopy(definitions).items():
             modified_definition = defaultdict(dict)
 
             required = attributes.get("required", None)
