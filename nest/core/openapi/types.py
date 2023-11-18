@@ -62,6 +62,8 @@ class PropertyBase(TypedDict, total=True):
     allOf: NotRequired[Any]
     anyOf: NotRequired[Any]
     enum: NotRequired[list[EnumDict]]
+    format: NotRequired[str]
+    items: NotRequired[dict[str, str]]
 
 
 class PropertyExtra(PropertyBase, total=True):

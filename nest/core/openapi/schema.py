@@ -113,12 +113,13 @@ class NestOpenAPISchema:
             val.pop("allOf", None)
             val.pop("anyOf", None)
 
-            base_defaults = {
-                "title": title,
-                "type": type_,
-            }
+            base_defaults = {"title": title}
+
+            if type_ is not None:
+                base_defaults["type"] = type_
+
             extra_defaults = {
-                # "help_text": val.get("help_text", None),
+                "help_text": val.get("help_text", None),
                 "default_value": val.get("default_value", None),
                 "placeholder": val.get("placeholder", None),
                 "hidden_label": val.get("hidden_label", None),
@@ -129,38 +130,46 @@ class NestOpenAPISchema:
                 "max": val.get("max", None),
             }
 
-            default = val.get("default", None)
+            val_copy = val.copy()
+            for default_key in {**base_defaults, **extra_defaults}.keys():
+                val.pop(default_key, None)
 
-            if default is not None:
-                extra_defaults["default"] = default
+            if enum_mapping_exists:
+                val.pop("enum", None)
+
+            # TODO: remove?
+            val.pop("component", None)
 
             if not is_form:
                 if enum_mapping_exists:
                     modified_property = PropertyBase(
-                        **base_defaults, enum=enum_mapping[definition_key][key]
+                        **base_defaults,
+                        **val,
+                        enum=enum_mapping[definition_key][key],
                     )
                 else:
-                    modified_property = PropertyBase(**base_defaults)
+                    modified_property = PropertyBase(
+                        **base_defaults,
+                        **val,
+                    )
             else:
                 if enum_mapping_exists:
                     modified_property = PropertyExtra(
                         title=title,
-                        help_text=val.get("help_text", None),
+                        type="string",
+                        enum=enum_mapping[definition_key][key],
                         component=settings.FORM_COMPONENT_MAPPING_DEFAULTS[
                             "enum"
                         ].value,
-                        enum=enum_mapping[definition_key][key],
                         **extra_defaults,
-                        type="string",  # TODO: switch places here
+                        **val,
                     )
                 else:
                     modified_property = PropertyExtra(
-                        title=title,
-                        help_text=val.get("help_text", None),
-                        component=self.get_component(val),
-                        # **base_defaults, # TODO comment in
+                        **base_defaults,
                         **extra_defaults,
-                        type=type_,
+                        component=self.get_component(val_copy),
+                        **val,
                     )
 
             modified_properties[key] = modified_property
@@ -215,6 +224,15 @@ class NestOpenAPISchema:
 
         return dict(meta_mapping)
 
+    def extract_meta_from_models(self, models: list[TModel], is_form: bool = False):
+        meta_mapping = defaultdict(dict)
+
+        for model in models:
+            mapping = self.extract_enum_from_model(model)
+            meta_mapping = {**meta_mapping, **mapping}
+
+        return dict(meta_mapping)
+
     def extract_enum_from_model(self, model: TModel) -> dict[str, list[EnumDict]]:
         enum_mapping = defaultdict(dict)
 
@@ -231,6 +249,17 @@ class NestOpenAPISchema:
                     continue
 
                 enum_mapping[model.__name__][field_name] = enum
+
+        return dict(enum_mapping)
+
+    def extract_enum_from_models(
+        self, models: list[TModel]
+    ) -> dict[str, list[EnumDict]]:
+        enum_mapping = defaultdict(dict)
+
+        for model in models:
+            mapping = self.extract_enum_from_model(model)
+            enum_mapping = {**enum_mapping, **mapping}
 
         return dict(enum_mapping)
 

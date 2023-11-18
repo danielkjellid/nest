@@ -6,8 +6,8 @@
             "properties": {
                 "name": {
                     "title": "Name",
+                    "type": "string",
                     "helpText": "Plain name of product, should not include unit.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -16,12 +16,12 @@
                     "order": 1,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "grossPrice": {
                     "title": "Gross Price",
+                    "type": "string",
                     "helpText": "Gross price of product, including VAT.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -30,12 +30,12 @@
                     "order": 2,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "unitQuantity": {
                     "title": "Unit Quantity",
+                    "type": "string",
                     "helpText": "Amount in selected unit type. E.g. 2 if 2 kg.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -44,12 +44,12 @@
                     "order": 3,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "unit": {
                     "title": "Unit",
+                    "type": "integer",
                     "helpText": "What sort of unit is this?",
-                    "component": "Select",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -58,12 +58,12 @@
                     "order": 4,
                     "min": null,
                     "max": null,
-                    "type": "integer"
+                    "component": "Select"
                 },
                 "supplier": {
                     "title": "Supplier",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -72,12 +72,12 @@
                     "order": 5,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "gtin": {
                     "title": "Gtin",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -86,12 +86,12 @@
                     "order": 6,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "ingredients": {
                     "title": "Ingredients",
+                    "type": "string",
                     "helpText": "Specify ingredients seperated by a comma. E.g. milk, egg, sugar.",
-                    "component": "Textarea",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -100,12 +100,12 @@
                     "order": 7,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "Textarea"
                 },
                 "allergens": {
                     "title": "Allergens",
+                    "type": "string",
                     "helpText": "Specify allergens seperated by a comma. E.g. milk, egg, sugar.",
-                    "component": "Textarea",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -114,12 +114,12 @@
                     "order": 8,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "Textarea"
                 },
                 "fat": {
                     "title": "Fat",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -128,12 +128,12 @@
                     "order": 9,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fatSaturated": {
                     "title": "Fat Saturated",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -142,12 +142,12 @@
                     "order": 10,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fatMonounsaturated": {
                     "title": "Fat Monounsaturated",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -156,12 +156,12 @@
                     "order": 11,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fatPolyunsaturated": {
                     "title": "Fat Polyunsaturated",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -170,12 +170,12 @@
                     "order": 12,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydrates": {
                     "title": "Carbohydrates",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -184,12 +184,12 @@
                     "order": 13,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydratesSugars": {
                     "title": "Carbohydrates Sugars",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -198,12 +198,12 @@
                     "order": 14,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydratesPolyols": {
                     "title": "Carbohydrates Polyols",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -212,12 +212,12 @@
                     "order": 15,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydratesStarch": {
                     "title": "Carbohydrates Starch",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -226,12 +226,12 @@
                     "order": 16,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fibres": {
                     "title": "Fibres",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -240,12 +240,12 @@
                     "order": 17,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "salt": {
                     "title": "Salt",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -254,12 +254,12 @@
                     "order": 18,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "sodium": {
                     "title": "Sodium",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -268,12 +268,12 @@
                     "order": 19,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "isAvailable": {
                     "title": "Is Available",
+                    "type": "boolean",
                     "helpText": null,
-                    "component": "Checkbox",
                     "defaultValue": true,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -282,7 +282,7 @@
                     "order": 20,
                     "min": null,
                     "max": null,
-                    "type": "boolean"
+                    "component": "Checkbox"
                 }
             },
             "required": [
@@ -301,8 +301,8 @@
             "properties": {
                 "name": {
                     "title": "Name",
+                    "type": "string",
                     "helpText": "Plain name of product, should not include unit.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -311,12 +311,12 @@
                     "order": 1,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "grossPrice": {
                     "title": "Gross Price",
+                    "type": "number",
                     "helpText": "Gross price of product, including VAT.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -325,12 +325,12 @@
                     "order": 2,
                     "min": null,
                     "max": null,
-                    "type": "number"
+                    "component": "TextInput"
                 },
                 "unitQuantity": {
                     "title": "Unit Quantity",
+                    "type": "number",
                     "helpText": "Amount in selected unit type. E.g. 2 if 2 kg.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -339,12 +339,12 @@
                     "order": 3,
                     "min": null,
                     "max": null,
-                    "type": "number"
+                    "component": "TextInput"
                 },
                 "unit": {
                     "title": "Unit",
+                    "type": "integer",
                     "helpText": "What sort of unit is this?",
-                    "component": "Select",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -353,12 +353,12 @@
                     "order": 4,
                     "min": null,
                     "max": null,
-                    "type": "integer"
+                    "component": "Select"
                 },
                 "supplier": {
                     "title": "Supplier",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -367,12 +367,12 @@
                     "order": 5,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "gtin": {
                     "title": "Gtin",
+                    "type": "string",
                     "helpText": "Global trade item number. Number bellow barcode.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -381,12 +381,12 @@
                     "order": 6,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "odaId": {
                     "title": "Oda Id",
+                    "type": "integer",
                     "helpText": "Corresponding product id at Oda.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -395,12 +395,12 @@
                     "order": 7,
                     "min": null,
                     "max": null,
-                    "type": "integer"
+                    "component": "TextInput"
                 },
                 "odaUrl": {
                     "title": "Oda Url",
+                    "type": "string",
                     "helpText": "Link to product at Oda.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -409,12 +409,12 @@
                     "order": 8,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fat": {
                     "title": "Fat",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -423,12 +423,12 @@
                     "order": 9,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fatSaturated": {
                     "title": "Fat Saturated",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -437,12 +437,12 @@
                     "order": 10,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fatMonounsaturated": {
                     "title": "Fat Monounsaturated",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -451,12 +451,12 @@
                     "order": 11,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fatPolyunsaturated": {
                     "title": "Fat Polyunsaturated",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -465,12 +465,12 @@
                     "order": 12,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydrates": {
                     "title": "Carbohydrates",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -479,12 +479,12 @@
                     "order": 13,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydratesSugars": {
                     "title": "Carbohydrates Sugars",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -493,12 +493,12 @@
                     "order": 14,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydratesPolyols": {
                     "title": "Carbohydrates Polyols",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -507,12 +507,12 @@
                     "order": 15,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "carbohydratesStarch": {
                     "title": "Carbohydrates Starch",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -521,12 +521,12 @@
                     "order": 16,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "fibres": {
                     "title": "Fibres",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -535,12 +535,12 @@
                     "order": 17,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "salt": {
                     "title": "Salt",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -549,12 +549,12 @@
                     "order": 18,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "sodium": {
                     "title": "Sodium",
+                    "type": "string",
                     "helpText": null,
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -563,12 +563,12 @@
                     "order": 19,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "isAvailable": {
                     "title": "Is Available",
+                    "type": "boolean",
                     "helpText": "Product is available and is actively used in recipes.",
-                    "component": "Checkbox",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -577,12 +577,12 @@
                     "order": 20,
                     "min": null,
                     "max": null,
-                    "type": "boolean"
+                    "component": "Checkbox"
                 },
                 "isSynced": {
                     "title": "Is Synced",
+                    "type": "boolean",
                     "helpText": "Product is synced with external providers",
-                    "component": "Checkbox",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -591,7 +591,7 @@
                     "order": 21,
                     "min": null,
                     "max": null,
-                    "type": "boolean"
+                    "component": "Checkbox"
                 }
             },
             "required": [
@@ -611,8 +611,8 @@
             "properties": {
                 "odaProductId": {
                     "title": "Oda Product Id",
+                    "type": "string",
                     "helpText": "Product Id at Oda.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -621,7 +621,7 @@
                     "order": 1,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 }
             },
             "required": [
@@ -655,8 +655,8 @@
             "properties": {
                 "title": {
                     "title": "Title",
+                    "type": "string",
                     "helpText": "Name of the recipe.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -665,12 +665,12 @@
                     "order": 1,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "searchKeywords": {
                     "title": "Search Keywords",
+                    "type": "string",
                     "helpText": "Separate with spaces. Title is included by default.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -679,12 +679,12 @@
                     "order": 2,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "defaultNumPortions": {
                     "title": "Default Num Portions",
+                    "type": "integer",
                     "helpText": null,
-                    "component": "Counter",
                     "defaultValue": 4,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -693,12 +693,11 @@
                     "order": 3,
                     "min": 1,
                     "max": 10,
-                    "type": "integer"
+                    "component": "Counter"
                 },
                 "status": {
                     "title": "Status",
-                    "helpText": null,
-                    "component": "Select",
+                    "type": "string",
                     "enum": [
                         {
                             "label": "Draft",
@@ -713,6 +712,8 @@
                             "value": "published"
                         }
                     ],
+                    "component": "Select",
+                    "helpText": null,
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -720,13 +721,11 @@
                     "section": null,
                     "order": 4,
                     "min": null,
-                    "max": null,
-                    "type": "string"
+                    "max": null
                 },
                 "difficulty": {
                     "title": "Difficulty",
-                    "helpText": null,
-                    "component": "Select",
+                    "type": "string",
                     "enum": [
                         {
                             "label": "Easy",
@@ -741,6 +740,8 @@
                             "value": "hard"
                         }
                     ],
+                    "component": "Select",
+                    "helpText": null,
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -748,13 +749,12 @@
                     "section": null,
                     "order": 5,
                     "min": null,
-                    "max": null,
-                    "type": "string"
+                    "max": null
                 },
                 "externalId": {
                     "title": "External Id",
+                    "type": "string",
                     "helpText": "Providers identifier.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -763,12 +763,12 @@
                     "order": 6,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "externalUrl": {
                     "title": "External Url",
+                    "type": "string",
                     "helpText": "Direct link to the recipe on a provider's site",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -777,12 +777,12 @@
                     "order": 7,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "isVegetarian": {
                     "title": "Is Vegetarian",
+                    "type": "boolean",
                     "helpText": "The recipe does not contain any meat or fish products.",
-                    "component": "Checkbox",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -791,13 +791,13 @@
                     "order": 9,
                     "min": null,
                     "max": null,
-                    "default": false,
-                    "type": "boolean"
+                    "component": "Checkbox",
+                    "default": false
                 },
                 "isPescatarian": {
                     "title": "Is Pescatarian",
+                    "type": "boolean",
                     "helpText": "The recipe contains fish.",
-                    "component": "Checkbox",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -806,8 +806,8 @@
                     "order": 10,
                     "min": null,
                     "max": null,
-                    "default": false,
-                    "type": "boolean"
+                    "component": "Checkbox",
+                    "default": false
                 }
             },
             "required": [
@@ -824,8 +824,8 @@
             "properties": {
                 "title": {
                     "title": "Title",
+                    "type": "string",
                     "helpText": "User friendly title. E.g. Red tomatoes.",
-                    "component": "TextInput",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -834,12 +834,12 @@
                     "order": 1,
                     "min": null,
                     "max": null,
-                    "type": "string"
+                    "component": "TextInput"
                 },
                 "product": {
                     "title": "Product",
+                    "type": "integer",
                     "helpText": null,
-                    "component": "Select",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
@@ -848,7 +848,7 @@
                     "order": 2,
                     "min": null,
                     "max": null,
-                    "type": "integer"
+                    "component": "Select"
                 }
             },
             "required": [
