@@ -71,26 +71,23 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         """
         schemas = {}
 
-        mapped_enums = self._extract_enum_from_models(models=models)
         meta = self._set_schema_meta(models=models)
 
         enum_mapping = self.extract_enum_from_models(models)
         meta_mapping = self.extract_meta_from_models(models)
-        # schemas = self.modify_component_definitions(
-        #     definitions=component_schemas,
-        #     meta_mapping=meta_mapping,
-        #     enum_mapping=enum_mapping,
-        #     is_form=False,
-        # )
+        schemas2 = self.modify_component_definitions(
+            definitions=component_schemas,
+            meta_mapping=meta_mapping,
+            enum_mapping=enum_mapping,
+            is_form=False,
+        )
         # Iterate through all the component schemas and replace values accordingly.
         for key, value in component_schemas.copy().items():
             properties = value.pop("properties", None)
-            required = value.pop("required", None)
+            required = schemas2.get("required", None)
             schema_key = key if key != "FormParams" else meta.get("title", key)
 
             value.pop("title")
-
-            m = meta_mapping.get(key, {})
 
             updated_schema = {
                 schema_key: {
@@ -103,7 +100,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
                     )
                     if properties is not None
                     else None,
-                    "required": self.convert_keys_to_camelcase(required),
+                    "required": required if required is not None else None,
                     **value,
                 }
             }
@@ -190,76 +187,6 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
                 )[0]
 
             self.schemas.update({m_schema["title"]: m_schema})
-
-    ###########
-    # Helpers #
-    ###########
-
-    def _extract_enum_from_models(
-        self, models: TModels[Any]
-    ) -> list[dict[str, Sequence[Collection[str]]]]:
-        """
-        Iterate through the models passed by the operation and return the field as well
-        as enum representation.
-        """
-        enum_mapping = []
-
-        for model in models:
-            for _key, val in model.__fields__.items():
-                for field_name, type_ in get_type_hints(val.type_).items():
-                    enum = self.format_enum_from_type(typ=type_)
-
-                    if enum:
-                        enum_mapping.append(
-                            {
-                                "field": field_name,
-                                "enum": enum,
-                            }
-                        )
-
-        return enum_mapping
-
-    def _populate_definition_properties(
-        self,
-        properties: dict[str, Any],
-        enum_mapping: list[dict[str, Sequence[Collection[str]]]] | None = None,
-    ) -> dict[str, Any]:
-        """
-        This method does a few things to modify the definitions dict in a way we want
-        it. It first converts the keys to camelcase. Then it proceeds to iterate through
-        the values and append an enum key with a list of enum labels and values if one
-        of the previous extracted enum mapping matches the iterated key. Then we set
-        the correct component for the python type.
-
-        """
-        props = self.convert_keys_to_camelcase(properties.copy())
-
-        for property, property_value in props.items():
-            property_type = property_value.get("type", None)
-            for _key, _value in property_value.copy().items():
-                if enum_mapping:
-                    for mapping in enum_mapping:
-                        if mapping["field"] == property:
-                            props[property]["title"] = mapping["field"].title()  # type: ignore
-                            props[property]["enum"] = mapping["enum"]
-
-                            component_defaults = (
-                                settings.FORM_COMPONENT_MAPPING_DEFAULTS  # type: ignore
-                            )
-                            component = component_defaults["enum"].value
-                            props[property]["component"] = component
-
-                if property_type and props[property].get("component", None) is None:
-                    try:
-                        props[property][
-                            "component"
-                        ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[  # type: ignore
-                            property_value["type"]
-                        ].value
-                    except KeyError:
-                        pass
-
-        return camelize(props)  # type: ignore
 
     @staticmethod
     def _set_schema_meta(models: TModels[Any]) -> dict[str, Any]:
