@@ -1,14 +1,12 @@
 from __future__ import annotations
 
-import inspect
-from enum import Enum
-from typing import Any, TypeVar, get_args
+from typing import Any, TypeVar
 
 from django.conf import settings
-from django.db.models import IntegerChoices, TextChoices
 from pydantic.schema import schema as pydantic_schema
-from store_kit.utils import camelize
+
 from nest.core.openapi.schema import NestOpenAPISchema
+
 from .models import Form
 
 F = TypeVar("F", bound=Form)
@@ -18,7 +16,7 @@ COMPONENTS = settings.FORM_COMPONENT_MAPPING_DEFAULTS
 
 class NestForms(NestOpenAPISchema):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(is_form=True)
         self.app_forms: dict[str, AppForms] = {}
         self.enum_mappings: dict[str, list[dict[str, str | int]]] = {}
         self.meta_mappings: dict[str, dict[str, str | int]] = {}
@@ -46,7 +44,6 @@ class NestForms(NestOpenAPISchema):
             definitions=schema["definitions"],
             enum_mapping=self.enum_mappings,
             meta_mapping=self.meta_mappings,
-            is_form=True,
         )
 
         return schema

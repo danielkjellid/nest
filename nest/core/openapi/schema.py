@@ -1,33 +1,31 @@
-from typing import (
-    get_args,
-    Any,
-    TypeAlias,
-    TypedDict,
-    TypeVar,
-    NotRequired,
-    get_type_hints,
-    Type,
-    cast,
-    Iterable,
-)
 from collections import defaultdict
-from inspect import isclass
-from django.db.models import IntegerChoices, TextChoices
+from copy import deepcopy
 from enum import Enum
-from nest.api.files import UploadedFile, UploadedImageFile
-from pydantic import BaseModel
+from inspect import isclass
+from typing import (
+    Any,
+    Iterable,
+    Type,
+    TypeVar,
+    cast,
+    get_args,
+    get_type_hints,
+)
+
 import structlog
 from django.conf import settings
+from django.db.models import IntegerChoices, TextChoices
+from pydantic import BaseModel
 from store_kit.utils import camelize
+
 from .types import (
-    Property,
-    DefinitionEnum,
     Definition,
+    DefinitionEnum,
+    EnumDict,
+    Property,
     PropertyBase,
     PropertyExtra,
-    EnumDict,
 )
-from copy import deepcopy
 
 logger = structlog.get_logger()
 
@@ -36,12 +34,14 @@ TEnum = TypeVar("TEnum", bound=Enum)
 
 
 class NestOpenAPISchema:
+    def __init__(self, is_form: bool = False) -> None:
+        self.is_form = is_form
+
     def modify_component_definitions(
         self,
         definitions: dict[str, Definition],
         meta_mapping: dict[str, str],
         enum_mapping: dict[str, EnumDict],
-        is_form: bool = False,
     ) -> dict[str, Definition]:
         modified_definitions = defaultdict(dict)
 
@@ -71,7 +71,6 @@ class NestOpenAPISchema:
                 modified_properties = self.modify_component_definitions_properties(
                     definition_key=key,
                     properties=properties,
-                    is_form=is_form,
                     enum_mapping=enum_mapping,
                 )
                 modified_definition["properties"] = modified_properties
@@ -93,7 +92,6 @@ class NestOpenAPISchema:
         *,
         definition_key: str,
         properties: dict[str, Property],
-        is_form: bool = False,
         enum_mapping: dict[str, list[EnumDict]],
     ) -> dict[str, Property]:
         modified_properties: dict[str, Property] = defaultdict(dict)
@@ -140,7 +138,7 @@ class NestOpenAPISchema:
             # TODO: remove?
             val.pop("component", None)
 
-            if not is_form:
+            if not self.is_form:
                 if enum_mapping_exists:
                     modified_property = PropertyBase(
                         **base_defaults,
@@ -236,19 +234,20 @@ class NestOpenAPISchema:
         """
         import inspect
 
-        # TODO: instanciate typeddict
-        definition: DefinitionEnum = {
-            "title": enum.__name__,
+        definition = DefinitionEnum(
+            title=enum.__name__,
             # Python assigns all enums a default docstring value of 'An enumeration', so
             # all enums will have a description field even if not explicitly provided.
-            "description": inspect.cleandoc(enum.__doc__ or "An enumeration."),
+            description=inspect.cleandoc(enum.__doc__ or "An enumeration."),
             # Add enum values and the enum field type to the schema.
-            "enum": [item.value for item in cast(Iterable[Enum], enum)],
-            "x-enum-varnames": [
-                getattr(item, "label", item.value)
-                for item in cast(Iterable[Enum], enum)
-            ],
-        }
+            enum=[item.value for item in cast(Iterable[Enum], enum)],
+            **{
+                "x-enum-varnames": [
+                    getattr(item, "label", item.value)
+                    for item in cast(Iterable[Enum], enum)
+                ]
+            },
+        )
 
         return definition
 

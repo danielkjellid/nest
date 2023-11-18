@@ -4,16 +4,12 @@ import inspect
 from enum import Enum
 from typing import (
     Any,
-    Collection,
-    Iterable,
-    Sequence,
     Type,
     cast,
     get_args,
     get_type_hints,
 )
 
-from django.conf import settings
 from django.db.models import IntegerChoices, TextChoices
 from ninja import NinjaAPI
 from ninja.openapi.schema import (
@@ -24,15 +20,14 @@ from ninja.openapi.schema import (
 from ninja.openapi.schema import (
     OpenAPISchema as NinjaOpenAPISchema,
 )
-from nest.core.openapi.schema import NestOpenAPISchema
-from nest.core.openapi.types import Definition
 from ninja.params_models import TModel, TModels
 from ninja.types import DictStrAny
 from pydantic import BaseModel
 from pydantic.schema import model_schema
-from store_kit.utils import camelize
 
 from nest.api.files import UploadedFile, UploadedImageFile
+from nest.core.openapi.schema import NestOpenAPISchema
+from nest.core.openapi.types import Definition
 
 MANUALLY_ADDED_SCHEMAS = []
 
@@ -57,6 +52,10 @@ def get_schema(api: NinjaAPI, path_prefix: str = "") -> OpenAPISchema:
 
 
 class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        NestOpenAPISchema.__init__(self, is_form=False)
+        NinjaOpenAPISchema.__init__(self, *args, **kwargs)
+
     def get_components(self) -> DictStrAny:
         self._add_manually_added_schemas_to_schema()
         return super().get_components()
@@ -76,7 +75,6 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             definitions=component_schemas,
             meta_mapping={},
             enum_mapping=enum_mapping,
-            is_form=False,
         )
 
         return schemas

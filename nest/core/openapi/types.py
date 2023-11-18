@@ -1,4 +1,4 @@
-from typing import TypedDict, Any, TypeAlias, NotRequired
+from typing import Any, NotRequired, TypeAlias, TypedDict
 
 
 class EnumDict(TypedDict):
