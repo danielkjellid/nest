@@ -113,7 +113,10 @@ class NestOpenAPISchema:
             val.pop("allOf", None)
             val.pop("anyOf", None)
 
-            base_defaults = {"title": title}
+            base_defaults = {}
+
+            if "$ref" not in val:
+                base_defaults["title"] = title
 
             if type_ is not None:
                 base_defaults["type"] = type_
@@ -205,9 +208,9 @@ class NestOpenAPISchema:
         key = model.__name__
         meta_mapping = defaultdict(dict)
 
-        for field_name, type_annotation in get_type_hints(model).items():
-            if isclass(type_annotation) and issubclass(type_annotation, BaseModel):
-                return self.extract_meta_from_model()
+        # for field_name, type_annotation in get_type_hints(model).items():
+        #     if isclass(type_annotation) and issubclass(type_annotation, BaseModel):
+        #         return self.extract_meta_from_model(type_annotation)
 
         meta_mapping["title"] = key
 
@@ -228,7 +231,7 @@ class NestOpenAPISchema:
         meta_mapping = defaultdict(dict)
 
         for model in models:
-            mapping = self.extract_enum_from_model(model)
+            mapping = self.extract_meta_from_model(model)
             meta_mapping = {**meta_mapping, **mapping}
 
         return dict(meta_mapping)

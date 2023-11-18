@@ -90,6 +90,8 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
 
             value.pop("title")
 
+            m = meta_mapping.get(key, {})
+
             updated_schema = {
                 schema_key: {
                     "title": schema_key,
@@ -102,7 +104,6 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
                     if properties is not None
                     else None,
                     "required": self.convert_keys_to_camelcase(required),
-                    **meta,
                     **value,
                 }
             }
