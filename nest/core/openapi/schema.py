@@ -53,13 +53,13 @@ class NestOpenAPISchema:
             description = attributes.get("description", None)
             enum = attributes.get("enum", None)
 
-            title_for_definition = meta_mapping.get(key, {}).get("title", None)
             columns_for_definition = meta_mapping.get(key, {}).get("columns", None)
 
-            if title_for_definition is not None:
-                modified_definition["title"] = title_for_definition
-            else:
-                modified_definition["title"] = key
+            modified_definition["title"] = (
+                key
+                if key != "FormParams"
+                else meta_mapping.get(key, {}).get("title", key)
+            )
 
             if description is not None:
                 modified_definition["description"] = description
