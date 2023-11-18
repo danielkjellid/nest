@@ -71,11 +71,10 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         """
 
         enum_mapping = self.extract_enum_from_models(models)
-        meta_mapping = self.extract_meta_from_models(models)
 
         schemas = self.modify_component_definitions(
             definitions=component_schemas,
-            meta_mapping=meta_mapping,
+            meta_mapping={},
             enum_mapping=enum_mapping,
             is_form=False,
         )
@@ -177,39 +176,21 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             self.schemas.update({m_schema["title"]: m_schema})
 
     @staticmethod
-    def _set_schema_meta(models: TModels[Any]) -> dict[str, Any]:
-        """
-        For multipart/form schemas the title is automatically populated to FormParams,
-        however, we want to use the actual schema payload name. We also allow for
-        multi-column forms, which is set through the subclass FormMeta on a
-        ninja.Schema.
-        """
-        meta = {}
+    def get_title_from_nested_model(model: TModel):
+        for key, value in get_type_hints(model).items():
+            val = value
+            val_iterable = get_args(value)
 
-        for model in models:
-            for _key, value in get_type_hints(model).items():
-                val = value
-                val_iterable = get_args(value)
+            if val_iterable:
+                val = next(
+                    (item for item in val_iterable if inspect.isclass(item)),
+                    None,
+                )
 
-                if val_iterable:
-                    val = next(
-                        (item for item in val_iterable if inspect.isclass(item)),
-                        None,
-                    )
+            if not val:
+                continue
 
-                if not val:
-                    continue
+            if issubclass(val, UploadedFile | UploadedImageFile):
+                continue
 
-                if issubclass(val, UploadedFile | UploadedImageFile):
-                    continue
-
-                meta["title"] = f"{val.__name__}"
-
-                if hasattr(val, "FormMeta"):
-                    meta["columns"] = getattr(
-                        value.FormMeta,
-                        "columns",
-                        1,  # type: ignore
-                    )
-
-        return meta
+            return val.__name__

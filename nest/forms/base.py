@@ -36,11 +36,11 @@ class NestForms(NestOpenAPISchema):
         for app_form in self.app_forms.values():
             for form in app_form.forms:
                 self.meta_mappings.update(
-                    self.extract_meta_from_model(form, is_form=True)
+                    {form.__name__: {"columns": getattr(form, "COLUMNS", 1)}}
                 )
                 self.enum_mappings.update(self.extract_enum_from_model(form))
             forms_to_generate.extend(app_form.forms)
-
+        print(self.meta_mappings)
         schema = pydantic_schema(forms_to_generate)
         schema["definitions"] = self.modify_component_definitions(
             definitions=schema["definitions"],
