@@ -84,34 +84,30 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             is_form=False,
         )
 
-        # Iterate through all the component schemas and replace values accordingly.
-        for key, value in component_schemas.copy().items():
-            properties = value.pop("properties", None)
-            required = value.pop("required", None)
-            schema_key = key if key != "FormParams" else meta.get("title", key)
+        # # Iterate through all the component schemas and replace values accordingly.
+        # for key, value in component_schemas.copy().items():
+        #     properties = value.pop("properties", None)
+        #     required = value.pop("required", None)
+        #     schema_key = key if key != "FormParams" else meta.get("title", key)
+        #
+        #     updated_schema = {
+        #         schema_key: {
+        #             "title": schemas2[key]["title"],
+        #             "properties": self.modify_component_definitions_properties(
+        #                 properties=properties,
+        #                 enum_mapping=enum_mapping,
+        #                 definition_key=key,
+        #                 is_form=False,
+        #             )
+        #             if properties is not None
+        #             else None,
+        #             "required": self.convert_keys_to_camelcase(required),
+        #             **value,
+        #         }
+        #     }
+        #     schemas.update(updated_schema)
 
-            value.pop("title")
-
-            m = meta_mapping.get(key, {})
-
-            updated_schema = {
-                schema_key: {
-                    "title": schema_key,
-                    "properties": self.modify_component_definitions_properties(
-                        properties=properties,
-                        enum_mapping=enum_mapping,
-                        definition_key=key,
-                        is_form=False,
-                    )
-                    if properties is not None
-                    else None,
-                    "required": self.convert_keys_to_camelcase(required),
-                    **value,
-                }
-            }
-            schemas.update(updated_schema)
-
-        return schemas
+        return schemas2
 
     def _create_schema_from_model(
         self, model: TModel, by_alias: bool = True, remove_level: bool = True
@@ -156,16 +152,30 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         """
         content_type = BODY_CONTENT_TYPES["file"]
 
-        result = merge_schemas(
-            [
-                self._create_schema_from_model(model, remove_level=False)[0]
-                for model in models
-            ]
-        )
+        result = {}
 
-        # Intercept schema definition and update it.
+        for index, model in enumerate(models):
+            title = self.get_title_from_nested_model(model)
+
+            # If title is None it means that we're dealing with some sort of property
+            # instead of a definition. Therefore, we instead merge it with the previous
+            # definition and fix the title.
+            if title is None:
+                title = self.get_title_from_nested_model(models[index - 1])
+                schema = merge_schemas(
+                    [
+                        self._create_schema_from_model(m, remove_level=False)[0]
+                        for m in models[:index]
+                    ]
+                )
+            else:
+                schema = self._create_schema_from_model(model, remove_level=False)[0]
+
+            schema["title"] = title
+            result[title] = schema
+
         schema = self._update_schema(
-            component_schemas={result["title"]: {"title": result["title"], **result}},
+            component_schemas=result,
             models=models,
         )
         self.add_schema_definitions(schema)
