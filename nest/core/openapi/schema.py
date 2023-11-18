@@ -107,6 +107,8 @@ class NestOpenAPISchema:
 
             val.pop("allOf", None)
             val.pop("anyOf", None)
+            val_copy = val.copy()
+            val.pop("component", None)
 
             base_defaults = {}
 
@@ -128,47 +130,39 @@ class NestOpenAPISchema:
                 "max": val.get("max", None),
             }
 
-            val_copy = val.copy()
             for default_key in {**base_defaults, **extra_defaults}.keys():
                 val.pop(default_key, None)
 
             if enum_mapping_exists:
                 val.pop("enum", None)
 
-            # TODO: remove?
-            val.pop("component", None)
-
-            if not self.is_form:
-                if enum_mapping_exists:
-                    modified_property = PropertyBase(
-                        **base_defaults,
-                        **val,
-                        enum=enum_mapping[definition_key][key],
-                    )
-                else:
-                    modified_property = PropertyBase(
-                        **base_defaults,
-                        **val,
-                    )
+            if not self.is_form and enum_mapping_exists:
+                modified_property = PropertyBase(
+                    **base_defaults,
+                    **val,
+                    enum=enum_mapping[definition_key][key],
+                )
+            elif not self.is_form and not enum_mapping_exists:
+                modified_property = PropertyBase(
+                    **base_defaults,
+                    **val,
+                )
+            elif self.is_form and enum_mapping_exists:
+                modified_property = PropertyExtra(
+                    title=title,
+                    type="string",
+                    enum=enum_mapping[definition_key][key],
+                    component=settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value,
+                    **extra_defaults,
+                    **val,
+                )
             else:
-                if enum_mapping_exists:
-                    modified_property = PropertyExtra(
-                        title=title,
-                        type="string",
-                        enum=enum_mapping[definition_key][key],
-                        component=settings.FORM_COMPONENT_MAPPING_DEFAULTS[
-                            "enum"
-                        ].value,
-                        **extra_defaults,
-                        **val,
-                    )
-                else:
-                    modified_property = PropertyExtra(
-                        **base_defaults,
-                        **extra_defaults,
-                        component=self.get_component(val_copy),
-                        **val,
-                    )
+                modified_property = PropertyExtra(
+                    **base_defaults,
+                    **extra_defaults,
+                    component=self.get_component(val_copy),
+                    **val,
+                )
 
             modified_properties[key] = modified_property
 

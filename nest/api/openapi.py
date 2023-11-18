@@ -175,7 +175,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
 
     @staticmethod
     def get_title_from_nested_model(model: TModel):
-        for key, value in get_type_hints(model).items():
+        for value in get_type_hints(model).values():
             val = value
             val_iterable = get_args(value)
 
