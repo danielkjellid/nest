@@ -699,14 +699,6 @@
                     "title": "Status",
                     "helpText": null,
                     "component": "Select",
-                    "defaultValue": null,
-                    "placeholder": null,
-                    "hiddenLabel": false,
-                    "colSpan": 2,
-                    "section": null,
-                    "order": 4,
-                    "min": null,
-                    "max": null,
                     "enum": [
                         {
                             "label": "Draft",
@@ -721,25 +713,20 @@
                             "value": "published"
                         }
                     ],
-                    "type": "string",
-                    "xEnumVarnames": [
-                        "Draft",
-                        "Hidden",
-                        "Published"
-                    ]
-                },
-                "difficulty": {
-                    "title": "Difficulty",
-                    "helpText": null,
-                    "component": "Select",
                     "defaultValue": null,
                     "placeholder": null,
                     "hiddenLabel": false,
                     "colSpan": 2,
                     "section": null,
-                    "order": 5,
+                    "order": 4,
                     "min": null,
                     "max": null,
+                    "type": "string"
+                },
+                "difficulty": {
+                    "title": "Difficulty",
+                    "helpText": null,
+                    "component": "Select",
                     "enum": [
                         {
                             "label": "Easy",
@@ -754,12 +741,15 @@
                             "value": "hard"
                         }
                     ],
-                    "type": "string",
-                    "xEnumVarnames": [
-                        "Easy",
-                        "Medium",
-                        "Hard"
-                    ]
+                    "defaultValue": null,
+                    "placeholder": null,
+                    "hiddenLabel": false,
+                    "colSpan": 2,
+                    "section": null,
+                    "order": 5,
+                    "min": null,
+                    "max": null,
+                    "type": "string"
                 },
                 "externalId": {
                     "title": "External Id",
@@ -791,7 +781,6 @@
                 },
                 "isVegetarian": {
                     "title": "Is Vegetarian",
-                    "default": false,
                     "helpText": "The recipe does not contain any meat or fish products.",
                     "component": "Checkbox",
                     "defaultValue": null,
@@ -802,11 +791,11 @@
                     "order": 9,
                     "min": null,
                     "max": null,
+                    "default": false,
                     "type": "boolean"
                 },
                 "isPescatarian": {
                     "title": "Is Pescatarian",
-                    "default": false,
                     "helpText": "The recipe contains fish.",
                     "component": "Checkbox",
                     "defaultValue": null,
@@ -817,6 +806,7 @@
                     "order": 10,
                     "min": null,
                     "max": null,
+                    "default": false,
                     "type": "boolean"
                 }
             },

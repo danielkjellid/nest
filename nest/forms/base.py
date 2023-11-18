@@ -21,6 +21,7 @@ class NestForms(NestOpenAPISchema):
         super().__init__()
         self.app_forms: dict[str, AppForms] = {}
         self.enum_mappings: dict[str, list[dict[str, str | int]]] = {}
+        self.meta_mappings: dict[str, dict[str, str | int]] = {}
 
     def add_forms(self, app_form: AppForms) -> None:
         self.app_forms[app_form.app] = app_form
@@ -29,57 +30,24 @@ class NestForms(NestOpenAPISchema):
         """
         Generate a schema in OpenAPI format for all registered forms.
         """
-        columns = {}
+
         forms_to_generate = []
 
         for app_form in self.app_forms.values():
             for form in app_form.forms:
-                columns[form.__name__] = form.COLUMNS
-
-                # Extract all types that represent an enumeration and add them to the
-                # mapping property. This is because we want to later extract them and
-                # replace allOf/anyOf values.
+                self.meta_mappings.update(
+                    self.extract_meta_from_model(form, is_form=True)
+                )
                 self.enum_mappings.update(self.extract_enum_from_model(form))
-
             forms_to_generate.extend(app_form.forms)
 
         schema = pydantic_schema(forms_to_generate)
-        schema_definitions = schema["definitions"]
-
-        for key, attributes in schema_definitions.items():
-            columns_for_key = columns.get(key, None)
-
-            if columns_for_key is not None:
-                schema_definitions[key]["columns"] = columns[key]
-
-            properties = attributes.get("properties", None)
-
-            if properties is None:
-                continue
-
-            required = attributes.get("required", None)
-
-            if required is not None:
-                attributes["required"] = [camelize(r) for r in required]
-
-            for property_key, property_val in properties.items():
-                # Handle property explicitly if the value is supposed to be an enum.
-                if property_key in self.enum_mappings.keys():
-                    mapping = self.enum_mappings[property_key]
-                    property_val["title"] = property_key.title()
-                    property_val["enum"] = mapping
-                    property_val["type"] = "string"
-                    property_val["component"] = COMPONENTS["enum"].value
-                    property_val["x-enum-varnames"] = [map["label"] for map in mapping]
-
-                    property_val.pop("allOf", None)
-                    property_val.pop("anyOf", None)
-                else:
-                    properties[property_key]["component"] = self.get_component(
-                        property_val
-                    )
-
-            schema_definitions[key]["properties"] = camelize(properties)
+        schema["definitions"] = self.modify_component_definitions(
+            definitions=schema["definitions"],
+            enum_mapping=self.enum_mappings,
+            meta_mapping=self.meta_mappings,
+            is_form=True,
+        )
 
         return schema
 

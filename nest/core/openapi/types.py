@@ -1,6 +1,11 @@
 from typing import TypedDict, Any, TypeAlias, NotRequired
 
 
+class EnumDict(TypedDict):
+    label: str
+    value: str | int
+
+
 #########
 # Paths #
 #########
@@ -56,6 +61,7 @@ class PropertyBase(TypedDict, total=True):
     type: NotRequired[str]  # Enum values purposefully leaves the type out.
     allOf: NotRequired[Any]
     anyOf: NotRequired[Any]
+    enum: NotRequired[list[EnumDict]]
 
 
 class PropertyExtra(PropertyBase, total=True):
@@ -66,6 +72,8 @@ class PropertyExtra(PropertyBase, total=True):
     hidden_label: bool
     col_span: int | None
     order: int
+    section: str | None
+    default: NotRequired[Any]
     min: int | None
     max: int | None
 
