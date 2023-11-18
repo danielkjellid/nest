@@ -171,7 +171,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             # Enums has to be treated a bit differently than normal pydantic.BaseModel
             # or ninja.Schema.
             if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
-                m_schema = self.enum_process_schema(model_or_enum)
+                m_schema = self.process_enum_schema(model_or_enum)
             else:
                 m_schema = self._create_schema_from_model(
                     model_or_enum, remove_level=False

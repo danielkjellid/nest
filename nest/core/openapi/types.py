@@ -54,6 +54,8 @@ Path: TypeAlias = PathGet | PathPost | PathPut | PathDelete
 class PropertyBase(TypedDict, total=True):
     title: str
     type: NotRequired[str]  # Enum values purposefully leaves the type out.
+    allOf: NotRequired[Any]
+    anyOf: NotRequired[Any]
 
 
 class PropertyExtra(PropertyBase, total=True):
@@ -90,7 +92,14 @@ class DefinitionExtra(DefinitionBase):
 
 DefinitionEnum = TypedDict(
     "DefinitionEnum",
-    {"description": str, "enum": list[str | int], "x-enum-varnames": list[str]},
+    {
+        "title": str,
+        "type": str,
+        "required": NotRequired[list[str]],
+        "description": str,
+        "enum": list[str | int],
+        "x-enum-varnames": list[str],
+    },
 )
 
 Definition: TypeAlias = (
