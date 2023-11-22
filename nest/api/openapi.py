@@ -4,16 +4,12 @@ import inspect
 from enum import Enum
 from typing import (
     Any,
-    Collection,
-    Iterable,
-    Sequence,
     Type,
     cast,
     get_args,
     get_type_hints,
 )
 
-from django.conf import settings
 from django.db.models import IntegerChoices, TextChoices
 from ninja import NinjaAPI
 from ninja.openapi.schema import (
@@ -28,9 +24,9 @@ from ninja.params_models import TModel, TModels
 from ninja.types import DictStrAny
 from pydantic import BaseModel
 from pydantic.schema import model_schema
-from store_kit.utils import camelize
 
 from nest.api.files import UploadedFile, UploadedImageFile
+from nest.core.openapi import NestOpenAPISchema
 
 MANUALLY_ADDED_SCHEMAS = []
 
@@ -54,45 +50,31 @@ def get_schema(api: NinjaAPI, path_prefix: str = "") -> OpenAPISchema:
     return openapi
 
 
-class OpenAPISchema(NinjaOpenAPISchema):
+class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        NestOpenAPISchema.__init__(self, is_form=False)
+        NinjaOpenAPISchema.__init__(self, *args, **kwargs)
+
     def get_components(self) -> DictStrAny:
         self._add_manually_added_schemas_to_schema()
         return super().get_components()
 
     def _update_schema(
-        self, schema: dict[str, Any], models: TModels[Any]
+        self, component_schemas: dict[str, dict[str, Any]], models: TModels[Any]
     ) -> dict[str, Any]:
         """
         This is where the magic happens. This method is responsible for updating the
         schema appropriately, combining all helper methods. It converts keys to
         camelcase, sets component and extract enum values.
         """
-        schemas = {}
 
-        mapped_enums = self._extract_enum_from_models(models=models)
-        meta = self._set_schema_meta(models=models)
+        enum_mapping = self.extract_enum_from_models(models)
 
-        for key, value in schema.copy().items():
-            properties = value.pop("properties", None)
-            required = value.pop("required", None)
-            schema_key = key if key != "FormParams" else meta.get("title", key)
-
-            value.pop("title")
-
-            updated_schema = {
-                schema_key: {
-                    "title": schema_key,
-                    "properties": self._populate_definition_properties(
-                        properties=properties, enum_mapping=mapped_enums
-                    )
-                    if properties is not None
-                    else None,
-                    "required": self._convert_keys_to_camelcase(required),
-                    **meta,
-                    **value,
-                }
-            }
-            schemas.update(updated_schema)
+        schemas = self.modify_component_definitions(
+            definitions=component_schemas,
+            meta_mapping={},
+            enum_mapping=enum_mapping,
+        )
 
         return schemas
 
@@ -115,7 +97,9 @@ class OpenAPISchema(NinjaOpenAPISchema):
         if schema.get("definitions"):
             definitions = schema.pop("definitions")
             # Intercept schema definition and update it.
-            updated_schema = self._update_schema(schema=definitions, models=[model])
+            updated_schema = self._update_schema(
+                component_schemas=definitions, models=[model]
+            )
             self.add_schema_definitions(updated_schema)
 
         if remove_level and len(schema["properties"]) == 1:
@@ -137,16 +121,33 @@ class OpenAPISchema(NinjaOpenAPISchema):
         """
         content_type = BODY_CONTENT_TYPES["file"]
 
-        result = merge_schemas(
-            [
-                self._create_schema_from_model(model, remove_level=False)[0]
-                for model in models
-            ]
-        )
+        result: dict[str, dict[str, Any]] = {}
 
-        # Intercept schema definition and update it.
+        for index, model in enumerate(models):
+            title = self.get_title_from_nested_model(model)
+
+            # If title is None it means that we're dealing with some sort of property
+            # instead of a definition. Therefore, we instead merge it with the previous
+            # definition and fix the title.
+            if title is None:
+                title = self.get_title_from_nested_model(models[index - 1])
+                schema = merge_schemas(
+                    [
+                        self._create_schema_from_model(m, remove_level=False)[0]
+                        for m in models[:index]
+                    ]
+                )
+            else:
+                schema = self._create_schema_from_model(model, remove_level=False)[0]
+
+            if title is None:
+                continue
+
+            schema["title"] = title
+            result[title] = schema
+
         schema = self._update_schema(
-            schema={result["title"]: {"title": result["title"], **result}},
+            component_schemas=result,
             models=models,
         )
         self.add_schema_definitions(schema)
@@ -166,7 +167,7 @@ class OpenAPISchema(NinjaOpenAPISchema):
             # Enums has to be treated a bit differently than normal pydantic.BaseModel
             # or ninja.Schema.
             if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
-                m_schema = self.enum_process_schema(model_or_enum)
+                m_schema = self.process_enum_schema(model_or_enum)
             else:
                 m_schema = self._create_schema_from_model(
                     model_or_enum, remove_level=False
@@ -174,181 +175,24 @@ class OpenAPISchema(NinjaOpenAPISchema):
 
             self.schemas.update({m_schema["title"]: m_schema})
 
-    def enum_process_schema(self, enum: Type[IntegerChoices]) -> dict[str, Any]:
-        """
-        Process enum and create a dict of openapi spec.
-        """
-        import inspect
-
-        schema_: dict[str, Any] = {
-            "title": enum.__name__,
-            # Python assigns all enums a default docstring value of 'An enumeration', so
-            # all enums will have a description field even if not explicitly provided.
-            "description": inspect.cleandoc(enum.__doc__ or "An enumeration."),
-            # Add enum values and the enum field type to the schema.
-            "enum": [item.value for item in cast(Iterable[Enum], enum)],
-            "x-enum-varnames": [
-                getattr(item, "label", item.value)
-                for item in cast(Iterable[Enum], enum)
-            ],
-        }
-
-        return schema_
-
-    ###########
-    # Helpers #
-    ###########
-
     @staticmethod
-    def _format_enum_from_type(typ: Any) -> list[dict[str, str | int]] | None:
-        """
-        Format schema field's enum type into a key - value format, taking advantage
-        of Django's human-readable labels where applicable.
-        """
+    def get_title_from_nested_model(model: TModel) -> str | None:
+        for value in get_type_hints(model).values():
+            val = value
+            val_iterable = get_args(value)
 
-        type_to_check = typ
-        args_iterable = get_args(typ)
+            if val_iterable:
+                val = next(
+                    (item for item in val_iterable if inspect.isclass(item)),
+                    None,
+                )
 
-        if args_iterable:
-            type_to_check = next(
-                (
-                    item
-                    for item in args_iterable
-                    if inspect.isclass(item) and issubclass(item, Enum)
-                ),
-                None,
-            )
+            if not val:
+                continue
 
-            if not type_to_check:
-                return None
+            if issubclass(val, UploadedFile | UploadedImageFile):
+                continue
 
-        # If passed enum is a django choices field, we can take advantaged
-        # of the defined label.
-        if issubclass(type_to_check, IntegerChoices | TextChoices):
-            return [
-                {"label": item.label, "value": item.value} for item in type_to_check
-            ]
-        elif issubclass(type_to_check, Enum):
-            return [
-                {"label": item.name.replace("_", " ").title(), "value": item.value}
-                for item in type_to_check
-            ]
+            return str(val.__name__)
 
         return None
-
-    def _extract_enum_from_models(
-        self, models: TModels[Any]
-    ) -> list[dict[str, Sequence[Collection[str]]]]:
-        """
-        Iterate through the models passed by the operation and return the field as well
-        as enum representation.
-        """
-        enum_mapping = []
-
-        for model in models:
-            for _key, val in model.__fields__.items():
-                for field_name, type_ in get_type_hints(val.type_).items():
-                    enum = self._format_enum_from_type(typ=type_)
-
-                    if enum:
-                        enum_mapping.append(
-                            {
-                                "field": field_name,
-                                "enum": enum,
-                            }
-                        )
-
-        return enum_mapping
-
-    def _populate_definition_properties(
-        self,
-        properties: dict[str, Any],
-        enum_mapping: list[dict[str, Sequence[Collection[str]]]] | None = None,
-    ) -> dict[str, Any]:
-        """
-        This method does a few things to modify the definitions dict in a way we want
-        it. It first converts the keys to camelcase. Then it proceeds to iterate through
-        the values and append an enum key with a list of enum labels and values if one
-        of the previous extracted enum mapping matches the iterated key. Then we set
-        the correct component for the python type.
-
-        """
-        props = self._convert_keys_to_camelcase(properties.copy())
-
-        for property, property_value in props.items():
-            property_type = property_value.get("type", None)
-            for _key, _value in property_value.copy().items():
-                if enum_mapping:
-                    for mapping in enum_mapping:
-                        if mapping["field"] == property:
-                            props[property]["title"] = mapping["field"].title()  # type: ignore
-                            props[property]["enum"] = mapping["enum"]
-
-                            component_defaults = (
-                                settings.FORM_COMPONENT_MAPPING_DEFAULTS  # type: ignore
-                            )
-                            component = component_defaults["enum"].value
-                            props[property]["component"] = component
-
-                if property_type and props[property].get("component", None) is None:
-                    try:
-                        props[property][
-                            "component"
-                        ] = settings.FORM_COMPONENT_MAPPING_DEFAULTS[  # type: ignore
-                            property_value["type"]
-                        ].value
-                    except KeyError:
-                        pass
-
-        return camelize(props)  # type: ignore
-
-    def _convert_keys_to_camelcase(self, data: dict[str, Any] | list[str]) -> Any:
-        """
-        Recursively go through a dataset and convert it to camelcase.
-        """
-        if isinstance(data, dict):
-            return {
-                key: self._convert_keys_to_camelcase(val) for key, val in data.items()
-            }
-        elif isinstance(data, list):
-            return [camelize(val) for val in data]
-        else:
-            return data
-
-    @staticmethod
-    def _set_schema_meta(models: TModels[Any]) -> dict[str, Any]:
-        """
-        For multipart/form schemas the title is automatically populated to FormParams,
-        however, we want to use the actual schema payload name. We also allow for
-        multi-column forms, which is set through the subclass FormMeta on a
-        ninja.Schema.
-        """
-        meta = {}
-
-        for model in models:
-            for _key, value in get_type_hints(model).items():
-                val = value
-                val_iterable = get_args(value)
-
-                if val_iterable:
-                    val = next(
-                        (item for item in val_iterable if inspect.isclass(item)),
-                        None,
-                    )
-
-                if not val:
-                    continue
-
-                if issubclass(val, UploadedFile | UploadedImageFile):
-                    continue
-
-                meta["title"] = f"{val.__name__}"
-
-                if hasattr(val, "FormMeta"):
-                    meta["columns"] = getattr(
-                        value.FormMeta,
-                        "columns",
-                        1,  # type: ignore
-                    )
-
-        return meta
