@@ -26,8 +26,7 @@ from pydantic import BaseModel
 from pydantic.schema import model_schema
 
 from nest.api.files import UploadedFile, UploadedImageFile
-from nest.core.openapi.schema import NestOpenAPISchema
-from nest.core.openapi.types import Definition
+from nest.core.openapi import NestOpenAPISchema
 
 MANUALLY_ADDED_SCHEMAS = []
 
@@ -61,7 +60,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         return super().get_components()
 
     def _update_schema(
-        self, component_schemas: dict[str, Definition], models: TModels[Any]
+        self, component_schemas: dict[str, dict[str, Any]], models: TModels[Any]
     ) -> dict[str, Any]:
         """
         This is where the magic happens. This method is responsible for updating the
@@ -122,7 +121,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         """
         content_type = BODY_CONTENT_TYPES["file"]
 
-        result = {}
+        result: dict[str, dict[str, Any]] = {}
 
         for index, model in enumerate(models):
             title = self.get_title_from_nested_model(model)
@@ -140,6 +139,9 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
                 )
             else:
                 schema = self._create_schema_from_model(model, remove_level=False)[0]
+
+            if title is None:
+                continue
 
             schema["title"] = title
             result[title] = schema
@@ -174,7 +176,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             self.schemas.update({m_schema["title"]: m_schema})
 
     @staticmethod
-    def get_title_from_nested_model(model: TModel):
+    def get_title_from_nested_model(model: TModel) -> str | None:
         for value in get_type_hints(model).values():
             val = value
             val_iterable = get_args(value)
@@ -191,4 +193,6 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             if issubclass(val, UploadedFile | UploadedImageFile):
                 continue
 
-            return val.__name__
+            return str(val.__name__)
+
+        return None

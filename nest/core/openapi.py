@@ -1,11 +1,12 @@
 from collections import defaultdict
 from copy import deepcopy
 from enum import Enum
-from inspect import isclass
+from inspect import cleandoc, isclass
 from typing import (
     Any,
     Iterable,
     Type,
+    TypedDict,
     TypeVar,
     cast,
     get_args,
@@ -18,19 +19,15 @@ from django.db.models import IntegerChoices, TextChoices
 from pydantic import BaseModel
 from store_kit.utils import camelize
 
-from .types import (
-    Definition,
-    DefinitionEnum,
-    EnumDict,
-    Property,
-    PropertyBase,
-    PropertyExtra,
-)
-
 logger = structlog.get_logger()
 
 TModel = TypeVar("TModel", bound=BaseModel)
 TEnum = TypeVar("TEnum", bound=Enum)
+
+
+class EnumDict(TypedDict):
+    label: str
+    value: str | int
 
 
 class NestOpenAPISchema:
@@ -39,14 +36,14 @@ class NestOpenAPISchema:
 
     def modify_component_definitions(
         self,
-        definitions: dict[str, Definition],
-        meta_mapping: dict[str, str],
-        enum_mapping: dict[str, EnumDict],
-    ) -> dict[str, Definition]:
-        modified_definitions = defaultdict(dict)
+        definitions: dict[str, dict[str, Any]],
+        meta_mapping: dict[str, dict[str, str | int]],
+        enum_mapping: dict[str, dict[str, list[EnumDict]]],
+    ) -> dict[str, dict[str, Any]]:
+        modified_definitions: dict[str, dict[str, Any]] = defaultdict(dict)
 
         for key, attributes in deepcopy(definitions).items():
-            modified_definition = defaultdict(dict)
+            modified_definition: dict[str, Any] = defaultdict(dict)
 
             required = attributes.get("required", None)
             properties = attributes.get("properties", None)
@@ -91,10 +88,10 @@ class NestOpenAPISchema:
         self,
         *,
         definition_key: str,
-        properties: dict[str, Property],
-        enum_mapping: dict[str, list[EnumDict]],
-    ) -> dict[str, Property]:
-        modified_properties: dict[str, Property] = defaultdict(dict)
+        properties: dict[str, dict[str, Any]],
+        enum_mapping: dict[str, dict[str, list[EnumDict]]],
+    ) -> dict[str, dict[str, Any]]:
+        modified_properties: dict[str, dict[str, Any]] = defaultdict(dict)
 
         for key, val in properties.items():
             enum_mapping_exists = (
@@ -110,7 +107,7 @@ class NestOpenAPISchema:
             val_copy = val.copy()
             val.pop("component", None)
 
-            base_defaults = {}
+            base_defaults: dict[str, Any] = {}
 
             if "$ref" not in val:
                 base_defaults["title"] = title
@@ -118,7 +115,7 @@ class NestOpenAPISchema:
             if type_ is not None:
                 base_defaults["type"] = type_
 
-            extra_defaults = {
+            extra_defaults: dict[str, Any] = {
                 "help_text": val.get("help_text", None),
                 "default_value": val.get("default_value", None),
                 "placeholder": val.get("placeholder", None),
@@ -136,39 +133,42 @@ class NestOpenAPISchema:
             if enum_mapping_exists:
                 val.pop("enum", None)
 
+            modified_property: dict[str, Any]
+
             if not self.is_form and enum_mapping_exists:
-                modified_property = PropertyBase(
+                modified_property = {
                     **base_defaults,
+                    "enum": enum_mapping[definition_key][key],
                     **val,
-                    enum=enum_mapping[definition_key][key],
-                )
+                }
             elif not self.is_form and not enum_mapping_exists:
-                modified_property = PropertyBase(
+                modified_property = {
                     **base_defaults,
                     **val,
-                )
+                }
             elif self.is_form and enum_mapping_exists:
-                modified_property = PropertyExtra(
-                    title=title,
-                    type="string",
-                    enum=enum_mapping[definition_key][key],
-                    component=settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value,
+                component = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
+                modified_property = {
+                    "title": title,
+                    "type": "string",
+                    "enum": enum_mapping[definition_key][key],
+                    "component": component,
                     **extra_defaults,
                     **val,
-                )
+                }
             else:
-                modified_property = PropertyExtra(
+                modified_property = {
                     **base_defaults,
                     **extra_defaults,
-                    component=self.get_component(val_copy),
+                    "component": self.get_component(val_copy),
                     **val,
-                )
+                }
 
             modified_properties[key] = modified_property
 
-        return self.convert_keys_to_camelcase(dict(modified_properties))
+        return self.convert_keys_to_camelcase(dict(modified_properties))  # type: ignore
 
-    def convert_keys_to_camelcase(self, data):
+    def convert_keys_to_camelcase(self, data: Any) -> Any:
         """
         Recursively go through a dataset and convert it to camelcase.
         """
@@ -183,16 +183,22 @@ class NestOpenAPISchema:
             return data
 
     @staticmethod
-    def get_component(property_: Property) -> str:
-        defined_component = property_.get("component", None)
+    def get_component(property_: dict[str, Any]) -> str:
+        defined_component: str = property_.get("component", None)
 
         if defined_component is not None:
             return defined_component
 
-        return settings.FORM_COMPONENT_MAPPING_DEFAULTS[property_["type"]].value
+        component: str = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
+            property_["type"]
+        ].value
 
-    def extract_enum_from_model(self, model: TModel) -> dict[str, list[EnumDict]]:
-        enum_mapping = defaultdict(dict)
+        return component
+
+    def extract_enum_from_model(
+        self, model: Type[TModel]
+    ) -> dict[str, dict[str, list[EnumDict]]]:
+        enum_mapping: dict[str, dict[str, list[EnumDict]]] = defaultdict(dict)
 
         # Iterate through model fields and their type annotation.
         for field_name, type_annotation in get_type_hints(model).items():
@@ -211,9 +217,9 @@ class NestOpenAPISchema:
         return dict(enum_mapping)
 
     def extract_enum_from_models(
-        self, models: list[TModel]
-    ) -> dict[str, list[EnumDict]]:
-        enum_mapping = defaultdict(dict)
+        self, models: list[Type[TModel]]
+    ) -> dict[str, dict[str, list[EnumDict]]]:
+        enum_mapping: dict[str, dict[str, list[EnumDict]]] = defaultdict(dict)
 
         for model in models:
             mapping = self.extract_enum_from_model(model)
@@ -222,26 +228,23 @@ class NestOpenAPISchema:
         return dict(enum_mapping)
 
     @staticmethod
-    def process_enum_schema(enum: Type[TEnum]) -> DefinitionEnum:
+    def process_enum_schema(enum: Type[TEnum]) -> dict[str, Any]:
         """
         Process enum and create a dict of openapi spec.
         """
-        import inspect
 
-        definition = DefinitionEnum(
-            title=enum.__name__,
+        definition = {
+            "title": enum.__name__,
             # Python assigns all enums a default docstring value of 'An enumeration', so
             # all enums will have a description field even if not explicitly provided.
-            description=inspect.cleandoc(enum.__doc__ or "An enumeration."),
+            "description": cleandoc(enum.__doc__ or "An enumeration."),
             # Add enum values and the enum field type to the schema.
-            enum=[item.value for item in cast(Iterable[Enum], enum)],
-            **{
-                "x-enum-varnames": [
-                    getattr(item, "label", item.value)
-                    for item in cast(Iterable[Enum], enum)
-                ]
-            },
-        )
+            "enum": [item.value for item in cast(Iterable[Enum], enum)],
+            "x-enum-varnames": [
+                getattr(item, "label", item.value)
+                for item in cast(Iterable[Enum], enum)
+            ],
+        }
 
         return definition
 
