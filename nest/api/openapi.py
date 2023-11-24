@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import json
 from enum import Enum
 from typing import (
     Any,
@@ -69,6 +70,9 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         """
 
         enum_mapping = self.extract_enum_from_models(models)
+        for schema in component_schemas.items():
+            print(json.dumps(schema, indent=2))
+            print("-------")
 
         schemas = self.modify_component_definitions(
             definitions=component_schemas,
@@ -134,7 +138,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
                 schema = merge_schemas(
                     [
                         self._create_schema_from_model(m, remove_level=False)[0]
-                        for m in models[:index]
+                        for m in models[: index + 1]
                     ]
                 )
             else:

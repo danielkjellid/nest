@@ -102,8 +102,6 @@ class NestOpenAPISchema:
             title = key.replace("_", " ").title()
             type_ = val.get("type", None)
 
-            val.pop("allOf", None)
-            val.pop("anyOf", None)
             val_copy = val.copy()
             val.pop("component", None)
 
@@ -148,6 +146,10 @@ class NestOpenAPISchema:
                 }
             elif self.is_form and enum_mapping_exists:
                 component = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
+
+                val.pop("anyOf", None)
+                val.pop("allOf", None)
+
                 modified_property = {
                     "title": title,
                     "type": "string",
