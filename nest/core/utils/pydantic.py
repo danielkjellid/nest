@@ -1,28 +1,23 @@
-from typing import Any, Iterator, Sequence, Type, TypeVar
+from typing import Any, Iterable, Iterator, Type, TypeVar
 
-from ninja import Schema
 from pydantic import BaseModel, create_model
-from pydantic.fields import ModelField
+from pydantic.fields import FieldInfo, ModelField
 
-from nest.forms.fields import FormField
-
-M = TypeVar("M", bound=Type[BaseModel])
+M = TypeVar("M", bound=BaseModel)
 
 __all__ = ["Partial", "Exclude"]
 
 
 class PartialFactory:
-    def __init__(self) -> None:
-        ...
-
     def partial(
         self,
-        model: M,
-        fields: Sequence[str],
-        overrides: dict[str, tuple[Type, FormField]] | None = None,
-    ):
+        name: str | None,
+        model: Type[M],
+        fields: Iterable[str],
+        overrides: dict[str, tuple[Type[Any], FieldInfo]] | None = None,
+    ) -> Type[M]:
         return self.create_schema(
-            name=model.__name__,
+            name=name or model.__name__,
             model=model,
             fields=fields,
             overrides=overrides,
@@ -30,12 +25,13 @@ class PartialFactory:
 
     def exclude(
         self,
-        model: M,
-        fields: Sequence[str],
-        overrides: dict[str, tuple[Type, FormField]] | None = None,
-    ):
+        name: str | None,
+        model: Type[M],
+        fields: Iterable[str],
+        overrides: dict[str, tuple[Type[Any], FieldInfo]] | None = None,
+    ) -> Type[M]:
         return self.create_schema(
-            name=model.__name__,
+            name=name or model.__name__,
             model=model,
             exclude=fields,
             overrides=overrides,
@@ -44,19 +40,19 @@ class PartialFactory:
     def create_schema(
         self,
         name: str,
-        model: M,
-        fields: Sequence[str] | None = None,
-        exclude: Sequence[str] | None = None,
+        model: Type[M],
+        fields: Iterable[str] | None = None,
+        exclude: Iterable[str] | None = None,
         *,
-        overrides: dict[str, tuple[Type, FormField]] | None = None,
-        base_class: Type[Schema] = Schema,
-    ):
+        overrides: dict[str, tuple[Type[Any], FieldInfo]] | None = None,
+        base_class: Type[BaseModel] = BaseModel,
+    ) -> Type[M]:
         """
         Create a partial version of a pydantic model. Useful when only the partial data
         is needed.
         """
 
-        definitions: dict[str, tuple[Type, Any | FormField]] = {}
+        definitions: dict[str, Any] = {}
         fields_to_exclude = set(exclude or []) - set(
             overrides.keys() if overrides else []
         )
@@ -75,12 +71,14 @@ class PartialFactory:
                 outer_type, field_info = field_value
                 definitions[field_name] = (outer_type, field_info)
 
-        schema: Type[Schema] = create_model(
-            name,
+        schema: Type[M] = create_model(  # type: ignore
+            __model_name=name,
             __config__=None,
             __base__=base_class,
             __module__=base_class.__module__,
-            __validators__={},
+            __validators__=None,
+            __cls_kwargs__=None,
+            __slots__=None,
             **definitions,
         )
 
@@ -88,9 +86,9 @@ class PartialFactory:
 
     @staticmethod
     def _selected_pydantic_model_fields(
-        model: M,
-        fields: Sequence[str] | None = None,
-        exclude: Sequence[str] | None = None,
+        model: Type[M],
+        fields: Iterable[str] | None = None,
+        exclude: Iterable[str] | None = None,
     ) -> Iterator[ModelField]:
         model_fields = model.__fields__
 

@@ -16,7 +16,7 @@ class TestModel(BaseModel):
 def test_core_util_pydantic_partial():
     fields = ["name", "gender"]
 
-    PartialModel = Partial(TestModel, fields)
+    PartialModel = Partial("PartialModel", TestModel, fields)
     partial_model_fields = PartialModel.__fields__
     original_model_fields = TestModel.__fields__
 
@@ -38,7 +38,7 @@ def test_core_util_pydantic_partial():
 def test_core_util_pydantic_exclude():
     excluded_fields = ["name", "age"]
 
-    ExcludedModel = Exclude(TestModel, excluded_fields)
+    ExcludedModel = Exclude("ExcludedModel", TestModel, excluded_fields)
     excluded_model_fields = ExcludedModel.__fields__
     original_model_fields = TestModel.__fields__
 

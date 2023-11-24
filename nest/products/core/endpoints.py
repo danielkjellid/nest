@@ -9,7 +9,7 @@ from nest.api.responses import APIResponse
 from nest.audit_logs.selectors import get_log_entries_for_object
 from nest.core.decorators import staff_required
 from nest.core.records import TableRecord
-from nest.core.utils import Exclude, format_datetime
+from nest.core.utils import format_datetime
 
 from .forms import ProductCreateForm, ProductEditForm
 from .models import Product
@@ -47,7 +47,7 @@ def product_list_api(request: HttpRequest) -> APIResponse[list[ProductListOut]]:
 @staff_required
 def product_create_api(
     request: HttpRequest,
-    payload: Exclude(ProductCreateForm, ["thumbnail"]) = Form(...),  # noqa
+    payload: ProductCreateForm = Form(...),  # noqa
     thumbnail: UploadedFile | None = File(None),  # noqa
 ) -> tuple[int, APIResponse[None]]:
     """
@@ -161,7 +161,7 @@ def product_detail_api(
 def product_edit_api(
     request: HttpRequest,
     product_id: int,
-    payload: Exclude(ProductEditForm, ["thumbnail"]) = Form(...),  # noqa
+    payload: ProductEditForm = Form(...),  # noqa
     thumbnail: UploadedFile | None = File(None),  # noqa
 ) -> APIResponse[None]:
     """
