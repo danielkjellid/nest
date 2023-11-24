@@ -4,6 +4,6 @@
 /* eslint-disable */
 
 export type ProductOdaImportForm = {
-    odaProductId: number;
+    odaProductId: string;
 };
 
