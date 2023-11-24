@@ -1,5 +1,4 @@
 import pytest
-from ninja import Schema
 from pydantic import BaseModel
 
 from nest.core.utils import Exclude, Partial
@@ -20,7 +19,7 @@ def test_core_util_pydantic_partial():
     partial_model_fields = PartialModel.__fields__
     original_model_fields = TestModel.__fields__
 
-    assert issubclass(PartialModel, Schema)
+    assert issubclass(PartialModel, BaseModel)
     assert set(fields) == set(partial_model_fields.keys())
 
     for field in fields:
@@ -45,7 +44,7 @@ def test_core_util_pydantic_exclude():
     original_fields_name = [f.name for f in original_model_fields.values()]
     picked_fields = set(original_fields_name) - set(excluded_fields)
 
-    assert issubclass(ExcludedModel, Schema)
+    assert issubclass(ExcludedModel, BaseModel)
     assert picked_fields == set(excluded_model_fields.keys())
 
     for field in picked_fields:
