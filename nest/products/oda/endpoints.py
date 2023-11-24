@@ -1,5 +1,6 @@
 from django.http import HttpRequest
 from ninja import Router, Schema
+from store_kit.http import status
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
@@ -54,13 +55,13 @@ class ProductOdaImportConfirmIn(Schema):
     oda_product_id: int
 
 
-@router.post("import/confirm/", response=APIResponse[None])
+@router.post("import/confirm/", response={201: APIResponse[None]})
 @staff_required
 def product_oda_import_confirm_api(
     request: HttpRequest, payload: ProductOdaImportConfirmIn
-) -> APIResponse[None]:
+) -> tuple[int, APIResponse[None]]:
     """
     Import and create a product from Oda based on ID.
     """
     import_product_from_oda(oda_product_id=payload.oda_product_id)
-    return APIResponse(status="success", data=None)
+    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)

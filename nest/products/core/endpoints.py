@@ -2,6 +2,7 @@ from typing import Any
 
 from django.http import HttpRequest
 from ninja import File, Form, Router, Schema
+from store_kit.http import status
 
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
@@ -42,19 +43,19 @@ def product_list_api(request: HttpRequest) -> APIResponse[list[ProductListOut]]:
     return APIResponse(status="success", data=data)
 
 
-@router.post("create/", response=APIResponse[None])
+@router.post("create/", response={201: APIResponse[None]})
 @staff_required
 def product_create_api(
     request: HttpRequest,
     payload: ProductCreateForm = Form(...),  # noqa
     thumbnail: UploadedFile | None = File(None),  # noqa
-) -> APIResponse[None]:
+) -> tuple[int, APIResponse[None]]:
     """
     Create a normal product.
     """
 
     create_product(**payload.dict(), thumbnail=thumbnail, request=request)
-    return APIResponse(status="success", data=None)
+    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
 
 
 class ProductDetailAuditLogsOut(Schema):

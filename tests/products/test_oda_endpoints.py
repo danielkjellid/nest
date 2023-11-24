@@ -72,7 +72,7 @@ product_oda_import_confirm_api_factory = EndpointFactory(
         "staff_request": Request(
             help="Test that staff users are able import oda products",
             client=authenticated_staff_client,
-            expected_status_code=status.HTTP_200_OK,
+            expected_status_code=status.HTTP_201_CREATED,
             expected_mock_calls={"import_product_from_oda": 1},
         ),
     },
