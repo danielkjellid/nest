@@ -15,7 +15,7 @@ class PartialFactory:
         model: Type[M],
         fields: Iterable[str],
         overrides: dict[str, tuple[Type[Any], FieldInfo]] | None = None,
-    ) -> Type[M]:
+    ) -> Type[BaseModel]:
         """
         Create a partial representation of a pydantic model, only including provided
         fields.
@@ -33,7 +33,7 @@ class PartialFactory:
         model: Type[M],
         fields: Iterable[str],
         overrides: dict[str, tuple[Type[Any], FieldInfo]] | None = None,
-    ) -> Type[M]:
+    ) -> Type[BaseModel]:
         """
         Create a partial representation of a pydantic model, excluding provided fields.
         """
@@ -53,7 +53,7 @@ class PartialFactory:
         *,
         overrides: dict[str, tuple[Type[Any], FieldInfo]] | None = None,
         base_class: Type[BaseModel] = BaseModel,
-    ) -> Type[M]:
+    ) -> Type[BaseModel]:
         """
         Create a version of a pydantic model. Useful when only the partial model data
         is needed.

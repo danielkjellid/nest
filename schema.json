@@ -59,7 +59,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductCreateForm"
+                                "$ref": "#/components/schemas/ProductCreateIn"
                             }
                         }
                     },
@@ -145,7 +145,7 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "$ref": "#/components/schemas/ProductEditForm"
+                                "$ref": "#/components/schemas/ProductEditIn"
                             }
                         }
                     },
@@ -745,8 +745,8 @@
                     "data"
                 ]
             },
-            "ProductCreateForm": {
-                "title": "ProductCreateForm",
+            "ProductCreateIn": {
+                "title": "ProductCreateIn",
                 "type": "object",
                 "properties": {
                     "name": {
@@ -1111,8 +1111,8 @@
                     "status"
                 ]
             },
-            "ProductEditForm": {
-                "title": "ProductEditForm",
+            "ProductEditIn": {
+                "title": "ProductEditIn",
                 "type": "object",
                 "properties": {
                     "name": {

@@ -31,7 +31,7 @@ def test_core_util_pydantic_partial():
         assert original_field.required == partial_field.required
 
     with pytest.raises(ValueError):
-        Partial(TestModel, ["field_does_not_exist"])
+        Partial("Testing", TestModel, ["field_does_not_exist"])
 
 
 def test_core_util_pydantic_exclude():
@@ -56,4 +56,4 @@ def test_core_util_pydantic_exclude():
         assert original_field.required == partial_field.required
 
     with pytest.raises(ValueError):
-        Exclude(TestModel, ["field_does_not_exist"])
+        Exclude("Testing", TestModel, ["field_does_not_exist"])
