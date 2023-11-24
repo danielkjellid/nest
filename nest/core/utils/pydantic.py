@@ -22,7 +22,7 @@ class PartialFactory:
         overrides: dict[str, tuple[Type, FormField]] | None = None,
     ):
         return self.create_schema(
-            name=f"Picked{model.__name__}",
+            name=model.__name__,
             model=model,
             fields=fields,
             overrides=overrides,
@@ -35,7 +35,7 @@ class PartialFactory:
         overrides: dict[str, tuple[Type, FormField]] | None = None,
     ):
         return self.create_schema(
-            name=f"Excluded{model.__name__}",
+            name=model.__name__,
             model=model,
             exclude=fields,
             overrides=overrides,

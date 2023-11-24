@@ -828,6 +828,11 @@
                     "isAvailable": {
                         "title": "Is Available",
                         "type": "boolean"
+                    },
+                    "thumbnail": {
+                        "title": "Thumbnail",
+                        "type": "file",
+                        "format": "binary"
                     }
                 },
                 "required": [
@@ -1193,6 +1198,11 @@
                     "isSynced": {
                         "title": "Is Synced",
                         "type": "boolean"
+                    },
+                    "thumbnail": {
+                        "title": "Thumbnail",
+                        "type": "file",
+                        "format": "binary"
                     }
                 },
                 "required": [
@@ -1394,6 +1404,14 @@
                                 "label": "Published",
                                 "value": "published"
                             }
+                        ],
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeStatus"
+                            },
+                            {
+                                "type": "string"
+                            }
                         ]
                     },
                     "difficulty": {
@@ -1410,6 +1428,14 @@
                             {
                                 "label": "Hard",
                                 "value": "hard"
+                            }
+                        ],
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeDifficulty"
+                            },
+                            {
+                                "type": "string"
                             }
                         ]
                     },

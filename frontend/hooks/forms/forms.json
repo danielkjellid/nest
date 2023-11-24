@@ -283,6 +283,21 @@
                     "min": null,
                     "max": null,
                     "component": "Checkbox"
+                },
+                "thumbnail": {
+                    "title": "Thumbnail",
+                    "type": "file",
+                    "helpText": null,
+                    "defaultValue": null,
+                    "placeholder": "Upload thumbnail",
+                    "hiddenLabel": null,
+                    "colSpan": null,
+                    "section": null,
+                    "order": null,
+                    "min": null,
+                    "max": null,
+                    "component": "FileInput",
+                    "format": "binary"
                 }
             },
             "required": [
@@ -592,6 +607,21 @@
                     "min": null,
                     "max": null,
                     "component": "Checkbox"
+                },
+                "thumbnail": {
+                    "title": "Thumbnail",
+                    "type": "file",
+                    "helpText": null,
+                    "defaultValue": null,
+                    "placeholder": "Upload thumbnail",
+                    "hiddenLabel": null,
+                    "colSpan": null,
+                    "section": null,
+                    "order": null,
+                    "min": null,
+                    "max": null,
+                    "component": "FileInput",
+                    "format": "binary"
                 }
             },
             "required": [

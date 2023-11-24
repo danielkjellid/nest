@@ -1,6 +1,7 @@
 from decimal import Decimal
 from typing import ClassVar
 
+from nest.api.files import UploadedFile
 from nest.forms.fields import FormField
 from nest.forms.models import Form
 from nest.frontend.components import FrontendComponents
@@ -57,6 +58,7 @@ class ProductCreateForm(Form):
     salt: str | None = FormField(None, order=18, col_span=2)
     sodium: str | None = FormField(None, order=19, col_span=2)
     is_available: bool = FormField(..., order=20, default_value=True)
+    thumbnail: UploadedFile | None = None
 
 
 class ProductEditForm(Form):
@@ -115,3 +117,4 @@ class ProductEditForm(Form):
         order=21,
         help_text="Product is synced with external providers",
     )
+    thumbnail: UploadedFile | None = None
