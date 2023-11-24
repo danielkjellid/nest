@@ -64,7 +64,7 @@ product_create_api_factory = EndpointFactory(
         "staff_request": Request(
             help="Test that staff users are able to create new products",
             client=authenticated_staff_client,
-            expected_status_code=status.HTTP_200_OK,
+            expected_status_code=status.HTTP_201_CREATED,
             expected_mock_calls={"create_product": 1},
         ),
     },
