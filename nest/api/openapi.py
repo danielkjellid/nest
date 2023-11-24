@@ -134,7 +134,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
                 schema = merge_schemas(
                     [
                         self._create_schema_from_model(m, remove_level=False)[0]
-                        for m in models[:index]
+                        for m in models[: index + 1]
                     ]
                 )
             else:
