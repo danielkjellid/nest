@@ -640,6 +640,14 @@
             "ProductListOut": {
                 "title": "ProductListOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "fullName",
+                    "isAvailable",
+                    "isSynced",
+                    "isOdaProduct",
+                    "displayPrice"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -681,19 +689,14 @@
                         "title": "displayPrice",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "id",
-                    "fullName",
-                    "isAvailable",
-                    "isSynced",
-                    "isOdaProduct",
-                    "displayPrice"
-                ]
+                }
             },
             "ProductListOutAPIResponse": {
                 "title": "ProductListOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -707,14 +710,15 @@
                         "title": "data",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "APIResponse": {
                 "title": "APIResponse",
                 "type": "object",
+                "required": [
+                    "status",
+                    "data"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -728,15 +732,19 @@
                         "title": "data",
                         "type": "null"
                     }
-                },
-                "required": [
-                    "status",
-                    "data"
-                ]
+                }
             },
             "ProductCreateIn": {
                 "title": "ProductCreateIn",
                 "type": "object",
+                "required": [
+                    "name",
+                    "grossPrice",
+                    "unitQuantity",
+                    "unit",
+                    "supplier",
+                    "isAvailable"
+                ],
                 "properties": {
                     "name": {
                         "title": "name",
@@ -822,19 +830,17 @@
                         "title": "thumbnail",
                         "type": "file"
                     }
-                },
-                "required": [
-                    "name",
-                    "grossPrice",
-                    "unitQuantity",
-                    "unit",
-                    "supplier",
-                    "isAvailable"
-                ]
+                }
             },
             "ProductDetailUnitOut": {
                 "title": "ProductDetailUnitOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "abbreviation",
+                    "unitType"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -856,17 +862,16 @@
                         "title": "displayName",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "id",
-                    "name",
-                    "abbreviation",
-                    "unitType"
-                ]
+                }
             },
             "TableRecord": {
                 "title": "TableRecord",
                 "type": "object",
+                "required": [
+                    "key",
+                    "title",
+                    "value"
+                ],
                 "properties": {
                     "key": {
                         "title": "key",
@@ -884,16 +889,15 @@
                         "title": "value",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "key",
-                    "title",
-                    "value"
-                ]
+                }
             },
             "ProductDetailAuditLogsOut": {
                 "title": "ProductDetailAuditLogsOut",
                 "type": "object",
+                "required": [
+                    "changes",
+                    "createdAt"
+                ],
                 "properties": {
                     "userOrSource": {
                         "title": "userOrSource",
@@ -911,15 +915,23 @@
                         "title": "createdAt",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "changes",
-                    "createdAt"
-                ]
+                }
             },
             "ProductDetailOut": {
                 "title": "ProductDetailOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "fullName",
+                    "isAvailable",
+                    "grossPrice",
+                    "unit",
+                    "isSynced",
+                    "isOdaProduct",
+                    "nutritionTable",
+                    "auditLogs"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1042,23 +1054,14 @@
                         "title": "auditLogs",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "id",
-                    "name",
-                    "fullName",
-                    "isAvailable",
-                    "grossPrice",
-                    "unit",
-                    "isSynced",
-                    "isOdaProduct",
-                    "nutritionTable",
-                    "auditLogs"
-                ]
+                }
             },
             "ProductDetailOutAPIResponse": {
                 "title": "ProductDetailOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -1069,14 +1072,20 @@
                         "type": "string"
                     },
                     "data": {}
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "ProductEditIn": {
                 "title": "ProductEditIn",
                 "type": "object",
+                "required": [
+                    "name",
+                    "grossPrice",
+                    "unitQuantity",
+                    "unit",
+                    "supplier",
+                    "isAvailable",
+                    "isSynced"
+                ],
                 "properties": {
                     "name": {
                         "title": "name",
@@ -1166,20 +1175,20 @@
                         "title": "thumbnail",
                         "type": "file"
                     }
-                },
-                "required": [
-                    "name",
-                    "grossPrice",
-                    "unitQuantity",
-                    "unit",
-                    "supplier",
-                    "isAvailable",
-                    "isSynced"
-                ]
+                }
             },
             "ProductOdaImportOut": {
                 "title": "ProductOdaImportOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "fullName",
+                    "isAvailable",
+                    "grossPrice",
+                    "unit",
+                    "unitQuantity",
+                    "thumbnailUrl"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1213,20 +1222,14 @@
                         "title": "thumbnailUrl",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "id",
-                    "fullName",
-                    "isAvailable",
-                    "grossPrice",
-                    "unit",
-                    "unitQuantity",
-                    "thumbnailUrl"
-                ]
+                }
             },
             "ProductOdaImportOutAPIResponse": {
                 "title": "ProductOdaImportOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -1237,15 +1240,16 @@
                         "type": "string"
                     },
                     "data": {}
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "ProductOdaImportForm": {
                 "title": "ProductOdaImportForm",
                 "type": "object",
                 "x-form": true,
+                "x-columns": 1,
+                "required": [
+                    "odaProductId"
+                ],
                 "properties": {
                     "odaProductId": {
                         "title": "odaProductId",
@@ -1261,40 +1265,40 @@
                         "x-max": null,
                         "x-component": "TextInput"
                     }
-                },
-                "required": [
-                    "odaProductId"
-                ]
+                }
             },
             "ProductOdaImportConfirmIn": {
                 "title": "ProductOdaImportConfirmIn",
                 "type": "object",
+                "required": [
+                    "odaProductId"
+                ],
                 "properties": {
                     "odaProductId": {
                         "title": "odaProductId",
                         "type": "integer"
                     }
-                },
-                "required": [
-                    "odaProductId"
-                ]
+                }
             },
             "RecipeCreateOut": {
                 "title": "RecipeCreateOut",
                 "type": "object",
+                "required": [
+                    "recipeId"
+                ],
                 "properties": {
                     "recipeId": {
                         "title": "recipeId",
                         "type": "integer"
                     }
-                },
-                "required": [
-                    "recipeId"
-                ]
+                }
             },
             "RecipeCreateOutAPIResponse": {
                 "title": "RecipeCreateOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -1305,10 +1309,7 @@
                         "type": "string"
                     },
                     "data": {}
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "RecipeStatus": {
                 "title": "RecipeStatus",
@@ -1334,6 +1335,13 @@
                 "title": "RecipeCreateForm",
                 "type": "object",
                 "x-form": true,
+                "x-columns": 4,
+                "required": [
+                    "title",
+                    "defaultNumPortions",
+                    "status",
+                    "difficulty"
+                ],
                 "properties": {
                     "title": {
                         "title": "title",
@@ -1489,17 +1497,16 @@
                         "x-max": null,
                         "x-component": "Checkbox"
                     }
-                },
-                "required": [
-                    "title",
-                    "defaultNumPortions",
-                    "status",
-                    "difficulty"
-                ]
+                }
             },
             "RecipeDetailDurationOut": {
                 "title": "RecipeDetailDurationOut",
                 "type": "object",
+                "required": [
+                    "preparationTimeIso8601",
+                    "cookingTimeIso8601",
+                    "totalTimeIso8601"
+                ],
                 "properties": {
                     "preparationTimeIso8601": {
                         "title": "preparationTimeIso8601",
@@ -1513,16 +1520,15 @@
                         "title": "totalTimeIso8601",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "preparationTimeIso8601",
-                    "cookingTimeIso8601",
-                    "totalTimeIso8601"
-                ]
+                }
             },
             "RecipeDetailIngredientOut": {
                 "title": "RecipeDetailIngredientOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "title"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1532,28 +1538,31 @@
                         "title": "title",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "id",
-                    "title"
-                ]
+                }
             },
             "RecipeDetailIngredientItemUnitOut": {
                 "title": "RecipeDetailIngredientItemUnitOut",
                 "type": "object",
+                "required": [
+                    "abbreviation"
+                ],
                 "properties": {
                     "abbreviation": {
                         "title": "abbreviation",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "abbreviation"
-                ]
+                }
             },
             "RecipeDetailIngredientItemOut": {
                 "title": "RecipeDetailIngredientItemOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "ingredient",
+                    "portionQuantity",
+                    "portionQuantityDisplay",
+                    "portionQuantityUnit"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1569,18 +1578,18 @@
                         "type": "string"
                     },
                     "portionQuantityUnit": {}
-                },
-                "required": [
-                    "id",
-                    "ingredient",
-                    "portionQuantity",
-                    "portionQuantityDisplay",
-                    "portionQuantityUnit"
-                ]
+                }
             },
             "RecipeDetailStepOut": {
                 "title": "RecipeDetailStepOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "number",
+                    "instruction",
+                    "stepTypeDisplay",
+                    "ingredientItems"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1602,18 +1611,16 @@
                         "title": "ingredientItems",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "id",
-                    "number",
-                    "instruction",
-                    "stepTypeDisplay",
-                    "ingredientItems"
-                ]
+                }
             },
             "RecipeDetailIngredientGroupOut": {
                 "title": "RecipeDetailIngredientGroupOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "ingredientItems"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1627,16 +1634,25 @@
                         "title": "ingredientItems",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "ingredientItems"
-                ]
+                }
             },
             "RecipeDetailOut": {
                 "title": "RecipeDetailOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "slug",
+                    "defaultNumPortions",
+                    "status",
+                    "statusDisplay",
+                    "difficultyDisplay",
+                    "isVegetarian",
+                    "isPescatarian",
+                    "duration",
+                    "steps",
+                    "ingredientGroups"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1692,25 +1708,14 @@
                         "title": "ingredientGroups",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "slug",
-                    "defaultNumPortions",
-                    "status",
-                    "statusDisplay",
-                    "difficultyDisplay",
-                    "isVegetarian",
-                    "isPescatarian",
-                    "duration",
-                    "steps",
-                    "ingredientGroups"
-                ]
+                }
             },
             "RecipeDetailOutAPIResponse": {
                 "title": "RecipeDetailOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -1721,14 +1726,20 @@
                         "type": "string"
                     },
                     "data": {}
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "RecipeListOut": {
                 "title": "RecipeListOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "defaultNumPortions",
+                    "statusDisplay",
+                    "difficultyDisplay",
+                    "isVegetarian",
+                    "isPescatarian"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1758,20 +1769,14 @@
                         "title": "isPescatarian",
                         "type": "boolean"
                     }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "defaultNumPortions",
-                    "statusDisplay",
-                    "difficultyDisplay",
-                    "isVegetarian",
-                    "isPescatarian"
-                ]
+                }
             },
             "RecipeListOutAPIResponse": {
                 "title": "RecipeListOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -1785,15 +1790,17 @@
                         "title": "data",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "IngredientCreateForm": {
                 "title": "IngredientCreateForm",
                 "type": "object",
                 "x-form": true,
+                "x-columns": 1,
+                "required": [
+                    "title",
+                    "product"
+                ],
                 "properties": {
                     "title": {
                         "title": "title",
@@ -1823,28 +1830,28 @@
                         "x-max": null,
                         "x-component": "TextInput"
                     }
-                },
-                "required": [
-                    "title",
-                    "product"
-                ]
+                }
             },
             "IngredientDeleteIn": {
                 "title": "IngredientDeleteIn",
                 "type": "object",
+                "required": [
+                    "ingredientId"
+                ],
                 "properties": {
                     "ingredientId": {
                         "title": "ingredientId",
                         "type": "integer"
                     }
-                },
-                "required": [
-                    "ingredientId"
-                ]
+                }
             },
             "IngredientListProductOut": {
                 "title": "IngredientListProductOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "fullName"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1858,15 +1865,16 @@
                         "title": "thumbnailUrl",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "id",
-                    "fullName"
-                ]
+                }
             },
             "IngredientListOut": {
                 "title": "IngredientListOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1877,16 +1885,14 @@
                         "type": "string"
                     },
                     "product": {}
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "product"
-                ]
+                }
             },
             "IngredientListOutAPIResponse": {
                 "title": "IngredientListOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -1900,14 +1906,16 @@
                         "title": "data",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "RecipeIngredientsCreateIngredientIn": {
                 "title": "RecipeIngredientsCreateIngredientIn",
                 "type": "object",
+                "required": [
+                    "ingredient",
+                    "portionQuantity",
+                    "unit"
+                ],
                 "properties": {
                     "ingredient": {
                         "title": "ingredient",
@@ -1925,16 +1933,16 @@
                         "title": "additionalInfo",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "ingredient",
-                    "portionQuantity",
-                    "unit"
-                ]
+                }
             },
             "RecipeIngredientsCreateIn": {
                 "title": "RecipeIngredientsCreateIn",
                 "type": "object",
+                "required": [
+                    "title",
+                    "ordering",
+                    "ingredients"
+                ],
                 "properties": {
                     "title": {
                         "title": "title",
@@ -1948,16 +1956,14 @@
                         "title": "ingredients",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "title",
-                    "ordering",
-                    "ingredients"
-                ]
+                }
             },
             "RecipeIngredientGroupsListIngredientProductOut": {
                 "title": "RecipeIngredientGroupsListIngredientProductOut",
                 "type": "object",
+                "required": [
+                    "fullName"
+                ],
                 "properties": {
                     "fullName": {
                         "title": "fullName",
@@ -1967,14 +1973,16 @@
                         "title": "thumbnailUrl",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "fullName"
-                ]
+                }
             },
             "RecipeIngredientGroupsListIngredientOut": {
                 "title": "RecipeIngredientGroupsListIngredientOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "product"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -1985,29 +1993,29 @@
                         "type": "string"
                     },
                     "product": {}
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "product"
-                ]
+                }
             },
             "RecipeIngredientGroupsListItemPortionQuantityUnitOut": {
                 "title": "RecipeIngredientGroupsListItemPortionQuantityUnitOut",
                 "type": "object",
+                "required": [
+                    "abbreviation"
+                ],
                 "properties": {
                     "abbreviation": {
                         "title": "abbreviation",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "abbreviation"
-                ]
+                }
             },
             "RecipeIngredientGroupsListItemOut": {
                 "title": "RecipeIngredientGroupsListItemOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "ingredient",
+                    "portionQuantityUnit"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -2015,16 +2023,16 @@
                     },
                     "ingredient": {},
                     "portionQuantityUnit": {}
-                },
-                "required": [
-                    "id",
-                    "ingredient",
-                    "portionQuantityUnit"
-                ]
+                }
             },
             "RecipeIngredientGroupsListOut": {
                 "title": "RecipeIngredientGroupsListOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "ingredientItems"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -2038,16 +2046,14 @@
                         "title": "ingredientItems",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "id",
-                    "title",
-                    "ingredientItems"
-                ]
+                }
             },
             "RecipeIngredientGroupsListOutAPIResponse": {
                 "title": "RecipeIngredientGroupsListOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -2061,14 +2067,18 @@
                         "title": "data",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "RecipeStepsCreateIn": {
                 "title": "RecipeStepsCreateIn",
                 "type": "object",
+                "required": [
+                    "number",
+                    "duration",
+                    "instruction",
+                    "stepType",
+                    "ingredientItems"
+                ],
                 "properties": {
                     "number": {
                         "title": "number",
@@ -2090,18 +2100,16 @@
                         "title": "ingredientItems",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "number",
-                    "duration",
-                    "instruction",
-                    "stepType",
-                    "ingredientItems"
-                ]
+                }
             },
             "UnitListOut": {
                 "title": "UnitListOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "displayName"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -2115,16 +2123,14 @@
                         "title": "displayName",
                         "type": "string"
                     }
-                },
-                "required": [
-                    "id",
-                    "name",
-                    "displayName"
-                ]
+                }
             },
             "UnitListOutAPIResponse": {
                 "title": "UnitListOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -2138,14 +2144,16 @@
                         "title": "data",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "UserListHomeOut": {
                 "title": "UserListHomeOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "address",
+                    "isActive"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -2159,16 +2167,19 @@
                         "title": "isActive",
                         "type": "boolean"
                     }
-                },
-                "required": [
-                    "id",
-                    "address",
-                    "isActive"
-                ]
+                }
             },
             "UserListOut": {
                 "title": "UserListOut",
                 "type": "object",
+                "required": [
+                    "id",
+                    "email",
+                    "fullName",
+                    "isActive",
+                    "isStaff",
+                    "isSuperuser"
+                ],
                 "properties": {
                     "id": {
                         "title": "id",
@@ -2195,19 +2206,14 @@
                         "type": "boolean"
                     },
                     "home": {}
-                },
-                "required": [
-                    "id",
-                    "email",
-                    "fullName",
-                    "isActive",
-                    "isStaff",
-                    "isSuperuser"
-                ]
+                }
             },
             "UserListOutAPIResponse": {
                 "title": "UserListOutAPIResponse",
                 "type": "object",
+                "required": [
+                    "status"
+                ],
                 "properties": {
                     "status": {
                         "title": "status",
@@ -2221,10 +2227,7 @@
                         "title": "data",
                         "type": "array"
                     }
-                },
-                "required": [
-                    "status"
-                ]
+                }
             },
             "FrontendComponents": {
                 "title": "FrontendComponents",
@@ -2302,6 +2305,15 @@
                 "title": "ProductCreateForm",
                 "type": "object",
                 "x-form": true,
+                "x-columns": 2,
+                "required": [
+                    "name",
+                    "grossPrice",
+                    "unitQuantity",
+                    "unit",
+                    "supplier",
+                    "isAvailable"
+                ],
                 "properties": {
                     "name": {
                         "title": "name",
@@ -2597,15 +2609,7 @@
                         "x-max": null,
                         "x-component": "FileInput"
                     }
-                },
-                "required": [
-                    "name",
-                    "grossPrice",
-                    "unitQuantity",
-                    "unit",
-                    "supplier",
-                    "isAvailable"
-                ]
+                }
             }
         },
         "securitySchemes": {

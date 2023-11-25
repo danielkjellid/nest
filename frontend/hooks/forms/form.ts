@@ -4,15 +4,16 @@ import { useEffect, useState } from 'react'
 
 import openAPISchema from '../../../schema.json'
 import { type ButtonProps } from '../../components/Button'
-import { type FormElement } from '../../components/Form/types'
 import { performPost as httpPost } from '../fetcher/http'
 
 import { buildMultipartForm } from './multipart'
+import { type SchemaFormElement } from './types'
+import { convertSchemaElemToFormElem } from './utils'
 
 interface FormComponentSchema {
   title: string
   type: string
-  properties: FormElement
+  properties: SchemaFormElement
   required: string[]
   'x-columns': number
   'x-form': boolean
@@ -23,16 +24,16 @@ const useValidator = () => {
 
   // We use Ajv in strict mode, so we need to whitelist the extra
   // attributes we're using.
-  ajv.addKeyword('helpText')
-  ajv.addKeyword('component')
-  ajv.addKeyword('defaultValue')
-  ajv.addKeyword('placeholder')
-  ajv.addKeyword('hiddenLabel')
-  ajv.addKeyword('colSpan')
-  ajv.addKeyword('section')
-  ajv.addKeyword('order')
-  ajv.addKeyword('min')
-  ajv.addKeyword('max')
+  ajv.addKeyword('x-helpText')
+  ajv.addKeyword('x-component')
+  ajv.addKeyword('x-defaultValue')
+  ajv.addKeyword('x-placeholder')
+  ajv.addKeyword('x-hiddenLabel')
+  ajv.addKeyword('x-colSpan')
+  ajv.addKeyword('x-section')
+  ajv.addKeyword('x-order')
+  ajv.addKeyword('x-min')
+  ajv.addKeyword('x-max')
   ajv.addKeyword('x-columns')
   ajv.addKeyword('x-form')
 
@@ -219,7 +220,7 @@ export function useForm<T extends object>({
     loadingState,
     setLoadingState,
     performPost,
-    elements: schema.properties,
+    elements: convertSchemaElemToFormElem(schema.properties),
     required: schema.required,
     columns: schema['x-columns'],
     isMultipart,

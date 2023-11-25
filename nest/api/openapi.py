@@ -91,7 +91,9 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             definitions=component_schemas,
             meta_mapping={},
             enum_mapping=enum_mapping,
-            form_mapping=[f.__name__ for f in FORMS],
+            form_mapping={
+                f.__name__: {"columns": getattr(f, "COLUMNS", 1)} for f in FORMS
+            },
         )
 
         return schemas
@@ -195,20 +197,14 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
 
     def _add_forms_to_schema(self) -> None:
         for added_form in FORMS:
+            key = added_form.__name__
             m_schema = self._create_schema_from_model(added_form, remove_level=False)[0]
-            # print(self.modify_component_definitions_properties(definition_key=added_form.__name__, properties=m_schema, enum_mapping={}))
-            print(
-                self._update_schema(
-                    component_schemas={added_form.__name__: m_schema},
-                    models=[added_form],
-                )
-            )
 
-            if added_form.__name__ in self.schemas:
+            if key in self.schemas:
                 continue
 
             schema = self._update_schema(
-                component_schemas={added_form.__name__: m_schema},
+                component_schemas={key: m_schema},
                 models=[added_form],
             )
 

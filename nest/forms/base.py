@@ -44,7 +44,7 @@ class NestForms(NestOpenAPISchema):
             definitions=schema["definitions"],
             enum_mapping=self.enum_mappings,
             meta_mapping=self.meta_mappings,
-            form_mapping=[],
+            form_mapping={},
         )
 
         return schema

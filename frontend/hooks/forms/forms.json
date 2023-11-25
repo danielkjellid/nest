@@ -3,6 +3,14 @@
         "ProductCreateForm": {
             "title": "ProductCreateForm",
             "type": "object",
+            "required": [
+                "name",
+                "grossPrice",
+                "unitQuantity",
+                "unit",
+                "supplier",
+                "isAvailable"
+            ],
             "properties": {
                 "name": {
                     "title": "name",
@@ -88,20 +96,20 @@
                     "title": "thumbnail",
                     "type": "file"
                 }
-            },
+            }
+        },
+        "ProductEditForm": {
+            "title": "ProductEditForm",
+            "type": "object",
             "required": [
                 "name",
                 "grossPrice",
                 "unitQuantity",
                 "unit",
                 "supplier",
-                "isAvailable"
+                "isAvailable",
+                "isSynced"
             ],
-            "columns": 2
-        },
-        "ProductEditForm": {
-            "title": "ProductEditForm",
-            "type": "object",
             "properties": {
                 "name": {
                     "title": "name",
@@ -191,31 +199,20 @@
                     "title": "thumbnail",
                     "type": "file"
                 }
-            },
-            "required": [
-                "name",
-                "grossPrice",
-                "unitQuantity",
-                "unit",
-                "supplier",
-                "isAvailable",
-                "isSynced"
-            ],
-            "columns": 4
+            }
         },
         "ProductOdaImportForm": {
             "title": "ProductOdaImportForm",
             "type": "object",
+            "required": [
+                "odaProductId"
+            ],
             "properties": {
                 "odaProductId": {
                     "title": "odaProductId",
                     "type": "string"
                 }
-            },
-            "required": [
-                "odaProductId"
-            ],
-            "columns": 1
+            }
         },
         "RecipeStatus": {
             "title": "RecipeStatus",
@@ -240,6 +237,12 @@
         "RecipeCreateForm": {
             "title": "RecipeCreateForm",
             "type": "object",
+            "required": [
+                "title",
+                "defaultNumPortions",
+                "status",
+                "difficulty"
+            ],
             "properties": {
                 "title": {
                     "title": "title",
@@ -303,18 +306,15 @@
                     "title": "isPescatarian",
                     "type": "boolean"
                 }
-            },
-            "required": [
-                "title",
-                "defaultNumPortions",
-                "status",
-                "difficulty"
-            ],
-            "columns": 4
+            }
         },
         "IngredientCreateForm": {
             "title": "IngredientCreateForm",
             "type": "object",
+            "required": [
+                "title",
+                "product"
+            ],
             "properties": {
                 "title": {
                     "title": "title",
@@ -324,12 +324,7 @@
                     "title": "product",
                     "type": "integer"
                 }
-            },
-            "required": [
-                "title",
-                "product"
-            ],
-            "columns": 1
+            }
         }
     }
 }

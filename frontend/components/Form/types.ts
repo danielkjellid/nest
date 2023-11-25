@@ -1,7 +1,5 @@
 import { type ForwardRefExoticComponent } from 'react'
 
-import { type FrontendComponents } from '../../types'
-
 export type FormEnum = { label: string; value: string }
 
 export interface FormElementOptionsObj {
@@ -21,6 +19,8 @@ export interface FormElementOptions {
 
 export interface FormElementObj {
   title: string
+  type: string
+  enum?: FormEnum[]
   helpText?: string | null
   component: string
   defaultValue?: string | number | boolean | null
@@ -28,8 +28,6 @@ export interface FormElementObj {
   hiddenLabel?: boolean
   colSpan?: number | null
   section?: string | null
-  type: string
-  // enum?: FormEnum[]
   order: number
   min?: number | null
   max?: number | null

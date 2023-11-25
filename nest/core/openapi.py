@@ -39,7 +39,7 @@ class NestOpenAPISchema:
         definitions: dict[str, dict[str, Any]],
         meta_mapping: dict[str, dict[str, str | int]],
         enum_mapping: dict[str, dict[str, list[EnumDict]]],
-        form_mapping: list[str],
+        form_mapping: dict[str, dict[str, int]],
     ) -> dict[str, dict[str, Any]]:
         modified_definitions: dict[str, dict[str, Any]] = defaultdict(dict)
 
@@ -52,9 +52,7 @@ class NestOpenAPISchema:
             description = attributes.get("description", None)
             enum = attributes.get("enum", None)
 
-            is_form = key in form_mapping
-
-            columns_for_definition = meta_mapping.get(key, {}).get("columns", None)
+            is_form = key in form_mapping.keys()
 
             modified_definition["title"] = attributes.get("title", key)
 
@@ -69,23 +67,21 @@ class NestOpenAPISchema:
 
             if is_form:
                 modified_definition["x-form"] = True
-
-            if properties is not None:
-                modified_properties = self.modify_component_definitions_properties(
-                    definition_key=key,
-                    properties=properties,
-                    enum_mapping=enum_mapping,
-                    form_mapping=form_mapping,
-                )
-                modified_definition["properties"] = modified_properties
+                modified_definition["x-columns"] = form_mapping[key]["columns"]
 
             if required is not None:
                 modified_definition["required"] = self.convert_keys_to_camelcase(
                     required
                 )
 
-            if columns_for_definition is not None:
-                modified_definition["columns"] = columns_for_definition
+            if properties is not None:
+                modified_properties = self.modify_component_definitions_properties(
+                    definition_key=key,
+                    properties=properties,
+                    enum_mapping=enum_mapping,
+                    is_form=is_form,
+                )
+                modified_definition["properties"] = modified_properties
 
             modified_definitions[key] = modified_definition
 
@@ -97,9 +93,8 @@ class NestOpenAPISchema:
         definition_key: str,
         properties: dict[str, dict[str, Any]],
         enum_mapping: dict[str, dict[str, list[EnumDict]]],
-        form_mapping: list[str],
+        is_form: bool = False,
     ) -> dict[str, dict[str, Any]]:
-        is_form = definition_key in form_mapping
         modified_properties: dict[str, dict[str, Any]] = defaultdict(dict)
 
         for key, val in properties.items():
