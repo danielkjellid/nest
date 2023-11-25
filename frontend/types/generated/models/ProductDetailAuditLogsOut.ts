@@ -6,7 +6,7 @@
 export type ProductDetailAuditLogsOut = {
     userOrSource?: string;
     remoteAddr?: string;
-    changes: Record<string, Array<any>>;
+    changes: Record<string, any>;
     createdAt: string;
 };
 

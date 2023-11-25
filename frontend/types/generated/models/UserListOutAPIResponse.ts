@@ -3,21 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UserListOut } from './UserListOut';
-
 export type UserListOutAPIResponse = {
-    status: UserListOutAPIResponse.status;
+    status: string;
     message?: string;
-    data?: Array<UserListOut>;
+    data?: any[];
 };
-
-export namespace UserListOutAPIResponse {
-
-    export enum status {
-        SUCCESS = 'success',
-        ERROR = 'error',
-    }
-
-
-}
 

@@ -3,21 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { RecipeDetailOut } from './RecipeDetailOut';
-
 export type RecipeDetailOutAPIResponse = {
-    status: RecipeDetailOutAPIResponse.status;
+    status: string;
     message?: string;
-    data?: RecipeDetailOut;
+    data?: any;
 };
-
-export namespace RecipeDetailOutAPIResponse {
-
-    export enum status {
-        SUCCESS = 'success',
-        ERROR = 'error',
-    }
-
-
-}
 

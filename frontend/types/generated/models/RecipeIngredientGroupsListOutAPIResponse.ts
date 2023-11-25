@@ -3,21 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { RecipeIngredientGroupsListOut } from './RecipeIngredientGroupsListOut';
-
 export type RecipeIngredientGroupsListOutAPIResponse = {
-    status: RecipeIngredientGroupsListOutAPIResponse.status;
+    status: string;
     message?: string;
-    data?: Array<RecipeIngredientGroupsListOut>;
+    data?: any[];
 };
-
-export namespace RecipeIngredientGroupsListOutAPIResponse {
-
-    export enum status {
-        SUCCESS = 'success',
-        ERROR = 'error',
-    }
-
-
-}
 

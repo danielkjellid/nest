@@ -2,17 +2,20 @@ import { notifications } from '@mantine/notifications'
 import Ajv from 'ajv'
 import { useEffect, useState } from 'react'
 
+import openAPISchema from '../../../schema.json'
 import { type ButtonProps } from '../../components/Button'
 import { type FormElement } from '../../components/Form/types'
 import { performPost as httpPost } from '../fetcher/http'
 
-import formsSchema from './forms.json'
 import { buildMultipartForm } from './multipart'
 
 interface FormComponentSchema {
+  title: string
+  type: string
   properties: FormElement
   required: string[]
-  columns: number
+  'x-columns': number
+  'x-form': boolean
 }
 
 const useValidator = () => {
@@ -30,8 +33,8 @@ const useValidator = () => {
   ajv.addKeyword('order')
   ajv.addKeyword('min')
   ajv.addKeyword('max')
-  ajv.addKeyword('columns')
-  ajv.addKeyword('xEnumVarnames')
+  ajv.addKeyword('x-columns')
+  ajv.addKeyword('x-form')
 
   return ajv
 }
@@ -41,7 +44,7 @@ export function useForm<T extends object>({
   initialData = null,
   isMultipart = false,
 }: {
-  key: keyof (typeof formsSchema)['definitions']
+  key: keyof (typeof openAPISchema)['components']['schemas']
   initialData?: Partial<T> | null
   isMultipart?: boolean
 }) {
@@ -50,7 +53,9 @@ export function useForm<T extends object>({
    **********/
 
   const [formData, setFormData] = useState<Partial<T> | null>(null)
-  const schema = formsSchema['definitions'][key] as FormComponentSchema
+  const rawSchema = openAPISchema['components']['schemas']['IngredientCreateForm']
+
+  const schema = rawSchema as FormComponentSchema
 
   const validator = useValidator()
   validator.compile(schema)
@@ -216,7 +221,7 @@ export function useForm<T extends object>({
     performPost,
     elements: schema.properties,
     required: schema.required,
-    columns: schema.columns,
+    columns: schema['x-columns'],
     isMultipart,
   }
 }

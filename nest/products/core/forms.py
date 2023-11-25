@@ -4,10 +4,13 @@ from typing import ClassVar
 from nest.api.files import UploadedFile
 from nest.forms.fields import FormField
 from nest.forms.models import Form
+from nest.api.openapi import form
+from pydantic import BaseModel
 from nest.frontend.components import FrontendComponents
 
 
-class ProductCreateForm(Form):
+@form
+class ProductCreateForm(BaseModel):
     COLUMNS: ClassVar[int] = 2
 
     name: str = FormField(

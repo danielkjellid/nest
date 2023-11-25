@@ -39,6 +39,7 @@ class NestOpenAPISchema:
         definitions: dict[str, dict[str, Any]],
         meta_mapping: dict[str, dict[str, str | int]],
         enum_mapping: dict[str, dict[str, list[EnumDict]]],
+        form_mapping: list[str],
     ) -> dict[str, dict[str, Any]]:
         modified_definitions: dict[str, dict[str, Any]] = defaultdict(dict)
 
@@ -50,6 +51,8 @@ class NestOpenAPISchema:
             type_ = attributes.get("type", None)
             description = attributes.get("description", None)
             enum = attributes.get("enum", None)
+
+            is_form = key in form_mapping
 
             columns_for_definition = meta_mapping.get(key, {}).get("columns", None)
 
@@ -64,11 +67,15 @@ class NestOpenAPISchema:
             if type_:
                 modified_definition["type"] = type_
 
+            if is_form:
+                modified_definition["x-form"] = True
+
             if properties is not None:
                 modified_properties = self.modify_component_definitions_properties(
                     definition_key=key,
                     properties=properties,
                     enum_mapping=enum_mapping,
+                    form_mapping=form_mapping,
                 )
                 modified_definition["properties"] = modified_properties
 
@@ -90,7 +97,9 @@ class NestOpenAPISchema:
         definition_key: str,
         properties: dict[str, dict[str, Any]],
         enum_mapping: dict[str, dict[str, list[EnumDict]]],
+        form_mapping: list[str],
     ) -> dict[str, dict[str, Any]]:
+        is_form = definition_key in form_mapping
         modified_properties: dict[str, dict[str, Any]] = defaultdict(dict)
 
         for key, val in properties.items():
@@ -99,11 +108,11 @@ class NestOpenAPISchema:
                 and key in enum_mapping[definition_key].keys()
             )
 
-            title = key.replace("_", " ").title()
+            title = camelize(key)
             type_ = val.get("type", None)
 
-            val_copy = val.copy()
             val.pop("component", None)
+            val_copy = val.copy()
 
             base_defaults: dict[str, Any] = {}
 
@@ -114,15 +123,15 @@ class NestOpenAPISchema:
                 base_defaults["type"] = type_
 
             extra_defaults: dict[str, Any] = {
-                "help_text": val.get("help_text", None),
-                "default_value": val.get("default_value", None),
-                "placeholder": val.get("placeholder", None),
-                "hidden_label": val.get("hidden_label", None),
-                "col_span": val.get("col_span", None),
-                "section": val.get("section", None),
-                "order": val.get("order", None),
-                "min": val.get("min", None),
-                "max": val.get("max", None),
+                "x-helpText": val.get("help_text", None),
+                "x-defaultValue": val.get("default_value", None),
+                "x-placeholder": val.get("placeholder", None),
+                "x-hiddenLabel": val.get("hidden_label", None),
+                "x-colSpan": val.get("col_span", None),
+                "x-section": val.get("section", None),
+                "x-order": val.get("order", None),
+                "x-min": val.get("min", None),
+                "x-max": val.get("max", None),
             }
 
             for default_key in {**base_defaults, **extra_defaults}.keys():
@@ -133,18 +142,14 @@ class NestOpenAPISchema:
 
             modified_property: dict[str, Any]
 
-            if not self.is_form and enum_mapping_exists:
+            if not is_form and enum_mapping_exists:
                 modified_property = {
                     **base_defaults,
                     "enum": enum_mapping[definition_key][key],
-                    **val,
                 }
-            elif not self.is_form and not enum_mapping_exists:
-                modified_property = {
-                    **base_defaults,
-                    **val,
-                }
-            elif self.is_form and enum_mapping_exists:
+            elif not is_form and not enum_mapping_exists:
+                modified_property = {**base_defaults}
+            elif is_form and enum_mapping_exists:
                 component = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
 
                 val.pop("anyOf", None)
@@ -154,21 +159,19 @@ class NestOpenAPISchema:
                     "title": title,
                     "type": "string",
                     "enum": enum_mapping[definition_key][key],
-                    "component": component,
+                    "x-component": component,
                     **extra_defaults,
-                    **val,
                 }
             else:
                 modified_property = {
                     **base_defaults,
                     **extra_defaults,
-                    "component": self.get_component(val_copy),
-                    **val,
+                    "x-component": self.get_component(val_copy),
                 }
 
-            modified_properties[key] = modified_property
+            modified_properties[title] = modified_property
 
-        return self.convert_keys_to_camelcase(dict(modified_properties))  # type: ignore
+        return dict(modified_properties)  # type: ignore
 
     def convert_keys_to_camelcase(self, data: Any) -> Any:
         """

@@ -3,25 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProductDetailOut = {
-    id: number;
+export type ProductCreateIn = {
     name: string;
-    fullName: string;
-    isAvailable: boolean;
-    thumbnailUrl?: string;
-    containsLactose?: boolean;
-    containsGluten?: boolean;
     grossPrice: string;
-    grossUnitPrice?: string;
-    unit: any;
-    unitQuantity?: string;
+    unitQuantity: string;
+    unit: number;
+    supplier: string;
     gtin?: string;
-    supplier?: string;
-    isSynced: boolean;
-    odaId?: string;
-    odaUrl?: string;
-    isOdaProduct: boolean;
-    lastDataUpdate?: string;
+    ingredients?: string;
+    allergens?: string;
     fat?: string;
     fatSaturated?: string;
     fatMonounsaturated?: string;
@@ -33,7 +23,7 @@ export type ProductDetailOut = {
     fibres?: string;
     salt?: string;
     sodium?: string;
-    nutritionTable: any[];
-    auditLogs: any[];
+    isAvailable: boolean;
+    thumbnail?: Blob;
 };
 

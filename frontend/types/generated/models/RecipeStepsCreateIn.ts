@@ -8,6 +8,6 @@ export type RecipeStepsCreateIn = {
     duration: number;
     instruction: string;
     stepType: string;
-    ingredientItems: Array<string>;
+    ingredientItems: any[];
 };
 

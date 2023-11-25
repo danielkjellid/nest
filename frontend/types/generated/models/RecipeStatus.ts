@@ -7,7 +7,7 @@
  * An enumeration.
  */
 export enum RecipeStatus {
-    Draft = 'draft',
-    Hidden = 'hidden',
-    Published = 'published',
+    DRAFT = 'draft',
+    HIDDEN = 'hidden',
+    PUBLISHED = 'published',
 }

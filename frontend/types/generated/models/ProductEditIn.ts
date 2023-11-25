@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProductEditForm = {
+export type ProductEditIn = {
     name: string;
     grossPrice: number;
     unitQuantity: number;

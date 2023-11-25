@@ -1,13 +1,14 @@
 from typing import ClassVar
 
 from nest.forms.fields import FormField
-from nest.forms.models import Form
 from nest.frontend.components import FrontendComponents
-
+from nest.api.openapi import form
+from pydantic import BaseModel
 from .enums import RecipeDifficulty, RecipeStatus
 
 
-class RecipeCreateForm(Form):
+@form
+class RecipeCreateForm(BaseModel):
     COLUMNS: ClassVar[int] = 4
 
     title: str = FormField(..., order=1, help_text="Name of the recipe.")

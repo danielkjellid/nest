@@ -3,11 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { RecipeDetailDurationOut } from './RecipeDetailDurationOut';
-import type { RecipeDetailIngredientGroupOut } from './RecipeDetailIngredientGroupOut';
-import type { RecipeDetailStepOut } from './RecipeDetailStepOut';
-import type { RecipeStatus } from './RecipeStatus';
-
 export type RecipeDetailOut = {
     id: number;
     title: string;
@@ -16,13 +11,13 @@ export type RecipeDetailOut = {
     searchKeywords?: string;
     externalId?: string;
     externalUrl?: string;
-    status: RecipeStatus;
+    status: any;
     statusDisplay: string;
     difficultyDisplay: string;
     isVegetarian: boolean;
     isPescatarian: boolean;
-    duration: RecipeDetailDurationOut;
-    steps: Array<RecipeDetailStepOut>;
-    ingredientGroups: Array<RecipeDetailIngredientGroupOut>;
+    duration: any;
+    steps: any[];
+    ingredientGroups: any[];
 };
 

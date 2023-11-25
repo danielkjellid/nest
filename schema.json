@@ -642,43 +642,43 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "fullName": {
-                        "title": "Full Name",
+                        "title": "fullName",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "Thumbnail Url",
+                        "title": "thumbnailUrl",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "Is Available",
+                        "title": "isAvailable",
                         "type": "boolean"
                     },
                     "odaUrl": {
-                        "title": "Oda Url",
+                        "title": "odaUrl",
                         "type": "string"
                     },
                     "odaId": {
-                        "title": "Oda Id",
+                        "title": "odaId",
                         "type": "integer"
                     },
                     "isSynced": {
-                        "title": "Is Synced",
+                        "title": "isSynced",
                         "type": "boolean"
                     },
                     "gtin": {
-                        "title": "Gtin",
+                        "title": "gtin",
                         "type": "string"
                     },
                     "isOdaProduct": {
-                        "title": "Is Oda Product",
+                        "title": "isOdaProduct",
                         "type": "boolean"
                     },
                     "displayPrice": {
-                        "title": "Display Price",
+                        "title": "displayPrice",
                         "type": "string"
                     }
                 },
@@ -696,23 +696,16 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
+                        "title": "status",
+                        "type": "string"
                     },
                     "message": {
-                        "title": "Message",
+                        "title": "message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductListOut"
-                        }
+                        "title": "data",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -724,19 +717,15 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
+                        "title": "status",
+                        "type": "string"
                     },
                     "message": {
-                        "title": "Message",
+                        "title": "message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
+                        "title": "data",
                         "type": "null"
                     }
                 },
@@ -750,89 +739,88 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "title": "Name",
+                        "title": "name",
                         "type": "string"
                     },
                     "grossPrice": {
-                        "title": "Gross Price",
+                        "title": "grossPrice",
                         "type": "string"
                     },
                     "unitQuantity": {
-                        "title": "Unit Quantity",
+                        "title": "unitQuantity",
                         "type": "string"
                     },
                     "unit": {
-                        "title": "Unit",
+                        "title": "unit",
                         "type": "integer"
                     },
                     "supplier": {
-                        "title": "Supplier",
+                        "title": "supplier",
                         "type": "string"
                     },
                     "gtin": {
-                        "title": "Gtin",
+                        "title": "gtin",
                         "type": "string"
                     },
                     "ingredients": {
-                        "title": "Ingredients",
+                        "title": "ingredients",
                         "type": "string"
                     },
                     "allergens": {
-                        "title": "Allergens",
+                        "title": "allergens",
                         "type": "string"
                     },
                     "fat": {
-                        "title": "Fat",
+                        "title": "fat",
                         "type": "string"
                     },
                     "fatSaturated": {
-                        "title": "Fat Saturated",
+                        "title": "fatSaturated",
                         "type": "string"
                     },
                     "fatMonounsaturated": {
-                        "title": "Fat Monounsaturated",
+                        "title": "fatMonounsaturated",
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
-                        "title": "Fat Polyunsaturated",
+                        "title": "fatPolyunsaturated",
                         "type": "string"
                     },
                     "carbohydrates": {
-                        "title": "Carbohydrates",
+                        "title": "carbohydrates",
                         "type": "string"
                     },
                     "carbohydratesSugars": {
-                        "title": "Carbohydrates Sugars",
+                        "title": "carbohydratesSugars",
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
-                        "title": "Carbohydrates Polyols",
+                        "title": "carbohydratesPolyols",
                         "type": "string"
                     },
                     "carbohydratesStarch": {
-                        "title": "Carbohydrates Starch",
+                        "title": "carbohydratesStarch",
                         "type": "string"
                     },
                     "fibres": {
-                        "title": "Fibres",
+                        "title": "fibres",
                         "type": "string"
                     },
                     "salt": {
-                        "title": "Salt",
+                        "title": "salt",
                         "type": "string"
                     },
                     "sodium": {
-                        "title": "Sodium",
+                        "title": "sodium",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "Is Available",
+                        "title": "isAvailable",
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "title": "Thumbnail",
-                        "type": "file",
-                        "format": "binary"
+                        "title": "thumbnail",
+                        "type": "file"
                     }
                 },
                 "required": [
@@ -849,23 +837,23 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "name": {
-                        "title": "Name",
+                        "title": "name",
                         "type": "string"
                     },
                     "abbreviation": {
-                        "title": "Abbreviation",
+                        "title": "abbreviation",
                         "type": "string"
                     },
                     "unitType": {
-                        "title": "Unit Type",
+                        "title": "unitType",
                         "type": "string"
                     },
                     "displayName": {
-                        "title": "Display Name",
+                        "title": "displayName",
                         "type": "string"
                     }
                 },
@@ -881,19 +869,19 @@
                 "type": "object",
                 "properties": {
                     "key": {
-                        "title": "Key",
+                        "title": "key",
                         "type": "string"
                     },
                     "parentKey": {
-                        "title": "Parent Key",
+                        "title": "parentKey",
                         "type": "string"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
                     "value": {
-                        "title": "Value",
+                        "title": "value",
                         "type": "string"
                     }
                 },
@@ -908,28 +896,19 @@
                 "type": "object",
                 "properties": {
                     "userOrSource": {
-                        "title": "User Or Source",
+                        "title": "userOrSource",
                         "type": "string"
                     },
                     "remoteAddr": {
-                        "title": "Remote Addr",
+                        "title": "remoteAddr",
                         "type": "string"
                     },
                     "changes": {
-                        "title": "Changes",
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "array",
-                            "minItems": 2,
-                            "maxItems": 2,
-                            "items": [
-                                {},
-                                {}
-                            ]
-                        }
+                        "title": "changes",
+                        "type": "object"
                     },
                     "createdAt": {
-                        "title": "Created At",
+                        "title": "createdAt",
                         "type": "string"
                     }
                 },
@@ -943,135 +922,125 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "name": {
-                        "title": "Name",
+                        "title": "name",
                         "type": "string"
                     },
                     "fullName": {
-                        "title": "Full Name",
+                        "title": "fullName",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "Is Available",
+                        "title": "isAvailable",
                         "type": "boolean"
                     },
                     "thumbnailUrl": {
-                        "title": "Thumbnail Url",
+                        "title": "thumbnailUrl",
                         "type": "string"
                     },
                     "containsLactose": {
-                        "title": "Contains Lactose",
-                        "type": "boolean",
-                        "default": false
+                        "title": "containsLactose",
+                        "type": "boolean"
                     },
                     "containsGluten": {
-                        "title": "Contains Gluten",
-                        "type": "boolean",
-                        "default": false
+                        "title": "containsGluten",
+                        "type": "boolean"
                     },
                     "grossPrice": {
-                        "title": "Gross Price",
+                        "title": "grossPrice",
                         "type": "string"
                     },
                     "grossUnitPrice": {
-                        "title": "Gross Unit Price",
+                        "title": "grossUnitPrice",
                         "type": "string"
                     },
-                    "unit": {
-                        "$ref": "#/components/schemas/ProductDetailUnitOut"
-                    },
+                    "unit": {},
                     "unitQuantity": {
-                        "title": "Unit Quantity",
+                        "title": "unitQuantity",
                         "type": "string"
                     },
                     "gtin": {
-                        "title": "Gtin",
+                        "title": "gtin",
                         "type": "string"
                     },
                     "supplier": {
-                        "title": "Supplier",
+                        "title": "supplier",
                         "type": "string"
                     },
                     "isSynced": {
-                        "title": "Is Synced",
+                        "title": "isSynced",
                         "type": "boolean"
                     },
                     "odaId": {
-                        "title": "Oda Id",
+                        "title": "odaId",
                         "type": "string"
                     },
                     "odaUrl": {
-                        "title": "Oda Url",
+                        "title": "odaUrl",
                         "type": "string"
                     },
                     "isOdaProduct": {
-                        "title": "Is Oda Product",
+                        "title": "isOdaProduct",
                         "type": "boolean"
                     },
                     "lastDataUpdate": {
-                        "title": "Last Data Update",
+                        "title": "lastDataUpdate",
                         "type": "string"
                     },
                     "fat": {
-                        "title": "Fat",
+                        "title": "fat",
                         "type": "string"
                     },
                     "fatSaturated": {
-                        "title": "Fat Saturated",
+                        "title": "fatSaturated",
                         "type": "string"
                     },
                     "fatMonounsaturated": {
-                        "title": "Fat Monounsaturated",
+                        "title": "fatMonounsaturated",
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
-                        "title": "Fat Polyunsaturated",
+                        "title": "fatPolyunsaturated",
                         "type": "string"
                     },
                     "carbohydrates": {
-                        "title": "Carbohydrates",
+                        "title": "carbohydrates",
                         "type": "string"
                     },
                     "carbohydratesSugars": {
-                        "title": "Carbohydrates Sugars",
+                        "title": "carbohydratesSugars",
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
-                        "title": "Carbohydrates Polyols",
+                        "title": "carbohydratesPolyols",
                         "type": "string"
                     },
                     "carbohydratesStarch": {
-                        "title": "Carbohydrates Starch",
+                        "title": "carbohydratesStarch",
                         "type": "string"
                     },
                     "fibres": {
-                        "title": "Fibres",
+                        "title": "fibres",
                         "type": "string"
                     },
                     "salt": {
-                        "title": "Salt",
+                        "title": "salt",
                         "type": "string"
                     },
                     "sodium": {
-                        "title": "Sodium",
+                        "title": "sodium",
                         "type": "string"
                     },
                     "nutritionTable": {
-                        "title": "Nutrition Table",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/TableRecord"
-                        }
+                        "title": "nutritionTable",
+                        "type": "array"
                     },
                     "auditLogs": {
-                        "title": "Audit Logs",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductDetailAuditLogsOut"
-                        }
+                        "title": "auditLogs",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -1092,20 +1061,14 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
-                    },
-                    "message": {
-                        "title": "Message",
+                        "title": "status",
                         "type": "string"
                     },
-                    "data": {
-                        "$ref": "#/components/schemas/ProductDetailOut"
-                    }
+                    "message": {
+                        "title": "message",
+                        "type": "string"
+                    },
+                    "data": {}
                 },
                 "required": [
                     "status"
@@ -1116,93 +1079,92 @@
                 "type": "object",
                 "properties": {
                     "name": {
-                        "title": "Name",
+                        "title": "name",
                         "type": "string"
                     },
                     "grossPrice": {
-                        "title": "Gross Price",
+                        "title": "grossPrice",
                         "type": "number"
                     },
                     "unitQuantity": {
-                        "title": "Unit Quantity",
+                        "title": "unitQuantity",
                         "type": "number"
                     },
                     "unit": {
-                        "title": "Unit",
+                        "title": "unit",
                         "type": "integer"
                     },
                     "supplier": {
-                        "title": "Supplier",
+                        "title": "supplier",
                         "type": "string"
                     },
                     "gtin": {
-                        "title": "Gtin",
+                        "title": "gtin",
                         "type": "string"
                     },
                     "odaId": {
-                        "title": "Oda Id",
+                        "title": "odaId",
                         "type": "integer"
                     },
                     "odaUrl": {
-                        "title": "Oda Url",
+                        "title": "odaUrl",
                         "type": "string"
                     },
                     "fat": {
-                        "title": "Fat",
+                        "title": "fat",
                         "type": "string"
                     },
                     "fatSaturated": {
-                        "title": "Fat Saturated",
+                        "title": "fatSaturated",
                         "type": "string"
                     },
                     "fatMonounsaturated": {
-                        "title": "Fat Monounsaturated",
+                        "title": "fatMonounsaturated",
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
-                        "title": "Fat Polyunsaturated",
+                        "title": "fatPolyunsaturated",
                         "type": "string"
                     },
                     "carbohydrates": {
-                        "title": "Carbohydrates",
+                        "title": "carbohydrates",
                         "type": "string"
                     },
                     "carbohydratesSugars": {
-                        "title": "Carbohydrates Sugars",
+                        "title": "carbohydratesSugars",
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
-                        "title": "Carbohydrates Polyols",
+                        "title": "carbohydratesPolyols",
                         "type": "string"
                     },
                     "carbohydratesStarch": {
-                        "title": "Carbohydrates Starch",
+                        "title": "carbohydratesStarch",
                         "type": "string"
                     },
                     "fibres": {
-                        "title": "Fibres",
+                        "title": "fibres",
                         "type": "string"
                     },
                     "salt": {
-                        "title": "Salt",
+                        "title": "salt",
                         "type": "string"
                     },
                     "sodium": {
-                        "title": "Sodium",
+                        "title": "sodium",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "Is Available",
+                        "title": "isAvailable",
                         "type": "boolean"
                     },
                     "isSynced": {
-                        "title": "Is Synced",
+                        "title": "isSynced",
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "title": "Thumbnail",
-                        "type": "file",
-                        "format": "binary"
+                        "title": "thumbnail",
+                        "type": "file"
                     }
                 },
                 "required": [
@@ -1220,35 +1182,35 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "fullName": {
-                        "title": "Full Name",
+                        "title": "fullName",
                         "type": "string"
                     },
                     "supplier": {
-                        "title": "Supplier",
+                        "title": "supplier",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "Is Available",
+                        "title": "isAvailable",
                         "type": "boolean"
                     },
                     "grossPrice": {
-                        "title": "Gross Price",
+                        "title": "grossPrice",
                         "type": "string"
                     },
                     "unit": {
-                        "title": "Unit",
+                        "title": "unit",
                         "type": "string"
                     },
                     "unitQuantity": {
-                        "title": "Unit Quantity",
+                        "title": "unitQuantity",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "Thumbnail Url",
+                        "title": "thumbnailUrl",
                         "type": "string"
                     }
                 },
@@ -1267,20 +1229,14 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
-                    },
-                    "message": {
-                        "title": "Message",
+                        "title": "status",
                         "type": "string"
                     },
-                    "data": {
-                        "$ref": "#/components/schemas/ProductOdaImportOut"
-                    }
+                    "message": {
+                        "title": "message",
+                        "type": "string"
+                    },
+                    "data": {}
                 },
                 "required": [
                     "status"
@@ -1289,10 +1245,21 @@
             "ProductOdaImportForm": {
                 "title": "ProductOdaImportForm",
                 "type": "object",
+                "x-form": true,
                 "properties": {
                     "odaProductId": {
-                        "title": "Oda Product Id",
-                        "type": "string"
+                        "title": "odaProductId",
+                        "type": "string",
+                        "x-helpText": "Product Id at Oda.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 1,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
                     }
                 },
                 "required": [
@@ -1304,7 +1271,7 @@
                 "type": "object",
                 "properties": {
                     "odaProductId": {
-                        "title": "Oda Product Id",
+                        "title": "odaProductId",
                         "type": "integer"
                     }
                 },
@@ -1317,7 +1284,7 @@
                 "type": "object",
                 "properties": {
                     "recipeId": {
-                        "title": "Recipe Id",
+                        "title": "recipeId",
                         "type": "integer"
                     }
                 },
@@ -1330,20 +1297,14 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
-                    },
-                    "message": {
-                        "title": "Message",
+                        "title": "status",
                         "type": "string"
                     },
-                    "data": {
-                        "$ref": "#/components/schemas/RecipeCreateOut"
-                    }
+                    "message": {
+                        "title": "message",
+                        "type": "string"
+                    },
+                    "data": {}
                 },
                 "required": [
                     "status"
@@ -1357,11 +1318,7 @@
                     "hidden",
                     "published"
                 ],
-                "x-enum-varnames": [
-                    "Draft",
-                    "Hidden",
-                    "Published"
-                ]
+                "type": "string"
             },
             "RecipeDifficulty": {
                 "title": "RecipeDifficulty",
@@ -1376,21 +1333,53 @@
             "RecipeCreateForm": {
                 "title": "RecipeCreateForm",
                 "type": "object",
+                "x-form": true,
                 "properties": {
                     "title": {
-                        "title": "Title",
-                        "type": "string"
+                        "title": "title",
+                        "type": "string",
+                        "x-helpText": "Name of the recipe.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 1,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
                     },
                     "searchKeywords": {
-                        "title": "Search Keywords",
-                        "type": "string"
+                        "title": "searchKeywords",
+                        "type": "string",
+                        "x-helpText": "Separate with spaces. Title is included by default.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 2,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
                     },
                     "defaultNumPortions": {
-                        "title": "Default Num Portions",
-                        "type": "integer"
+                        "title": "defaultNumPortions",
+                        "type": "integer",
+                        "x-helpText": null,
+                        "x-defaultValue": 4,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 4,
+                        "x-section": null,
+                        "x-order": 3,
+                        "x-min": 1,
+                        "x-max": 10,
+                        "x-component": "TextInput"
                     },
                     "status": {
-                        "title": "Status",
+                        "title": "status",
+                        "type": "string",
                         "enum": [
                             {
                                 "label": "Draft",
@@ -1405,17 +1394,20 @@
                                 "value": "published"
                             }
                         ],
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/RecipeStatus"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ]
+                        "x-component": "Select",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 2,
+                        "x-section": null,
+                        "x-order": 4,
+                        "x-min": null,
+                        "x-max": null
                     },
                     "difficulty": {
-                        "title": "Difficulty",
+                        "title": "difficulty",
+                        "type": "string",
                         "enum": [
                             {
                                 "label": "Easy",
@@ -1430,32 +1422,72 @@
                                 "value": "hard"
                             }
                         ],
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/RecipeDifficulty"
-                            },
-                            {
-                                "type": "string"
-                            }
-                        ]
+                        "x-component": "Select",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 2,
+                        "x-section": null,
+                        "x-order": 5,
+                        "x-min": null,
+                        "x-max": null
                     },
                     "externalId": {
-                        "title": "External Id",
-                        "type": "string"
+                        "title": "externalId",
+                        "type": "string",
+                        "x-helpText": "Providers identifier.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 6,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
                     },
                     "externalUrl": {
-                        "title": "External Url",
-                        "type": "string"
+                        "title": "externalUrl",
+                        "type": "string",
+                        "x-helpText": "Direct link to the recipe on a provider's site",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 3,
+                        "x-section": null,
+                        "x-order": 7,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
                     },
                     "isVegetarian": {
-                        "title": "Is Vegetarian",
+                        "title": "isVegetarian",
                         "type": "boolean",
-                        "default": false
+                        "x-helpText": "The recipe does not contain any meat or fish products.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 9,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "Checkbox"
                     },
                     "isPescatarian": {
-                        "title": "Is Pescatarian",
+                        "title": "isPescatarian",
                         "type": "boolean",
-                        "default": false
+                        "x-helpText": "The recipe contains fish.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 10,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "Checkbox"
                     }
                 },
                 "required": [
@@ -1470,15 +1502,15 @@
                 "type": "object",
                 "properties": {
                     "preparationTimeIso8601": {
-                        "title": "Preparation Time Iso8601",
+                        "title": "preparationTimeIso8601",
                         "type": "string"
                     },
                     "cookingTimeIso8601": {
-                        "title": "Cooking Time Iso8601",
+                        "title": "cookingTimeIso8601",
                         "type": "string"
                     },
                     "totalTimeIso8601": {
-                        "title": "Total Time Iso8601",
+                        "title": "totalTimeIso8601",
                         "type": "string"
                     }
                 },
@@ -1493,11 +1525,11 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     }
                 },
@@ -1511,7 +1543,7 @@
                 "type": "object",
                 "properties": {
                     "abbreviation": {
-                        "title": "Abbreviation",
+                        "title": "abbreviation",
                         "type": "string"
                     }
                 },
@@ -1524,23 +1556,19 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
-                    "ingredient": {
-                        "$ref": "#/components/schemas/RecipeDetailIngredientOut"
-                    },
+                    "ingredient": {},
                     "portionQuantity": {
-                        "title": "Portion Quantity",
+                        "title": "portionQuantity",
                         "type": "number"
                     },
                     "portionQuantityDisplay": {
-                        "title": "Portion Quantity Display",
+                        "title": "portionQuantityDisplay",
                         "type": "string"
                     },
-                    "portionQuantityUnit": {
-                        "$ref": "#/components/schemas/RecipeDetailIngredientItemUnitOut"
-                    }
+                    "portionQuantityUnit": {}
                 },
                 "required": [
                     "id",
@@ -1555,27 +1583,24 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "number": {
-                        "title": "Number",
+                        "title": "number",
                         "type": "integer"
                     },
                     "instruction": {
-                        "title": "Instruction",
+                        "title": "instruction",
                         "type": "string"
                     },
                     "stepTypeDisplay": {
-                        "title": "Step Type Display",
+                        "title": "stepTypeDisplay",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "Ingredient Items",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeDetailIngredientItemOut"
-                        }
+                        "title": "ingredientItems",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -1591,19 +1616,16 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "Ingredient Items",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeDetailIngredientItemOut"
-                        }
+                        "title": "ingredientItems",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -1617,68 +1639,58 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
                     "slug": {
-                        "title": "Slug",
+                        "title": "slug",
                         "type": "string"
                     },
                     "defaultNumPortions": {
-                        "title": "Default Num Portions",
+                        "title": "defaultNumPortions",
                         "type": "integer"
                     },
                     "searchKeywords": {
-                        "title": "Search Keywords",
+                        "title": "searchKeywords",
                         "type": "string"
                     },
                     "externalId": {
-                        "title": "External Id",
+                        "title": "externalId",
                         "type": "string"
                     },
                     "externalUrl": {
-                        "title": "External Url",
+                        "title": "externalUrl",
                         "type": "string"
                     },
-                    "status": {
-                        "$ref": "#/components/schemas/RecipeStatus"
-                    },
+                    "status": {},
                     "statusDisplay": {
-                        "title": "Status Display",
+                        "title": "statusDisplay",
                         "type": "string"
                     },
                     "difficultyDisplay": {
-                        "title": "Difficulty Display",
+                        "title": "difficultyDisplay",
                         "type": "string"
                     },
                     "isVegetarian": {
-                        "title": "Is Vegetarian",
+                        "title": "isVegetarian",
                         "type": "boolean"
                     },
                     "isPescatarian": {
-                        "title": "Is Pescatarian",
+                        "title": "isPescatarian",
                         "type": "boolean"
                     },
-                    "duration": {
-                        "$ref": "#/components/schemas/RecipeDetailDurationOut"
-                    },
+                    "duration": {},
                     "steps": {
-                        "title": "Steps",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeDetailStepOut"
-                        }
+                        "title": "steps",
+                        "type": "array"
                     },
                     "ingredientGroups": {
-                        "title": "Ingredient Groups",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeDetailIngredientGroupOut"
-                        }
+                        "title": "ingredientGroups",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -1701,20 +1713,14 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
-                    },
-                    "message": {
-                        "title": "Message",
+                        "title": "status",
                         "type": "string"
                     },
-                    "data": {
-                        "$ref": "#/components/schemas/RecipeDetailOut"
-                    }
+                    "message": {
+                        "title": "message",
+                        "type": "string"
+                    },
+                    "data": {}
                 },
                 "required": [
                     "status"
@@ -1725,31 +1731,31 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
                     "defaultNumPortions": {
-                        "title": "Default Num Portions",
+                        "title": "defaultNumPortions",
                         "type": "integer"
                     },
                     "statusDisplay": {
-                        "title": "Status Display",
+                        "title": "statusDisplay",
                         "type": "string"
                     },
                     "difficultyDisplay": {
-                        "title": "Difficulty Display",
+                        "title": "difficultyDisplay",
                         "type": "string"
                     },
                     "isVegetarian": {
-                        "title": "Is Vegetarian",
+                        "title": "isVegetarian",
                         "type": "boolean"
                     },
                     "isPescatarian": {
-                        "title": "Is Pescatarian",
+                        "title": "isPescatarian",
                         "type": "boolean"
                     }
                 },
@@ -1768,23 +1774,16 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
+                        "title": "status",
+                        "type": "string"
                     },
                     "message": {
-                        "title": "Message",
+                        "title": "message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeListOut"
-                        }
+                        "title": "data",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -1794,14 +1793,35 @@
             "IngredientCreateForm": {
                 "title": "IngredientCreateForm",
                 "type": "object",
+                "x-form": true,
                 "properties": {
                     "title": {
-                        "title": "Title",
-                        "type": "string"
+                        "title": "title",
+                        "type": "string",
+                        "x-helpText": "User friendly title. E.g. Red tomatoes.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 1,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
                     },
                     "product": {
-                        "title": "Product",
-                        "type": "integer"
+                        "title": "product",
+                        "type": "integer",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 2,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
                     }
                 },
                 "required": [
@@ -1814,7 +1834,7 @@
                 "type": "object",
                 "properties": {
                     "ingredientId": {
-                        "title": "Ingredient Id",
+                        "title": "ingredientId",
                         "type": "integer"
                     }
                 },
@@ -1827,15 +1847,15 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "fullName": {
-                        "title": "Full Name",
+                        "title": "fullName",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "Thumbnail Url",
+                        "title": "thumbnailUrl",
                         "type": "string"
                     }
                 },
@@ -1849,16 +1869,14 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
-                    "product": {
-                        "$ref": "#/components/schemas/IngredientListProductOut"
-                    }
+                    "product": {}
                 },
                 "required": [
                     "id",
@@ -1871,23 +1889,16 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
+                        "title": "status",
+                        "type": "string"
                     },
                     "message": {
-                        "title": "Message",
+                        "title": "message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/IngredientListOut"
-                        }
+                        "title": "data",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -1899,19 +1910,19 @@
                 "type": "object",
                 "properties": {
                     "ingredient": {
-                        "title": "Ingredient",
+                        "title": "ingredient",
                         "type": "string"
                     },
                     "portionQuantity": {
-                        "title": "Portion Quantity",
+                        "title": "portionQuantity",
                         "type": "string"
                     },
                     "unit": {
-                        "title": "Unit",
+                        "title": "unit",
                         "type": "string"
                     },
                     "additionalInfo": {
-                        "title": "Additional Info",
+                        "title": "additionalInfo",
                         "type": "string"
                     }
                 },
@@ -1926,19 +1937,16 @@
                 "type": "object",
                 "properties": {
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
                     "ordering": {
-                        "title": "Ordering",
+                        "title": "ordering",
                         "type": "integer"
                     },
                     "ingredients": {
-                        "title": "Ingredients",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientsCreateIngredientIn"
-                        }
+                        "title": "ingredients",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -1952,11 +1960,11 @@
                 "type": "object",
                 "properties": {
                     "fullName": {
-                        "title": "Full Name",
+                        "title": "fullName",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "Thumbnail Url",
+                        "title": "thumbnailUrl",
                         "type": "string"
                     }
                 },
@@ -1969,16 +1977,14 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
-                    "product": {
-                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientProductOut"
-                    }
+                    "product": {}
                 },
                 "required": [
                     "id",
@@ -1991,7 +1997,7 @@
                 "type": "object",
                 "properties": {
                     "abbreviation": {
-                        "title": "Abbreviation",
+                        "title": "abbreviation",
                         "type": "string"
                     }
                 },
@@ -2004,15 +2010,11 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
-                    "ingredient": {
-                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientOut"
-                    },
-                    "portionQuantityUnit": {
-                        "$ref": "#/components/schemas/RecipeIngredientGroupsListItemPortionQuantityUnitOut"
-                    }
+                    "ingredient": {},
+                    "portionQuantityUnit": {}
                 },
                 "required": [
                     "id",
@@ -2025,19 +2027,16 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "Title",
+                        "title": "title",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "Ingredient Items",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientGroupsListItemOut"
-                        }
+                        "title": "ingredientItems",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -2051,23 +2050,16 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
+                        "title": "status",
+                        "type": "string"
                     },
                     "message": {
-                        "title": "Message",
+                        "title": "message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientGroupsListOut"
-                        }
+                        "title": "data",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -2079,27 +2071,24 @@
                 "type": "object",
                 "properties": {
                     "number": {
-                        "title": "Number",
+                        "title": "number",
                         "type": "integer"
                     },
                     "duration": {
-                        "title": "Duration",
+                        "title": "duration",
                         "type": "integer"
                     },
                     "instruction": {
-                        "title": "Instruction",
+                        "title": "instruction",
                         "type": "string"
                     },
                     "stepType": {
-                        "title": "Step Type",
+                        "title": "stepType",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "Ingredient Items",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
+                        "title": "ingredientItems",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -2115,15 +2104,15 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "name": {
-                        "title": "Name",
+                        "title": "name",
                         "type": "string"
                     },
                     "displayName": {
-                        "title": "Display Name",
+                        "title": "displayName",
                         "type": "string"
                     }
                 },
@@ -2138,23 +2127,16 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
+                        "title": "status",
+                        "type": "string"
                     },
                     "message": {
-                        "title": "Message",
+                        "title": "message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/UnitListOut"
-                        }
+                        "title": "data",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -2166,15 +2148,15 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "address": {
-                        "title": "Address",
+                        "title": "address",
                         "type": "string"
                     },
                     "isActive": {
-                        "title": "Is Active",
+                        "title": "isActive",
                         "type": "boolean"
                     }
                 },
@@ -2189,32 +2171,30 @@
                 "type": "object",
                 "properties": {
                     "id": {
-                        "title": "Id",
+                        "title": "id",
                         "type": "integer"
                     },
                     "email": {
-                        "title": "Email",
+                        "title": "email",
                         "type": "string"
                     },
                     "fullName": {
-                        "title": "Full Name",
+                        "title": "fullName",
                         "type": "string"
                     },
                     "isActive": {
-                        "title": "Is Active",
+                        "title": "isActive",
                         "type": "boolean"
                     },
                     "isStaff": {
-                        "title": "Is Staff",
+                        "title": "isStaff",
                         "type": "boolean"
                     },
                     "isSuperuser": {
-                        "title": "Is Superuser",
+                        "title": "isSuperuser",
                         "type": "boolean"
                     },
-                    "home": {
-                        "$ref": "#/components/schemas/UserListHomeOut"
-                    }
+                    "home": {}
                 },
                 "required": [
                     "id",
@@ -2230,23 +2210,16 @@
                 "type": "object",
                 "properties": {
                     "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
+                        "title": "status",
+                        "type": "string"
                     },
                     "message": {
-                        "title": "Message",
+                        "title": "message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/UserListOut"
-                        }
+                        "title": "data",
+                        "type": "array"
                     }
                 },
                 "required": [
@@ -2323,6 +2296,315 @@
                     "Volume",
                     "Length",
                     "Usage"
+                ]
+            },
+            "ProductCreateForm": {
+                "title": "ProductCreateForm",
+                "type": "object",
+                "x-form": true,
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "type": "string",
+                        "x-helpText": "Plain name of product, should not include unit.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 1,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "grossPrice": {
+                        "title": "grossPrice",
+                        "type": "string",
+                        "x-helpText": "Gross price of product, including VAT.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 2,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "unitQuantity": {
+                        "title": "unitQuantity",
+                        "type": "string",
+                        "x-helpText": "Amount in selected unit type. E.g. 2 if 2 kg.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 3,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "unit": {
+                        "title": "unit",
+                        "type": "integer",
+                        "x-helpText": "What sort of unit is this?",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 4,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "supplier": {
+                        "title": "supplier",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 5,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "gtin": {
+                        "title": "gtin",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 6,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "ingredients": {
+                        "title": "ingredients",
+                        "type": "string",
+                        "x-helpText": "Specify ingredients seperated by a comma. E.g. milk, egg, sugar.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 7,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "allergens": {
+                        "title": "allergens",
+                        "type": "string",
+                        "x-helpText": "Specify allergens seperated by a comma. E.g. milk, egg, sugar.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 8,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "fat": {
+                        "title": "fat",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 9,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "fatSaturated": {
+                        "title": "fatSaturated",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 10,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "fatMonounsaturated": {
+                        "title": "fatMonounsaturated",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 11,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "fatPolyunsaturated": {
+                        "title": "fatPolyunsaturated",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 12,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "carbohydrates": {
+                        "title": "carbohydrates",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 13,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "carbohydratesSugars": {
+                        "title": "carbohydratesSugars",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 14,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "carbohydratesPolyols": {
+                        "title": "carbohydratesPolyols",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 15,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "carbohydratesStarch": {
+                        "title": "carbohydratesStarch",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 16,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "fibres": {
+                        "title": "fibres",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 2,
+                        "x-section": null,
+                        "x-order": 17,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "salt": {
+                        "title": "salt",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 2,
+                        "x-section": null,
+                        "x-order": 18,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "sodium": {
+                        "title": "sodium",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 2,
+                        "x-section": null,
+                        "x-order": 19,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "isAvailable": {
+                        "title": "isAvailable",
+                        "type": "boolean",
+                        "x-helpText": null,
+                        "x-defaultValue": true,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 20,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "Checkbox"
+                    },
+                    "thumbnail": {
+                        "title": "thumbnail",
+                        "type": "file",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": "Upload thumbnail",
+                        "x-hiddenLabel": null,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": null,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "FileInput"
+                    }
+                },
+                "required": [
+                    "name",
+                    "grossPrice",
+                    "unitQuantity",
+                    "unit",
+                    "supplier",
+                    "isAvailable"
                 ]
             }
         },

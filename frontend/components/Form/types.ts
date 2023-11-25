@@ -22,14 +22,14 @@ export interface FormElementOptions {
 export interface FormElementObj {
   title: string
   helpText?: string | null
-  component: FrontendComponents
+  component: string
   defaultValue?: string | number | boolean | null
   placeholder?: string | null
   hiddenLabel?: boolean
   colSpan?: number | null
   section?: string | null
   type: string
-  enum?: FormEnum[]
+  // enum?: FormEnum[]
   order: number
   min?: number | null
   max?: number | null

@@ -3,21 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ProductDetailOut } from './ProductDetailOut';
-
 export type ProductDetailOutAPIResponse = {
-    status: ProductDetailOutAPIResponse.status;
+    status: string;
     message?: string;
-    data?: ProductDetailOut;
+    data?: any;
 };
-
-export namespace ProductDetailOutAPIResponse {
-
-    export enum status {
-        SUCCESS = 'success',
-        ERROR = 'error',
-    }
-
-
-}
 
