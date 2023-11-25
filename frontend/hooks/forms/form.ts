@@ -54,7 +54,7 @@ export function useForm<T extends object>({
    **********/
 
   const [formData, setFormData] = useState<Partial<T> | null>(null)
-  const rawSchema = openAPISchema['components']['schemas']['IngredientCreateForm']
+  const rawSchema = openAPISchema['components']['schemas'][key]
 
   const schema = rawSchema as FormComponentSchema
 

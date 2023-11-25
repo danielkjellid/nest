@@ -103,7 +103,7 @@ class NestOpenAPISchema:
                 and key in enum_mapping[definition_key].keys()
             )
 
-            title = camelize(key)
+            title = key.replace("_", " ").title()
             type_ = val.get("type", None)
 
             val.pop("component", None)
@@ -164,7 +164,7 @@ class NestOpenAPISchema:
                     "x-component": self.get_component(val_copy),
                 }
 
-            modified_properties[title] = modified_property
+            modified_properties[camelize(key)] = modified_property
 
         return dict(modified_properties)  # type: ignore
 
@@ -188,6 +188,10 @@ class NestOpenAPISchema:
 
         if defined_component is not None:
             return defined_component
+
+        property_format: str = property_.get("format", "")
+        if property_format == "binary":
+            return settings.FORM_COMPONENT_MAPPING_DEFAULTS["file"].value
 
         component: str = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
             property_["type"]

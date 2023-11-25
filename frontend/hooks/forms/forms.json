@@ -13,88 +13,88 @@
             ],
             "properties": {
                 "name": {
-                    "title": "name",
+                    "title": "Name",
                     "type": "string"
                 },
                 "grossPrice": {
-                    "title": "grossPrice",
+                    "title": "Gross Price",
                     "type": "string"
                 },
                 "unitQuantity": {
-                    "title": "unitQuantity",
+                    "title": "Unit Quantity",
                     "type": "string"
                 },
                 "unit": {
-                    "title": "unit",
+                    "title": "Unit",
                     "type": "integer"
                 },
                 "supplier": {
-                    "title": "supplier",
+                    "title": "Supplier",
                     "type": "string"
                 },
                 "gtin": {
-                    "title": "gtin",
+                    "title": "Gtin",
                     "type": "string"
                 },
                 "ingredients": {
-                    "title": "ingredients",
+                    "title": "Ingredients",
                     "type": "string"
                 },
                 "allergens": {
-                    "title": "allergens",
+                    "title": "Allergens",
                     "type": "string"
                 },
                 "fat": {
-                    "title": "fat",
+                    "title": "Fat",
                     "type": "string"
                 },
                 "fatSaturated": {
-                    "title": "fatSaturated",
+                    "title": "Fat Saturated",
                     "type": "string"
                 },
                 "fatMonounsaturated": {
-                    "title": "fatMonounsaturated",
+                    "title": "Fat Monounsaturated",
                     "type": "string"
                 },
                 "fatPolyunsaturated": {
-                    "title": "fatPolyunsaturated",
+                    "title": "Fat Polyunsaturated",
                     "type": "string"
                 },
                 "carbohydrates": {
-                    "title": "carbohydrates",
+                    "title": "Carbohydrates",
                     "type": "string"
                 },
                 "carbohydratesSugars": {
-                    "title": "carbohydratesSugars",
+                    "title": "Carbohydrates Sugars",
                     "type": "string"
                 },
                 "carbohydratesPolyols": {
-                    "title": "carbohydratesPolyols",
+                    "title": "Carbohydrates Polyols",
                     "type": "string"
                 },
                 "carbohydratesStarch": {
-                    "title": "carbohydratesStarch",
+                    "title": "Carbohydrates Starch",
                     "type": "string"
                 },
                 "fibres": {
-                    "title": "fibres",
+                    "title": "Fibres",
                     "type": "string"
                 },
                 "salt": {
-                    "title": "salt",
+                    "title": "Salt",
                     "type": "string"
                 },
                 "sodium": {
-                    "title": "sodium",
+                    "title": "Sodium",
                     "type": "string"
                 },
                 "isAvailable": {
-                    "title": "isAvailable",
+                    "title": "Is Available",
                     "type": "boolean"
                 },
                 "thumbnail": {
-                    "title": "thumbnail",
-                    "type": "file"
+                    "title": "Thumbnail",
+                    "type": "string"
                 }
             }
         },
@@ -112,92 +112,92 @@
             ],
             "properties": {
                 "name": {
-                    "title": "name",
+                    "title": "Name",
                     "type": "string"
                 },
                 "grossPrice": {
-                    "title": "grossPrice",
+                    "title": "Gross Price",
                     "type": "number"
                 },
                 "unitQuantity": {
-                    "title": "unitQuantity",
+                    "title": "Unit Quantity",
                     "type": "number"
                 },
                 "unit": {
-                    "title": "unit",
+                    "title": "Unit",
                     "type": "integer"
                 },
                 "supplier": {
-                    "title": "supplier",
+                    "title": "Supplier",
                     "type": "string"
                 },
                 "gtin": {
-                    "title": "gtin",
+                    "title": "Gtin",
                     "type": "string"
                 },
                 "odaId": {
-                    "title": "odaId",
+                    "title": "Oda Id",
                     "type": "integer"
                 },
                 "odaUrl": {
-                    "title": "odaUrl",
+                    "title": "Oda Url",
                     "type": "string"
                 },
                 "fat": {
-                    "title": "fat",
+                    "title": "Fat",
                     "type": "string"
                 },
                 "fatSaturated": {
-                    "title": "fatSaturated",
+                    "title": "Fat Saturated",
                     "type": "string"
                 },
                 "fatMonounsaturated": {
-                    "title": "fatMonounsaturated",
+                    "title": "Fat Monounsaturated",
                     "type": "string"
                 },
                 "fatPolyunsaturated": {
-                    "title": "fatPolyunsaturated",
+                    "title": "Fat Polyunsaturated",
                     "type": "string"
                 },
                 "carbohydrates": {
-                    "title": "carbohydrates",
+                    "title": "Carbohydrates",
                     "type": "string"
                 },
                 "carbohydratesSugars": {
-                    "title": "carbohydratesSugars",
+                    "title": "Carbohydrates Sugars",
                     "type": "string"
                 },
                 "carbohydratesPolyols": {
-                    "title": "carbohydratesPolyols",
+                    "title": "Carbohydrates Polyols",
                     "type": "string"
                 },
                 "carbohydratesStarch": {
-                    "title": "carbohydratesStarch",
+                    "title": "Carbohydrates Starch",
                     "type": "string"
                 },
                 "fibres": {
-                    "title": "fibres",
+                    "title": "Fibres",
                     "type": "string"
                 },
                 "salt": {
-                    "title": "salt",
+                    "title": "Salt",
                     "type": "string"
                 },
                 "sodium": {
-                    "title": "sodium",
+                    "title": "Sodium",
                     "type": "string"
                 },
                 "isAvailable": {
-                    "title": "isAvailable",
+                    "title": "Is Available",
                     "type": "boolean"
                 },
                 "isSynced": {
-                    "title": "isSynced",
+                    "title": "Is Synced",
                     "type": "boolean"
                 },
                 "thumbnail": {
-                    "title": "thumbnail",
-                    "type": "file"
+                    "title": "Thumbnail",
+                    "type": "string"
                 }
             }
         },
@@ -209,7 +209,7 @@
             ],
             "properties": {
                 "odaProductId": {
-                    "title": "odaProductId",
+                    "title": "Oda Product Id",
                     "type": "string"
                 }
             }
@@ -245,19 +245,19 @@
             ],
             "properties": {
                 "title": {
-                    "title": "title",
+                    "title": "Title",
                     "type": "string"
                 },
                 "searchKeywords": {
-                    "title": "searchKeywords",
+                    "title": "Search Keywords",
                     "type": "string"
                 },
                 "defaultNumPortions": {
-                    "title": "defaultNumPortions",
+                    "title": "Default Num Portions",
                     "type": "integer"
                 },
                 "status": {
-                    "title": "status",
+                    "title": "Status",
                     "enum": [
                         {
                             "label": "Draft",
@@ -274,7 +274,7 @@
                     ]
                 },
                 "difficulty": {
-                    "title": "difficulty",
+                    "title": "Difficulty",
                     "enum": [
                         {
                             "label": "Easy",
@@ -291,19 +291,19 @@
                     ]
                 },
                 "externalId": {
-                    "title": "externalId",
+                    "title": "External Id",
                     "type": "string"
                 },
                 "externalUrl": {
-                    "title": "externalUrl",
+                    "title": "External Url",
                     "type": "string"
                 },
                 "isVegetarian": {
-                    "title": "isVegetarian",
+                    "title": "Is Vegetarian",
                     "type": "boolean"
                 },
                 "isPescatarian": {
-                    "title": "isPescatarian",
+                    "title": "Is Pescatarian",
                     "type": "boolean"
                 }
             }
@@ -317,11 +317,11 @@
             ],
             "properties": {
                 "title": {
-                    "title": "title",
+                    "title": "Title",
                     "type": "string"
                 },
                 "product": {
-                    "title": "product",
+                    "title": "Product",
                     "type": "integer"
                 }
             }

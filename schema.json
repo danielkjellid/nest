@@ -650,43 +650,43 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "fullName": {
-                        "title": "fullName",
+                        "title": "Full Name",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "thumbnailUrl",
+                        "title": "Thumbnail Url",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "isAvailable",
+                        "title": "Is Available",
                         "type": "boolean"
                     },
                     "odaUrl": {
-                        "title": "odaUrl",
+                        "title": "Oda Url",
                         "type": "string"
                     },
                     "odaId": {
-                        "title": "odaId",
+                        "title": "Oda Id",
                         "type": "integer"
                     },
                     "isSynced": {
-                        "title": "isSynced",
+                        "title": "Is Synced",
                         "type": "boolean"
                     },
                     "gtin": {
-                        "title": "gtin",
+                        "title": "Gtin",
                         "type": "string"
                     },
                     "isOdaProduct": {
-                        "title": "isOdaProduct",
+                        "title": "Is Oda Product",
                         "type": "boolean"
                     },
                     "displayPrice": {
-                        "title": "displayPrice",
+                        "title": "Display Price",
                         "type": "string"
                     }
                 }
@@ -699,15 +699,15 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "data",
+                        "title": "Data",
                         "type": "array"
                     }
                 }
@@ -721,15 +721,15 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "data",
+                        "title": "Data",
                         "type": "null"
                     }
                 }
@@ -747,88 +747,88 @@
                 ],
                 "properties": {
                     "name": {
-                        "title": "name",
+                        "title": "Name",
                         "type": "string"
                     },
                     "grossPrice": {
-                        "title": "grossPrice",
+                        "title": "Gross Price",
                         "type": "string"
                     },
                     "unitQuantity": {
-                        "title": "unitQuantity",
+                        "title": "Unit Quantity",
                         "type": "string"
                     },
                     "unit": {
-                        "title": "unit",
+                        "title": "Unit",
                         "type": "integer"
                     },
                     "supplier": {
-                        "title": "supplier",
+                        "title": "Supplier",
                         "type": "string"
                     },
                     "gtin": {
-                        "title": "gtin",
+                        "title": "Gtin",
                         "type": "string"
                     },
                     "ingredients": {
-                        "title": "ingredients",
+                        "title": "Ingredients",
                         "type": "string"
                     },
                     "allergens": {
-                        "title": "allergens",
+                        "title": "Allergens",
                         "type": "string"
                     },
                     "fat": {
-                        "title": "fat",
+                        "title": "Fat",
                         "type": "string"
                     },
                     "fatSaturated": {
-                        "title": "fatSaturated",
+                        "title": "Fat Saturated",
                         "type": "string"
                     },
                     "fatMonounsaturated": {
-                        "title": "fatMonounsaturated",
+                        "title": "Fat Monounsaturated",
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
-                        "title": "fatPolyunsaturated",
+                        "title": "Fat Polyunsaturated",
                         "type": "string"
                     },
                     "carbohydrates": {
-                        "title": "carbohydrates",
+                        "title": "Carbohydrates",
                         "type": "string"
                     },
                     "carbohydratesSugars": {
-                        "title": "carbohydratesSugars",
+                        "title": "Carbohydrates Sugars",
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
-                        "title": "carbohydratesPolyols",
+                        "title": "Carbohydrates Polyols",
                         "type": "string"
                     },
                     "carbohydratesStarch": {
-                        "title": "carbohydratesStarch",
+                        "title": "Carbohydrates Starch",
                         "type": "string"
                     },
                     "fibres": {
-                        "title": "fibres",
+                        "title": "Fibres",
                         "type": "string"
                     },
                     "salt": {
-                        "title": "salt",
+                        "title": "Salt",
                         "type": "string"
                     },
                     "sodium": {
-                        "title": "sodium",
+                        "title": "Sodium",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "isAvailable",
+                        "title": "Is Available",
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "title": "thumbnail",
-                        "type": "file"
+                        "title": "Thumbnail",
+                        "type": "string"
                     }
                 }
             },
@@ -843,23 +843,23 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "name": {
-                        "title": "name",
+                        "title": "Name",
                         "type": "string"
                     },
                     "abbreviation": {
-                        "title": "abbreviation",
+                        "title": "Abbreviation",
                         "type": "string"
                     },
                     "unitType": {
-                        "title": "unitType",
+                        "title": "Unit Type",
                         "type": "string"
                     },
                     "displayName": {
-                        "title": "displayName",
+                        "title": "Display Name",
                         "type": "string"
                     }
                 }
@@ -874,19 +874,19 @@
                 ],
                 "properties": {
                     "key": {
-                        "title": "key",
+                        "title": "Key",
                         "type": "string"
                     },
                     "parentKey": {
-                        "title": "parentKey",
+                        "title": "Parent Key",
                         "type": "string"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "value": {
-                        "title": "value",
+                        "title": "Value",
                         "type": "string"
                     }
                 }
@@ -900,19 +900,19 @@
                 ],
                 "properties": {
                     "userOrSource": {
-                        "title": "userOrSource",
+                        "title": "User Or Source",
                         "type": "string"
                     },
                     "remoteAddr": {
-                        "title": "remoteAddr",
+                        "title": "Remote Addr",
                         "type": "string"
                     },
                     "changes": {
-                        "title": "changes",
+                        "title": "Changes",
                         "type": "object"
                     },
                     "createdAt": {
-                        "title": "createdAt",
+                        "title": "Created At",
                         "type": "string"
                     }
                 }
@@ -934,124 +934,124 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "name": {
-                        "title": "name",
+                        "title": "Name",
                         "type": "string"
                     },
                     "fullName": {
-                        "title": "fullName",
+                        "title": "Full Name",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "isAvailable",
+                        "title": "Is Available",
                         "type": "boolean"
                     },
                     "thumbnailUrl": {
-                        "title": "thumbnailUrl",
+                        "title": "Thumbnail Url",
                         "type": "string"
                     },
                     "containsLactose": {
-                        "title": "containsLactose",
+                        "title": "Contains Lactose",
                         "type": "boolean"
                     },
                     "containsGluten": {
-                        "title": "containsGluten",
+                        "title": "Contains Gluten",
                         "type": "boolean"
                     },
                     "grossPrice": {
-                        "title": "grossPrice",
+                        "title": "Gross Price",
                         "type": "string"
                     },
                     "grossUnitPrice": {
-                        "title": "grossUnitPrice",
+                        "title": "Gross Unit Price",
                         "type": "string"
                     },
                     "unit": {},
                     "unitQuantity": {
-                        "title": "unitQuantity",
+                        "title": "Unit Quantity",
                         "type": "string"
                     },
                     "gtin": {
-                        "title": "gtin",
+                        "title": "Gtin",
                         "type": "string"
                     },
                     "supplier": {
-                        "title": "supplier",
+                        "title": "Supplier",
                         "type": "string"
                     },
                     "isSynced": {
-                        "title": "isSynced",
+                        "title": "Is Synced",
                         "type": "boolean"
                     },
                     "odaId": {
-                        "title": "odaId",
+                        "title": "Oda Id",
                         "type": "string"
                     },
                     "odaUrl": {
-                        "title": "odaUrl",
+                        "title": "Oda Url",
                         "type": "string"
                     },
                     "isOdaProduct": {
-                        "title": "isOdaProduct",
+                        "title": "Is Oda Product",
                         "type": "boolean"
                     },
                     "lastDataUpdate": {
-                        "title": "lastDataUpdate",
+                        "title": "Last Data Update",
                         "type": "string"
                     },
                     "fat": {
-                        "title": "fat",
+                        "title": "Fat",
                         "type": "string"
                     },
                     "fatSaturated": {
-                        "title": "fatSaturated",
+                        "title": "Fat Saturated",
                         "type": "string"
                     },
                     "fatMonounsaturated": {
-                        "title": "fatMonounsaturated",
+                        "title": "Fat Monounsaturated",
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
-                        "title": "fatPolyunsaturated",
+                        "title": "Fat Polyunsaturated",
                         "type": "string"
                     },
                     "carbohydrates": {
-                        "title": "carbohydrates",
+                        "title": "Carbohydrates",
                         "type": "string"
                     },
                     "carbohydratesSugars": {
-                        "title": "carbohydratesSugars",
+                        "title": "Carbohydrates Sugars",
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
-                        "title": "carbohydratesPolyols",
+                        "title": "Carbohydrates Polyols",
                         "type": "string"
                     },
                     "carbohydratesStarch": {
-                        "title": "carbohydratesStarch",
+                        "title": "Carbohydrates Starch",
                         "type": "string"
                     },
                     "fibres": {
-                        "title": "fibres",
+                        "title": "Fibres",
                         "type": "string"
                     },
                     "salt": {
-                        "title": "salt",
+                        "title": "Salt",
                         "type": "string"
                     },
                     "sodium": {
-                        "title": "sodium",
+                        "title": "Sodium",
                         "type": "string"
                     },
                     "nutritionTable": {
-                        "title": "nutritionTable",
+                        "title": "Nutrition Table",
                         "type": "array"
                     },
                     "auditLogs": {
-                        "title": "auditLogs",
+                        "title": "Audit Logs",
                         "type": "array"
                     }
                 }
@@ -1064,11 +1064,11 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {}
@@ -1088,92 +1088,92 @@
                 ],
                 "properties": {
                     "name": {
-                        "title": "name",
+                        "title": "Name",
                         "type": "string"
                     },
                     "grossPrice": {
-                        "title": "grossPrice",
+                        "title": "Gross Price",
                         "type": "number"
                     },
                     "unitQuantity": {
-                        "title": "unitQuantity",
+                        "title": "Unit Quantity",
                         "type": "number"
                     },
                     "unit": {
-                        "title": "unit",
+                        "title": "Unit",
                         "type": "integer"
                     },
                     "supplier": {
-                        "title": "supplier",
+                        "title": "Supplier",
                         "type": "string"
                     },
                     "gtin": {
-                        "title": "gtin",
+                        "title": "Gtin",
                         "type": "string"
                     },
                     "odaId": {
-                        "title": "odaId",
+                        "title": "Oda Id",
                         "type": "integer"
                     },
                     "odaUrl": {
-                        "title": "odaUrl",
+                        "title": "Oda Url",
                         "type": "string"
                     },
                     "fat": {
-                        "title": "fat",
+                        "title": "Fat",
                         "type": "string"
                     },
                     "fatSaturated": {
-                        "title": "fatSaturated",
+                        "title": "Fat Saturated",
                         "type": "string"
                     },
                     "fatMonounsaturated": {
-                        "title": "fatMonounsaturated",
+                        "title": "Fat Monounsaturated",
                         "type": "string"
                     },
                     "fatPolyunsaturated": {
-                        "title": "fatPolyunsaturated",
+                        "title": "Fat Polyunsaturated",
                         "type": "string"
                     },
                     "carbohydrates": {
-                        "title": "carbohydrates",
+                        "title": "Carbohydrates",
                         "type": "string"
                     },
                     "carbohydratesSugars": {
-                        "title": "carbohydratesSugars",
+                        "title": "Carbohydrates Sugars",
                         "type": "string"
                     },
                     "carbohydratesPolyols": {
-                        "title": "carbohydratesPolyols",
+                        "title": "Carbohydrates Polyols",
                         "type": "string"
                     },
                     "carbohydratesStarch": {
-                        "title": "carbohydratesStarch",
+                        "title": "Carbohydrates Starch",
                         "type": "string"
                     },
                     "fibres": {
-                        "title": "fibres",
+                        "title": "Fibres",
                         "type": "string"
                     },
                     "salt": {
-                        "title": "salt",
+                        "title": "Salt",
                         "type": "string"
                     },
                     "sodium": {
-                        "title": "sodium",
+                        "title": "Sodium",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "isAvailable",
+                        "title": "Is Available",
                         "type": "boolean"
                     },
                     "isSynced": {
-                        "title": "isSynced",
+                        "title": "Is Synced",
                         "type": "boolean"
                     },
                     "thumbnail": {
-                        "title": "thumbnail",
-                        "type": "file"
+                        "title": "Thumbnail",
+                        "type": "string"
                     }
                 }
             },
@@ -1191,35 +1191,35 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "fullName": {
-                        "title": "fullName",
+                        "title": "Full Name",
                         "type": "string"
                     },
                     "supplier": {
-                        "title": "supplier",
+                        "title": "Supplier",
                         "type": "string"
                     },
                     "isAvailable": {
-                        "title": "isAvailable",
+                        "title": "Is Available",
                         "type": "boolean"
                     },
                     "grossPrice": {
-                        "title": "grossPrice",
+                        "title": "Gross Price",
                         "type": "string"
                     },
                     "unit": {
-                        "title": "unit",
+                        "title": "Unit",
                         "type": "string"
                     },
                     "unitQuantity": {
-                        "title": "unitQuantity",
+                        "title": "Unit Quantity",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "thumbnailUrl",
+                        "title": "Thumbnail Url",
                         "type": "string"
                     }
                 }
@@ -1232,11 +1232,11 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {}
@@ -1252,7 +1252,7 @@
                 ],
                 "properties": {
                     "odaProductId": {
-                        "title": "odaProductId",
+                        "title": "Oda Product Id",
                         "type": "string",
                         "x-helpText": "Product Id at Oda.",
                         "x-defaultValue": null,
@@ -1275,7 +1275,7 @@
                 ],
                 "properties": {
                     "odaProductId": {
-                        "title": "odaProductId",
+                        "title": "Oda Product Id",
                         "type": "integer"
                     }
                 }
@@ -1288,7 +1288,7 @@
                 ],
                 "properties": {
                     "recipeId": {
-                        "title": "recipeId",
+                        "title": "Recipe Id",
                         "type": "integer"
                     }
                 }
@@ -1301,11 +1301,11 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {}
@@ -1344,7 +1344,7 @@
                 ],
                 "properties": {
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string",
                         "x-helpText": "Name of the recipe.",
                         "x-defaultValue": null,
@@ -1358,7 +1358,7 @@
                         "x-component": "TextInput"
                     },
                     "searchKeywords": {
-                        "title": "searchKeywords",
+                        "title": "Search Keywords",
                         "type": "string",
                         "x-helpText": "Separate with spaces. Title is included by default.",
                         "x-defaultValue": null,
@@ -1372,7 +1372,7 @@
                         "x-component": "TextInput"
                     },
                     "defaultNumPortions": {
-                        "title": "defaultNumPortions",
+                        "title": "Default Num Portions",
                         "type": "integer",
                         "x-helpText": null,
                         "x-defaultValue": 4,
@@ -1386,7 +1386,7 @@
                         "x-component": "TextInput"
                     },
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string",
                         "enum": [
                             {
@@ -1414,7 +1414,7 @@
                         "x-max": null
                     },
                     "difficulty": {
-                        "title": "difficulty",
+                        "title": "Difficulty",
                         "type": "string",
                         "enum": [
                             {
@@ -1442,7 +1442,7 @@
                         "x-max": null
                     },
                     "externalId": {
-                        "title": "externalId",
+                        "title": "External Id",
                         "type": "string",
                         "x-helpText": "Providers identifier.",
                         "x-defaultValue": null,
@@ -1456,7 +1456,7 @@
                         "x-component": "TextInput"
                     },
                     "externalUrl": {
-                        "title": "externalUrl",
+                        "title": "External Url",
                         "type": "string",
                         "x-helpText": "Direct link to the recipe on a provider's site",
                         "x-defaultValue": null,
@@ -1470,7 +1470,7 @@
                         "x-component": "TextInput"
                     },
                     "isVegetarian": {
-                        "title": "isVegetarian",
+                        "title": "Is Vegetarian",
                         "type": "boolean",
                         "x-helpText": "The recipe does not contain any meat or fish products.",
                         "x-defaultValue": null,
@@ -1484,7 +1484,7 @@
                         "x-component": "Checkbox"
                     },
                     "isPescatarian": {
-                        "title": "isPescatarian",
+                        "title": "Is Pescatarian",
                         "type": "boolean",
                         "x-helpText": "The recipe contains fish.",
                         "x-defaultValue": null,
@@ -1509,15 +1509,15 @@
                 ],
                 "properties": {
                     "preparationTimeIso8601": {
-                        "title": "preparationTimeIso8601",
+                        "title": "Preparation Time Iso8601",
                         "type": "string"
                     },
                     "cookingTimeIso8601": {
-                        "title": "cookingTimeIso8601",
+                        "title": "Cooking Time Iso8601",
                         "type": "string"
                     },
                     "totalTimeIso8601": {
-                        "title": "totalTimeIso8601",
+                        "title": "Total Time Iso8601",
                         "type": "string"
                     }
                 }
@@ -1531,11 +1531,11 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     }
                 }
@@ -1548,7 +1548,7 @@
                 ],
                 "properties": {
                     "abbreviation": {
-                        "title": "abbreviation",
+                        "title": "Abbreviation",
                         "type": "string"
                     }
                 }
@@ -1565,16 +1565,16 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "ingredient": {},
                     "portionQuantity": {
-                        "title": "portionQuantity",
+                        "title": "Portion Quantity",
                         "type": "number"
                     },
                     "portionQuantityDisplay": {
-                        "title": "portionQuantityDisplay",
+                        "title": "Portion Quantity Display",
                         "type": "string"
                     },
                     "portionQuantityUnit": {}
@@ -1592,23 +1592,23 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "number": {
-                        "title": "number",
+                        "title": "Number",
                         "type": "integer"
                     },
                     "instruction": {
-                        "title": "instruction",
+                        "title": "Instruction",
                         "type": "string"
                     },
                     "stepTypeDisplay": {
-                        "title": "stepTypeDisplay",
+                        "title": "Step Type Display",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "ingredientItems",
+                        "title": "Ingredient Items",
                         "type": "array"
                     }
                 }
@@ -1623,15 +1623,15 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "ingredientItems",
+                        "title": "Ingredient Items",
                         "type": "array"
                     }
                 }
@@ -1655,57 +1655,57 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "slug": {
-                        "title": "slug",
+                        "title": "Slug",
                         "type": "string"
                     },
                     "defaultNumPortions": {
-                        "title": "defaultNumPortions",
+                        "title": "Default Num Portions",
                         "type": "integer"
                     },
                     "searchKeywords": {
-                        "title": "searchKeywords",
+                        "title": "Search Keywords",
                         "type": "string"
                     },
                     "externalId": {
-                        "title": "externalId",
+                        "title": "External Id",
                         "type": "string"
                     },
                     "externalUrl": {
-                        "title": "externalUrl",
+                        "title": "External Url",
                         "type": "string"
                     },
                     "status": {},
                     "statusDisplay": {
-                        "title": "statusDisplay",
+                        "title": "Status Display",
                         "type": "string"
                     },
                     "difficultyDisplay": {
-                        "title": "difficultyDisplay",
+                        "title": "Difficulty Display",
                         "type": "string"
                     },
                     "isVegetarian": {
-                        "title": "isVegetarian",
+                        "title": "Is Vegetarian",
                         "type": "boolean"
                     },
                     "isPescatarian": {
-                        "title": "isPescatarian",
+                        "title": "Is Pescatarian",
                         "type": "boolean"
                     },
                     "duration": {},
                     "steps": {
-                        "title": "steps",
+                        "title": "Steps",
                         "type": "array"
                     },
                     "ingredientGroups": {
-                        "title": "ingredientGroups",
+                        "title": "Ingredient Groups",
                         "type": "array"
                     }
                 }
@@ -1718,11 +1718,11 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {}
@@ -1742,31 +1742,31 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "defaultNumPortions": {
-                        "title": "defaultNumPortions",
+                        "title": "Default Num Portions",
                         "type": "integer"
                     },
                     "statusDisplay": {
-                        "title": "statusDisplay",
+                        "title": "Status Display",
                         "type": "string"
                     },
                     "difficultyDisplay": {
-                        "title": "difficultyDisplay",
+                        "title": "Difficulty Display",
                         "type": "string"
                     },
                     "isVegetarian": {
-                        "title": "isVegetarian",
+                        "title": "Is Vegetarian",
                         "type": "boolean"
                     },
                     "isPescatarian": {
-                        "title": "isPescatarian",
+                        "title": "Is Pescatarian",
                         "type": "boolean"
                     }
                 }
@@ -1779,15 +1779,15 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "data",
+                        "title": "Data",
                         "type": "array"
                     }
                 }
@@ -1803,7 +1803,7 @@
                 ],
                 "properties": {
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string",
                         "x-helpText": "User friendly title. E.g. Red tomatoes.",
                         "x-defaultValue": null,
@@ -1817,7 +1817,7 @@
                         "x-component": "TextInput"
                     },
                     "product": {
-                        "title": "product",
+                        "title": "Product",
                         "type": "integer",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -1840,7 +1840,7 @@
                 ],
                 "properties": {
                     "ingredientId": {
-                        "title": "ingredientId",
+                        "title": "Ingredient Id",
                         "type": "integer"
                     }
                 }
@@ -1854,15 +1854,15 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "fullName": {
-                        "title": "fullName",
+                        "title": "Full Name",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "thumbnailUrl",
+                        "title": "Thumbnail Url",
                         "type": "string"
                     }
                 }
@@ -1877,11 +1877,11 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "product": {}
@@ -1895,15 +1895,15 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "data",
+                        "title": "Data",
                         "type": "array"
                     }
                 }
@@ -1918,19 +1918,19 @@
                 ],
                 "properties": {
                     "ingredient": {
-                        "title": "ingredient",
+                        "title": "Ingredient",
                         "type": "string"
                     },
                     "portionQuantity": {
-                        "title": "portionQuantity",
+                        "title": "Portion Quantity",
                         "type": "string"
                     },
                     "unit": {
-                        "title": "unit",
+                        "title": "Unit",
                         "type": "string"
                     },
                     "additionalInfo": {
-                        "title": "additionalInfo",
+                        "title": "Additional Info",
                         "type": "string"
                     }
                 }
@@ -1945,15 +1945,15 @@
                 ],
                 "properties": {
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "ordering": {
-                        "title": "ordering",
+                        "title": "Ordering",
                         "type": "integer"
                     },
                     "ingredients": {
-                        "title": "ingredients",
+                        "title": "Ingredients",
                         "type": "array"
                     }
                 }
@@ -1966,11 +1966,11 @@
                 ],
                 "properties": {
                     "fullName": {
-                        "title": "fullName",
+                        "title": "Full Name",
                         "type": "string"
                     },
                     "thumbnailUrl": {
-                        "title": "thumbnailUrl",
+                        "title": "Thumbnail Url",
                         "type": "string"
                     }
                 }
@@ -1985,11 +1985,11 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "product": {}
@@ -2003,7 +2003,7 @@
                 ],
                 "properties": {
                     "abbreviation": {
-                        "title": "abbreviation",
+                        "title": "Abbreviation",
                         "type": "string"
                     }
                 }
@@ -2018,7 +2018,7 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "ingredient": {},
@@ -2035,15 +2035,15 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "title": {
-                        "title": "title",
+                        "title": "Title",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "ingredientItems",
+                        "title": "Ingredient Items",
                         "type": "array"
                     }
                 }
@@ -2056,15 +2056,15 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "data",
+                        "title": "Data",
                         "type": "array"
                     }
                 }
@@ -2081,23 +2081,23 @@
                 ],
                 "properties": {
                     "number": {
-                        "title": "number",
+                        "title": "Number",
                         "type": "integer"
                     },
                     "duration": {
-                        "title": "duration",
+                        "title": "Duration",
                         "type": "integer"
                     },
                     "instruction": {
-                        "title": "instruction",
+                        "title": "Instruction",
                         "type": "string"
                     },
                     "stepType": {
-                        "title": "stepType",
+                        "title": "Step Type",
                         "type": "string"
                     },
                     "ingredientItems": {
-                        "title": "ingredientItems",
+                        "title": "Ingredient Items",
                         "type": "array"
                     }
                 }
@@ -2112,15 +2112,15 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "name": {
-                        "title": "name",
+                        "title": "Name",
                         "type": "string"
                     },
                     "displayName": {
-                        "title": "displayName",
+                        "title": "Display Name",
                         "type": "string"
                     }
                 }
@@ -2133,15 +2133,15 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "data",
+                        "title": "Data",
                         "type": "array"
                     }
                 }
@@ -2156,15 +2156,15 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "address": {
-                        "title": "address",
+                        "title": "Address",
                         "type": "string"
                     },
                     "isActive": {
-                        "title": "isActive",
+                        "title": "Is Active",
                         "type": "boolean"
                     }
                 }
@@ -2182,27 +2182,27 @@
                 ],
                 "properties": {
                     "id": {
-                        "title": "id",
+                        "title": "Id",
                         "type": "integer"
                     },
                     "email": {
-                        "title": "email",
+                        "title": "Email",
                         "type": "string"
                     },
                     "fullName": {
-                        "title": "fullName",
+                        "title": "Full Name",
                         "type": "string"
                     },
                     "isActive": {
-                        "title": "isActive",
+                        "title": "Is Active",
                         "type": "boolean"
                     },
                     "isStaff": {
-                        "title": "isStaff",
+                        "title": "Is Staff",
                         "type": "boolean"
                     },
                     "isSuperuser": {
-                        "title": "isSuperuser",
+                        "title": "Is Superuser",
                         "type": "boolean"
                     },
                     "home": {}
@@ -2216,15 +2216,15 @@
                 ],
                 "properties": {
                     "status": {
-                        "title": "status",
+                        "title": "Status",
                         "type": "string"
                     },
                     "message": {
-                        "title": "message",
+                        "title": "Message",
                         "type": "string"
                     },
                     "data": {
-                        "title": "data",
+                        "title": "Data",
                         "type": "array"
                     }
                 }
@@ -2316,7 +2316,7 @@
                 ],
                 "properties": {
                     "name": {
-                        "title": "name",
+                        "title": "Name",
                         "type": "string",
                         "x-helpText": "Plain name of product, should not include unit.",
                         "x-defaultValue": null,
@@ -2330,7 +2330,7 @@
                         "x-component": "TextInput"
                     },
                     "grossPrice": {
-                        "title": "grossPrice",
+                        "title": "Gross Price",
                         "type": "string",
                         "x-helpText": "Gross price of product, including VAT.",
                         "x-defaultValue": null,
@@ -2344,7 +2344,7 @@
                         "x-component": "TextInput"
                     },
                     "unitQuantity": {
-                        "title": "unitQuantity",
+                        "title": "Unit Quantity",
                         "type": "string",
                         "x-helpText": "Amount in selected unit type. E.g. 2 if 2 kg.",
                         "x-defaultValue": null,
@@ -2358,7 +2358,7 @@
                         "x-component": "TextInput"
                     },
                     "unit": {
-                        "title": "unit",
+                        "title": "Unit",
                         "type": "integer",
                         "x-helpText": "What sort of unit is this?",
                         "x-defaultValue": null,
@@ -2372,7 +2372,7 @@
                         "x-component": "TextInput"
                     },
                     "supplier": {
-                        "title": "supplier",
+                        "title": "Supplier",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2386,7 +2386,7 @@
                         "x-component": "TextInput"
                     },
                     "gtin": {
-                        "title": "gtin",
+                        "title": "Gtin",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2400,7 +2400,7 @@
                         "x-component": "TextInput"
                     },
                     "ingredients": {
-                        "title": "ingredients",
+                        "title": "Ingredients",
                         "type": "string",
                         "x-helpText": "Specify ingredients seperated by a comma. E.g. milk, egg, sugar.",
                         "x-defaultValue": null,
@@ -2414,7 +2414,7 @@
                         "x-component": "TextInput"
                     },
                     "allergens": {
-                        "title": "allergens",
+                        "title": "Allergens",
                         "type": "string",
                         "x-helpText": "Specify allergens seperated by a comma. E.g. milk, egg, sugar.",
                         "x-defaultValue": null,
@@ -2428,7 +2428,7 @@
                         "x-component": "TextInput"
                     },
                     "fat": {
-                        "title": "fat",
+                        "title": "Fat",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2442,7 +2442,7 @@
                         "x-component": "TextInput"
                     },
                     "fatSaturated": {
-                        "title": "fatSaturated",
+                        "title": "Fat Saturated",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2456,7 +2456,7 @@
                         "x-component": "TextInput"
                     },
                     "fatMonounsaturated": {
-                        "title": "fatMonounsaturated",
+                        "title": "Fat Monounsaturated",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2470,7 +2470,7 @@
                         "x-component": "TextInput"
                     },
                     "fatPolyunsaturated": {
-                        "title": "fatPolyunsaturated",
+                        "title": "Fat Polyunsaturated",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2484,7 +2484,7 @@
                         "x-component": "TextInput"
                     },
                     "carbohydrates": {
-                        "title": "carbohydrates",
+                        "title": "Carbohydrates",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2498,7 +2498,7 @@
                         "x-component": "TextInput"
                     },
                     "carbohydratesSugars": {
-                        "title": "carbohydratesSugars",
+                        "title": "Carbohydrates Sugars",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2512,7 +2512,7 @@
                         "x-component": "TextInput"
                     },
                     "carbohydratesPolyols": {
-                        "title": "carbohydratesPolyols",
+                        "title": "Carbohydrates Polyols",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2526,7 +2526,7 @@
                         "x-component": "TextInput"
                     },
                     "carbohydratesStarch": {
-                        "title": "carbohydratesStarch",
+                        "title": "Carbohydrates Starch",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2540,7 +2540,7 @@
                         "x-component": "TextInput"
                     },
                     "fibres": {
-                        "title": "fibres",
+                        "title": "Fibres",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2554,7 +2554,7 @@
                         "x-component": "TextInput"
                     },
                     "salt": {
-                        "title": "salt",
+                        "title": "Salt",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2568,7 +2568,7 @@
                         "x-component": "TextInput"
                     },
                     "sodium": {
-                        "title": "sodium",
+                        "title": "Sodium",
                         "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
@@ -2582,7 +2582,7 @@
                         "x-component": "TextInput"
                     },
                     "isAvailable": {
-                        "title": "isAvailable",
+                        "title": "Is Available",
                         "type": "boolean",
                         "x-helpText": null,
                         "x-defaultValue": true,
@@ -2596,15 +2596,15 @@
                         "x-component": "Checkbox"
                     },
                     "thumbnail": {
-                        "title": "thumbnail",
-                        "type": "file",
+                        "title": "Thumbnail",
+                        "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
                         "x-placeholder": "Upload thumbnail",
-                        "x-hiddenLabel": null,
+                        "x-hiddenLabel": false,
                         "x-colSpan": null,
                         "x-section": null,
-                        "x-order": null,
+                        "x-order": 21,
                         "x-min": null,
                         "x-max": null,
                         "x-component": "FileInput"

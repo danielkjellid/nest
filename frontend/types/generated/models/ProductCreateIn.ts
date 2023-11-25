@@ -24,6 +24,6 @@ export type ProductCreateIn = {
     salt?: string;
     sodium?: string;
     isAvailable: boolean;
-    thumbnail?: Blob;
+    thumbnail?: string;
 };
 
