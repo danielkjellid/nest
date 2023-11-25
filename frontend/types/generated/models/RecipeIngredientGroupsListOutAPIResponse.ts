@@ -3,9 +3,21 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { RecipeIngredientGroupsListOut } from './RecipeIngredientGroupsListOut';
+
 export type RecipeIngredientGroupsListOutAPIResponse = {
-    status: string;
+    status: RecipeIngredientGroupsListOutAPIResponse.status;
     message?: string;
-    data?: any[];
+    data?: Array<RecipeIngredientGroupsListOut>;
 };
+
+export namespace RecipeIngredientGroupsListOutAPIResponse {
+
+    export enum status {
+        SUCCESS = 'success',
+        ERROR = 'error',
+    }
+
+
+}
 

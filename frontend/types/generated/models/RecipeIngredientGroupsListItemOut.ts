@@ -3,9 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { RecipeIngredientGroupsListIngredientOut } from './RecipeIngredientGroupsListIngredientOut';
+import type { RecipeIngredientGroupsListItemPortionQuantityUnitOut } from './RecipeIngredientGroupsListItemPortionQuantityUnitOut';
+
 export type RecipeIngredientGroupsListItemOut = {
     id: number;
-    ingredient: any;
-    portionQuantityUnit: any;
+    ingredient: RecipeIngredientGroupsListIngredientOut;
+    portionQuantityUnit: RecipeIngredientGroupsListItemPortionQuantityUnitOut;
 };
 

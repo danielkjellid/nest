@@ -3,9 +3,21 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ProductOdaImportOut } from './ProductOdaImportOut';
+
 export type ProductOdaImportOutAPIResponse = {
-    status: string;
+    status: ProductOdaImportOutAPIResponse.status;
     message?: string;
-    data?: any;
+    data?: ProductOdaImportOut;
 };
+
+export namespace ProductOdaImportOutAPIResponse {
+
+    export enum status {
+        SUCCESS = 'success',
+        ERROR = 'error',
+    }
+
+
+}
 

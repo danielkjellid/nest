@@ -3,6 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ProductDetailAuditLogsOut } from './ProductDetailAuditLogsOut';
+import type { ProductDetailUnitOut } from './ProductDetailUnitOut';
+import type { TableRecord } from './TableRecord';
+
 export type ProductDetailOut = {
     id: number;
     name: string;
@@ -13,7 +17,7 @@ export type ProductDetailOut = {
     containsGluten?: boolean;
     grossPrice: string;
     grossUnitPrice?: string;
-    unit: any;
+    unit: ProductDetailUnitOut;
     unitQuantity?: string;
     gtin?: string;
     supplier?: string;
@@ -33,7 +37,7 @@ export type ProductDetailOut = {
     fibres?: string;
     salt?: string;
     sodium?: string;
-    nutritionTable: any[];
-    auditLogs: any[];
+    nutritionTable: Array<TableRecord>;
+    auditLogs: Array<ProductDetailAuditLogsOut>;
 };
 

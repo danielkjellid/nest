@@ -25,6 +25,6 @@ export type ProductEditIn = {
     sodium?: string;
     isAvailable: boolean;
     isSynced: boolean;
-    thumbnail?: string;
+    thumbnail?: Blob;
 };
 

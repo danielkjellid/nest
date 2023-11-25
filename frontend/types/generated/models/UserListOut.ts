@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { UserListHomeOut } from './UserListHomeOut';
+
 export type UserListOut = {
     id: number;
     email: string;
@@ -10,6 +12,6 @@ export type UserListOut = {
     isActive: boolean;
     isStaff: boolean;
     isSuperuser: boolean;
-    home?: any;
+    home?: UserListHomeOut;
 };
 

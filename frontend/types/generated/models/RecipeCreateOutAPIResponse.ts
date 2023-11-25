@@ -3,9 +3,21 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { RecipeCreateOut } from './RecipeCreateOut';
+
 export type RecipeCreateOutAPIResponse = {
-    status: string;
+    status: RecipeCreateOutAPIResponse.status;
     message?: string;
-    data?: any;
+    data?: RecipeCreateOut;
 };
+
+export namespace RecipeCreateOutAPIResponse {
+
+    export enum status {
+        SUCCESS = 'success',
+        ERROR = 'error',
+    }
+
+
+}
 

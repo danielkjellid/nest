@@ -3,9 +3,21 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { ProductListOut } from './ProductListOut';
+
 export type ProductListOutAPIResponse = {
-    status: string;
+    status: ProductListOutAPIResponse.status;
     message?: string;
-    data?: any[];
+    data?: Array<ProductListOut>;
 };
+
+export namespace ProductListOutAPIResponse {
+
+    export enum status {
+        SUCCESS = 'success',
+        ERROR = 'error',
+    }
+
+
+}
 

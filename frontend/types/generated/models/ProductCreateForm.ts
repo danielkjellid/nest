@@ -24,6 +24,6 @@ export type ProductCreateForm = {
     salt?: string;
     sodium?: string;
     isAvailable: boolean;
-    thumbnail?: string;
+    thumbnail?: Blob;
 };
 

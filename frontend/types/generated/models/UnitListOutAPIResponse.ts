@@ -3,9 +3,21 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { UnitListOut } from './UnitListOut';
+
 export type UnitListOutAPIResponse = {
-    status: string;
+    status: UnitListOutAPIResponse.status;
     message?: string;
-    data?: any[];
+    data?: Array<UnitListOut>;
 };
+
+export namespace UnitListOutAPIResponse {
+
+    export enum status {
+        SUCCESS = 'success',
+        ERROR = 'error',
+    }
+
+
+}
 

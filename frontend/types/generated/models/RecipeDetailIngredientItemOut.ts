@@ -3,11 +3,14 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { RecipeDetailIngredientItemUnitOut } from './RecipeDetailIngredientItemUnitOut';
+import type { RecipeDetailIngredientOut } from './RecipeDetailIngredientOut';
+
 export type RecipeDetailIngredientItemOut = {
     id: number;
-    ingredient: any;
+    ingredient: RecipeDetailIngredientOut;
     portionQuantity: number;
     portionQuantityDisplay: string;
-    portionQuantityUnit: any;
+    portionQuantityUnit: RecipeDetailIngredientItemUnitOut;
 };
 
