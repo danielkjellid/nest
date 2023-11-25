@@ -1,11 +1,12 @@
 from decimal import Decimal
 from typing import ClassVar
 
+from pydantic import BaseModel
+
 from nest.api.files import UploadedFile
+from nest.api.openapi import form
 from nest.forms.fields import FormField
 from nest.forms.models import Form
-from nest.api.openapi import form
-from pydantic import BaseModel
 from nest.frontend.components import FrontendComponents
 
 

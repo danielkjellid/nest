@@ -1,9 +1,9 @@
 from typing import ClassVar
 
-from nest.forms.fields import FormField
-from nest.forms.models import Form
-from nest.api.openapi import form
 from pydantic import BaseModel
+
+from nest.api.openapi import form
+from nest.forms.fields import FormField
 
 
 @form
