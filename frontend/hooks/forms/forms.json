@@ -94,7 +94,8 @@
                 },
                 "thumbnail": {
                     "title": "Thumbnail",
-                    "type": "string"
+                    "type": "string",
+                    "format": "binary"
                 }
             }
         },
@@ -197,7 +198,8 @@
                 },
                 "thumbnail": {
                     "title": "Thumbnail",
-                    "type": "string"
+                    "type": "string",
+                    "format": "binary"
                 }
             }
         },
@@ -271,6 +273,14 @@
                             "label": "Published",
                             "value": "published"
                         }
+                    ],
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/RecipeStatus"
+                        },
+                        {
+                            "type": "string"
+                        }
                     ]
                 },
                 "difficulty": {
@@ -288,6 +298,14 @@
                             "label": "Hard",
                             "value": "hard"
                         }
+                    ],
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/RecipeDifficulty"
+                        },
+                        {
+                            "type": "string"
+                        }
                     ]
                 },
                 "externalId": {
@@ -300,11 +318,13 @@
                 },
                 "isVegetarian": {
                     "title": "Is Vegetarian",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                 },
                 "isPescatarian": {
                     "title": "Is Pescatarian",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "default": false
                 }
             }
         },

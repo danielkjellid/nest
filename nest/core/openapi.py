@@ -118,15 +118,15 @@ class NestOpenAPISchema:
                 base_defaults["type"] = type_
 
             extra_defaults: dict[str, Any] = {
-                "x-helpText": val.get("help_text", None),
-                "x-defaultValue": val.get("default_value", None),
-                "x-placeholder": val.get("placeholder", None),
-                "x-hiddenLabel": val.get("hidden_label", None),
-                "x-colSpan": val.get("col_span", None),
-                "x-section": val.get("section", None),
-                "x-order": val.get("order", None),
-                "x-min": val.get("min", None),
-                "x-max": val.get("max", None),
+                "x-helpText": val.pop("help_text", None),
+                "x-defaultValue": val.pop("default_value", None),
+                "x-placeholder": val.pop("placeholder", None),
+                "x-hiddenLabel": val.pop("hidden_label", None),
+                "x-colSpan": val.pop("col_span", None),
+                "x-section": val.pop("section", None),
+                "x-order": val.pop("order", None),
+                "x-min": val.pop("min", None),
+                "x-max": val.pop("max", None),
             }
 
             for default_key in {**base_defaults, **extra_defaults}.keys():
@@ -141,9 +141,13 @@ class NestOpenAPISchema:
                 modified_property = {
                     **base_defaults,
                     "enum": enum_mapping[definition_key][key],
+                    **val,
                 }
             elif not is_form and not enum_mapping_exists:
-                modified_property = {**base_defaults}
+                modified_property = {
+                    **base_defaults,
+                    **val,
+                }
             elif is_form and enum_mapping_exists:
                 component = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
 
@@ -156,12 +160,14 @@ class NestOpenAPISchema:
                     "enum": enum_mapping[definition_key][key],
                     "x-component": component,
                     **extra_defaults,
+                    **val,
                 }
             else:
                 modified_property = {
                     **base_defaults,
                     **extra_defaults,
                     "x-component": self.get_component(val_copy),
+                    **val,
                 }
 
             modified_properties[camelize(key)] = modified_property
