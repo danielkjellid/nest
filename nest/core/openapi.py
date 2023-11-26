@@ -151,9 +151,6 @@ class NestOpenAPISchema:
             elif is_form and enum_mapping_exists:
                 component = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
 
-                val.pop("anyOf", None)
-                val.pop("allOf", None)
-
                 modified_property = {
                     "title": title,
                     "type": "string",
@@ -172,7 +169,7 @@ class NestOpenAPISchema:
 
             modified_properties[camelize(key)] = modified_property
 
-        return dict(modified_properties)  # type: ignore
+        return dict(modified_properties)
 
     def convert_keys_to_camelcase(self, data: Any) -> Any:
         """

@@ -1461,7 +1461,15 @@
                         "x-section": null,
                         "x-order": 4,
                         "x-min": null,
-                        "x-max": null
+                        "x-max": null,
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeStatus"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
                     },
                     "difficulty": {
                         "title": "Difficulty",
@@ -1489,7 +1497,15 @@
                         "x-section": null,
                         "x-order": 5,
                         "x-min": null,
-                        "x-max": null
+                        "x-max": null,
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/RecipeDifficulty"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
                     },
                     "externalId": {
                         "title": "External Id",

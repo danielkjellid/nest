@@ -3,12 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { RecipeDifficulty } from './RecipeDifficulty';
+import type { RecipeStatus } from './RecipeStatus';
+
 export type RecipeCreateForm = {
     title: string;
     searchKeywords?: string;
     defaultNumPortions: number;
-    status: string;
-    difficulty: string;
+    status: (RecipeStatus | string);
+    difficulty: (RecipeDifficulty | string);
     externalId?: string;
     externalUrl?: string;
     isVegetarian?: boolean;
