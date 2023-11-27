@@ -46,11 +46,11 @@ class NestOpenAPISchema:
         for key, attributes in deepcopy(definitions).items():
             modified_definition: dict[str, Any] = defaultdict(dict)
 
-            required = attributes.get("required", None)
-            properties = attributes.get("properties", None)
-            type_ = attributes.get("type", None)
-            description = attributes.get("description", None)
-            enum = attributes.get("enum", None)
+            required = attributes.pop("required", None)
+            properties = attributes.pop("properties", None)
+            type_ = attributes.pop("type", None)
+            description = attributes.pop("description", None)
+            enum = attributes.pop("enum", None)
 
             is_form = key in form_mapping.keys()
 
@@ -83,7 +83,7 @@ class NestOpenAPISchema:
                 )
                 modified_definition["properties"] = modified_properties
 
-            modified_definitions[key] = modified_definition
+            modified_definitions[key] = {**modified_definition, **attributes}
 
         return dict(modified_definitions)
 
@@ -96,7 +96,6 @@ class NestOpenAPISchema:
         is_form: bool = False,
     ) -> dict[str, dict[str, Any]]:
         modified_properties: dict[str, dict[str, Any]] = defaultdict(dict)
-
         for key, val in properties.items():
             enum_mapping_exists = (
                 definition_key in enum_mapping.keys()
@@ -138,9 +137,10 @@ class NestOpenAPISchema:
             modified_property: dict[str, Any]
 
             if not is_form and enum_mapping_exists:
+                mapped_enum = enum_mapping[definition_key][key]
                 modified_property = {
                     **base_defaults,
-                    "enum": enum_mapping[definition_key][key],
+                    "enum": mapped_enum,
                     **val,
                 }
             elif not is_form and not enum_mapping_exists:
@@ -149,12 +149,13 @@ class NestOpenAPISchema:
                     **val,
                 }
             elif is_form and enum_mapping_exists:
+                mapped_enum = enum_mapping[definition_key][key]
                 component = settings.FORM_COMPONENT_MAPPING_DEFAULTS["enum"].value
 
                 modified_property = {
                     "title": title,
                     "type": "string",
-                    "enum": enum_mapping[definition_key][key],
+                    "enum": mapped_enum,
                     "x-component": component,
                     **extra_defaults,
                     **val,

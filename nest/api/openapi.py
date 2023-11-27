@@ -188,6 +188,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             # or ninja.Schema.
             if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
                 m_schema = self.process_enum_schema(model_or_enum)
+
             else:
                 m_schema = self._create_schema_from_model(
                     model_or_enum, remove_level=False
@@ -198,10 +199,11 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
     def _add_forms_to_schema(self) -> None:
         for added_form in FORMS:
             key = added_form.__name__
-            m_schema = self._create_schema_from_model(added_form, remove_level=False)[0]
 
             if key in self.schemas:
                 continue
+
+            m_schema = self._create_schema_from_model(added_form, remove_level=False)[0]
 
             schema = self._update_schema(
                 component_schemas={key: m_schema},

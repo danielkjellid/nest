@@ -1369,7 +1369,11 @@
                     "hidden",
                     "published"
                 ],
-                "type": "string"
+                "x-enum-varnames": [
+                    "Draft",
+                    "Hidden",
+                    "Published"
+                ]
             },
             "RecipeDifficulty": {
                 "title": "RecipeDifficulty",
