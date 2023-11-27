@@ -2,7 +2,7 @@ import pytest
 from pydantic import BaseModel
 
 from nest.core.utils import Exclude, Partial
-from nest.forms.fields import FormField
+from nest.core.fields import FormField
 
 
 class TestModel(BaseModel):

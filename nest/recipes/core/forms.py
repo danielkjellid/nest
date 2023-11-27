@@ -3,7 +3,7 @@ from typing import ClassVar
 from pydantic import BaseModel
 
 from nest.api.openapi import form
-from nest.forms.fields import FormField
+from nest.core.fields import FormField
 from nest.frontend.components import FrontendComponents
 
 from .enums import RecipeDifficulty, RecipeStatus

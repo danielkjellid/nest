@@ -20,6 +20,7 @@ export type { ProductDetailAuditLogsOut } from './models/ProductDetailAuditLogsO
 export type { ProductDetailOut } from './models/ProductDetailOut';
 export { ProductDetailOutAPIResponse } from './models/ProductDetailOutAPIResponse';
 export type { ProductDetailUnitOut } from './models/ProductDetailUnitOut';
+export type { ProductEditForm } from './models/ProductEditForm';
 export type { ProductEditIn } from './models/ProductEditIn';
 export type { ProductListOut } from './models/ProductListOut';
 export { ProductListOutAPIResponse } from './models/ProductListOutAPIResponse';

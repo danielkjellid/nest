@@ -5,8 +5,7 @@ from pydantic import BaseModel
 
 from nest.api.files import UploadedFile
 from nest.api.openapi import form
-from nest.forms.fields import FormField
-from nest.forms.models import Form
+from nest.core.fields import FormField
 from nest.frontend.components import FrontendComponents
 
 
@@ -65,7 +64,8 @@ class ProductCreateForm(BaseModel):
     thumbnail: UploadedFile | None = FormField(None, order=21)
 
 
-class ProductEditForm(Form):
+@form
+class ProductEditForm(BaseModel):
     COLUMNS: ClassVar[int] = 4
 
     name: str = FormField(
