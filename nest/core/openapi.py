@@ -164,7 +164,7 @@ class NestOpenAPISchema:
                     **val,
                 }
 
-            modified_properties[camelize(key)] = modified_property
+            modified_properties[camelize(key)] = modified_property  # type: ignore
 
         return dict(modified_properties)
 
