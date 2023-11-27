@@ -31,13 +31,9 @@ class EnumDict(TypedDict):
 
 
 class NestOpenAPISchema:
-    def __init__(self, is_form: bool = False) -> None:
-        self.is_form = is_form
-
     def modify_component_definitions(
         self,
         definitions: dict[str, dict[str, Any]],
-        meta_mapping: dict[str, dict[str, str | int]],
         enum_mapping: dict[str, dict[str, list[EnumDict]]],
         form_mapping: dict[str, dict[str, int]],
     ) -> dict[str, dict[str, Any]]:

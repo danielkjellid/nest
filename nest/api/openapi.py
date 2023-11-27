@@ -66,8 +66,7 @@ def get_schema(api: NinjaAPI, path_prefix: str = "") -> OpenAPISchema:
 
 class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        NestOpenAPISchema.__init__(self, is_form=False)
-        NinjaOpenAPISchema.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_components(self) -> DictStrAny:
         self._add_manually_added_schemas_to_schema()
@@ -89,7 +88,6 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
 
         schemas = self.modify_component_definitions(
             definitions=component_schemas,
-            meta_mapping={},
             enum_mapping=enum_mapping,
             form_mapping={
                 f.__name__: {"columns": getattr(f, "COLUMNS", 1)} for f in FORMS
