@@ -11,7 +11,9 @@ class UploadedFile(NinjaUploadedFile):
     ) -> None:
         if field:
             field_schema.update(
-                type="file", format="binary", placeholder=f"Upload {field.name.lower()}"
+                type="string",
+                format="binary",
+                placeholder=f"Upload {field.name.lower()}",
             )
 
 
@@ -22,7 +24,7 @@ class UploadedImageFile(NinjaUploadedFile):
     ) -> None:
         if field:
             field_schema.update(
-                type="image",
+                type="string",
                 format="binary",
                 placeholder=f"Upload {field.name.lower()}",
             )

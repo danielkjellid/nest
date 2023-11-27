@@ -4,7 +4,7 @@ from store_kit.http import status
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.forms.fields import FormField
+from nest.core.fields import FormField
 
 from .forms import IngredientCreateForm
 from .selectors import (

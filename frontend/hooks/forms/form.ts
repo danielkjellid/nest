@@ -2,17 +2,21 @@ import { notifications } from '@mantine/notifications'
 import Ajv from 'ajv'
 import { useEffect, useState } from 'react'
 
+import openAPISchema from '../../../schema.json'
 import { type ButtonProps } from '../../components/Button'
-import { type FormElement } from '../../components/Form/types'
 import { performPost as httpPost } from '../fetcher/http'
 
-import formsSchema from './forms.json'
 import { buildMultipartForm } from './multipart'
+import { type SchemaFormElement } from './types'
+import { convertSchemaElemToFormElem } from './utils'
 
 interface FormComponentSchema {
-  properties: FormElement
+  title: string
+  type: string
+  properties: SchemaFormElement
   required: string[]
-  columns: number
+  'x-columns': number
+  'x-form': boolean
 }
 
 const useValidator = () => {
@@ -20,18 +24,18 @@ const useValidator = () => {
 
   // We use Ajv in strict mode, so we need to whitelist the extra
   // attributes we're using.
-  ajv.addKeyword('helpText')
-  ajv.addKeyword('component')
-  ajv.addKeyword('defaultValue')
-  ajv.addKeyword('placeholder')
-  ajv.addKeyword('hiddenLabel')
-  ajv.addKeyword('colSpan')
-  ajv.addKeyword('section')
-  ajv.addKeyword('order')
-  ajv.addKeyword('min')
-  ajv.addKeyword('max')
-  ajv.addKeyword('columns')
-  ajv.addKeyword('xEnumVarnames')
+  ajv.addKeyword('x-helpText')
+  ajv.addKeyword('x-component')
+  ajv.addKeyword('x-defaultValue')
+  ajv.addKeyword('x-placeholder')
+  ajv.addKeyword('x-hiddenLabel')
+  ajv.addKeyword('x-colSpan')
+  ajv.addKeyword('x-section')
+  ajv.addKeyword('x-order')
+  ajv.addKeyword('x-min')
+  ajv.addKeyword('x-max')
+  ajv.addKeyword('x-columns')
+  ajv.addKeyword('x-form')
 
   return ajv
 }
@@ -41,7 +45,7 @@ export function useForm<T extends object>({
   initialData = null,
   isMultipart = false,
 }: {
-  key: keyof (typeof formsSchema)['definitions']
+  key: keyof (typeof openAPISchema)['components']['schemas']
   initialData?: Partial<T> | null
   isMultipart?: boolean
 }) {
@@ -50,7 +54,9 @@ export function useForm<T extends object>({
    **********/
 
   const [formData, setFormData] = useState<Partial<T> | null>(null)
-  const schema = formsSchema['definitions'][key] as FormComponentSchema
+  const rawSchema = openAPISchema['components']['schemas'][key]
+
+  const schema = rawSchema as FormComponentSchema
 
   const validator = useValidator()
   validator.compile(schema)
@@ -214,9 +220,9 @@ export function useForm<T extends object>({
     loadingState,
     setLoadingState,
     performPost,
-    elements: schema.properties,
+    elements: convertSchemaElemToFormElem(schema.properties),
     required: schema.required,
-    columns: schema.columns,
+    columns: schema['x-columns'],
     isMultipart,
   }
 }

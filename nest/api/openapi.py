@@ -29,6 +29,7 @@ from nest.api.files import UploadedFile, UploadedImageFile
 from nest.core.openapi import NestOpenAPISchema
 
 MANUALLY_ADDED_SCHEMAS = []
+FORMS = []
 
 
 def add_to_openapi_schema(decorated_class: Any) -> Any:
@@ -45,6 +46,19 @@ def add_to_openapi_schema(decorated_class: Any) -> Any:
     return decorated_class
 
 
+def form(decorated_class: Any) -> Any:
+    """
+    Decorator that can be used to add forms to openapi schema.
+
+    Usage:
+    @form
+    class MyForm(BaseModel):
+        ...
+    """
+    FORMS.append(decorated_class)
+    return decorated_class
+
+
 def get_schema(api: NinjaAPI, path_prefix: str = "") -> OpenAPISchema:
     openapi = OpenAPISchema(api, path_prefix)
     return openapi
@@ -52,15 +66,17 @@ def get_schema(api: NinjaAPI, path_prefix: str = "") -> OpenAPISchema:
 
 class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        NestOpenAPISchema.__init__(self, is_form=False)
-        NinjaOpenAPISchema.__init__(self, *args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def get_components(self) -> DictStrAny:
         self._add_manually_added_schemas_to_schema()
+        self._add_forms_to_schema()
         return super().get_components()
 
     def _update_schema(
-        self, component_schemas: dict[str, dict[str, Any]], models: TModels[Any]
+        self,
+        component_schemas: dict[str, dict[str, Any]],
+        models: TModels[Any],
     ) -> dict[str, Any]:
         """
         This is where the magic happens. This method is responsible for updating the
@@ -72,8 +88,10 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
 
         schemas = self.modify_component_definitions(
             definitions=component_schemas,
-            meta_mapping={},
             enum_mapping=enum_mapping,
+            form_mapping={
+                f.__name__: {"columns": getattr(f, "COLUMNS", 1)} for f in FORMS
+            },
         )
 
         return schemas
@@ -168,12 +186,29 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
             # or ninja.Schema.
             if issubclass(model_or_enum, Enum | TextChoices | IntegerChoices):
                 m_schema = self.process_enum_schema(model_or_enum)
+
             else:
                 m_schema = self._create_schema_from_model(
                     model_or_enum, remove_level=False
                 )[0]
 
             self.schemas.update({m_schema["title"]: m_schema})
+
+    def _add_forms_to_schema(self) -> None:
+        for added_form in FORMS:
+            key = added_form.__name__
+
+            if key in self.schemas:
+                continue
+
+            m_schema = self._create_schema_from_model(added_form, remove_level=False)[0]
+
+            schema = self._update_schema(
+                component_schemas={key: m_schema},
+                models=[added_form],
+            )
+
+            self.schemas.update(schema)
 
     @staticmethod
     def get_title_from_nested_model(model: TModel) -> str | None:

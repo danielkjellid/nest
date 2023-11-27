@@ -266,7 +266,7 @@ function Form<T extends object>({
     return (
       // @ts-ignore
       React.createElement(supportedComponents[element.component], {
-        key: elementKey,
+        key: elementKey.toString(),
         placeholder: placeholder ? placeholder : element.placeholder,
         required: required && required.includes(elementKey as string),
         label: !element.hiddenLabel ? element.title : undefined,

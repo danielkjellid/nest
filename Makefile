@@ -52,16 +52,12 @@ migrate: ; $(info $(M) Migrating database...) @
 ###########
 
 .PHONY: schema
-schema: schema-backend forms-backend schema-frontend | $(BASE) ; @
+schema: schema-backend schema-frontend | $(BASE) ; @
 	$Q
 
 .PHONY: schema-backend
 schema-backend: ; $(info $(M) Exporting backend schema...) @
 	$Q cd $(BASE) && $(POETRY) run python manage.py export_schema --output "$(BASE)/schema.json"
-
-.PHONY: forms-backend
-forms-backend: ; $(info $(M) Exporting forms schema...) @
-	$Q cd $(BASE) && $(POETRY) run python manage.py export_forms --output "$(BASE)/frontend/hooks/forms/forms.json"
 
 .PHONY: schema-frontend
 schema-frontend: ; $(info $(M) Generating frontend types from schema...) @

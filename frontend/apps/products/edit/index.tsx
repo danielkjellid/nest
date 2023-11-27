@@ -24,7 +24,7 @@ function ProductEditInner({ results, productId }: ProductEditInnerProps) {
   const { data: product } = results.productResponse
   const { unitsOptions } = useUnits()
 
-  const productForm = useForm({ key: 'ProductEditForm', initialData: product })
+  const productForm = useForm({ key: 'ProductEditIn', initialData: product })
 
   const submit = async () => {
     productForm.performPost({ url: urls.products.edit({ id: productId }) })

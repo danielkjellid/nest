@@ -104,7 +104,6 @@ PROJECT_APPS = [
     "nest.api",
     "nest.audit_logs",
     "nest.core",
-    "nest.forms",
     "nest.frontend",
     "nest.homes",
     "nest.products.core",
