@@ -6,8 +6,8 @@ from django.core.validators import validate_email
 
 from nest.core.exceptions import ApplicationError
 
-from .models import User
-from .records import UserRecord
+from .models import User as UserModel
+from .types import User
 
 
 def create_user(
@@ -17,7 +17,7 @@ def create_user(
     password2: str | None = None,
     is_active: bool = True,
     **additional_fields: Any,
-) -> UserRecord:
+) -> User:
     """
     Creates a new user instance.
     """
@@ -26,11 +26,13 @@ def create_user(
         email=email, password=password, password2=password2
     )
 
-    new_user = User(email=validated_email, is_active=is_active, **additional_fields)
+    new_user = UserModel(
+        email=validated_email, is_active=is_active, **additional_fields
+    )
     new_user.set_password(raw_password=validated_password)
     new_user.save()
 
-    return UserRecord.from_user(new_user)
+    return User.from_user(new_user)
 
 
 def _validate_email_and_password(
@@ -62,7 +64,7 @@ def _validate_email_and_password(
                 },
             )
 
-    existing_user = User.objects.filter(email__iexact=email).exists()
+    existing_user = UserModel.objects.filter(email__iexact=email).exists()
 
     if existing_user:
         raise ApplicationError(

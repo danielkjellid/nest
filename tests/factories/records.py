@@ -7,11 +7,11 @@ from nest.recipes.ingredients.records import (
     RecipeIngredientItemGroupRecord,
     RecipeIngredientRecord,
 )
-from nest.users.core.records import UserRecord
+from nest.users.core.types import User
 
 
-class UserRecordFactory(ModelFactory[UserRecord]):
-    __model__ = UserRecord
+class UserRecordFactory(ModelFactory[User]):
+    __model__ = User
 
 
 class RecipeRecordFactory(ModelFactory[RecipeRecord]):

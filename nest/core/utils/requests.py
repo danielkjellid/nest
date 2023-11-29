@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 from django.http import HttpRequest
 
 if TYPE_CHECKING:
-    from nest.users.core.models import User
-    from nest.users.core.records import UserRecord
+    from nest.users.core.models import User as UserModel
+    from nest.users.core.types import User
 
 
 def get_remote_request_ip(*, request: HttpRequest) -> str | None:
@@ -25,18 +25,18 @@ def get_remote_request_ip(*, request: HttpRequest) -> str | None:
 
 
 def get_remote_request_user(
-    *, request_or_user: HttpRequest | User | UserRecord
-) -> tuple[UserRecord | None, HttpRequest | None]:
+    *, request_or_user: HttpRequest | UserModel | User
+) -> tuple[User | None, HttpRequest | None]:
     """
     Get a user from request or passed user. Returned as a UserRecord.
     """
-    from nest.users.core.models import User
-    from nest.users.core.records import UserRecord
+    from nest.users.core.models import User as UserModel
+    from nest.users.core.types import User
+
+    if isinstance(request_or_user, UserModel):
+        return User.from_user(request_or_user), None
 
     if isinstance(request_or_user, User):
-        return UserRecord.from_user(request_or_user), None
-
-    if isinstance(request_or_user, UserRecord):
         return request_or_user, None
 
     if isinstance(request_or_user, HttpRequest):
@@ -44,7 +44,7 @@ def get_remote_request_user(
             return None, request_or_user
 
         return (
-            UserRecord.from_user(request_or_user.user),
+            User.from_user(request_or_user.user),
             request_or_user,
         )
 

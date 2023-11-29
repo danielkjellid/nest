@@ -9,8 +9,8 @@ from nest.frontend.records import (
 from nest.frontend.selectors import get_initial_props, get_menu_for_user
 from nest.homes.records import HomeRecord
 from nest.homes.tests.utils import create_home
-from nest.users.core.records import UserRecord
 from nest.users.core.tests.utils import create_user
+from nest.users.core.types import User
 
 pytestmark = pytest.mark.django_db
 
@@ -43,7 +43,7 @@ class TestFrontendSelectors:
                 FrontendMenuItemRecord(key="settings", title="Settings", end=True),
             ],
             config=FrontendConfigRecord(is_production=True),
-            current_user=UserRecord.from_user(user),
+            current_user=User.from_user(user),
             available_homes=[HomeRecord.from_home(home)],
         )
 
@@ -63,7 +63,7 @@ class TestFrontendSelectors:
         ]
 
         with django_assert_num_queries(0):
-            non_staff_output = get_menu_for_user(user=UserRecord.from_user(user))
+            non_staff_output = get_menu_for_user(user=User.from_user(user))
 
         assert non_staff_output == expected_non_staff_output
 
@@ -78,6 +78,6 @@ class TestFrontendSelectors:
         ]
 
         with django_assert_num_queries(0):
-            staff_output = get_menu_for_user(user=UserRecord.from_user(staff_user))
+            staff_output = get_menu_for_user(user=User.from_user(staff_user))
 
         assert staff_output == expected_staff_output

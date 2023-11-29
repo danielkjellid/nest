@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 from nest.homes.models import Home
-from nest.users.core.records import UserRecord
+from nest.users.core.types import User
 
 from .records import HomeRecord
 
@@ -17,7 +17,7 @@ def get_homes() -> list[HomeRecord]:
     return records
 
 
-def get_homes_for_user(*, user: UserRecord) -> list[HomeRecord]:
+def get_homes_for_user(*, user: User) -> list[HomeRecord]:
     """
     Get all available homes for a specific user.
     """

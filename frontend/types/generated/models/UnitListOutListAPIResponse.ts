@@ -5,13 +5,13 @@
 
 import type { UnitListOut } from './UnitListOut';
 
-export type UnitListOutAPIResponse = {
-    status: UnitListOutAPIResponse.status;
+export type UnitListOutListAPIResponse = {
+    status: UnitListOutListAPIResponse.status;
     message?: string;
     data?: Array<UnitListOut>;
 };
 
-export namespace UnitListOutAPIResponse {
+export namespace UnitListOutListAPIResponse {
 
     export enum status {
         SUCCESS = 'success',

@@ -7,7 +7,7 @@ from nest.frontend.records import (
     FrontendMenuItemRecord,
 )
 from nest.homes.selectors import get_homes_for_user
-from nest.users.core.records import UserRecord
+from nest.users.core.types import User
 
 from .menu import MENU
 
@@ -21,7 +21,7 @@ def get_initial_props(*, request: HttpRequest) -> FrontendInitialPropsRecord | N
     if not request.user or not request.user.is_authenticated:
         return None
 
-    user = UserRecord.from_user(user=request.user)
+    user = User.from_user(user=request.user)
     menu = get_menu_for_user(user=user)
     available_homes = get_homes_for_user(user=user)
 
@@ -33,7 +33,7 @@ def get_initial_props(*, request: HttpRequest) -> FrontendInitialPropsRecord | N
     )
 
 
-def get_menu_for_user(*, user: UserRecord) -> list[FrontendMenuItemRecord]:
+def get_menu_for_user(*, user: User) -> list[FrontendMenuItemRecord]:
     """
     Get the menu items for a specific user based on provided record.
     """

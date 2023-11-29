@@ -3,10 +3,10 @@ from __future__ import annotations
 from pydantic import BaseModel
 
 from nest.homes.records import HomeRecord
-from nest.users.core.models import User
+from nest.users.core.models import User as UserModel
 
 
-class UserRecord(BaseModel):
+class User(BaseModel):
     id: int
     email: str
     first_name: str
@@ -19,7 +19,7 @@ class UserRecord(BaseModel):
     home: HomeRecord | None
 
     @classmethod
-    def from_user(cls, user: User) -> UserRecord:
+    def from_user(cls, user: UserModel) -> User:
         is_hijacked = getattr(user, "is_hijacked", False)
 
         return cls(

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from nest.homes.records import HomeRecord
-from nest.users.core.records import UserRecord
+from nest.users.core.types import User
 
 
 class FrontendMenuItemRecord(BaseModel):
@@ -17,5 +17,5 @@ class FrontendConfigRecord(BaseModel):
 class FrontendInitialPropsRecord(BaseModel):
     menu: list[FrontendMenuItemRecord]
     config: FrontendConfigRecord
-    current_user: UserRecord
+    current_user: User
     available_homes: list[HomeRecord]

@@ -10,8 +10,8 @@ from django.http import HttpRequest
 from django.utils.encoding import smart_str
 
 from nest.core.utils import get_remote_request_ip, get_remote_request_user
-from nest.users.core.models import User
-from nest.users.core.records import UserRecord
+from nest.users.core.models import User as UserModel
+from nest.users.core.types import User
 
 from .models import LogEntry
 from .records import LogEntryRecord
@@ -24,7 +24,7 @@ def log_create_or_updated(
     *,
     old: Model | None,
     new: Model,
-    request_or_user: HttpRequest | User | UserRecord | None = None,
+    request_or_user: HttpRequest | UserModel | User | None = None,
     source: str | None = None,
     ignore_fields: set[str] | None = None,
     is_updated: bool = False,
@@ -83,7 +83,7 @@ def _create_log_entry(
     *,
     request: HttpRequest | None,
     instance: Model,
-    user: UserRecord | None = None,
+    user: UserModel | None = None,
     changes: dict[str, tuple[T | None, T | None]] | None = None,
     action: int,
     **kwargs: Any,
@@ -122,7 +122,7 @@ def _create_log_entry(
     if request is not None:
         remote_addr = get_remote_request_ip(request=request)
         request_user = (
-            request.user if not user and isinstance(request.user, User) else None
+            request.user if not user and isinstance(request.user, UserModel) else None
         )
 
     # Make sure request user is authenticated, or that we fall back to passed user.
@@ -172,7 +172,7 @@ class AuditLogger:
         instance: Model,
         include_fields: set[str] | None = None,
         exclude_fields: set[str] | None = None,
-        request_or_user: HttpRequest | User | UserRecord | None = None,
+        request_or_user: HttpRequest | User | User | None = None,
     ) -> None:
         self.instance = instance
         self.request_or_user = request_or_user

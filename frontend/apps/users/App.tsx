@@ -9,11 +9,11 @@ import Table from '../../components/Table'
 import View from '../../components/View'
 import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
-import { type UserListOut, type UserListOutAPIResponse } from '../../types'
+import { type User, type UserListAPIResponse } from '../../types'
 import { urls } from '../urls'
 
 interface UsersAppInnerProps {
-  results: { users: UserListOutAPIResponse }
+  results: { users: UserListAPIResponse }
 }
 
 function UsersAppInner({ results }: UsersAppInnerProps) {
@@ -36,7 +36,7 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
         </div>
       </div>
 
-      <Table<UserListOut>
+      <Table<User>
         rowIdentifier="id"
         columns={[
           { header: 'Id', accessorKey: 'id', size: 20 },
@@ -76,7 +76,7 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
 }
 
 function UsersApp() {
-  const users = useFetch<UserListOutAPIResponse>(urls.users.list())
+  const users = useFetch<UserListAPIResponse>(urls.users.list())
 
   return (
     <View<object, UsersAppInnerProps>

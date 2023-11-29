@@ -22,7 +22,13 @@ class APIResponse(GenericModel, Generic[T]):
             inner_type = params_component[
                 params_component.find("[") + 1 : params_component.find("]")
             ]
-            params_component = inner_type.split(".")[-1]
+            outer_type = (
+                params_component.replace(inner_type, "")
+                .replace("[", "")
+                .replace("]", "")
+            )
+
+            params_component = f"{inner_type.split('.')[-1]}{outer_type.capitalize()}"
 
         return (
             f"{params_component}APIResponse"

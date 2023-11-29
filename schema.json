@@ -17,7 +17,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductListOutAPIResponse"
+                                    "$ref": "#/components/schemas/ProductListOutListAPIResponse"
                                 }
                             }
                         }
@@ -316,7 +316,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeListOutAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeListOutListAPIResponse"
                                 }
                             }
                         }
@@ -420,7 +420,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
+                                    "$ref": "#/components/schemas/IngredientListOutListAPIResponse"
                                 }
                             }
                         }
@@ -510,7 +510,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeIngredientGroupsListOutAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeIngredientGroupsListOutListAPIResponse"
                                 }
                             }
                         }
@@ -590,7 +590,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UnitListOutAPIResponse"
+                                    "$ref": "#/components/schemas/UnitListOutListAPIResponse"
                                 }
                             }
                         }
@@ -617,7 +617,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserListOutAPIResponse"
+                                    "$ref": "#/components/schemas/UserListAPIResponse"
                                 }
                             }
                         }
@@ -691,8 +691,8 @@
                     }
                 }
             },
-            "ProductListOutAPIResponse": {
-                "title": "ProductListOutAPIResponse",
+            "ProductListOutListAPIResponse": {
+                "title": "ProductListOutListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -1869,8 +1869,8 @@
                     }
                 }
             },
-            "RecipeListOutAPIResponse": {
-                "title": "RecipeListOutAPIResponse",
+            "RecipeListOutListAPIResponse": {
+                "title": "RecipeListOutListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -1994,8 +1994,8 @@
                     }
                 }
             },
-            "IngredientListOutAPIResponse": {
-                "title": "IngredientListOutAPIResponse",
+            "IngredientListOutListAPIResponse": {
+                "title": "IngredientListOutListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2174,8 +2174,8 @@
                     }
                 }
             },
-            "RecipeIngredientGroupsListOutAPIResponse": {
-                "title": "RecipeIngredientGroupsListOutAPIResponse",
+            "RecipeIngredientGroupsListOutListAPIResponse": {
+                "title": "RecipeIngredientGroupsListOutListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2261,8 +2261,8 @@
                     }
                 }
             },
-            "UnitListOutAPIResponse": {
-                "title": "UnitListOutAPIResponse",
+            "UnitListOutListAPIResponse": {
+                "title": "UnitListOutListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2289,12 +2289,15 @@
                     }
                 }
             },
-            "UserListHomeOut": {
-                "title": "UserListHomeOut",
+            "HomeRecord": {
+                "title": "HomeRecord",
                 "type": "object",
                 "required": [
                     "id",
                     "address",
+                    "numResidents",
+                    "numWeeksRecipeRotation",
+                    "weeklyBudget",
                     "isActive"
                 ],
                 "properties": {
@@ -2306,18 +2309,32 @@
                         "title": "Address",
                         "type": "string"
                     },
+                    "numResidents": {
+                        "title": "Num Residents",
+                        "type": "integer"
+                    },
+                    "numWeeksRecipeRotation": {
+                        "title": "Num Weeks Recipe Rotation",
+                        "type": "integer"
+                    },
+                    "weeklyBudget": {
+                        "title": "Weekly Budget",
+                        "type": "number"
+                    },
                     "isActive": {
                         "title": "Is Active",
                         "type": "boolean"
                     }
                 }
             },
-            "UserListOut": {
-                "title": "UserListOut",
+            "User": {
+                "title": "User",
                 "type": "object",
                 "required": [
                     "id",
                     "email",
+                    "firstName",
+                    "lastName",
                     "fullName",
                     "isActive",
                     "isStaff",
@@ -2330,6 +2347,14 @@
                     },
                     "email": {
                         "title": "Email",
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "title": "First Name",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "title": "Last Name",
                         "type": "string"
                     },
                     "fullName": {
@@ -2348,13 +2373,18 @@
                         "title": "Is Superuser",
                         "type": "boolean"
                     },
+                    "isHijacked": {
+                        "title": "Is Hijacked",
+                        "type": "boolean",
+                        "default": false
+                    },
                     "home": {
-                        "$ref": "#/components/schemas/UserListHomeOut"
+                        "$ref": "#/components/schemas/HomeRecord"
                     }
                 }
             },
-            "UserListOutAPIResponse": {
-                "title": "UserListOutAPIResponse",
+            "UserListAPIResponse": {
+                "title": "UserListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2376,7 +2406,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/UserListOut"
+                            "$ref": "#/components/schemas/User"
                         }
                     }
                 }

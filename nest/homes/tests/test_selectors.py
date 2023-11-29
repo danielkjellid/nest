@@ -3,8 +3,8 @@ import pytest
 from nest.homes.records import HomeRecord
 from nest.homes.selectors import get_homes, get_homes_for_user
 from nest.homes.tests.utils import create_home
-from nest.users.core.records import UserRecord
 from nest.users.core.tests.utils import create_user
+from nest.users.core.types import User
 
 pytestmark = pytest.mark.django_db
 
@@ -41,14 +41,14 @@ class TestHomesSelectors:
         home2 = create_home(street_address="Address 2")
         home3 = create_home(street_address="Address 3")
 
-        staff_user = UserRecord.from_user(
+        staff_user = User.from_user(
             create_user(is_staff=True, home=home3, homes=[home1])
         )
 
         get_homes_for_user(user=staff_user)
         assert all_homes_selector_mock.call_count == 1
 
-        user = UserRecord.from_user(
+        user = User.from_user(
             create_user(is_staff=False, home=home1, homes=[home2, home3])
         )
         with django_assert_num_queries(1):
