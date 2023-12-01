@@ -9,6 +9,7 @@ import Table from '../../components/Table'
 import View from '../../components/View'
 import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
+import { Overview } from '../../layouts/Overview'
 import { type UserListOut, type UserListOutAPIResponse } from '../../types'
 import { urls } from '../urls'
 
@@ -22,10 +23,10 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
   const [selectedRows, setSelectedRows] = useState<MRT_RowSelectionState>({})
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Title weight={600}>Users</Title>
-        <div className="flex items-center space-x-3">
+    <Overview
+      title="Users"
+      actions={
+        <>
           {Object.keys(selectedRows).length > 0 && (
             <Button.Group>
               <Button variant="default">Deactivate</Button>
@@ -33,45 +34,46 @@ function UsersAppInner({ results }: UsersAppInnerProps) {
             </Button.Group>
           )}
           <Button>Add user</Button>
-        </div>
-      </div>
-
-      <Table<UserListOut>
-        rowIdentifier="id"
-        columns={[
-          { header: 'Id', accessorKey: 'id', size: 20 },
-          { header: 'Name', accessorKey: 'fullName' },
-          { header: 'Email', accessorKey: 'email' },
-          { header: 'Home', accessorKey: 'home.address' },
-          { header: 'Active', accessorKey: 'isActive', options: { isBoolean: true } },
-          { header: 'Staff', accessorKey: 'isStaff', options: { isBoolean: true } },
-        ]}
-        data={users.data || []}
-        onRowSelectionChange={setSelectedRows}
-        actionMenuItems={({ row }) => [
-          <>
-            <form action="/hijack/acquire/" method="post">
-              <input name="csrfmiddlewaretoken" type="hidden" value={window.csrfToken} />
-              <input type="hidden" name="user_pk" value={row.id} />
-              <Menu.Item
-                key={1}
-                icon={<IconEye />}
-                type="submit"
-                disabled={
-                  (currentUser && currentUser.id.toString() === row.id.toString()) ||
-                  !currentUser ||
-                  (!currentUser.isSuperuser &&
-                    users.data?.find((user) => user.id.toString() === row.id.toString())
-                      ?.isSuperuser)
-                }
-              >
-                Hijack
-              </Menu.Item>
-            </form>
-          </>,
-        ]}
-      />
-    </div>
+        </>
+      }
+      table={
+        <Table<UserListOut>
+          rowIdentifier="id"
+          columns={[
+            { header: 'Id', accessorKey: 'id', size: 20 },
+            { header: 'Name', accessorKey: 'fullName' },
+            { header: 'Email', accessorKey: 'email' },
+            { header: 'Home', accessorKey: 'home.address' },
+            { header: 'Active', accessorKey: 'isActive', options: { isBoolean: true } },
+            { header: 'Staff', accessorKey: 'isStaff', options: { isBoolean: true } },
+          ]}
+          data={users.data || []}
+          onRowSelectionChange={setSelectedRows}
+          actionMenuItems={({ row }) => [
+            <>
+              <form action="/hijack/acquire/" method="post">
+                <input name="csrfmiddlewaretoken" type="hidden" value={window.csrfToken} />
+                <input type="hidden" name="user_pk" value={row.id} />
+                <Menu.Item
+                  key={1}
+                  icon={<IconEye />}
+                  type="submit"
+                  disabled={
+                    (currentUser && currentUser.id.toString() === row.id.toString()) ||
+                    !currentUser ||
+                    (!currentUser.isSuperuser &&
+                      users.data?.find((user) => user.id.toString() === row.id.toString())
+                        ?.isSuperuser)
+                  }
+                >
+                  Hijack
+                </Menu.Item>
+              </form>
+            </>,
+          ]}
+        />
+      }
+    />
   )
 }
 
