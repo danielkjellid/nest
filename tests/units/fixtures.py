@@ -1,7 +1,9 @@
-import pytest
 from typing import Any, Callable
-from nest.units.models import Unit
+
+import pytest
+
 from nest.units.enums import UnitType
+from nest.units.models import Unit
 
 UNITS = {
     "pcs": dict(

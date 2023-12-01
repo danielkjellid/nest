@@ -1,13 +1,31 @@
-import pytest
-from nest.products.core.models import Product
-from typing import Any, TypedDict, Callable
 from decimal import Decimal
+from typing import Any, Callable, TypedDict
+
+import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+from nest.products.core.models import Product
 from nest.units.models import Unit
+
+from .utils import next_oda_id
 
 
 class ProductSpec(TypedDict, total=False):
     name: str
+    oda_id: int | None
+    oda_url: str | None
+    gross_price: Decimal
+    gross_unit_price: Decimal
     unit: str
+    unit_quantity: Decimal
+    is_available: bool
+    thumbnail: SimpleUploadedFile | None
+    gtin: str | None
+    supplier: str
+    ingredients: str | None
+    allergens: str | None
+    contains_gluten: bool
+    contains_lactose: bool
 
 
 CreateProduct = Callable[[ProductSpec], Product]
@@ -33,29 +51,28 @@ def create_product(db: Any, get_unit: Callable[[str], Unit]) -> CreateProduct:
 
 
 @pytest.fixture
-def default_product_spec(
-    get_unit: Callable[[str], Unit], request: pytest.FixtureRequest
-) -> ProductSpec:
+def default_product_spec(request: pytest.FixtureRequest) -> ProductSpec:
     """
     Get the default spec for a product.
     """
 
-    # Default product data
-    return {
-        "name": "Sample product",
-        "gross_price": Decimal("100"),
-        "gross_unit_price": Decimal("100"),
-        "unit": "kg",
-        "unit_quantity": "1",
-        "is_available": True,
-        "thumbnail": None,
-        "gtin": None,
-        "supplier": "Sample supplier",
-        "ingredients": None,
-        "allergens": None,
-        "contains_gluten": False,
-        "contains_lactose": False,
-    }
+    return ProductSpec(
+        name="Sample product",
+        oda_id=next_oda_id(),
+        oda_url="",
+        gross_price=Decimal("100"),
+        gross_unit_price=Decimal("100"),
+        unit="kg",
+        unit_quantity="1",
+        is_available=True,
+        thumbnail=None,
+        gtin=None,
+        supplier="Sample supplier",
+        ingredients=None,
+        allergens=None,
+        contains_gluten=False,
+        contains_lactose=False,
+    )
 
 
 @pytest.fixture
