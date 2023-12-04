@@ -16,7 +16,7 @@ from .utils import next_oda_id
 
 
 def test_service_create_product(
-    get_unit: Callable[[str], Unit], django_assert_num_queries: Any
+        get_unit: Callable[[str], Unit], django_assert_num_queries: Any
 ):
     """
     Test that create_product service successfully creates a product with expected
@@ -32,7 +32,7 @@ def test_service_create_product(
         "supplier": "Awesome supplier",
     }
 
-    with django_assert_num_queries(6):
+    with django_assert_num_queries(5):
         product_no_thumbnail = create_product(
             name="Awesome product",
             **fields,
@@ -66,7 +66,8 @@ def test_service_create_product(
     name="A cool product", supplier="A cool supplier", unit="g", oda_id=None
 )
 def test_service_edit_product(
-    product: Product, get_unit: Callable[[str], Unit], django_assert_num_queries: Any
+        product: Product, get_unit: Callable[[str], Unit],
+        django_assert_num_queries: Any
 ) -> None:
     """
     Test that the edit_product service edits a product within query limits.
@@ -86,9 +87,9 @@ def test_service_edit_product(
 
 @pytest.mark.product(name="Test product", oda_id=None)
 def test_service_update_or_create_product_with_pk(
-    product: Product,
-    get_unit: Callable[[str], Unit],
-    django_assert_num_queries: Any,
+        product: Product,
+        get_unit: Callable[[str], Unit],
+        django_assert_num_queries: Any,
 ) -> None:
     """
     Test that the update_or_create_product creates or updates as expected.
@@ -139,9 +140,9 @@ def test_service_update_or_create_product_with_pk(
 
 @pytest.mark.product(name="Test product")
 def test_service_test_update_or_create_product_with_oda_id(
-    product: Product,
-    get_unit: Callable[[str], Unit],
-    django_assert_num_queries: Any,
+        product: Product,
+        get_unit: Callable[[str], Unit],
+        django_assert_num_queries: Any,
 ) -> None:
     """
     Test that update or create with oda id correctly updates or creates as expected.
