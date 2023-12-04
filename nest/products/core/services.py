@@ -96,34 +96,41 @@ def update_or_create_product(
     """
     Update or create a product.
     """
+    filters: dict[str, int | None] = {}
+    defaults = kwargs.copy()
 
-    if pk is None and oda_id is not None:
-        existing_product = Product.objects.filter(oda_id=oda_id).first()
-        product, created = Product.objects.update_or_create(
-            oda_id=oda_id,
-            defaults=kwargs,
-        )
-
-        log_create_or_updated(old=existing_product, new=product, source=source)
-    elif pk is not None:
-        defaults = kwargs
-
-        if oda_id is not None:
-            defaults.update({"oda_id": oda_id})
-
-        existing_product = Product.objects.filter(id=pk).first()
-        product, created = Product.objects.update_or_create(
-            id=pk,
-            defaults=defaults,
-        )
-
-        log_create_or_updated(
-            old=existing_product,
-            new=product,
-            source=source,
-            ignore_fields=log_ignore_fields,
-        )
+    if pk is not None:
+        filters["id"] = pk
+    elif oda_id is not None:
+        filters["oda_id"] = oda_id
+        defaults["oda_id"] = oda_id
     else:
-        raise ValueError("Either pk or oda_id (or both) must be passed.")
+        # Filters need to be explicitly set to None, so we won't find any existing
+        # products.
+        filters = {"id": pk, "oda_id": oda_id}
+
+    existing_product = Product.objects.filter(**filters).select_related(
+        "unit", "ingredient"
+    )
+
+    if existing_product:
+        assert (
+            len(existing_product) == 1
+        ), "Found multiple products with filters, cannot safely update."
+
+        existing_product.update(**defaults)
+        updated_product = existing_product.first()
+        product = updated_product
+    else:
+        product = Product.objects.create(**defaults)
+
+    assert product
+
+    log_create_or_updated(
+        old=existing_product.first(),
+        new=product,
+        source=source,
+        ignore_fields=log_ignore_fields,
+    )
 
     return ProductRecord.from_product(product)
