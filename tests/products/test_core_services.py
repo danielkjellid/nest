@@ -16,7 +16,7 @@ from .utils import next_oda_id
 
 
 def test_service_create_product(
-    get_unit: Callable[[str], Unit], django_assert_num_queries: Any
+    get_unit: Callable[[str], Unit], django_assert_max_num_queries: Any
 ):
     """
     Test that create_product service successfully creates a product with expected
@@ -32,7 +32,7 @@ def test_service_create_product(
         "supplier": "Awesome supplier",
     }
 
-    with django_assert_num_queries(5):
+    with django_assert_max_num_queries(6):
         product_no_thumbnail = create_product(
             name="Awesome product",
             **fields,

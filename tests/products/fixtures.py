@@ -8,6 +8,12 @@ from nest.products.core.models import Product
 from nest.units.models import Unit
 
 from .utils import next_oda_id
+from ..factories.fixtures import (
+    get_instance,
+    get_spec_for_instance,
+    instance,
+    instances,
+)
 
 
 class ProductSpec(TypedDict, total=False):
@@ -58,8 +64,8 @@ def default_product_spec(request: pytest.FixtureRequest) -> ProductSpec:
 
     return ProductSpec(
         name="Sample product",
-        oda_id=next_oda_id(),
-        oda_url="",
+        oda_id=None,
+        oda_url=None,
         gross_price=Decimal("100"),
         gross_unit_price=Decimal("100"),
         unit="kg",
@@ -78,31 +84,30 @@ def default_product_spec(request: pytest.FixtureRequest) -> ProductSpec:
 @pytest.fixture
 def get_product_spec(default_product_spec: ProductSpec, request: pytest.FixtureRequest):
     def _get_product_spec(slug: str) -> ProductSpec:
-        spec = default_product_spec.copy()
-
-        if marker := request.node.get_closest_marker("products"):
-            spec.update(marker.kwargs.get(slug, {}))
-
-        return spec
+        return get_spec_for_instance(
+            slug=slug,
+            default_spec=default_product_spec,
+            request=request,
+            marker="products",
+        )
 
     return _get_product_spec
 
 
 @pytest.fixture
 def get_product(
-    create_product: Callable[[ProductSpec], Product],
+    create_product: CreateProduct,
     get_product_spec: Callable[[str], ProductSpec],
 ) -> Callable[[str], Product]:
     products: dict[str, Product] = {}
 
     def get_or_create_product(slug: str) -> Product:
-        if product := products.get(slug):
-            return product
-
-        spec = get_product_spec(slug)
-        product = create_product(spec)
-        products[slug] = product
-        return product
+        return get_instance(
+            slug=slug,
+            instances=products,
+            create_callback=create_product,
+            get_spec_callback=get_product_spec,
+        )
 
     return get_or_create_product
 
@@ -113,31 +118,21 @@ def product(
     create_product: CreateProduct,
     default_product_spec: ProductSpec,
 ) -> Product:
-    spec = default_product_spec.copy()
-
-    marker = request.node.get_closest_marker("product")
-    if marker:
-        spec.update(marker.kwargs)
-
-    return create_product(spec)
+    return instance(
+        create_callback=create_product,
+        default_spec=default_product_spec,
+        request=request,
+        marker="product",
+    )
 
 
 @pytest.fixture(autouse=True)
-def products(get_product, request: pytest.FixtureRequest) -> dict[str, Product]:
+def products(
+    get_product: Callable[[str], Product], request: pytest.FixtureRequest
+) -> dict[str, Product]:
     """
     Get all products provided as kwargs as
     """
-    products: dict[str, ProductSpec] = {}
-
-    for marker in request.node.iter_markers("products"):
-        assert not marker.args, "Only kwargs is accepted with this fixture"
-        slugs = marker.kwargs
-
-        for slug in slugs:
-            products.update({slug: get_product(slug)})
-
-    for name, spec in products.items():
-        if name in request.node.fixturenames:
-            request.node.funcargs.setdefault(name, spec)
-
-    return products
+    return instances(
+        request=request, markers="products", get_instance_callback=get_product
+    )

@@ -4,6 +4,7 @@ from unittest import mock
 import django.db.transaction
 from .products.fixtures import *  # noqa
 from .units.fixtures import *  # noqa
+from .recipes.fixtures import *  # noqa
 from nest.core.clients import BaseHTTPClient
 
 
