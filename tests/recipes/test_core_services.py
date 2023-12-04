@@ -1,6 +1,6 @@
-from nest.recipes.core.services import create_recipe
-from nest.recipes.core.models import Recipe
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
+from nest.recipes.core.models import Recipe
+from nest.recipes.core.services import create_recipe
 
 
 def test_service_create_recipe(django_assert_num_queries):
