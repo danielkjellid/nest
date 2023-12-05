@@ -126,7 +126,24 @@ def product(
     )
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
+def oda_product(
+    request: pytest.FixtureRequest,
+    create_product: CreateProduct,
+    default_product_spec: ProductSpec,
+) -> Product:
+    spec = default_product_spec.copy()
+    spec.update({"oda_id": next_oda_id(), "oda_url": "https://example.com/"})
+
+    return instance(
+        create_callback=create_product,
+        default_spec=spec,
+        request=request,
+        marker="oda_product",
+    )
+
+
+@pytest.fixture
 def products(
     get_product: Callable[[str], Product], request: pytest.FixtureRequest
 ) -> dict[str, Product]:

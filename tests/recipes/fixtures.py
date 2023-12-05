@@ -116,7 +116,7 @@ def recipe(
     )
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def recipes(
     get_recipe: Callable[[str], Recipe], request: pytest.FixtureRequest
 ) -> dict[str, Recipe]:
@@ -216,7 +216,7 @@ def recipe_ingredient(
     )
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def recipe_ingredients(
     get_recipe_ingredient: Callable[[str], RecipeIngredient],
     request: pytest.FixtureRequest,

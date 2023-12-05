@@ -27,7 +27,7 @@ def test_service_create_recipe_ingredient(
 
     initial_count = RecipeIngredient.objects.count()
 
-    with django_assert_num_queries(7):
+    with django_assert_num_queries(8):
         ingredient = create_recipe_ingredient(
             title="Test ingredient", product_id=product.id
         )
@@ -59,7 +59,7 @@ def test_service_delete_recipe_ingredient(
 
     assert RecipeIngredient.objects.filter(id=recipe_ingredient.id).first() is not None
 
-    with django_assert_num_queries(5):
+    with django_assert_num_queries(4):
         delete_recipe_ingredient(pk=recipe_ingredient.id)
 
     assert RecipeIngredient.objects.filter(id=recipe_ingredient.id).first() is None
