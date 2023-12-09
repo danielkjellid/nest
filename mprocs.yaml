@@ -1,0 +1,13 @@
+procs:
+  backend:
+    shell: "poetry run python manage.py runserver 0:8000"
+  backend-shell:
+    shell: "poetry run python manage.py shell_plus"
+  frontend:
+    shell: "npm start"
+  frontend-tests:
+    shell: "npm test"
+    autostart: false
+  shell:
+    shell: "zsh"
+    stop: "SIGKILL"

@@ -21,30 +21,9 @@ $(BASE): | $(POETRY) $(YARN) ; $(info $(M) checking project...)
 # Running servers #
 ###################
 
-# If the first argument is "run-backend"...
-ifeq (run-backend,$(firstword $(MAKECMDGOALS)))
-  # use the rest as arguments for "run"
-  RUN_BACKEND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
-  # ...and turn them into do-nothing targets
-  $(eval $(RUN_BACKEND_ARGS):;@:)
-endif
-
-.PHONY: run-backend
-run-backend: ; $(info $(M) Running api deveopment server...) @
-	$Q cd $(BASE) && $(POETRY) run python $(BASE)/$(PACKAGE)/main.py $(RUN_BACKEND_ARGS)
-
-.PHONY: run-frontend
-run-frontend: ; $(info $(M) Running frontend development server...) @
-	$Q cd $(BASE) && $(YARN) dev
-
-
-##############
-# Migrations #
-##############
-
-.PHONY: migrate
-migrate: ; $(info $(M) Migrating database...) @
-	$Q cd $(BASE) && $(POETRY) run alembic -c $(PACKAGE)/alembic.ini upgrade head
+.PHONY: start
+start: ; $(info $(M) Generating frontend types from schema...) @
+	$Q cd $(BASE) && mprocs
 
 
 ###########
