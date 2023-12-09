@@ -31,7 +31,7 @@ jobs:
   frontend-lint: # A change
     uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
     with:
-      command: "make"
+      cmd: "make"
       matrix: "[{name: 'eslint', check: 'lint-eslint'}]"
 
   dependencies:
