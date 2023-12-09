@@ -28,11 +28,10 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: make ${{ matrix.check }}
 
-  frontend-lint:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+  eslint:
+    uses: danielkjellid/github-actions/.github/workflows/eslint.yaml@danielkjellid/frontend-lint
     with:
-      cmd: "make"
-      matrix: "[{name: 'eslint', check: 'lint-eslint'}]"
+      cmd: "make lint-eslint"
 
   dependencies:
     runs-on: ubuntu-20.04
