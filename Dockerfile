@@ -17,7 +17,7 @@ RUN npm run build:production
 
 # ----------------------------------------------------------
 
-FROM python:3.11.1 as nest
+FROM python:3.11.1-slim as nest
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH /app/
@@ -25,20 +25,17 @@ ENV PYTHONPATH /app/
 # Add app user
 RUN groupadd -r nest && useradd --create-home nest -g nest
 
-# Get postgresql-14 package manually, as the official package version only supports
-# postgresql-13. These three lines can be removed once the official package is updated.
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y lsb-release
-RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bash-completion \
     less \
     lsof \
+    libpq-dev  \
+    python3-dev \
     vim \
     curl \
-    postgresql-14 \
+    postgresql \
+    gcc \
     awscli \
     && rm -rf /var/lib/apt/lists/*
 
@@ -59,6 +56,14 @@ RUN poetry install --no-root --only main --no-interaction --no-ansi
 
 # Render needs a .ssh folder to make ssh tunneling work.
 RUN mkdir ./.ssh && chmod 700 ./.ssh
+
+# Remove unused apt packages
+USER root
+RUN apt-get purge -y gcc && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+USER nest
 
 # Copy application files
 COPY --chown=nest nest/ /app/nest/
