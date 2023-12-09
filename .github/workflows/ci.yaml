@@ -37,7 +37,7 @@ jobs:
           - name: 'eslint'
             check: lint-eslint
     steps:
-      - name: Run linters
+      - name: Run linters #
         uses: danielkjellid/github-actions/.github/actions/frontend-lint@danielkjellid/frontend-lint
         with:
           cmd: make
