@@ -30,14 +30,18 @@ jobs:
 
   frontend-lint:
     runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'eslint'
+            check: lint-eslint
     steps:
       - name: Run linters
         uses: danielkjellid/github-actions/.github/actions/frontend-lint@danielkjellid/frontend-lint
         with:
           cmd: make
-          checks:
-            - name: eslint
-              check: lint-eslint
+          checks: ${{ matrix }}
 
   dependencies:
     runs-on: ubuntu-20.04
