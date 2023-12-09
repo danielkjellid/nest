@@ -28,7 +28,7 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: make ${{ matrix.check }}
 
-  frontend-lint: #
+  frontend-lint:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
