@@ -28,7 +28,7 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: make ${{ matrix.check }}
 
-  frontend-lint:
+  frontend-lint: # A change
     uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
     with:
       command: "make"
