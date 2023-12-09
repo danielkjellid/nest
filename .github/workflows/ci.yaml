@@ -29,25 +29,10 @@ jobs:
         run: make ${{ matrix.check }}
 
   frontend-lint:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'eslint'
-            check: 'lint-eslint'
-          - name: 'prettier'
-            check: 'lint-prettier'
-          - name: 'tsc'
-            check: 'lint-tsc'
-    name: ${{ matrix.name }}
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-node
-      - name: Run ${{ matrix.name }}
-        run: make ${{ matrix.check }}
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+    with:
+      command: "make"
+      matrix: "[{name: 'eslint', check: 'lint-eslint'}]"
 
   dependencies:
     runs-on: ubuntu-20.04
