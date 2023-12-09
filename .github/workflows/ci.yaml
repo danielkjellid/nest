@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Run linters
-        uses: danielkjellid/github-actions/.github/actions/frontend-lint
+        uses: danielkjellid/github-actions/.github/actions/frontend-lint@danielkjellid/frontend-lint
         with:
           cmd: make
           checks:
