@@ -36,6 +36,8 @@ RUN apt-get update \
     bash-completion \
     less \
     lsof \
+    libpq-dev  \
+    python3-dev \
     vim \
     curl \
     postgresql \
