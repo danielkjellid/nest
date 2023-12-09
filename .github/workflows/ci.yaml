@@ -41,8 +41,8 @@ jobs:
         uses: danielkjellid/github-actions/.github/actions/frontend-lint@danielkjellid/frontend-lint
         with:
           cmd: make
-          name: ${{ matrix.name }}
-          check: ${{ matrix.check }}
+  #          name: ${{ matrix.name }}
+  #          check: ${{ matrix.check }}
 
   dependencies:
     runs-on: ubuntu-20.04
