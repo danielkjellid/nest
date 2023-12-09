@@ -22,7 +22,7 @@ $(BASE): | $(POETRY) $(YARN) ; $(info $(M) checking project...)
 ###################
 
 .PHONY: start
-start: ; $(info $(M) Generating frontend types from schema...) @
+start: ; $(info $(M) Starting services through mprocs...) @
 	$Q cd $(BASE) && mprocs
 
 
