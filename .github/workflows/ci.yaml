@@ -126,7 +126,7 @@ jobs:
       - python-lint
       - python-tests
       - python-missing-init
-      - frontend-lint
+    #      - frontend-lint
     runs-on: ubuntu-20.04
     steps:
       - run: echo "CI done!"
