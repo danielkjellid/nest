@@ -29,7 +29,10 @@ jobs:
         run: make ${{ matrix.check }}
 
   frontend-lint:
-    uses: ./.github/actions/frontend-lint
+    runs-on: ubuntu-20.04
+    steps:
+      - name: running frontend linters
+        uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
 
   dependencies:
     runs-on: ubuntu-20.04
