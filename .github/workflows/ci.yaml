@@ -29,7 +29,7 @@ jobs:
         run: make ${{ matrix.check }}
 
   frontend-lint:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+    uses: danielkjellid/github-actions/.github/actions/frontend-lint/action.yaml@danielkjellid/frontend-lint
     with:
       cmd: make
       checks:
