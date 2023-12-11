@@ -40,7 +40,7 @@ jobs:
     with:
       cmd: make lint-tsc
 
-  lockfile-consistancy:
+  lockfile-consistency:
     name: lockfile consistency
     uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
     with:
