@@ -28,19 +28,25 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: make ${{ matrix.check }}
 
-  
+
+  ruff-lint:
+    name: ruff lint
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    with:
+      cmd: make lint-ruff
+
   eslint:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@backend-action
     with:
       cmd: make lint-eslint
 
   prettier:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@backend-action
     with:
       cmd: make lint-prettier
 
   tsc:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@backend-action
     with:
       cmd: make lint-tsc
 
