@@ -98,6 +98,9 @@ jobs:
     uses: danielkjellid/github-actions/.github/workflows/python.yaml@python-tests
     with:
       cmd: poetry run deptry .
+      postgres-db: nest
+      postgres-user: nest
+      postgres-password: nest
 
   frontend-tests:
     name: frontend tests
