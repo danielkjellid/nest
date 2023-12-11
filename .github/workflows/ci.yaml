@@ -9,46 +9,46 @@ env:
 jobs:
   ruff-format:
     name: ruff format
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
     with:
       cmd: make lint-ruff-format
 
   ruff-lint:
     name: ruff lint
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
     with:
       cmd: make lint-ruff
 
   mypy:
     name: ruff lint
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
     with:
       cmd: make lint-mypy
 
   eslint:
-    uses: danielkjellid/github-actions/.github/workflows/node.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
     with:
       cmd: make lint-eslint
 
   prettier:
-    uses: danielkjellid/github-actions/.github/workflows/node.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
     with:
       cmd: make lint-prettier
 
   tsc:
-    uses: danielkjellid/github-actions/.github/workflows/node.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
     with:
       cmd: make lint-tsc
 
   lockfile-consistancy:
     name: lockfile consistency
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
     with:
       cmd: poetry lock --check
 
   unused-dependencies:
     name: unused dependencies
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
     with:
       cmd: poetry run deptry .
 
@@ -93,6 +93,11 @@ jobs:
           PGPASSWORD: nest
           PGDATABASE: nest
           PGPORT: ${{ job.services.postgres.ports[5432] }}
+
+  python-tests2:
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@python-tests
+    with:
+      cmd: poetry run deptry .
 
   frontend-tests:
     name: frontend tests
