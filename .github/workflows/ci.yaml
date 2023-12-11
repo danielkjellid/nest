@@ -30,7 +30,7 @@ jobs:
 
   
   eslint:
-    uses: danielkjellid/github-actions/.github//workflows/frontend-lint.yaml@add-frontend-lint
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@add-frontend-lint
     with:
       cmd: make lint-eslint
 
