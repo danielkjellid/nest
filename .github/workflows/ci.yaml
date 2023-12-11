@@ -30,17 +30,17 @@ jobs:
 
   
   eslint:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@main
     with:
       cmd: make lint-eslint
 
   prettier:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@main
     with:
       cmd: make lint-prettier
 
   tsc:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@main
     with:
       cmd: make lint-tsc
 
