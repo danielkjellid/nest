@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import functools
-from types import TracebackType
 from typing import Any, Callable, Type, TypeVar, cast
+from types import TracebackType
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
