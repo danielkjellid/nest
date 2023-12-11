@@ -94,7 +94,7 @@ jobs:
           PGDATABASE: nest
           PGPORT: ${{ job.services.postgres.ports[5432] }}
 
-  python-tests2:
+  python-tests2: #
     uses: danielkjellid/github-actions/.github/workflows/python.yaml@python-tests
     with:
       cmd: poetry run deptry .
