@@ -28,38 +28,20 @@ jobs:
       - name: Run ${{ matrix.name }}
         run: make ${{ matrix.check }}
 
-  frontend-lint:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'eslint'
-            check: lint-eslint
-          - name: 'prettier'
-            check: lint-prettier
-    steps:
-      - name: Run linters
-        uses: danielkjellid/github-actions/.github/actions/frontend-lint@danielkjellid/frontend-lint
-        with:
-          cmd: make
-          name: ${{ matrix.name }}
-          check: ${{ matrix.check }}
-
-  frontend-lint2:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'eslint'
-            check: lint-eslint
-          - name: 'prettier'
-            check: lint-prettier
+  eslint:
     uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
     with:
-      cmd: make
-      name: ${{ matrix.name }}
-      check: ${{ matrix.check }}
+      cmd: make lint-eslint
+
+  prettier:
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+    with:
+      cmd: make lint-eslint
+
+  tsc:
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
+    with:
+      cmd: make lint-tsc
 
   dependencies: #
     runs-on: ubuntu-20.04
