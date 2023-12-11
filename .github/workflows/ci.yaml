@@ -7,33 +7,23 @@ env:
   DJANGO_SETTINGS_MODULE: nest.settings
 
 jobs:
-  python-lint:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'ruff format'
-            check: lint-ruff-format
-          - name: 'ruff lint'
-            check: lint-ruff
-          - name: 'mypy'
-            check: lint-mypy
-    name: ${{ matrix.name }}
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-python
-      - name: Run ${{ matrix.name }}
-        run: make ${{ matrix.check }}
-
+  ruff-format:
+    name: ruff format
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    with:
+      cmd: make lint-ruff-format
 
   ruff-lint:
     name: ruff lint
     uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
     with:
       cmd: make lint-ruff
+
+  mypy:
+    name: ruff lint
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    with:
+      cmd: make lint-mypy
 
   eslint:
     uses: danielkjellid/github-actions/.github/workflows/node.yaml@backend-action
@@ -50,24 +40,17 @@ jobs:
     with:
       cmd: make lint-tsc
 
-  dependencies: #
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'lockfile consistency'
-            check: 'lock --check'
-          - name: 'unused dependencies'
-            check: 'run deptry .'
-    name: ${{ matrix.name }}
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-python
-      - name: Run ${{ matrix.name }}
-        run: poetry ${{ matrix.check }}
+  lockfile-consistancy:
+    name: lockfile consistency
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    with:
+      cmd: poetry lock --check
+
+  unused-dependencies:
+    name: unused dependencies
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@backend-action
+    with:
+      cmd: poetry run deptry .
 
   python-tests:
     name: python tests
