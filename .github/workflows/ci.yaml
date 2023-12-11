@@ -5,6 +5,7 @@ on: push
 env:
   COLUMNS: 120
   DJANGO_SETTINGS_MODULE: nest.settings
+  FRONTEND_LINT_WORKFLOW: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
 
 jobs:
   python-lint:
@@ -30,17 +31,17 @@ jobs:
 
   
   eslint:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@add-frontend-lint
+    uses: ${{ FRONTEND_LINT_WORKFLOW }}
     with:
       cmd: make lint-eslint
 
   prettier:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@add-frontend-lint
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
     with:
       cmd: make lint-prettier
 
   tsc:
-    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@add-frontend-lint
+    uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
     with:
       cmd: make lint-tsc
 
