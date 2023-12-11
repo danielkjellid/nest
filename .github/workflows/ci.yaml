@@ -123,10 +123,17 @@ jobs:
     # Gather job which deploy workflow can wait on.
     name: CI done
     needs:
-      - python-lint
+      - ruff-format
+      - ruff-lint
+      - mypy
+      - eslint
+      - prettier
+      - tsc
+      - lockfile-consistency
+      - unused-dependencies
       - python-tests
+      - frontend-tests
       - python-missing-init
-    #      - frontend-lint
     runs-on: ubuntu-20.04
     steps:
       - run: echo "CI done!"
