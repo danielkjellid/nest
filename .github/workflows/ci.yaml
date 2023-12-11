@@ -39,7 +39,7 @@ jobs:
           - name: 'prettier'
             check: lint-prettier
     steps:
-      - name: Run linters #
+      - name: Run linters
         uses: danielkjellid/github-actions/.github/actions/frontend-lint@danielkjellid/frontend-lint
         with:
           cmd: make
