@@ -47,19 +47,19 @@ jobs:
           check: ${{ matrix.check }}
 
   frontend-lint2:
-    #    strategy:
-    #      fail-fast: false
-    #      matrix:
-    #        include:
-    #          - name: 'eslint'
-    #            check: lint-eslint
-    #          - name: 'prettier'
-    #            check: lint-prettier
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 'eslint'
+            check: lint-eslint
+          - name: 'prettier'
+            check: lint-prettier
     uses: danielkjellid/github-actions/.github/workflows/frontend-lint.yaml@danielkjellid/frontend-lint
     with:
       cmd: make
-      name: eslint
-      check: lint-eslint
+      name: ${{ matrix.name }}
+      check: ${{ matrix.check }}
 
   dependencies:
     runs-on: ubuntu-20.04
