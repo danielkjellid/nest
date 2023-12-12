@@ -97,7 +97,7 @@ jobs:
   python-tests2: #
     uses: danielkjellid/github-actions/.github/workflows/python.yaml@python-tests
     with:
-      cmd: poetry run deptry .
+      cmd: poetry run pytest
       postgres-db: nest
       postgres-user: nest
       postgres-password: nest
