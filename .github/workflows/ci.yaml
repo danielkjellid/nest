@@ -7,121 +7,67 @@ env:
   DJANGO_SETTINGS_MODULE: nest.settings
 
 jobs:
-  python-lint:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'ruff format'
-            check: lint-ruff-format
-          - name: 'ruff lint'
-            check: lint-ruff
-          - name: 'mypy'
-            check: lint-mypy
-    name: ${{ matrix.name }}
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-python
-      - name: Run ${{ matrix.name }}
-        run: make ${{ matrix.check }}
+  ruff-format:
+    name: ruff format
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    with:
+      cmd: make lint-ruff-format
 
-  frontend-lint:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'eslint'
-            check: 'lint-eslint'
-          - name: 'prettier'
-            check: 'lint-prettier'
-          - name: 'tsc'
-            check: 'lint-tsc'
-    name: ${{ matrix.name }}
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-node
-      - name: Run ${{ matrix.name }}
-        run: make ${{ matrix.check }}
+  ruff-lint:
+    name: ruff lint
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    with:
+      cmd: make lint-ruff
 
-  dependencies:
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: 'lockfile consistency'
-            check: 'lock --check'
-          - name: 'unused dependencies'
-            check: 'run deptry .'
-    name: ${{ matrix.name }}
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-python
-      - name: Run ${{ matrix.name }}
-        run: poetry ${{ matrix.check }}
+  mypy:
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    with:
+      cmd: make lint-mypy
+
+  eslint:
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    with:
+      cmd: make lint-eslint
+
+  prettier:
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    with:
+      cmd: make lint-prettier
+
+  tsc:
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    with:
+      cmd: make lint-tsc
+
+  lockfile-consistency:
+    name: lockfile consistency
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    with:
+      cmd: poetry lock --check
+
+  unused-dependencies:
+    name: unused dependencies
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    with:
+      cmd: poetry run deptry .
 
   python-tests:
     name: python tests
-    runs-on: ubuntu-20.04
-    services:
-      minio:
-        image: bitnami/minio:latest
-        env:
-          # Make sure these variables is the same as the defaults in settings.py
-          MINIO_ROOT_USER: nest # AWS_ACCESS_KEY_ID
-          MINIO_ROOT_PASSWORD: nesttestpassword # AWS_SECRET_ACCESS_KEY
-          MINIO_DEFAULT_BUCKETS: dev:download # AWS_S3_BUCKET_NAME
-          CONSOLE_SECURE_TLS_REDIRECT: off
-        ports:
-          - '9000:9000'
-          - '9001:9001'
-        volumes:
-          - 'minio_data:/data'
-      postgres:
-        image: postgres:14
-        ports:
-          - 5432/tcp
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-        env:
-          POSTGRES_DB: nest
-          POSTGRES_USER: nest
-          POSTGRES_PASSWORD: nest
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-python
-      - name: Run tests
-        run: poetry run pytest
-        env:
-          DATABASE_URL: postgresql://nest:nest@localhost:${{ job.services.postgres.ports[5432] }}/nest
-          # PostgreSQL's configuration, used by psql
-          PGHOST: localhost
-          PGUSER: nest
-          PGPASSWORD: nest
-          PGDATABASE: nest
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    with:
+      cmd: poetry run pytest
+      postgres-db: nest
+      postgres-user: nest
+      postgres-password: nest
+      minio-bucket: dev:download        # AWS_S3_BUCKET_NAME
+      minio-user: nest                  # AWS_ACCESS_KEY_ID
+      minio-password: nesttestpassword  # AWS_SECRET_ACCESS_KEY
 
   frontend-tests:
     name: frontend tests
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Setup project
-        uses: ./.github/actions/setup-node
-      - name: Run tests
-        run: npm test
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    with:
+      cmd: npm test
 
   python-missing-init:
     name: missing __init__.py files
@@ -139,10 +85,17 @@ jobs:
     # Gather job which deploy workflow can wait on.
     name: CI done
     needs:
-      - python-lint
+      - ruff-format
+      - ruff-lint
+      - mypy
+      - eslint
+      - prettier
+      - tsc
+      - lockfile-consistency
+      - unused-dependencies
       - python-tests
+      - frontend-tests
       - python-missing-init
-      - frontend-lint
     runs-on: ubuntu-20.04
     steps:
       - run: echo "CI done!"
