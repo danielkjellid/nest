@@ -9,52 +9,51 @@ env:
 jobs:
   ruff-format:
     name: ruff format
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@local-actions
     with:
       cmd: make lint-ruff-format
 
   ruff-lint:
     name: ruff lint
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@local-actions
     with:
       cmd: make lint-ruff
 
   mypy:
-    name: ruff lint
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@local-actions
     with:
       cmd: make lint-mypy
 
   eslint:
-    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@local-actions
     with:
       cmd: make lint-eslint
 
   prettier:
-    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@local-actions
     with:
       cmd: make lint-prettier
 
   tsc:
-    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@local-actions
     with:
       cmd: make lint-tsc
 
   lockfile-consistency:
     name: lockfile consistency
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@local-actions
     with:
       cmd: poetry lock --check
 
   unused-dependencies:
     name: unused dependencies
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@local-actions
     with:
       cmd: poetry run deptry .
 
   python-tests:
     name: python tests
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@python-tests
+    uses: danielkjellid/github-actions/.github/workflows/python.yaml@local-actions
     with:
       cmd: poetry run pytest
       postgres-db: nest
@@ -66,7 +65,7 @@ jobs:
 
   frontend-tests:
     name: frontend tests
-    uses: danielkjellid/github-actions/.github/workflows/node.yaml@main
+    uses: danielkjellid/github-actions/.github/workflows/node.yaml@local-actions
     with:
       cmd: npm test
 
