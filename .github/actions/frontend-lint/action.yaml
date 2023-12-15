@@ -1,9 +1,0 @@
-name: Some name
-description: Some desc
-
-runs:
-  using: composite
-  steps:
-    - uses: danielkjellid/github-actions/.github/workflows/eslint.yaml@danielkjellid/frontend-lint
-      with:
-        cmd: "make lint-eslint"
