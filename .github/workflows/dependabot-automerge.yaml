@@ -4,7 +4,7 @@ on: pull_request
 
 jobs:
   automerge:
-    uses: danielkjellid/github-actions/.github/workflows/python.yaml@dependabot-automerge-action
+    uses: danielkjellid/github-actions/.github/workflows/dependabot-automerge.yaml@dependabot-automerge-action
     permissions:
       contents: write
       pull-requests: write
