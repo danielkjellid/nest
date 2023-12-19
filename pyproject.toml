@@ -12,7 +12,7 @@ structlog = "^23.1.0"
 django = "^4.2.7"
 django-ninja = "^0.21.0"
 django-environ = "^0.10.0"
-django-extensions = "^3.2.1"
+django-extensions = "^3.2.3"
 django-storages = { version = "^1.13.2", extras = ["aws"] }
 pydantic = "^1.10.5"
 django-vite = "^2.0.2"
