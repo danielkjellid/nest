@@ -51,7 +51,7 @@ jobs:
     with:
       cmd: poetry run deptry .
 
-  python-tests:
+  python-tests: #
     name: python tests
     uses: danielkjellid/github-actions/.github/workflows/python.yaml@main
     with:
