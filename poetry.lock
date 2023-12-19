@@ -369,17 +369,17 @@ Django = ">=3.2"
 
 [[package]]
 name = "django-hijack"
-version = "3.3.0"
+version = "3.4.5"
 description = "django-hijack allows superusers to hijack (=login as) and work on behalf of another user."
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-hijack-3.3.0.tar.gz", hash = "sha256:795cd0087596a21c9bf641fa5cf1787f4edf144e16a423014afbcf2838e8e124"},
-    {file = "django_hijack-3.3.0-py3-none-any.whl", hash = "sha256:976ae3bc7e9db0bcb5f5b85a58fba98f5ff1d7a6e92e1b65854289cc79a351d4"},
+    {file = "django-hijack-3.4.5.tar.gz", hash = "sha256:7e45b1de786bdc130628e4230b359dde6d8744ecd3bcd668d2b27c5d614a071c"},
+    {file = "django_hijack-3.4.5-py3-none-any.whl", hash = "sha256:129cbe75444b163135871a947d38ffb72181f4f2583544703fc9efe083c9ddad"},
 ]
 
 [package.dependencies]
-django = ">=2.2"
+django = ">=3.2"
 
 [package.extras]
 test = ["pytest", "pytest-cov", "pytest-django"]
@@ -1643,4 +1643,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11.1"
-content-hash = "d6625bc69be498c78fae19c4f7ef6d218aef51903168d5a993141e0a35fccea1"
+content-hash = "471d95c04624939a46ed357351f3cc6c5640d7183d333ae0f5af4722bfe0fe28"
