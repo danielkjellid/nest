@@ -123,8 +123,8 @@ def get_nutrition_table(*, product: Product) -> list[TableRecord]:
                 title="Energy",
                 key="energy",
                 value=(
-                    f"{product.energy_kj.normalize()} kJ / "  # type: ignore
-                    f"{product.energy_kcal.normalize()} kcal"  # type: ignore
+                    f"{product.energy_kj.normalize()} kJ / "
+                    f"{product.energy_kcal.normalize()} kcal"
                 ),
             )
         )

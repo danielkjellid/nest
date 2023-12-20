@@ -18,7 +18,7 @@ class LogEntryRecord(BaseModel):
 
     @classmethod
     def from_log_entry(cls, log_entry: LogEntry) -> LogEntryRecord:
-        user_or_source: str
+        user_or_source: str | None
 
         if log_entry.source is not None:
             user_or_source = log_entry.source

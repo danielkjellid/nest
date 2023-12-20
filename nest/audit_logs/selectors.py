@@ -62,7 +62,7 @@ def get_log_entries_for_objects(
 
 
 def _get_user_or_source(log_entry: LogEntry) -> str | None:
-    user_or_source: str
+    user_or_source: str | None
 
     if log_entry.source is not None:
         user_or_source = log_entry.source

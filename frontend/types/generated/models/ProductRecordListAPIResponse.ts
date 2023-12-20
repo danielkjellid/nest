@@ -8,7 +8,7 @@ import type { ProductRecord } from './ProductRecord';
 export type ProductRecordListAPIResponse = {
     status: ProductRecordListAPIResponse.status;
     message?: string;
-    data?: Array<ProductRecord>;
+    data?: ProductRecord;
 };
 
 export namespace ProductRecordListAPIResponse {

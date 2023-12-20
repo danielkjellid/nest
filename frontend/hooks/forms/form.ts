@@ -1,5 +1,6 @@
 import { notifications } from '@mantine/notifications'
 import Ajv from 'ajv'
+import addFormats from 'ajv-formats'
 import { useEffect, useState } from 'react'
 
 import openAPISchema from '../../../schema.json'
@@ -36,6 +37,8 @@ const useValidator = () => {
   ajv.addKeyword('x-max')
   ajv.addKeyword('x-columns')
   ajv.addKeyword('x-form')
+
+  addFormats(ajv)
 
   return ajv
 }

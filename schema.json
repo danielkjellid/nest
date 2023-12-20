@@ -93,7 +93,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductDetailOutAPIResponse"
+                                    "$ref": "#/components/schemas/ProductRecordAPIResponse"
                                 }
                             }
                         }
@@ -801,7 +801,6 @@
                     "isSynced",
                     "displayPrice",
                     "isOdaProduct",
-                    "lastDataUpdateDisplay",
                     "classifiers",
                     "nutritionTable",
                     "auditLogs"
@@ -986,11 +985,7 @@
                         "type": "string"
                     },
                     "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductRecord"
-                        }
+                        "$ref": "#/components/schemas/ProductRecord"
                     }
                 }
             },
@@ -1116,246 +1111,6 @@
                         "title": "Thumbnail",
                         "type": "string",
                         "format": "binary"
-                    }
-                }
-            },
-            "ProductDetailUnitOut": {
-                "title": "ProductDetailUnitOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "abbreviation",
-                    "unitType"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "abbreviation": {
-                        "title": "Abbreviation",
-                        "type": "string"
-                    },
-                    "unitType": {
-                        "title": "Unit Type",
-                        "type": "string"
-                    },
-                    "displayName": {
-                        "title": "Display Name",
-                        "type": "string"
-                    }
-                }
-            },
-            "ProductDetailAuditLogsOut": {
-                "title": "ProductDetailAuditLogsOut",
-                "type": "object",
-                "required": [
-                    "changes",
-                    "createdAt"
-                ],
-                "properties": {
-                    "userOrSource": {
-                        "title": "User Or Source",
-                        "type": "string"
-                    },
-                    "remoteAddr": {
-                        "title": "Remote Addr",
-                        "type": "string"
-                    },
-                    "changes": {
-                        "title": "Changes",
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "array",
-                            "minItems": 2,
-                            "maxItems": 2,
-                            "items": [
-                                {},
-                                {}
-                            ]
-                        }
-                    },
-                    "createdAt": {
-                        "title": "Created At",
-                        "type": "string"
-                    }
-                }
-            },
-            "ProductDetailOut": {
-                "title": "ProductDetailOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "fullName",
-                    "isAvailable",
-                    "grossPrice",
-                    "unit",
-                    "isSynced",
-                    "isOdaProduct",
-                    "nutritionTable",
-                    "auditLogs"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string"
-                    },
-                    "isAvailable": {
-                        "title": "Is Available",
-                        "type": "boolean"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string"
-                    },
-                    "containsLactose": {
-                        "title": "Contains Lactose",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "containsGluten": {
-                        "title": "Contains Gluten",
-                        "type": "boolean",
-                        "default": false
-                    },
-                    "grossPrice": {
-                        "title": "Gross Price",
-                        "type": "string"
-                    },
-                    "grossUnitPrice": {
-                        "title": "Gross Unit Price",
-                        "type": "string"
-                    },
-                    "unit": {
-                        "$ref": "#/components/schemas/ProductDetailUnitOut"
-                    },
-                    "unitQuantity": {
-                        "title": "Unit Quantity",
-                        "type": "string"
-                    },
-                    "gtin": {
-                        "title": "Gtin",
-                        "type": "string"
-                    },
-                    "supplier": {
-                        "title": "Supplier",
-                        "type": "string"
-                    },
-                    "isSynced": {
-                        "title": "Is Synced",
-                        "type": "boolean"
-                    },
-                    "odaId": {
-                        "title": "Oda Id",
-                        "type": "string"
-                    },
-                    "odaUrl": {
-                        "title": "Oda Url",
-                        "type": "string"
-                    },
-                    "isOdaProduct": {
-                        "title": "Is Oda Product",
-                        "type": "boolean"
-                    },
-                    "lastDataUpdate": {
-                        "title": "Last Data Update",
-                        "type": "string"
-                    },
-                    "fat": {
-                        "title": "Fat",
-                        "type": "string"
-                    },
-                    "fatSaturated": {
-                        "title": "Fat Saturated",
-                        "type": "string"
-                    },
-                    "fatMonounsaturated": {
-                        "title": "Fat Monounsaturated",
-                        "type": "string"
-                    },
-                    "fatPolyunsaturated": {
-                        "title": "Fat Polyunsaturated",
-                        "type": "string"
-                    },
-                    "carbohydrates": {
-                        "title": "Carbohydrates",
-                        "type": "string"
-                    },
-                    "carbohydratesSugars": {
-                        "title": "Carbohydrates Sugars",
-                        "type": "string"
-                    },
-                    "carbohydratesPolyols": {
-                        "title": "Carbohydrates Polyols",
-                        "type": "string"
-                    },
-                    "carbohydratesStarch": {
-                        "title": "Carbohydrates Starch",
-                        "type": "string"
-                    },
-                    "fibres": {
-                        "title": "Fibres",
-                        "type": "string"
-                    },
-                    "salt": {
-                        "title": "Salt",
-                        "type": "string"
-                    },
-                    "sodium": {
-                        "title": "Sodium",
-                        "type": "string"
-                    },
-                    "nutritionTable": {
-                        "title": "Nutrition Table",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/TableRecord"
-                        }
-                    },
-                    "auditLogs": {
-                        "title": "Audit Logs",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductDetailAuditLogsOut"
-                        }
-                    }
-                }
-            },
-            "ProductDetailOutAPIResponse": {
-                "title": "ProductDetailOutAPIResponse",
-                "type": "object",
-                "required": [
-                    "status"
-                ],
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string"
-                    },
-                    "data": {
-                        "$ref": "#/components/schemas/ProductDetailOut"
                     }
                 }
             },

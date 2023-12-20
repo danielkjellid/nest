@@ -44,7 +44,7 @@ class ProductRecord(BaseModel):
     display_price: str
     is_oda_product: bool
     last_data_update: datetime | None
-    last_data_update_display: str
+    last_data_update_display: str | None
 
     ingredients: str | None
     allergens: str | None
