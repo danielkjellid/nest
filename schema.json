@@ -985,7 +985,11 @@
                         "type": "string"
                     },
                     "data": {
-                        "$ref": "#/components/schemas/ProductRecord"
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductRecord"
+                        }
                     }
                 }
             },
@@ -1111,6 +1115,30 @@
                         "title": "Thumbnail",
                         "type": "string",
                         "format": "binary"
+                    }
+                }
+            },
+            "ProductRecordAPIResponse": {
+                "title": "ProductRecordAPIResponse",
+                "type": "object",
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "type": "string",
+                        "enum": [
+                            "success",
+                            "error"
+                        ]
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/ProductRecord"
                     }
                 }
             },
