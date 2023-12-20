@@ -9,6 +9,7 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export { APIResponse } from './models/APIResponse';
 export { FrontendComponents } from './models/FrontendComponents';
+export type { HomeRecord } from './models/HomeRecord';
 export type { IngredientCreateForm } from './models/IngredientCreateForm';
 export type { IngredientDeleteIn } from './models/IngredientDeleteIn';
 export type { IngredientListOut } from './models/IngredientListOut';
@@ -57,6 +58,5 @@ export type { TableRecord } from './models/TableRecord';
 export type { UnitListOut } from './models/UnitListOut';
 export { UnitListOutAPIResponse } from './models/UnitListOutAPIResponse';
 export { UnitType } from './models/UnitType';
-export type { UserListHomeOut } from './models/UserListHomeOut';
-export type { UserListOut } from './models/UserListOut';
-export { UserListOutAPIResponse } from './models/UserListOutAPIResponse';
+export type { UserRecord } from './models/UserRecord';
+export { UserRecordAPIResponse } from './models/UserRecordAPIResponse';

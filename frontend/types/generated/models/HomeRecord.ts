@@ -3,9 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserListHomeOut = {
+export type HomeRecord = {
     id: number;
     address: string;
+    numResidents: number;
+    numWeeksRecipeRotation: number;
+    weeklyBudget: number;
     isActive: boolean;
 };
 
