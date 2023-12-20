@@ -17,12 +17,20 @@ class APIResponse(GenericModel, Generic[T]):
         params_component = ", ".join(param_names)
 
         # Nested types, such as lists gets annotated like list[path.to.ActualType],
-        # as we only want the actual type, slice string appropriately and get it.
+        # as we only want the outer + actual type, slice string appropriately and get
+        # it. For example, when passed a list[Record], we want the generated name to be
+        # RecordListAPIResponse, otherwise RecordAPIResponse will suffice.
         if "[" in params_component and "]" in params_component:
             inner_type = params_component[
                 params_component.find("[") + 1 : params_component.find("]")
             ]
-            params_component = inner_type.split(".")[-1]
+            outer_type = (
+                params_component.replace(inner_type, "")
+                .replace("[", "")
+                .replace("]", "")
+            )
+
+            params_component = f"{inner_type.split('.')[-1]}{outer_type.capitalize()}"
 
         return (
             f"{params_component}APIResponse"

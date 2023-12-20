@@ -10,7 +10,7 @@ import { type CommonContextType, CommonProvider } from './contexts/CommonProvide
 import { type MenuContextType, MenuProvider } from './contexts/MenuProvider'
 import { UnitsProvider } from './contexts/UnitsProvider'
 import { performGet } from './hooks/fetcher/http'
-import { type UnitListOut, type UnitListOutAPIResponse } from './types'
+import { type UnitListOut, type UnitListOutListAPIResponse } from './types'
 
 interface AppProps extends CommonContextType, MenuContextType {}
 
@@ -62,7 +62,7 @@ function MainApp(props: AppProps) {
 
   useEffect(() => {
     const fetchUnits = async () => {
-      const fetchedUnits = await performGet<UnitListOutAPIResponse>({ url: urls.units.list() })
+      const fetchedUnits = await performGet<UnitListOutListAPIResponse>({ url: urls.units.list() })
       if (fetchedUnits && fetchedUnits.data) {
         setUnits(fetchedUnits.data)
         setUnitsOptions(
