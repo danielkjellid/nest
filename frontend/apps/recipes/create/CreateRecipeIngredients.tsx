@@ -10,7 +10,7 @@ import { useUnits } from '../../../contexts/UnitsProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { performPost } from '../../../hooks/fetcher/http'
 import { useCommonStyles } from '../../../styles/common'
-import { type IngredientListOutAPIResponse } from '../../../types'
+import { type RecipeIngredientRecordAPIResponse } from '../../../types'
 import { urls } from '../../urls'
 import {
   type FormError,
@@ -24,7 +24,7 @@ import { Header } from './components/Header'
 
 interface RecipeIngredientsCreateInnerProps {
   results: {
-    ingredients: IngredientListOutAPIResponse
+    ingredients: RecipeIngredientRecordAPIResponse
   }
   recipeId: string | number
 }
@@ -235,7 +235,7 @@ function RecipeIngredientsCreate() {
   const { recipeId } = useParams()
   invariant(recipeId)
 
-  const ingredients = useFetch<IngredientListOutAPIResponse>(urls.recipes.ingredients.list())
+  const ingredients = useFetch<RecipeIngredientRecordAPIResponse>(urls.recipes.ingredients.list())
 
   return (
     <View<object, RecipeIngredientsCreateInnerProps>

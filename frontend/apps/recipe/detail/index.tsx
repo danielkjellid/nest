@@ -6,13 +6,13 @@ import { Button } from '../../../components/Button'
 import View from '../../../components/View'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
-import { type RecipeDetailOutAPIResponse, RecipeStatus } from '../../../types'
+import { type RecipeDetailRecordAPIResponse, RecipeStatus } from '../../../types'
 import { urls } from '../../urls'
 import { Recipe } from '../components/Recipe'
 
 interface RecipeDetailInnerProps {
   results: {
-    recipeResponse: RecipeDetailOutAPIResponse
+    recipeResponse: RecipeDetailRecordAPIResponse
   }
 }
 
@@ -78,7 +78,9 @@ function RecipeDetail() {
   const { recipeId } = useParams()
   invariant(recipeId)
 
-  const recipeResponse = useFetch<RecipeDetailOutAPIResponse>(urls.recipes.detail({ id: recipeId }))
+  const recipeResponse = useFetch<RecipeDetailRecordAPIResponse>(
+    urls.recipes.detail({ id: recipeId })
+  )
 
   return (
     <View<object, RecipeDetailInnerProps>

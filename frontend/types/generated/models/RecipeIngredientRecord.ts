@@ -3,8 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecipeDetailIngredientOut = {
+import type { ProductRecord } from './ProductRecord';
+
+export type RecipeIngredientRecord = {
     id: number;
     title: string;
+    product: ProductRecord;
 };
 

@@ -7,6 +7,7 @@ from nest.core.decorators import staff_required
 from nest.core.fields import FormField
 
 from .forms import IngredientCreateForm
+from .records import RecipeIngredientItemGroupRecord, RecipeIngredientRecord
 from .selectors import (
     get_recipe_ingredient_item_groups_for_recipe,
     get_recipe_ingredients,
@@ -50,30 +51,16 @@ def recipe_ingredient_delete_api(
     return APIResponse(status="success", data=None)
 
 
-class IngredientListProductOut(Schema):
-    id: int
-    full_name: str
-    thumbnail_url: str | None
-
-
-class IngredientListOut(Schema):
-    id: int
-    title: str
-    product: IngredientListProductOut
-
-
-@router.get("/", response=APIResponse[list[IngredientListOut]])
+@router.get("/", response=APIResponse[list[RecipeIngredientRecord]])
 def recipe_ingredient_list_api(
     request: HttpRequest,
-) -> APIResponse[list[IngredientListOut]]:
+) -> APIResponse[list[RecipeIngredientRecord]]:
     """
     Get a list off all ingredients in the application
     """
 
     ingredients = get_recipe_ingredients()
-    data = [IngredientListOut(**ingredient.dict()) for ingredient in ingredients]
-
-    return APIResponse(status="success", data=data)
+    return APIResponse(status="success", data=ingredients)
 
 
 class RecipeIngredientsCreateIngredientIn(Schema):
@@ -104,46 +91,17 @@ def recipe_ingredient_groups_create_api(
     return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
 
 
-class RecipeIngredientGroupsListIngredientProductOut(Schema):
-    full_name: str
-    thumbnail_url: str | None
-
-
-class RecipeIngredientGroupsListIngredientOut(Schema):
-    id: int
-    title: str
-    product: RecipeIngredientGroupsListIngredientProductOut
-
-
-class RecipeIngredientGroupsListItemPortionQuantityUnitOut(Schema):
-    abbreviation: str
-
-
-class RecipeIngredientGroupsListItemOut(Schema):
-    id: int
-    ingredient: RecipeIngredientGroupsListIngredientOut
-    portion_quantity_unit: RecipeIngredientGroupsListItemPortionQuantityUnitOut
-
-
-class RecipeIngredientGroupsListOut(Schema):
-    id: int
-    title: str
-    ingredient_items: list[RecipeIngredientGroupsListItemOut]
-
-
 @router.get(
     "{recipe_id}/groups/",
-    response=APIResponse[list[RecipeIngredientGroupsListOut]],
+    response=APIResponse[list[RecipeIngredientItemGroupRecord]],
 )
 @staff_required
 def recipe_ingredient_groups_list_api(
     request: HttpRequest, recipe_id: int
-) -> APIResponse[list[RecipeIngredientGroupsListOut]]:
+) -> APIResponse[list[RecipeIngredientItemGroupRecord]]:
     """
     Get a list of all RecipeIngredientItemGroups for a recipe.
     """
 
     groups = get_recipe_ingredient_item_groups_for_recipe(recipe_id=recipe_id)
-    data = [RecipeIngredientGroupsListOut(**group.dict()) for group in groups]
-
-    return APIResponse(status="success", data=data)
+    return APIResponse(status="success", data=groups)
