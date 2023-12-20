@@ -17,7 +17,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductRecordAPIResponse"
+                                    "$ref": "#/components/schemas/ProductRecordListAPIResponse"
                                 }
                             }
                         }
@@ -316,7 +316,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeRecordAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeRecordListAPIResponse"
                                 }
                             }
                         }
@@ -420,7 +420,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeIngredientRecordAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeIngredientRecordListAPIResponse"
                                 }
                             }
                         }
@@ -510,7 +510,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeIngredientItemGroupRecordAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeIngredientItemGroupRecordListAPIResponse"
                                 }
                             }
                         }
@@ -590,7 +590,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UnitListOutAPIResponse"
+                                    "$ref": "#/components/schemas/UnitListOutListAPIResponse"
                                 }
                             }
                         }
@@ -617,7 +617,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserRecordAPIResponse"
+                                    "$ref": "#/components/schemas/UserRecordListAPIResponse"
                                 }
                             }
                         }
@@ -880,8 +880,8 @@
                     }
                 }
             },
-            "ProductRecordAPIResponse": {
-                "title": "ProductRecordAPIResponse",
+            "ProductRecordListAPIResponse": {
+                "title": "ProductRecordListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -3183,8 +3183,8 @@
                     }
                 }
             },
-            "RecipeRecordAPIResponse": {
-                "title": "RecipeRecordAPIResponse",
+            "RecipeRecordListAPIResponse": {
+                "title": "RecipeRecordListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -3264,8 +3264,8 @@
                     }
                 }
             },
-            "RecipeIngredientRecordAPIResponse": {
-                "title": "RecipeIngredientRecordAPIResponse",
+            "RecipeIngredientRecordListAPIResponse": {
+                "title": "RecipeIngredientRecordListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -3345,8 +3345,8 @@
                     }
                 }
             },
-            "RecipeIngredientItemGroupRecordAPIResponse": {
-                "title": "RecipeIngredientItemGroupRecordAPIResponse",
+            "RecipeIngredientItemGroupRecordListAPIResponse": {
+                "title": "RecipeIngredientItemGroupRecordListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -3432,8 +3432,8 @@
                     }
                 }
             },
-            "UnitListOutAPIResponse": {
-                "title": "UnitListOutAPIResponse",
+            "UnitListOutListAPIResponse": {
+                "title": "UnitListOutListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -3554,8 +3554,8 @@
                     }
                 }
             },
-            "UserRecordAPIResponse": {
-                "title": "UserRecordAPIResponse",
+            "UserRecordListAPIResponse": {
+                "title": "UserRecordListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"

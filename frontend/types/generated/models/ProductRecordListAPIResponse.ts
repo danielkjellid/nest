@@ -5,13 +5,13 @@
 
 import type { ProductRecord } from './ProductRecord';
 
-export type ProductRecordAPIResponse = {
-    status: ProductRecordAPIResponse.status;
+export type ProductRecordListAPIResponse = {
+    status: ProductRecordListAPIResponse.status;
     message?: string;
     data?: Array<ProductRecord>;
 };
 
-export namespace ProductRecordAPIResponse {
+export namespace ProductRecordListAPIResponse {
 
     export enum status {
         SUCCESS = 'success',
