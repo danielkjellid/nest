@@ -3,15 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UserListOut } from './UserListOut';
+import type { UserRecord } from './UserRecord';
 
-export type UserListOutAPIResponse = {
-    status: UserListOutAPIResponse.status;
+export type UserRecordAPIResponse = {
+    status: UserRecordAPIResponse.status;
     message?: string;
-    data?: Array<UserListOut>;
+    data?: Array<UserRecord>;
 };
 
-export namespace UserListOutAPIResponse {
+export namespace UserRecordAPIResponse {
 
     export enum status {
         SUCCESS = 'success',

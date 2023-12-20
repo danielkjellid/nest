@@ -3,15 +3,18 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UserListHomeOut } from './UserListHomeOut';
+import type { HomeRecord } from './HomeRecord';
 
-export type UserListOut = {
+export type UserRecord = {
     id: number;
     email: string;
+    firstName: string;
+    lastName: string;
     fullName: string;
     isActive: boolean;
     isStaff: boolean;
     isSuperuser: boolean;
-    home?: UserListHomeOut;
+    isHijacked?: boolean;
+    home?: HomeRecord;
 };
 

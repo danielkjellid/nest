@@ -617,7 +617,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UserListOutAPIResponse"
+                                    "$ref": "#/components/schemas/UserRecordAPIResponse"
                                 }
                             }
                         }
@@ -2289,12 +2289,15 @@
                     }
                 }
             },
-            "UserListHomeOut": {
-                "title": "UserListHomeOut",
+            "HomeRecord": {
+                "title": "HomeRecord",
                 "type": "object",
                 "required": [
                     "id",
                     "address",
+                    "numResidents",
+                    "numWeeksRecipeRotation",
+                    "weeklyBudget",
                     "isActive"
                 ],
                 "properties": {
@@ -2306,18 +2309,32 @@
                         "title": "Address",
                         "type": "string"
                     },
+                    "numResidents": {
+                        "title": "Num Residents",
+                        "type": "integer"
+                    },
+                    "numWeeksRecipeRotation": {
+                        "title": "Num Weeks Recipe Rotation",
+                        "type": "integer"
+                    },
+                    "weeklyBudget": {
+                        "title": "Weekly Budget",
+                        "type": "number"
+                    },
                     "isActive": {
                         "title": "Is Active",
                         "type": "boolean"
                     }
                 }
             },
-            "UserListOut": {
-                "title": "UserListOut",
+            "UserRecord": {
+                "title": "UserRecord",
                 "type": "object",
                 "required": [
                     "id",
                     "email",
+                    "firstName",
+                    "lastName",
                     "fullName",
                     "isActive",
                     "isStaff",
@@ -2330,6 +2347,14 @@
                     },
                     "email": {
                         "title": "Email",
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "title": "First Name",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "title": "Last Name",
                         "type": "string"
                     },
                     "fullName": {
@@ -2348,13 +2373,18 @@
                         "title": "Is Superuser",
                         "type": "boolean"
                     },
+                    "isHijacked": {
+                        "title": "Is Hijacked",
+                        "type": "boolean",
+                        "default": false
+                    },
                     "home": {
-                        "$ref": "#/components/schemas/UserListHomeOut"
+                        "$ref": "#/components/schemas/HomeRecord"
                     }
                 }
             },
-            "UserListOutAPIResponse": {
-                "title": "UserListOutAPIResponse",
+            "UserRecordAPIResponse": {
+                "title": "UserRecordAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2376,7 +2406,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/UserListOut"
+                            "$ref": "#/components/schemas/UserRecord"
                         }
                     }
                 }
