@@ -724,6 +724,70 @@
                     }
                 }
             },
+            "TableRecord": {
+                "title": "TableRecord",
+                "type": "object",
+                "required": [
+                    "key",
+                    "title",
+                    "value"
+                ],
+                "properties": {
+                    "key": {
+                        "title": "Key",
+                        "type": "string"
+                    },
+                    "parentKey": {
+                        "title": "Parent Key",
+                        "type": "string"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "value": {
+                        "title": "Value",
+                        "type": "string"
+                    }
+                }
+            },
+            "LogEntryRecord": {
+                "title": "LogEntryRecord",
+                "type": "object",
+                "required": [
+                    "id",
+                    "action",
+                    "changes",
+                    "createdAt"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "action": {
+                        "title": "Action",
+                        "type": "integer"
+                    },
+                    "changes": {
+                        "title": "Changes",
+                        "type": "object"
+                    },
+                    "userOrSource": {
+                        "title": "User Or Source",
+                        "type": "string"
+                    },
+                    "remoteAddr": {
+                        "title": "Remote Addr",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "title": "Created At",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
             "ProductRecord": {
                 "title": "ProductRecord",
                 "type": "object",
@@ -737,7 +801,10 @@
                     "isSynced",
                     "displayPrice",
                     "isOdaProduct",
-                    "classifiers"
+                    "lastDataUpdateDisplay",
+                    "classifiers",
+                    "nutritionTable",
+                    "auditLogs"
                 ],
                 "properties": {
                     "id": {
@@ -812,6 +879,10 @@
                         "type": "string",
                         "format": "date-time"
                     },
+                    "lastDataUpdateDisplay": {
+                        "title": "Last Data Update Display",
+                        "type": "string"
+                    },
                     "ingredients": {
                         "title": "Ingredients",
                         "type": "string"
@@ -878,6 +949,20 @@
                     "sodium": {
                         "title": "Sodium",
                         "type": "number"
+                    },
+                    "nutritionTable": {
+                        "title": "Nutrition Table",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TableRecord"
+                        }
+                    },
+                    "auditLogs": {
+                        "title": "Audit Logs",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LogEntryRecord"
+                        }
                     }
                 }
             },
@@ -1062,33 +1147,6 @@
                     },
                     "displayName": {
                         "title": "Display Name",
-                        "type": "string"
-                    }
-                }
-            },
-            "TableRecord": {
-                "title": "TableRecord",
-                "type": "object",
-                "required": [
-                    "key",
-                    "title",
-                    "value"
-                ],
-                "properties": {
-                    "key": {
-                        "title": "Key",
-                        "type": "string"
-                    },
-                    "parentKey": {
-                        "title": "Parent Key",
-                        "type": "string"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "value": {
-                        "title": "Value",
                         "type": "string"
                     }
                 }

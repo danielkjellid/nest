@@ -5,6 +5,9 @@ from decimal import Decimal
 
 from pydantic import BaseModel
 
+from nest.audit_logs.records import LogEntryRecord
+from nest.core.records import TableRecord
+from nest.core.utils import format_datetime
 from nest.units.records import UnitRecord
 
 from .models import Product
@@ -41,6 +44,7 @@ class ProductRecord(BaseModel):
     display_price: str
     is_oda_product: bool
     last_data_update: datetime | None
+    last_data_update_display: str
 
     ingredients: str | None
     allergens: str | None
@@ -60,6 +64,9 @@ class ProductRecord(BaseModel):
     protein: Decimal | None
     salt: Decimal | None
     sodium: Decimal | None
+
+    nutrition_table: list[TableRecord]
+    audit_logs: list[LogEntryRecord]
 
     @classmethod
     def from_product(cls, product: Product) -> ProductRecord:
@@ -81,6 +88,11 @@ class ProductRecord(BaseModel):
             supplier=product.supplier,
             is_oda_product=product.is_oda_product,
             last_data_update=product.last_data_update,
+            last_data_update_display=(
+                format_datetime(product.last_data_update, with_seconds=True)
+                if product.last_data_update
+                else None
+            ),
             display_price=product.display_price,
             ingredients=product.ingredients,
             allergens=product.allergens,
@@ -99,4 +111,6 @@ class ProductRecord(BaseModel):
             protein=product.protein,
             salt=product.salt,
             sodium=product.sodium,
+            nutrition_table=[],
+            audit_logs=[],
         )

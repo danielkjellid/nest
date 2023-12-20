@@ -6,15 +6,13 @@ from store_kit.http import status
 
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
-from nest.audit_logs.selectors import get_log_entries_for_object
 from nest.core.decorators import staff_required
 from nest.core.records import TableRecord
-from nest.core.utils import Exclude, format_datetime
+from nest.core.utils import Exclude
 
 from .forms import ProductCreateForm, ProductEditForm
-from .models import Product
 from .records import ProductRecord
-from .selectors import get_nutrition_table, get_product, get_products
+from .selectors import get_product, get_products
 from .services import create_product, edit_product
 
 router = Router(tags=["Products"])
@@ -116,37 +114,7 @@ def product_detail_api(
     Retrieve a single product instance based on product id.
     """
     product = get_product(pk=product_id)
-    product_log_entries = get_log_entries_for_object(model=Product, pk=product_id)
-    nutrition_table = get_nutrition_table(product=product)
-
-    product_dict = product.dict()
-    last_data_update = product_dict.pop("last_data_update", None)
-
-    return APIResponse(
-        status="success",
-        data=ProductDetailOut(
-            **product_dict,
-            last_data_update=(
-                format_datetime(last_data_update, with_seconds=True)
-                if last_data_update
-                else None
-            ),
-            nutrition_table=nutrition_table,
-            audit_logs=[
-                ProductDetailAuditLogsOut(
-                    user_or_source=log_entry.source
-                    if log_entry.source
-                    else log_entry.user.full_name
-                    if log_entry.user
-                    else None,
-                    remote_addr=log_entry.remote_addr,
-                    changes=log_entry.changes,
-                    created_at=format_datetime(log_entry.created_at),
-                )
-                for log_entry in product_log_entries[:10]
-            ],  # Only show last 10 entries.
-        ),
-    )
+    return APIResponse(status="success", data=product)
 
 
 ProductEditIn = Exclude("ProductEditIn", ProductEditForm, ["thumbnail"])

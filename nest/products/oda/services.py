@@ -10,7 +10,7 @@ from nest.units.selectors import get_unit_by_abbreviation, get_unit_normalized_q
 
 from ..core.models import Product
 from ..core.records import ProductRecord
-from ..core.selectors import get_product
+from ..core.selectors import get_oda_product
 from ..core.services import update_or_create_product
 from .clients import OdaClient
 from .constants import PRODUCT_NUTRITION_IDENTIFIERS
@@ -46,7 +46,7 @@ def import_product_from_oda(*, oda_product_id: int) -> ProductRecord | None:
     # The selector will throw an Application error if the product does not exit, so
     # we deliberately catch it and ignore it here.
     try:
-        product = get_product(oda_id=product_response.id)
+        product = get_oda_product(oda_id=product_response.id)
 
         if not getattr(product, "is_synced", True):
             return None
