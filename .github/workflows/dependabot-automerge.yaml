@@ -1,6 +1,6 @@
 name: Dependabot automerge
 
-on: pull_request
+on: push
 
 jobs:
   automerge:
@@ -9,5 +9,4 @@ jobs:
       contents: write
       pull-requests: write
     with:
-      ref: ${{ github.ref }}
-      check-regexp: '(CI done|tests)' #
+      check-regexp: '(CI done|tests)'
