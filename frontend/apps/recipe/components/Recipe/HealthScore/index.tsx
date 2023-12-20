@@ -108,8 +108,8 @@ function RecipeHealthScoreMeterSection({
               r <= flooredValue
                 ? colors.background
                 : theme.colorScheme === 'dark'
-                ? 'bg-[#909296]'
-                : 'bg-gray-200'
+                  ? 'bg-[#909296]'
+                  : 'bg-gray-200'
             )}
           />
         ))}
