@@ -8,7 +8,7 @@ import { TableOfContents } from '../../../components/TableOfContents'
 import View from '../../../components/View'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
-import { type ProductDetailAuditLogsOut, type ProductDetailOutAPIResponse } from '../../../types'
+import { type LogEntryRecord, type ProductRecordAPIResponse } from '../../../types'
 import { urls } from '../../urls'
 import { ProductDetailHeader } from '../components/ProductDetailHeader'
 import { routes } from '../routes'
@@ -16,7 +16,7 @@ import { routes } from '../routes'
 import { useProductDetailStyles } from './detail.styles'
 
 interface ProductDetailInnerProps {
-  results: { productResponse: ProductDetailOutAPIResponse }
+  results: { productResponse: ProductRecordAPIResponse }
 }
 
 function ProductDetailInner({ results }: ProductDetailInnerProps) {
@@ -35,7 +35,7 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
   ]
 
   // Format change message by highlighting changes, making it a bit more readable.
-  const formatChangeMessage = ({ changes }: { changes: ProductDetailAuditLogsOut['changes'] }) => {
+  const formatChangeMessage = ({ changes }: { changes: LogEntryRecord['changes'] }) => {
     return (
       <div>
         {Object.entries(changes).map(([field, change], i) => (
@@ -107,8 +107,8 @@ function ProductDetailInner({ results }: ProductDetailInnerProps) {
               {product.gtin && <Card.KeyValue k="Gtin" value={product.gtin} />}
               <Card.KeyValue k="Is available" value={product.isAvailable} />
               <Card.KeyValue k="Is synced" value={product.isSynced} />
-              <Card.KeyValue k="Gluten free" value={!product.containsGluten} />
-              <Card.KeyValue k="Lactose free" value={!product.containsLactose} />
+              <Card.KeyValue k="Gluten free" value={!product.classifiers.containsGluten} />
+              <Card.KeyValue k="Lactose free" value={!product.classifiers.containsLactose} />
               {product.thumbnailUrl && (
                 <Card.KeyValue
                   k="Picture"
@@ -187,7 +187,7 @@ function ProductDetail() {
   const { productId } = useParams()
   invariant(productId)
 
-  const productResponse = useFetch<ProductDetailOutAPIResponse>(
+  const productResponse = useFetch<ProductRecordAPIResponse>(
     urls.products.detail({ id: productId })
   )
 

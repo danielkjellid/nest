@@ -1,8 +1,8 @@
 import { useCommonStyles } from '../../../styles/common'
-import { type ProductDetailOut } from '../../../types'
+import { type ProductRecord } from '../../../types'
 
 interface ProductDetailHeaderProps
-  extends Pick<ProductDetailOut, 'thumbnailUrl' | 'fullName' | 'supplier'> {
+  extends Pick<ProductRecord, 'thumbnailUrl' | 'fullName' | 'supplier'> {
   actions?: React.ReactNode
 }
 
