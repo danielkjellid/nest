@@ -9,5 +9,5 @@ jobs:
       contents: write
       pull-requests: write
     with:
+      ref: ${{ github.ref }}
       check-regexp: '(CI done|tests)'
-
