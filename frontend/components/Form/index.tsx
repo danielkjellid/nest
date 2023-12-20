@@ -338,8 +338,8 @@ function Form<T extends object>({
                 const options = element.enum
                   ? element.enum
                   : optionsForElem.options
-                  ? optionsForElem.options
-                  : undefined
+                    ? optionsForElem.options
+                    : undefined
 
                 return (
                   <div
