@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "~3.11.1"
-ipython = "^8.17.2"
+ipython = "^8.18.1"
 structlog = "^23.1.0"
 django = "^4.2.7"
 django-ninja = "^0.21.0"
