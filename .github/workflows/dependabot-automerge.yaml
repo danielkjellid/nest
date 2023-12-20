@@ -9,4 +9,5 @@ jobs:
       contents: write
       pull-requests: write
     with:
+      name: 'automerge'
       check-regexp: '(CI done|tests)'
