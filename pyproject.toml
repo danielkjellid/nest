@@ -33,7 +33,7 @@ psycopg2 = "^2.9.9"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.1.4"
 mypy = "^1.2"
-django-stubs = "^1.16.0"
+django-stubs = "^4.2.7"
 django-debug-toolbar = "^3.8.1"
 types-requests = "^2.31.0.6"
 deptry = "^0.12.0"
