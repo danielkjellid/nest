@@ -5,7 +5,7 @@ import { Duration } from 'luxon'
 import { useState } from 'react'
 
 import { useCommonStyles } from '../../../../styles/common'
-import { type RecipeDetailOut } from '../../../../types'
+import { type RecipeDetailRecord } from '../../../../types'
 
 import { RecipeHealthScoreMeter } from './HealthScore'
 import { RecipeIngredientGroup } from './Ingredients'
@@ -14,7 +14,7 @@ import { RecipeSection } from './Section'
 import { RecipeSteps } from './Steps'
 
 interface RecipeProps {
-  recipe: RecipeDetailOut
+  recipe: RecipeDetailRecord
 }
 
 function Recipe({ recipe }: RecipeProps) {

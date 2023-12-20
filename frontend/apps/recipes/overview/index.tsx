@@ -6,13 +6,13 @@ import Table from '../../../components/Table'
 import View from '../../../components/View'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
-import { type RecipeListOut, type RecipeListOutAPIResponse } from '../../../types'
+import { type RecipeRecord, type RecipeRecordAPIResponse } from '../../../types'
 import { routes as recipeRoutes } from '../../recipe/routes'
 import { urls } from '../../urls'
 import { routes } from '../routes'
 
 interface RecipeOverviewInnerProps {
-  results: { recipes: RecipeListOutAPIResponse }
+  results: { recipes: RecipeRecordAPIResponse }
 }
 
 function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
@@ -35,7 +35,7 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
           </div>
         )}
       </div>
-      <Table<RecipeListOut>
+      <Table<RecipeRecord>
         rowIdentifier="id"
         columns={[
           {
@@ -61,7 +61,7 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
 }
 
 function RecipeOverview() {
-  const recipes = useFetch<RecipeListOutAPIResponse>(urls.recipes.list())
+  const recipes = useFetch<RecipeRecordAPIResponse>(urls.recipes.list())
 
   return (
     <View<object, RecipeOverviewInnerProps>

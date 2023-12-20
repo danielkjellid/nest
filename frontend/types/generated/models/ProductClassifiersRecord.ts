@@ -3,7 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecipeDetailIngredientItemUnitOut = {
-    abbreviation: string;
+export type ProductClassifiersRecord = {
+    containsGluten: boolean;
+    containsLactose: boolean;
 };
 

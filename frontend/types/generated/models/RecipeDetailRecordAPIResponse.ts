@@ -3,15 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { RecipeListOut } from './RecipeListOut';
+import type { RecipeDetailRecord } from './RecipeDetailRecord';
 
-export type RecipeListOutAPIResponse = {
-    status: RecipeListOutAPIResponse.status;
+export type RecipeDetailRecordAPIResponse = {
+    status: RecipeDetailRecordAPIResponse.status;
     message?: string;
-    data?: Array<RecipeListOut>;
+    data?: RecipeDetailRecord;
 };
 
-export namespace RecipeListOutAPIResponse {
+export namespace RecipeDetailRecordAPIResponse {
 
     export enum status {
         SUCCESS = 'success',
