@@ -9,8 +9,8 @@ import { useForm } from '../../../hooks/forms'
 import { useCommonStyles } from '../../../styles/common'
 import {
   type ProductOdaImportForm,
-  type ProductOdaImportOut,
-  type ProductOdaImportOutAPIResponse,
+  type OdaProductDetailRecord,
+  type OdaProductDetailRecordAPIResponse,
 } from '../../../types'
 import { urls } from '../../urls'
 
@@ -26,7 +26,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
    ***********/
   const { classes } = useCommonStyles()
   const form = useForm<ProductOdaImportForm>({ key: 'ProductOdaImportForm' })
-  const [fetchedProduct, setFetchedProduct] = useState<ProductOdaImportOut | null>()
+  const [fetchedProduct, setFetchedProduct] = useState<OdaProductDetailRecord | null>()
   const [importLoadingState, setImportLoadingState] =
     useState<ButtonProps['loadingState']>('initial')
 
@@ -43,7 +43,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
   const fetchOdaProduct = async () => {
     try {
       form.setLoadingState('loading')
-      const response = await performPost<ProductOdaImportOutAPIResponse>({
+      const response = await performPost<OdaProductDetailRecordAPIResponse>({
         url: urls.products.oda.import(),
         ...form.buildPayload(),
       })
@@ -125,15 +125,17 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
             <div className="flex items-center space-x-6">
               <img
                 className={`object-contain w-16 h-16 p-1 border-2 ${classes.border} border-solid rounded-lg bg-white`}
-                src={fetchedProduct.thumbnailUrl}
+                src={fetchedProduct.images[0].thumbnail.url}
                 alt=""
               />
               <div className="w-80 overflow-hidden">
                 <div className="whitespace-nowrap text-ellipsis overflow-hidden text-lg font-semibold leading-6">
-                  {fetchedProduct.fullName}, {fetchedProduct.unitQuantity} {fetchedProduct.unit}
+                  {fetchedProduct.fullName},{' '}
+                  {Number(fetchedProduct.grossPrice) / Number(fetchedProduct.grossUnitPrice)}{' '}
+                  {fetchedProduct.unitPriceQuantityAbbreviation}
                 </div>
-                {fetchedProduct.supplier ? (
-                  <div className="mt-1 text-sm">{fetchedProduct.supplier}</div>
+                {fetchedProduct.brand ? (
+                  <div className="mt-1 text-sm">{fetchedProduct.brand}</div>
                 ) : (
                   <div className="mt-1 text-sm">Unknown supplier</div>
                 )}

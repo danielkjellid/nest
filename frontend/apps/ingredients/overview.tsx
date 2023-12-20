@@ -11,7 +11,7 @@ import { performDelete } from '../../hooks/fetcher/http'
 import {
   type IngredientDeleteIn,
   type RecipeIngredientRecordAPIResponse,
-  type ProductListOutAPIResponse,
+  type ProductRecordAPIResponse,
 } from '../../types'
 import { urls } from '../urls'
 
@@ -21,7 +21,7 @@ import { IngredientsOverviewTable } from './components/IngredientsOverviewTable'
 interface IngredientsOverviewInnerProps {
   results: {
     ingredients: RecipeIngredientRecordAPIResponse
-    products: ProductListOutAPIResponse
+    products: ProductRecordAPIResponse
   }
   refetch: () => void
 }
@@ -89,7 +89,7 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
 
 function IngredientsOverview() {
   const ingredients = useFetch<RecipeIngredientRecordAPIResponse>(urls.recipes.ingredients.list())
-  const products = useFetch<ProductListOutAPIResponse>(urls.products.list())
+  const products = useFetch<ProductRecordAPIResponse>(urls.products.list())
 
   const refetch = () => {
     ingredients.reload()

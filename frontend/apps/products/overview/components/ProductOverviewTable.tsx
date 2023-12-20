@@ -2,17 +2,17 @@ import { Anchor, Menu } from '@mantine/core'
 import { IconEye, IconPencil, IconTrash } from '@tabler/icons-react'
 
 import Table from '../../../../components/Table'
-import { type ProductListOut } from '../../../../types'
+import { type ProductRecord } from '../../../../types'
 import { routes } from '../../routes'
 
 interface ProductOverViewTableProps {
-  data: ProductListOut[]
+  data: ProductRecord[]
   onEditProduct: (id: number) => void
 }
 
 function ProductOverViewTable({ data, onEditProduct }: ProductOverViewTableProps) {
   return (
-    <Table<ProductListOut>
+    <Table<ProductRecord>
       rowIdentifier="id"
       columns={[
         { header: 'Id', accessorKey: 'id', size: 20 },
