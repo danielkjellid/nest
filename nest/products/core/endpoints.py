@@ -13,34 +13,20 @@ from nest.core.utils import Exclude, format_datetime
 
 from .forms import ProductCreateForm, ProductEditForm
 from .models import Product
+from .records import ProductRecord
 from .selectors import get_nutrition_table, get_product, get_products
 from .services import create_product, edit_product
 
 router = Router(tags=["Products"])
 
 
-class ProductListOut(Schema):
-    id: int
-    full_name: str
-    thumbnail_url: str | None
-    is_available: bool
-    oda_url: str | None
-    oda_id: int | None
-    is_synced: bool
-    gtin: str | None
-    is_oda_product: bool
-    display_price: str
-
-
-@router.get("/", response=APIResponse[list[ProductListOut]])
-def product_list_api(request: HttpRequest) -> APIResponse[list[ProductListOut]]:
+@router.get("/", response=APIResponse[list[ProductRecord]])
+def product_list_api(request: HttpRequest) -> APIResponse[list[ProductRecord]]:
     """
     Get a list of all products in the application.
     """
     products = get_products()
-    data = [ProductListOut(**product.dict()) for product in products]
-
-    return APIResponse(status="success", data=data)
+    return APIResponse(status="success", data=products)
 
 
 ProductCreateIn = Exclude("ProductCreateIn", ProductCreateForm, ["thumbnail"])

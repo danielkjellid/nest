@@ -7,48 +7,23 @@ from nest.core.decorators import staff_required
 
 from .clients import OdaClient
 from .forms import ProductOdaImportForm
+from .records import OdaProductDetailRecord
 from .services import import_product_from_oda
 
 router = Router(tags=["Oda products"])
 
 
-class ProductOdaImportOut(Schema):
-    id: int
-    full_name: str
-    supplier: str | None
-    is_available: bool
-    gross_price: str
-    unit: str
-    unit_quantity: str
-    thumbnail_url: str
-
-
-@router.post("import/", response=APIResponse[ProductOdaImportOut])
+@router.post("import/", response=APIResponse[OdaProductDetailRecord])
 @staff_required
 def product_oda_import_api(
     request: HttpRequest, payload: ProductOdaImportForm
-) -> APIResponse[ProductOdaImportOut]:
+) -> APIResponse[OdaProductDetailRecord]:
     """
     Import product data from id. Note: This does not create a product, it only retrieves
     data.
     """
-    response = OdaClient.get_product(product_id=payload.oda_product_id)
-
-    return APIResponse(
-        status="success",
-        data=ProductOdaImportOut(
-            id=response.id,
-            full_name=response.full_name,
-            supplier=response.brand,
-            is_available=response.availability.is_available,
-            gross_price=response.gross_price,
-            unit=response.unit_price_quantity_abbreviation,
-            unit_quantity=str(
-                float(response.gross_price) / float(response.gross_unit_price)
-            ),
-            thumbnail_url=response.images[0].thumbnail.url,
-        ),
-    )
+    oda_product = OdaClient.get_product(product_id=payload.oda_product_id)
+    return APIResponse(status="success", data=oda_product)
 
 
 class ProductOdaImportConfirmIn(Schema):

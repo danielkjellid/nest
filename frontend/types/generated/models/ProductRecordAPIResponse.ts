@@ -3,15 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ProductOdaImportOut } from './ProductOdaImportOut';
+import type { ProductRecord } from './ProductRecord';
 
-export type ProductOdaImportOutAPIResponse = {
-    status: ProductOdaImportOutAPIResponse.status;
+export type ProductRecordAPIResponse = {
+    status: ProductRecordAPIResponse.status;
     message?: string;
-    data?: ProductOdaImportOut;
+    data?: Array<ProductRecord>;
 };
 
-export namespace ProductOdaImportOutAPIResponse {
+export namespace ProductRecordAPIResponse {
 
     export enum status {
         SUCCESS = 'success',

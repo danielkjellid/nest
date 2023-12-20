@@ -5,7 +5,7 @@ import { Button } from '../../../components/Button'
 import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { useForm } from '../../../hooks/forms'
-import { type IngredientCreateForm, type ProductListOut } from '../../../types'
+import { type IngredientCreateForm, type ProductRecord } from '../../../types'
 import { urls } from '../../urls'
 
 interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -34,7 +34,7 @@ ProductOption.displayName = 'ProductOption'
 
 interface IngredientAddDrawerProps {
   opened: boolean
-  products: ProductListOut[]
+  products: ProductRecord[]
   onClose: () => void
   refetch: () => void
 }
