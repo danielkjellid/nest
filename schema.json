@@ -420,7 +420,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/IngredientListOutAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeIngredientRecordAPIResponse"
                                 }
                             }
                         }
@@ -510,7 +510,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeIngredientGroupsListOutAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeIngredientItemGroupRecordAPIResponse"
                                 }
                             }
                         }
@@ -2383,52 +2383,8 @@
                     }
                 }
             },
-            "IngredientListProductOut": {
-                "title": "IngredientListProductOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "fullName"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string"
-                    }
-                }
-            },
-            "IngredientListOut": {
-                "title": "IngredientListOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "title",
-                    "product"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "product": {
-                        "$ref": "#/components/schemas/IngredientListProductOut"
-                    }
-                }
-            },
-            "IngredientListOutAPIResponse": {
-                "title": "IngredientListOutAPIResponse",
+            "RecipeIngredientRecordAPIResponse": {
+                "title": "RecipeIngredientRecordAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2450,7 +2406,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/IngredientListOut"
+                            "$ref": "#/components/schemas/RecipeIngredientRecord"
                         }
                     }
                 }
@@ -2508,107 +2464,8 @@
                     }
                 }
             },
-            "RecipeIngredientGroupsListIngredientProductOut": {
-                "title": "RecipeIngredientGroupsListIngredientProductOut",
-                "type": "object",
-                "required": [
-                    "fullName"
-                ],
-                "properties": {
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string"
-                    },
-                    "thumbnailUrl": {
-                        "title": "Thumbnail Url",
-                        "type": "string"
-                    }
-                }
-            },
-            "RecipeIngredientGroupsListIngredientOut": {
-                "title": "RecipeIngredientGroupsListIngredientOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "title",
-                    "product"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "product": {
-                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientProductOut"
-                    }
-                }
-            },
-            "RecipeIngredientGroupsListItemPortionQuantityUnitOut": {
-                "title": "RecipeIngredientGroupsListItemPortionQuantityUnitOut",
-                "type": "object",
-                "required": [
-                    "abbreviation"
-                ],
-                "properties": {
-                    "abbreviation": {
-                        "title": "Abbreviation",
-                        "type": "string"
-                    }
-                }
-            },
-            "RecipeIngredientGroupsListItemOut": {
-                "title": "RecipeIngredientGroupsListItemOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "ingredient",
-                    "portionQuantityUnit"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "ingredient": {
-                        "$ref": "#/components/schemas/RecipeIngredientGroupsListIngredientOut"
-                    },
-                    "portionQuantityUnit": {
-                        "$ref": "#/components/schemas/RecipeIngredientGroupsListItemPortionQuantityUnitOut"
-                    }
-                }
-            },
-            "RecipeIngredientGroupsListOut": {
-                "title": "RecipeIngredientGroupsListOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "title",
-                    "ingredientItems"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "ingredientItems": {
-                        "title": "Ingredient Items",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientGroupsListItemOut"
-                        }
-                    }
-                }
-            },
-            "RecipeIngredientGroupsListOutAPIResponse": {
-                "title": "RecipeIngredientGroupsListOutAPIResponse",
+            "RecipeIngredientItemGroupRecordAPIResponse": {
+                "title": "RecipeIngredientItemGroupRecordAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2630,7 +2487,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientGroupsListOut"
+                            "$ref": "#/components/schemas/RecipeIngredientItemGroupRecord"
                         }
                     }
                 }

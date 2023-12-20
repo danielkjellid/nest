@@ -2,17 +2,17 @@ import { Anchor, Menu } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
 import Table from '../../../components/Table'
-import { type IngredientListOut } from '../../../types'
+import { type RecipeIngredientRecord } from '../../../types'
 import { routes as productRoutes } from '../../products/routes'
 
 interface IngredientsOverviewTableProps {
-  data: IngredientListOut[]
+  data: RecipeIngredientRecord[]
   onDeleteIngredient: (id: number) => void
 }
 
 function IngredientsOverviewTable({ data, onDeleteIngredient }: IngredientsOverviewTableProps) {
   return (
-    <Table<IngredientListOut>
+    <Table<RecipeIngredientRecord>
       rowIdentifier="id"
       columns={[
         { header: 'Title', accessorKey: 'title' },

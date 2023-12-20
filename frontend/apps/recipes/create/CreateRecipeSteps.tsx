@@ -9,7 +9,7 @@ import View from '../../../components/View'
 import { useFetch } from '../../../hooks/fetcher'
 import { performPost } from '../../../hooks/fetcher/http'
 import { useCommonStyles } from '../../../styles/common'
-import { type RecipeIngredientGroupsListOutAPIResponse } from '../../../types'
+import { type RecipeIngredientItemGroupRecordAPIResponse } from '../../../types'
 import { urls } from '../../urls'
 import { RecipeStepsForm, type Step, type StepInputError } from '../forms/RecipeStepsForm'
 import { routes } from '../routes'
@@ -19,7 +19,7 @@ import { Header } from './components/Header'
 interface RecipeStepsCreateInnerProps {
   recipeId: string | number
   results: {
-    ingredientGroups: RecipeIngredientGroupsListOutAPIResponse
+    ingredientGroups: RecipeIngredientItemGroupRecordAPIResponse
   }
 }
 
@@ -222,7 +222,7 @@ function RecipeStepsCreate() {
   const { recipeId } = useParams()
   invariant(recipeId)
 
-  const ingredientGroups = useFetch<RecipeIngredientGroupsListOutAPIResponse>(
+  const ingredientGroups = useFetch<RecipeIngredientItemGroupRecordAPIResponse>(
     urls.recipes.ingredients.groups.list({ id: recipeId })
   )
 
