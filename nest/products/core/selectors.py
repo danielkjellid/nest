@@ -13,6 +13,9 @@ from .records import ProductClassifiersRecord, ProductRecord
 
 
 def get_product(*, pk: int) -> ProductRecord:
+    """
+    Get a single product instance based on the product id.
+    """
     try:
         products = get_products(product_ids=[pk])
         return products[0]
@@ -21,6 +24,9 @@ def get_product(*, pk: int) -> ProductRecord:
 
 
 def get_oda_product(*, oda_id: int) -> ProductRecord:
+    """
+    Get a single product instance based on an oda id.
+    """
     try:
         products = get_products(oda_ids=[oda_id])
         return products[0]
