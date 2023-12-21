@@ -14,6 +14,6 @@ export type UnitRecord = {
     baseFactor: number;
     isBaseUnit: boolean;
     isDefault: boolean;
-    displayName?: string;
+    displayName: string;
 };
 

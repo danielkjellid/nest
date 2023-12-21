@@ -1,11 +1,15 @@
 import { renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
+import { UnitType } from '../../types'
 import { UnitsProvider, useUnits } from '../UnitsProvider'
 
 import { unitItemTestUtil } from './utils'
 
-const unitsData = [unitItemTestUtil(), unitItemTestUtil(2, 'Kilogram', 'Kilogram (kg)')]
+const unitsData = [
+  unitItemTestUtil(),
+  unitItemTestUtil(2, 'Kilogram', 'kg', UnitType.Weight, 1000, false, false, 'Kilogram (kg)'),
+]
 const unitsOptions = unitsData.map((unit) => ({
   label: unit.displayName,
   value: unit.id.toString(),
@@ -36,8 +40,26 @@ describe('UnitsContext context', () => {
 
     expect(result.current).toStrictEqual({
       units: [
-        { id: 1, name: 'Gram', displayName: 'Gram (g)' },
-        { id: 2, name: 'Kilogram', displayName: 'Kilogram (kg)' },
+        {
+          id: 1,
+          name: 'Gram',
+          abbreviation: 'g',
+          unitType: UnitType.Weight,
+          baseFactor: 1,
+          isBaseUnit: true,
+          isDefault: true,
+          displayName: 'Gram (g)',
+        },
+        {
+          id: 2,
+          name: 'Kilogram',
+          abbreviation: 'kg',
+          unitType: UnitType.Weight,
+          baseFactor: 1000,
+          isBaseUnit: false,
+          isDefault: false,
+          displayName: 'Kilogram (kg)',
+        },
       ],
       unitsOptions: [
         { label: 'Gram (g)', value: '1' },

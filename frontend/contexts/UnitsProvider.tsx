@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
 
-import { type UnitListOut } from '../types'
+import { type UnitRecord } from '../types'
 
 export interface UnitOption {
   label: string
@@ -8,7 +8,7 @@ export interface UnitOption {
 }
 
 export interface UnitsContextType {
-  units: UnitListOut[] | undefined
+  units: UnitRecord[] | undefined
   unitsOptions: UnitOption[] | undefined
 }
 

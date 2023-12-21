@@ -590,7 +590,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/UnitListOutListAPIResponse"
+                                    "$ref": "#/components/schemas/UnitRecordListAPIResponse"
                                 }
                             }
                         }
@@ -665,7 +665,8 @@
                     "unitType",
                     "baseFactor",
                     "isBaseUnit",
-                    "isDefault"
+                    "isDefault",
+                    "displayName"
                 ],
                 "properties": {
                     "id": {
@@ -3409,31 +3410,8 @@
                     }
                 }
             },
-            "UnitListOut": {
-                "title": "UnitListOut",
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "displayName"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "displayName": {
-                        "title": "Display Name",
-                        "type": "string"
-                    }
-                }
-            },
-            "UnitListOutListAPIResponse": {
-                "title": "UnitListOutListAPIResponse",
+            "UnitRecordListAPIResponse": {
+                "title": "UnitRecordListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -3455,7 +3433,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/UnitListOut"
+                            "$ref": "#/components/schemas/UnitRecord"
                         }
                     }
                 }

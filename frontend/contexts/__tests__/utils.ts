@@ -1,4 +1,4 @@
-import { type UnitListOut } from '../../types'
+import { type UnitRecord, UnitType } from '../../types'
 import { type Config, type Home, type User } from '../CommonProvider'
 import { type MenuItem } from '../MenuProvider'
 
@@ -62,8 +62,22 @@ export const menuItemTestUtil = (
   end: end,
 })
 
-export const unitItemTestUtil = (id = 1, name = 'Gram', displayName = 'Gram (g)'): UnitListOut => ({
+export const unitItemTestUtil = (
+  id = 1,
+  name = 'Gram',
+  abbreviation = 'g',
+  unitType = UnitType.Weight,
+  baseFactor = 1,
+  isBaseUnit = true,
+  isDefault = true,
+  displayName = 'Gram (g)'
+): UnitRecord => ({
   id: id,
   name: name,
+  abbreviation: abbreviation,
+  unitType: unitType,
+  baseFactor: baseFactor,
+  isBaseUnit: isBaseUnit,
+  isDefault: isDefault,
   displayName: displayName,
 })

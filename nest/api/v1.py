@@ -8,7 +8,7 @@ from store_kit.utils import camelize
 from nest.core.exceptions import ApplicationError
 from nest.products.router import products_router
 from nest.recipes.router import recipes_router
-from nest.units.endpoints import units_router
+from nest.units.endpoints import router as units_router
 from nest.users.router import users_router
 
 from .base import NestAPI
