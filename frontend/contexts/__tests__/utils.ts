@@ -65,15 +65,19 @@ export const menuItemTestUtil = (
 export const unitItemTestUtil = (
   id = 1,
   name = 'Gram',
-  displayName = 'Gram (g)',
-  abbreviation = 'g'
+  abbreviation = 'g',
+  unitType = UnitType.Weight,
+  baseFactor = 1,
+  isBaseUnit = true,
+  isDefault = true,
+  displayName = 'Gram (g)'
 ): UnitRecord => ({
   id: id,
   name: name,
   abbreviation: abbreviation,
-  unitType: UnitType.Weight,
-  baseFactor: 1,
-  isBaseUnit: true,
-  isDefault: true,
+  unitType: unitType,
+  baseFactor: baseFactor,
+  isBaseUnit: isBaseUnit,
+  isDefault: isDefault,
   displayName: displayName,
 })
