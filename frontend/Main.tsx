@@ -10,7 +10,7 @@ import { type CommonContextType, CommonProvider } from './contexts/CommonProvide
 import { type MenuContextType, MenuProvider } from './contexts/MenuProvider'
 import { UnitsProvider } from './contexts/UnitsProvider'
 import { performGet } from './hooks/fetcher/http'
-import { type UnitListOut, type UnitListOutListAPIResponse } from './types'
+import { type UnitRecord, type UnitRecordListAPIResponse } from './types'
 
 interface AppProps extends CommonContextType, MenuContextType {}
 
@@ -57,12 +57,12 @@ function MainApp(props: AppProps) {
 
   const [currentHome, setCurrentHome] = useState<CommonContextType['currentHome']>(home)
 
-  const [units, setUnits] = useState<UnitListOut[]>()
+  const [units, setUnits] = useState<UnitRecord[]>()
   const [unitsOptions, setUnitsOptions] = useState<{ label: string; value: string }[]>()
 
   useEffect(() => {
     const fetchUnits = async () => {
-      const fetchedUnits = await performGet<UnitListOutListAPIResponse>({ url: urls.units.list() })
+      const fetchedUnits = await performGet<UnitRecordListAPIResponse>({ url: urls.units.list() })
       if (fetchedUnits && fetchedUnits.data) {
         setUnits(fetchedUnits.data)
         setUnitsOptions(
