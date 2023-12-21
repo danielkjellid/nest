@@ -6,7 +6,7 @@ from nest.api.responses import APIResponse
 from .records import UnitRecord
 from .selectors import get_units
 
-router = Router(tags=["Router"])
+router = Router(tags=["Units"])
 
 
 @router.get("/", response=APIResponse[list[UnitRecord]])
