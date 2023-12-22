@@ -42,6 +42,7 @@ def get_products(
     """
 
     filters = {}
+
     if product_ids:
         filters["id__in"] = product_ids
 
