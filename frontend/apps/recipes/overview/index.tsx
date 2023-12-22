@@ -66,7 +66,7 @@ function RecipeOverview() {
   return (
     <View<object, RecipeOverviewInnerProps>
       component={RecipeOverviewInner}
-      results={{ recipes }}
+      results={{ recipes: recipes }}
       componentProps={{}}
       loadingProps={{ description: 'Loading recipes' }}
       errorProps={{ description: 'There was an error getting recipes. Please try again.' }}

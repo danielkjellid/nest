@@ -54,7 +54,7 @@ export function BaseAppCore({ appShellClassName, navbar, header, children }: Bas
         withGlobalStyles
         withNormalizeCSS
         theme={{
-          colorScheme,
+          colorScheme: colorScheme,
           primaryColor: 'green',
           fontFamily: 'Inter, sans-serif;',
           loader: 'dots',

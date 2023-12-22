@@ -36,7 +36,7 @@ describe('UnitsContext context', () => {
       )
     }
 
-    const { result } = renderHook(() => useUnits(), { wrapper })
+    const { result } = renderHook(() => useUnits(), { wrapper: wrapper })
 
     expect(result.current).toStrictEqual({
       units: [

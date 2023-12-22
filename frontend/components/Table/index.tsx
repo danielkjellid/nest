@@ -92,7 +92,7 @@ function Table<TData extends object>({
         showGlobalFilter: true,
         pagination: { pageSize: 25, pageIndex: 0 },
       }}
-      state={{ rowSelection }}
+      state={{ rowSelection: rowSelection }}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       getRowId={(originalRow) => originalRow[rowIdentifier]}

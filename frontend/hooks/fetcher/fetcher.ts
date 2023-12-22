@@ -46,7 +46,7 @@ export const useFetch = <TData = any, TQuery = RequestQuery>(
     [data, error, isValidating]
   )
 
-  return { data, error, loading, called: true, reload: () => mutate() }
+  return { data: data, error: error, loading: loading, called: true, reload: () => mutate() }
 }
 
 /**
@@ -114,15 +114,15 @@ export const useLazyFetch = <TData = any, TQuery = RequestQuery, TResponseData =
   )
 
   if (!called.current) {
-    return [call, { called: false, loading, data: undefined, error: undefined }]
+    return [call, { called: false, loading: loading, data: undefined, error: undefined }]
   }
 
   return [
     call,
     {
-      data,
-      error,
-      loading,
+      data: data,
+      error: error,
+      loading: loading,
       called: true,
     },
   ]

@@ -29,6 +29,6 @@ interface MenuProviderProps extends MenuContextType {
 }
 
 export function MenuProvider({ menu, children }: MenuProviderProps) {
-  const value = useMemo(() => ({ menu }), [menu])
+  const value = useMemo(() => ({ menu: menu }), [menu])
   return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>
 }

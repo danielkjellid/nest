@@ -96,14 +96,14 @@ function RecipeStepsCreateInner({ recipeId, results }: RecipeStepsCreateInnerPro
     const stepsData = [...steps]
     stepsData[index] = data
 
-    clearErrorForIndex({ index })
+    clearErrorForIndex({ index: index })
     setSteps(stepsData)
   }
 
   const handleStepInputDelete = (index: number) => {
     const stepsData = [...steps]
     stepsData.splice(index, 1)
-    clearErrorForIndex({ index })
+    clearErrorForIndex({ index: index })
     setSteps(stepsData)
   }
 
@@ -228,9 +228,9 @@ function RecipeStepsCreate() {
 
   return (
     <View<object, RecipeStepsCreateInnerProps>
-      results={{ ingredientGroups }}
+      results={{ ingredientGroups: ingredientGroups }}
       component={RecipeStepsCreateInner}
-      componentProps={{ recipeId }}
+      componentProps={{ recipeId: recipeId }}
       loadingProps={{ description: 'Loading steps' }}
       errorProps={{ description: 'There was an error loading steps, please try again.' }}
     />

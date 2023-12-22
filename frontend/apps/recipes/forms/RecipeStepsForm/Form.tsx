@@ -25,7 +25,10 @@ function RecipeStepsForm({
   onStepInputChange,
   onStepInputDelete,
 }: RecipeStepsFormProps) {
-  const { onDragEnd, onDragStart } = useDragAndDropSingleList({ items: steps, onSequenceChange })
+  const { onDragEnd, onDragStart } = useDragAndDropSingleList({
+    items: steps,
+    onSequenceChange: onSequenceChange,
+  })
 
   return (
     <div>

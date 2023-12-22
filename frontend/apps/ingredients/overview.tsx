@@ -100,8 +100,8 @@ function IngredientsOverview() {
   return (
     <View<object, IngredientsOverviewInnerProps>
       component={IngredientsOverviewInner}
-      results={{ ingredients, products }}
-      componentProps={{ refetch }}
+      results={{ ingredients: ingredients, products: products }}
+      componentProps={{ refetch: refetch }}
       loadingProps={{ description: 'Loading ingredients' }}
       errorProps={{ description: 'There was an error getting ingredients. Please try again.' }}
     />

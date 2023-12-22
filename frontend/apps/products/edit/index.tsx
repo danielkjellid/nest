@@ -73,8 +73,8 @@ function ProductEdit() {
   return (
     <View<object, any>
       component={ProductEditInner}
-      results={{ productResponse }}
-      componentProps={{ productId }}
+      results={{ productResponse: productResponse }}
+      componentProps={{ productId: productId }}
       loadingProps={{ description: 'Loading product...' }}
       errorProps={{ description: 'There was an error getting the product. Please try again.' }}
     />

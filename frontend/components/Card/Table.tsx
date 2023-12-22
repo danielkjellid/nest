@@ -45,8 +45,8 @@ function CardTableRow({ headers, item }: CardTableRowProps) {
         const align = header.align ? header.align : undefined
 
         return {
-          value,
-          align,
+          value: value,
+          align: align,
         }
       }),
     [headers]

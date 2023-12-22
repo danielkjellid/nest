@@ -31,23 +31,23 @@ import {
 } from './types'
 
 const supportedComponents = {
-  Autocomplete,
-  Checkbox,
-  Chip,
-  ColorInput,
-  Counter,
-  FileInput,
-  MultiSelect,
-  PasswordInput,
-  PinInput,
-  Radio,
-  Rating,
-  Select,
-  Slider,
-  Switch,
-  Textarea,
-  TextInput,
-  NumberInput,
+  Autocomplete: Autocomplete,
+  Checkbox: Checkbox,
+  Chip: Chip,
+  ColorInput: ColorInput,
+  Counter: Counter,
+  FileInput: FileInput,
+  MultiSelect: MultiSelect,
+  PasswordInput: PasswordInput,
+  PinInput: PinInput,
+  Radio: Radio,
+  Rating: Rating,
+  Select: Select,
+  Slider: Slider,
+  Switch: Switch,
+  Textarea: Textarea,
+  TextInput: TextInput,
+  NumberInput: NumberInput,
 }
 
 // Sanity check that the list of supportedComponents matches the components defined in the backend.
@@ -111,7 +111,7 @@ function Form<T extends object>({
     const values = {} as T
     Object.entries(elements).map(([elementKey, element]) => {
       const elemId = elementKey as K
-      values[elemId] = getDefaultForElement({ element })
+      values[elemId] = getDefaultForElement({ element: element })
     })
 
     return values
@@ -131,7 +131,7 @@ function Form<T extends object>({
 
     Object.entries(elements).map(([elementKey, element]) => {
       if (initialData) {
-        const elemOptions = getOptionsForElement({ elementKey })
+        const elemOptions = getOptionsForElement({ elementKey: elementKey })
         if (elemOptions && elemOptions.accessorKey) {
           const accessorValue = getAccessorKeyValue({
             accessorKey: elemOptions.accessorKey,
@@ -140,11 +140,11 @@ function Form<T extends object>({
 
           initialValues[elementKey as K] = accessorValue
             ? (accessorValue.toString() as T[K])
-            : getDefaultForElement({ element })
+            : getDefaultForElement({ element: element })
         } else if (initialData[elementKey as K] !== null) {
           initialValues[elementKey as K] = initialData[elementKey as K] as T[K]
         } else {
-          initialValues[elementKey as K] = getDefaultForElement({ element })
+          initialValues[elementKey as K] = getDefaultForElement({ element: element })
         }
       } else {
         initialValues = setDefaultFormValues()
@@ -251,7 +251,7 @@ function Form<T extends object>({
   }) => {
     // The checkbox component uses slightly different properties than the other supported components.
     if (element.component === FrontendComponents.Checkbox) {
-      return createCheckboxComponent({ elementKey, element })
+      return createCheckboxComponent({ elementKey: elementKey, element: element })
     }
 
     // Sanitize options, all values need to be string.
@@ -351,7 +351,7 @@ function Form<T extends object>({
                     {optionsForElem.beforeSlot}
                     {createFormComponent({
                       elementKey: key as K,
-                      element,
+                      element: element,
                       options: options,
                       placeholder: optionsForElem.placeholder,
                       helpText: optionsForElem.helpText,
@@ -362,7 +362,11 @@ function Form<T extends object>({
                   </div>
                 )
               } else {
-                return createFormComponent({ elementKey: key as K, element, options: element.enum })
+                return createFormComponent({
+                  elementKey: key as K,
+                  element: element,
+                  options: element.enum,
+                })
               }
             }
           })}
