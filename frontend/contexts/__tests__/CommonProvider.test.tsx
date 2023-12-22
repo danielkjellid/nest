@@ -33,16 +33,16 @@ describe('CommonContext context', () => {
       )
     }
 
-    const { result } = renderHook(() => useCommonContext(), { wrapper })
+    const { result } = renderHook(() => useCommonContext(), { wrapper: wrapper })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { setCurrentHome: _, ...contextWithoutHandler } = result.current
 
     expect(contextWithoutHandler).toStrictEqual({
-      config,
-      currentHome,
-      currentUser,
-      availableHomes,
+      config: config,
+      currentHome: currentHome,
+      currentUser: currentUser,
+      availableHomes: availableHomes,
     })
   })
 })

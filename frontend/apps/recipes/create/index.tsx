@@ -40,7 +40,7 @@ function RecipeCreate() {
 
     if (response && response.data) {
       const { recipeId } = response.data
-      navigate(routes.createRecipeIngredients.build({ recipeId }))
+      navigate(routes.createRecipeIngredients.build({ recipeId: recipeId }))
     }
   }
 

@@ -15,7 +15,7 @@ function Stepper({ loadingStep }: StepperProps) {
       label: 'Create recipe',
       description: 'Add basic recipe information',
       path: routes.createRecipe.path,
-      buildPath(_recipeId: string | number) {
+      buildPath: function (_recipeId: string | number) {
         return routes.createRecipe.build()
       },
     },
@@ -24,8 +24,8 @@ function Stepper({ loadingStep }: StepperProps) {
       label: 'Add ingredients',
       description: 'Specify ingredients and amounts',
       path: routes.createRecipeIngredients.path,
-      buildPath(recipeId: string | number) {
-        return routes.createRecipeIngredients.build({ recipeId })
+      buildPath: function (recipeId: string | number) {
+        return routes.createRecipeIngredients.build({ recipeId: recipeId })
       },
     },
     {
@@ -33,8 +33,8 @@ function Stepper({ loadingStep }: StepperProps) {
       label: 'Add steps',
       description: 'Add step and instructions',
       path: routes.createRecipeSteps.path,
-      buildPath(recipeId: string | number) {
-        return routes.createRecipeSteps.build({ recipeId })
+      buildPath: function (recipeId: string | number) {
+        return routes.createRecipeSteps.build({ recipeId: recipeId })
       },
     },
   ]

@@ -85,7 +85,7 @@ function RecipeDetail() {
   return (
     <View<object, RecipeDetailInnerProps>
       component={RecipeDetailInner}
-      results={{ recipeResponse }}
+      results={{ recipeResponse: recipeResponse }}
       componentProps={{}}
       loadingProps={{ description: 'Loading recipe' }}
       errorProps={{

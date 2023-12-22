@@ -81,7 +81,7 @@ function UsersApp() {
   return (
     <View<object, UsersAppInnerProps>
       component={UsersAppInner}
-      results={{ users }}
+      results={{ users: users }}
       componentProps={{}}
       loadingProps={{ description: 'Loading users...' }}
       errorProps={{ description: 'There was an error getting users. Please try again.' }}

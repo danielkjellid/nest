@@ -71,8 +71,8 @@ function ProductOverview() {
   return (
     <View<object, ProductOverviewInnerProps>
       component={ProductOverviewInner}
-      results={{ products }}
-      componentProps={{ refetch }}
+      results={{ products: products }}
+      componentProps={{ refetch: refetch }}
       loadingProps={{ description: 'Loading products...' }}
       errorProps={{ description: 'There was an error getting products. Please try again.' }}
     />

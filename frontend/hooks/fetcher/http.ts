@@ -55,7 +55,7 @@ async function getter<T>({
 
     if (error && error.response?.data?.message) {
       const { message } = error.response.data
-      notifications.show({ message, color: 'red' })
+      notifications.show({ message: message, color: 'red' })
     }
     throw error
   }
@@ -72,7 +72,7 @@ const setter =
       url: url,
       options: {
         body: options.isMultipart ? data : JSON.stringify(data),
-        method,
+        method: method,
         ...options,
         headers: {
           'X-CSRFToken': csrfToken,

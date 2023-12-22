@@ -183,7 +183,7 @@ export function useForm<T extends object>({
     try {
       setLoadingState('loading')
       const response = await httpPost<T>({
-        url,
+        url: url,
         ...buildPayload(),
       })
       notifications.show({
@@ -213,19 +213,19 @@ export function useForm<T extends object>({
     key: formKey,
     data: formData,
     setData: setFormData,
-    onChange,
-    errors,
-    setErrors,
-    resetErrors,
-    buildPayload,
-    resetForm,
-    validate,
-    loadingState,
-    setLoadingState,
-    performPost,
+    onChange: onChange,
+    errors: errors,
+    setErrors: setErrors,
+    resetErrors: resetErrors,
+    buildPayload: buildPayload,
+    resetForm: resetForm,
+    validate: validate,
+    loadingState: loadingState,
+    setLoadingState: setLoadingState,
+    performPost: performPost,
     elements: convertSchemaElemToFormElem(schema.properties),
     required: schema.required,
     columns: schema['x-columns'],
-    isMultipart,
+    isMultipart: isMultipart,
   }
 }

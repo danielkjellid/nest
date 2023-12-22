@@ -187,14 +187,12 @@ function ProductDetail() {
   const { productId } = useParams()
   invariant(productId)
 
-  const productResponse = useFetch<ProductRecordAPIResponse>(
-    urls.products.detail({ id: productId })
-  )
+  const response = useFetch<ProductRecordAPIResponse>(urls.products.detail({ id: productId }))
 
   return (
     <View<object, any>
       component={ProductDetailInner}
-      results={{ productResponse }}
+      results={{ productResponse: response }}
       componentProps={{}}
       loadingProps={{ description: 'Loading product...' }}
       errorProps={{

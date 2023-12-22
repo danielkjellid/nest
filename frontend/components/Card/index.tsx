@@ -33,11 +33,11 @@ function Card({ title, subtitle, children }: CardProps) {
   const renderContainer = () => {
     const childrenNodes = Children.toArray(children)
 
-    if (childIsElement({ childrenNodes, element: 'CardTable' })) {
+    if (childIsElement({ childrenNodes: childrenNodes, element: 'CardTable' })) {
       return <div>{children}</div>
-    } else if (childIsElement({ childrenNodes, element: 'CardKeyValue' })) {
+    } else if (childIsElement({ childrenNodes: childrenNodes, element: 'CardKeyValue' })) {
       return <dl className="divide-solid m-0 divide-y">{children}</dl>
-    } else if (childIsElement({ childrenNodes, element: 'CardForm' })) {
+    } else if (childIsElement({ childrenNodes: childrenNodes, element: 'CardForm' })) {
       return <div className="divide-solid sm:px-6 px-4 space-y-6 divide-y">{children}</div>
     } else {
       return <div className="sm:px-6 px-4 py-4">{children}</div>

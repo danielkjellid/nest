@@ -62,7 +62,13 @@ export function CommonProvider({
 }: CommonProviderProps) {
   return (
     <CommonContext.Provider
-      value={{ config, currentUser, currentHome, availableHomes, setCurrentHome }}
+      value={{
+        config: config,
+        currentUser: currentUser,
+        currentHome: currentHome,
+        availableHomes: availableHomes,
+        setCurrentHome: setCurrentHome,
+      }}
     >
       {children}
     </CommonContext.Provider>

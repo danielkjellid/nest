@@ -35,8 +35,8 @@ function useDragAndDropSingleList<T>({
   }
 
   return {
-    onDragStart,
-    onDragEnd,
+    onDragStart: onDragStart,
+    onDragEnd: onDragEnd,
   }
 }
 
@@ -82,8 +82,8 @@ function useDragAndDropMultipleLists<T>(
   }
 
   return {
-    onDragStart,
-    onDragEnd,
+    onDragStart: onDragStart,
+    onDragEnd: onDragEnd,
   }
 }
 

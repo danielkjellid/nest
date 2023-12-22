@@ -3,7 +3,7 @@ import { generatePath } from 'react-router-dom'
 export const routes = {
   overview: {
     path: '/ingredients',
-    build() {
+    build: function () {
       return generatePath(this.path)
     },
   },

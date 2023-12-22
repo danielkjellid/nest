@@ -43,7 +43,7 @@ function RecipeIngredientsForm({
 }: RecipeIngredientFormProps) {
   const { onDragEnd, onDragStart } = useDragAndDropSingleList({
     items: ingredientGroups,
-    onSequenceChange,
+    onSequenceChange: onSequenceChange,
   })
 
   return (

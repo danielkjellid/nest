@@ -31,6 +31,6 @@ interface UnitsProviderProps extends UnitsContextType {
 }
 
 export function UnitsProvider({ units, unitsOptions, children }: UnitsProviderProps) {
-  const value = useMemo(() => ({ units, unitsOptions }), [units, unitsOptions])
+  const value = useMemo(() => ({ units: units, unitsOptions: unitsOptions }), [units, unitsOptions])
   return <UnitsContext.Provider value={value}>{children}</UnitsContext.Provider>
 }

@@ -27,7 +27,7 @@ describe('MenuContext context', () => {
       return <MenuProvider menu={menuData}>{children}</MenuProvider>
     }
 
-    const { result } = renderHook(() => useMenu(), { wrapper })
+    const { result } = renderHook(() => useMenu(), { wrapper: wrapper })
 
     expect(result.current.menu).toStrictEqual([
       { key: 'users', title: 'Users', end: true },

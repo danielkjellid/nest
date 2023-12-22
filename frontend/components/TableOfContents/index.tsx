@@ -26,7 +26,7 @@ function getActiveElement(rects: DOMRect[]) {
       }
 
       return {
-        index,
+        index: index,
         // - 100 offset because of offset when scrolling into view.
         position: item.y - 100,
       }

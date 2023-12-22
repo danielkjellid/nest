@@ -191,7 +191,7 @@ function RecipeIngredientsCreateInner({ recipeId, results }: RecipeIngredientsCr
           title: 'Ingredient groups created',
           message: 'Ingredient groups and ingredients was successfully saved.',
         })
-        navigate(routes.createRecipeIngredients.build({ recipeId }))
+        navigate(routes.createRecipeIngredients.build({ recipeId: recipeId }))
       } catch (e) {
         console.log(e)
       }
@@ -241,9 +241,9 @@ function RecipeIngredientsCreate() {
 
   return (
     <View<object, RecipeIngredientsCreateInnerProps>
-      results={{ ingredients }}
+      results={{ ingredients: ingredients }}
       component={RecipeIngredientsCreateInner}
-      componentProps={{ recipeId }}
+      componentProps={{ recipeId: recipeId }}
       loadingProps={{ description: 'Loading ingredients' }}
       errorProps={{ description: 'There was an error loading ingredients, please try again.' }}
     />
