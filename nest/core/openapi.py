@@ -193,9 +193,12 @@ class NestOpenAPISchema:
         if property_format == "binary":
             return settings.FORM_COMPONENT_MAPPING_DEFAULTS["file"].value
 
-        component: str = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
-            property_["type"]
-        ].value
+        try:
+            component: str = settings.FORM_COMPONENT_MAPPING_DEFAULTS[
+                property_["type"]
+            ].value
+        except KeyError:
+            return None
 
         return component
 

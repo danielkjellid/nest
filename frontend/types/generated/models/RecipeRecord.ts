@@ -11,9 +11,9 @@ export type RecipeRecord = {
     title: string;
     slug: string;
     defaultNumPortions: number;
-    searchKeywords?: string;
-    externalId?: string;
-    externalUrl?: string;
+    searchKeywords?: (string | null);
+    externalId?: (string | null);
+    externalUrl?: (string | null);
     status: RecipeStatus;
     statusDisplay: string;
     difficulty: RecipeDifficulty;

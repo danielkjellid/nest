@@ -5,7 +5,7 @@
 
 export type TableRecord = {
     key: string;
-    parentKey?: string;
+    parentKey?: (string | null);
     title: string;
     value: string;
 };

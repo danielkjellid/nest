@@ -4,9 +4,9 @@
 /* eslint-disable */
 
 export type RecipeIngredientsCreateIngredientIn = {
-    ingredient: string;
+    ingredientId: string;
     portionQuantity: string;
-    unit: string;
-    additionalInfo?: string;
+    portionQuantityUnitId: string;
+    additionalInfo: (string | null);
 };
 

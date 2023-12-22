@@ -4,11 +4,11 @@
 /* eslint-disable */
 
 export type RecipeDurationRecord = {
-    preparationTime: number;
+    preparationTime: string;
     preparationTimeIso8601: string;
-    cookingTime: number;
+    cookingTime: string;
     cookingTimeIso8601: string;
-    totalTime: number;
+    totalTime: string;
     totalTimeIso8601: string;
 };
 

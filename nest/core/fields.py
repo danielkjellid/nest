@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from pydantic.fields import FieldInfo, UndefinedType
+from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 
 if TYPE_CHECKING:
     from pydantic import StrictBool, StrictInt, StrictStr
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
         NoArgAnyCallable,
     )
 
-Undefined = UndefinedType()
+Undefined = PydanticUndefined
 
 
 def FormField(  # noqa
@@ -54,7 +55,7 @@ def FormField(  # noqa
     max: int | None = None,
     **extra: Any,
 ) -> Any:
-    field_info = FieldInfo(
+    return FieldInfo.from_field(
         default,
         default_factory=default_factory,
         alias=alias,
@@ -92,5 +93,3 @@ def FormField(  # noqa
         max=max,
         **extra,
     )
-    field_info._validate()
-    return field_info

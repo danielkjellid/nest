@@ -15,6 +15,6 @@ export type UserRecord = {
     isStaff: boolean;
     isSuperuser: boolean;
     isHijacked?: boolean;
-    home?: HomeRecord;
+    home?: (HomeRecord | null);
 };
 

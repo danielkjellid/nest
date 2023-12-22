@@ -5,13 +5,13 @@
 
 import type { OdaProductDetailRecord } from './OdaProductDetailRecord';
 
-export type OdaProductDetailRecordAPIResponse = {
-    status: OdaProductDetailRecordAPIResponse.status;
-    message?: string;
-    data?: OdaProductDetailRecord;
+export type APIResponse_OdaProductDetailRecord_ = {
+    status: APIResponse_OdaProductDetailRecord_.status;
+    message?: (string | null);
+    data: (OdaProductDetailRecord | null);
 };
 
-export namespace OdaProductDetailRecordAPIResponse {
+export namespace APIResponse_OdaProductDetailRecord_ {
 
     export enum status {
         SUCCESS = 'success',

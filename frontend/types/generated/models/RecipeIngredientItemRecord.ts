@@ -10,8 +10,8 @@ export type RecipeIngredientItemRecord = {
     id: number;
     groupTitle: string;
     ingredient: RecipeIngredientRecord;
-    additionalInfo?: string;
-    portionQuantity: number;
+    additionalInfo?: (string | null);
+    portionQuantity: (number | string);
     portionQuantityUnit: UnitRecord;
     portionQuantityDisplay: string;
 };

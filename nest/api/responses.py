@@ -1,8 +1,15 @@
 from typing import Any, Generic, Literal, Type, TypeVar
-from pydantic.typing import display_as_type
 from pydantic import BaseModel
 
 T = TypeVar("T")
+
+
+def display_as_type(v: Type[Any]) -> str:
+    try:
+        return v.__name__
+    except AttributeError:
+        # happens with typing objects
+        return str(v).replace("typing.", "")
 
 
 class APIResponse(BaseModel, Generic[T]):

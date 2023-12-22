@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from django.contrib.admin.views.decorators import staff_member_required
 from ninja import NinjaAPI
@@ -27,9 +27,13 @@ class NestAPI(NinjaAPI):
             parser=CamelCaseParser(),
         )
 
-    def get_openapi_schema(self, path_prefix: str | None = None) -> OpenAPISchema:
+    def get_openapi_schema(
+        self,
+        path_prefix: str | None = None,
+        path_params: Any | None = None,
+    ) -> OpenAPISchema:
         if path_prefix is None:
-            path_prefix = self.root_path
+            path_prefix = self.get_root_path(path_params or {})
         return get_schema(api=self, path_prefix=path_prefix)
 
     def get_openapi_operation_id(self, operation: Operation) -> str:

@@ -5,26 +5,26 @@
 
 export type ProductEditForm = {
     name: string;
-    grossPrice: number;
-    unitQuantity: number;
-    unit: number;
+    grossPrice: (number | string);
+    unitQuantity: (number | string);
+    unitId: number;
     supplier: string;
-    gtin?: string;
-    odaId?: number;
-    odaUrl?: string;
-    fat?: string;
-    fatSaturated?: string;
-    fatMonounsaturated?: string;
-    fatPolyunsaturated?: string;
-    carbohydrates?: string;
-    carbohydratesSugars?: string;
-    carbohydratesPolyols?: string;
-    carbohydratesStarch?: string;
-    fibres?: string;
-    salt?: string;
-    sodium?: string;
+    gtin?: (string | null);
+    odaId?: (number | null);
+    odaUrl?: (string | null);
+    fat?: (string | null);
+    fatSaturated?: (string | null);
+    fatMonounsaturated?: (string | null);
+    fatPolyunsaturated?: (string | null);
+    carbohydrates?: (string | null);
+    carbohydratesSugars?: (string | null);
+    carbohydratesPolyols?: (string | null);
+    carbohydratesStarch?: (string | null);
+    fibres?: (string | null);
+    salt?: (string | null);
+    sodium?: (string | null);
     isAvailable: boolean;
     isSynced: boolean;
-    thumbnail?: Blob;
+    thumbnail?: (Blob | null);
 };
 

@@ -8,8 +8,8 @@ export type OdaProductDiscountRecord = {
     undiscountedGrossPrice: string;
     undiscountedGrossUnitPrice: string;
     descriptionShort: string;
-    maximumQuantity?: number;
-    remainingQuantity?: number;
+    maximumQuantity?: (number | null);
+    remainingQuantity?: (number | string | null);
     absoluteUrl: string;
 };
 

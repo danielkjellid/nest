@@ -9,10 +9,10 @@ import type { OdaProductHazardSymbolRecord } from './OdaProductHazardSymbolRecor
 
 export type OdaProductHazardRecord = {
     title: string;
-    signalWord?: string;
-    symbols?: Array<OdaProductHazardSymbolRecord>;
-    hazardStatements?: Array<OdaProductHazardStatementRecord>;
-    precautionaryStatements?: Array<OdaProductHazardStatementRecord>;
-    safetyDataSheet?: OdaProductHazardSafetyDataSheetRecord;
+    signalWord?: (string | null);
+    symbols?: (Array<OdaProductHazardSymbolRecord> | null);
+    hazardStatements?: (Array<OdaProductHazardStatementRecord> | null);
+    precautionaryStatements?: (Array<OdaProductHazardStatementRecord> | null);
+    safetyDataSheet?: (OdaProductHazardSafetyDataSheetRecord | null);
 };
 
