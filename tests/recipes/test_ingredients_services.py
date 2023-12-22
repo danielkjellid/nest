@@ -8,7 +8,6 @@ from nest.core.exceptions import ApplicationError
 from nest.products.core.models import Product
 from nest.recipes.ingredients.models import (
     RecipeIngredient,
-    RecipeIngredientItem,
     RecipeIngredientItemGroup,
 )
 from nest.recipes.ingredients.services import (
