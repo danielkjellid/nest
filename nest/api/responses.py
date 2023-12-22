@@ -1,12 +1,11 @@
 from typing import Any, Generic, Literal, Type, TypeVar
-
-from pydantic.generics import GenericModel
 from pydantic.typing import display_as_type
+from pydantic import BaseModel
 
 T = TypeVar("T")
 
 
-class APIResponse(GenericModel, Generic[T]):
+class APIResponse(BaseModel, Generic[T]):
     status: Literal["success", "error"]
     message: str | None = None
     data: T | None

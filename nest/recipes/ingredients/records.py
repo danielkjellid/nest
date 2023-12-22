@@ -28,7 +28,7 @@ class RecipeIngredientItemRecord(BaseModel):
     id: int
     group_title: str
     ingredient: RecipeIngredientRecord
-    additional_info: str | None
+    additional_info: str | None = None
     portion_quantity: Decimal
     portion_quantity_unit: UnitRecord
     portion_quantity_display: str

@@ -15,29 +15,29 @@ class OdaProductCategoryCampaignBannerPromotionBubbleRecord(BaseModel):
 
 class OdaProductCategoryCampaignBannerRecord(BaseModel):
     id: int
-    image_url: str | None
-    lead_text: str | None
-    regular_text: str | None
-    title: str | None
-    description: str | None
-    button_text: str | None
-    link: str | None
+    image_url: str | None = None
+    lead_text: str | None = None
+    regular_text: str | None = None
+    title: str | None = None
+    description: str | None = None
+    button_text: str | None = None
+    link: str | None = None
     has_dark_overlay: bool
-    promotion_bubble: OdaProductCategoryCampaignBannerPromotionBubbleRecord | None
+    promotion_bubble: OdaProductCategoryCampaignBannerPromotionBubbleRecord | None = None
 
 
 class OdaProductCategoryRecord(BaseModel):
     id: int
     name: str
-    uri: str | None
+    uri: str | None = None
     slug: str
-    parent: int | None
+    parent: int | None = None
 
 
 class OdaProductCategoryDetailRecord(BaseModel):
     id: int
     name: str
-    parent: int | None
+    parent: int | None = None
     ordering: int
     description: str
     is_new: bool
@@ -57,8 +57,8 @@ class OdaProductDiscountRecord(BaseModel):
     undiscounted_gross_price: str
     undiscounted_gross_unit_price: str
     description_short: str
-    maximum_quantity: int | None
-    remaining_quantity: Decimal | None
+    maximum_quantity: int | None = None
+    remaining_quantity: Decimal | None = None
     absolute_url: str
 
 
@@ -67,7 +67,7 @@ class OdaProductPromotionRecord(BaseModel):
     title_color: str
     background_color: str
     text_color: str
-    description_short: str | None
+    description_short: str | None = None
     accessibility_text: str
     display_style: Literal[
         "mix_and_match",
@@ -114,7 +114,7 @@ class OdaProductClassifierRecord(BaseModel):
     """
 
     name: str
-    image_url: str | None
+    image_url: str | None = None
     is_important: bool
     description: str
 
@@ -159,11 +159,11 @@ class OdaProductHazardSafetyDataSheetRecord(BaseModel):
 
 class OdaProductHazardRecord(BaseModel):
     title: str
-    signal_word: str | None
-    symbols: list[OdaProductHazardSymbolRecord] | None
-    hazard_statements: list[OdaProductHazardStatementRecord] | None
-    precautionary_statements: list[OdaProductHazardStatementRecord] | None
-    safety_data_sheet: OdaProductHazardSafetyDataSheetRecord | None
+    signal_word: str | None = None
+    symbols: list[OdaProductHazardSymbolRecord] | None = None
+    hazard_statements: list[OdaProductHazardStatementRecord] | None = None
+    precautionary_statements: list[OdaProductHazardStatementRecord] | None = None
+    safety_data_sheet: OdaProductHazardSafetyDataSheetRecord | None = None
 
 
 ##############
@@ -180,24 +180,24 @@ class OdaProductLocalInfoBadgeRecord(BaseModel):
 class OdaProductLocalInfoKeywordEmphasisRecord(BaseModel):
     keywords: list[str]
     emphasis_type: Literal["bold", "normal"]
-    reason: str | None
+    reason: str | None = None
 
 
 class OdaProductLocalInfoTableRow(BaseModel):
     key: str
     value: str
-    badge: OdaProductLocalInfoBadgeRecord | None
-    indent: int | None
-    tooltip: str | None
-    link: str | None
-    emphasis: OdaProductLocalInfoKeywordEmphasisRecord | None
-    key_id: str | None
+    badge: OdaProductLocalInfoBadgeRecord | None = None
+    indent: int | None = None
+    tooltip: str | None = None
+    link: str | None = None
+    emphasis: OdaProductLocalInfoKeywordEmphasisRecord | None = None
+    key_id: str | None = None
 
 
 class OdaProductLocalInfoTable(BaseModel):
-    title: str | None
+    title: str | None = None
     rows: list[OdaProductLocalInfoTableRow]
-    disclaimers: list[str] | None
+    disclaimers: list[str] | None = None
 
 
 class OdaProductLocalInfo(BaseModel):
@@ -205,10 +205,10 @@ class OdaProductLocalInfo(BaseModel):
     language_name: str
     local_product_name: str
     short_description: str
-    description_from_supplier: str | None
+    description_from_supplier: str | None = None
     nutrition_info_table: OdaProductLocalInfoTable
     contents_table: OdaProductLocalInfoTable
-    hazards: OdaProductHazardRecord | None
+    hazards: OdaProductHazardRecord | None = None
 
 
 class OdaProductDetailedInfo(BaseModel):
@@ -248,8 +248,8 @@ class OdaProductMetadataRecord(BaseModel):
 class OdaProductRecord(BaseModel):
     id: int
     full_name: str
-    brand: str | None
-    brand_id: int | None
+    brand: str | None = None
+    brand_id: int | None = None
     name: str
     name_extra: str
     front_url: str
@@ -260,9 +260,9 @@ class OdaProductRecord(BaseModel):
     unit_price_quantity_name: str
     client_classifiers: list[OdaProductClassifierRecord]
     currency: Literal["NOK"]  # We only accept products from the norwegian market.
-    discount: OdaProductDiscountRecord | None
-    promotion: OdaProductPromotionRecord | None = Field(deprecated=True)
-    promotions: list[OdaProductPromotionRecord] | None
+    discount: OdaProductDiscountRecord | None = None
+    promotion: OdaProductPromotionRecord | None = Field(None, deprecated=True)
+    promotions: list[OdaProductPromotionRecord] | None = None
     availability: OdaProductAvailabilityRecord
     metadata: OdaProductMetadataRecord
     images: list[OdaProductImageRecord]
@@ -272,9 +272,9 @@ class OdaProductDetailRecord(OdaProductRecord):
     categories: list[OdaProductCategoryDetailRecord]
     contents_html: str
     nutrition_html: str
-    bottle_deposit: OdaProductBottleDepositRecord | None
+    bottle_deposit: OdaProductBottleDepositRecord | None = None
     alternative_products: list[OdaProductRecord]
-    discount_mix_and_match_products: list[OdaProductRecord] | None
+    discount_mix_and_match_products: list[OdaProductRecord] | None = None
     detailed_info: OdaProductDetailedInfo
-    is_product_included_in_product_lists: bool | None
+    is_product_included_in_product_lists: bool | None = None
     is_restricted: bool

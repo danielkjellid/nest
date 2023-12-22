@@ -12,13 +12,13 @@ class LogEntryRecord(BaseModel):
     id: int
     action: int
     changes: dict[str, Any]
-    user_or_source: str | None
-    remote_addr: str | None
+    user_or_source: str | None = None
+    remote_addr: str | None = None
     created_at: datetime
 
     @classmethod
     def from_log_entry(cls, log_entry: LogEntry) -> LogEntryRecord:
-        user_or_source: str | None
+        user_or_source: str | None = None
 
         if log_entry.source is not None:
             user_or_source = log_entry.source

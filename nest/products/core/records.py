@@ -30,40 +30,40 @@ class ProductRecord(BaseModel):
     name: str
     full_name: str
     gross_price: Decimal
-    gross_unit_price: Decimal | None
+    gross_unit_price: Decimal | None = None
     unit: UnitRecord
-    unit_quantity: Decimal | None
-    oda_url: str | None
-    oda_id: int | None
+    unit_quantity: Decimal | None = None
+    oda_url: str | None = None
+    oda_id: int | None = None
     is_available: bool
     is_synced: bool
-    last_synced_at: str | None
-    thumbnail_url: str | None
-    gtin: str | None
-    supplier: str | None
+    last_synced_at: str | None = None
+    thumbnail_url: str | None = None
+    gtin: str | None = None
+    supplier: str | None = None
     display_price: str
     is_oda_product: bool
-    last_data_update: datetime | None
-    last_data_update_display: str | None
+    last_data_update: datetime | None = None
+    last_data_update_display: str | None = None
 
-    ingredients: str | None
-    allergens: str | None
+    ingredients: str | None = None
+    allergens: str | None = None
     classifiers: ProductClassifiersRecord
 
-    energy_kj: Decimal | None
-    energy_kcal: Decimal | None
-    fat: Decimal | None
-    fat_saturated: Decimal | None
-    fat_monounsaturated: Decimal | None
-    fat_polyunsaturated: Decimal | None
-    carbohydrates: Decimal | None
-    carbohydrates_sugars: Decimal | None
-    carbohydrates_polyols: Decimal | None
-    carbohydrates_starch: Decimal | None
-    fibres: Decimal | None
-    protein: Decimal | None
-    salt: Decimal | None
-    sodium: Decimal | None
+    energy_kj: Decimal | None = None
+    energy_kcal: Decimal | None = None
+    fat: Decimal | None = None
+    fat_saturated: Decimal | None = None
+    fat_monounsaturated: Decimal | None = None
+    fat_polyunsaturated: Decimal | None = None
+    carbohydrates: Decimal | None = None
+    carbohydrates_sugars: Decimal | None = None
+    carbohydrates_polyols: Decimal | None = None
+    carbohydrates_starch: Decimal | None = None
+    fibres: Decimal | None = None
+    protein: Decimal | None = None
+    salt: Decimal | None = None
+    sodium: Decimal | None = None
 
     nutrition_table: list[TableRecord]
     audit_logs: list[LogEntryRecord]
