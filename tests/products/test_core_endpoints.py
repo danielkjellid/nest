@@ -107,22 +107,14 @@ product_detail_api_factory = EndpointFactory(
     endpoint=Endpoint(
         url=reverse("api-1.0.0:product_detail_api", args=[1]),
         view_func=product_detail_api,
-        mocks=[
-            FactoryMock("get_product", ProductRecordFactory.build()),
-            FactoryMock("get_log_entries_for_object", []),
-            FactoryMock("get_nutrition_table", []),
-        ],
+        mocks=[FactoryMock("get_product", ProductRecordFactory.build())],
     ),
     requests={
         "authenticated_request": Request(
             help="Test that normal users are able to retrieve product details",
             client=authenticated_client,
             expected_status_code=status.HTTP_200_OK,
-            expected_mock_calls={
-                "get_product": 1,
-                "get_log_entries_for_object": 1,
-                "get_nutrition_table": 1,
-            },
+            expected_mock_calls={"get_product": 1},
         ),
     },
 )

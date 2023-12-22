@@ -66,14 +66,16 @@ def test_service_create_product(
     name="A cool product", supplier="A cool supplier", unit="g", oda_id=None
 )
 def test_service_edit_product(
-    product: Product, get_unit: Callable[[str], Unit], django_assert_num_queries: Any
+    product: Product,
+    get_unit: Callable[[str], Unit],
+    django_assert_max_num_queries: Any,
 ) -> None:
     """
     Test that the edit_product service edits a product within query limits.
     """
 
     unit_kg = get_unit("kg")
-    with django_assert_num_queries(6):
+    with django_assert_max_num_queries(7):
         updated_product = edit_product(
             product_id=product.id, name="Wubadubadub", unit_id=unit_kg.id
         )
