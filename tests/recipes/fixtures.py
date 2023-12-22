@@ -1,16 +1,19 @@
+from typing import Any, Callable, TypedDict
+
 import pytest
-from typing import TypedDict, Callable, Any
-from nest.recipes.core.models import Recipe
+
 from nest.products.core.models import Product
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
+from nest.recipes.core.models import Recipe
 from nest.recipes.ingredients.models import RecipeIngredient
-from ..products.fixtures import ProductSpec
+
 from ..factories.fixtures import (
     get_instance,
     get_spec_for_instance,
-    instances,
     instance,
+    instances,
 )
+from ..products.fixtures import ProductSpec
 
 
 class RecipeSpec(TypedDict, total=False):

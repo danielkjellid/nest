@@ -1,4 +1,5 @@
 import pytest
+
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
 from nest.recipes.core.models import Recipe
 from nest.recipes.core.services import create_recipe

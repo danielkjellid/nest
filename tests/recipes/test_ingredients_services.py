@@ -1,4 +1,11 @@
+from typing import Any
+
 import pytest
+from django.core.exceptions import ValidationError
+
+from nest.audit_logs.models import LogEntry
+from nest.core.exceptions import ApplicationError
+from nest.products.core.models import Product
 from nest.recipes.ingredients.models import (
     RecipeIngredient,
     RecipeIngredientItem,
@@ -6,14 +13,9 @@ from nest.recipes.ingredients.models import (
 )
 from nest.recipes.ingredients.services import (
     create_recipe_ingredient,
-    delete_recipe_ingredient,
     create_recipe_ingredient_item_groups,
+    delete_recipe_ingredient,
 )
-from nest.core.exceptions import ApplicationError
-from nest.products.core.models import Product
-from typing import Any
-from django.core.exceptions import ValidationError
-from nest.audit_logs.models import LogEntry
 
 
 @pytest.mark.product
@@ -112,9 +114,6 @@ def test_service_create_recipe_ingredient_item_groups(
             ],
         },
     ]
-
-    ingredient_item_group_initial_count = RecipeIngredientItemGroup.objects.count()
-    ingredient_item_initial_count = RecipeIngredientItem.objects.count()
 
     with immediate_on_commit, django_assert_num_queries(4):
         create_recipe_ingredient_item_groups(

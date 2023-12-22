@@ -7,13 +7,13 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from nest.products.core.models import Product
 from nest.units.models import Unit
 
-from .utils import next_oda_id
 from ..factories.fixtures import (
     get_instance,
     get_spec_for_instance,
     instance,
     instances,
 )
+from .utils import next_oda_id
 
 
 class ProductSpec(TypedDict, total=False):

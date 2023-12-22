@@ -1,6 +1,7 @@
-from typing import TypedDict, TypeVar, Callable
-from django.db.models import Model
+from typing import Callable, TypedDict, TypeVar
+
 import pytest
+from django.db.models import Model
 
 TSpec = TypeVar("TSpec", bound=TypedDict)
 TModel = TypeVar("TModel", bound=Model)
