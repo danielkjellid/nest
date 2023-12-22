@@ -8,7 +8,7 @@ export type HomeRecord = {
     address: string;
     numResidents: number;
     numWeeksRecipeRotation: number;
-    weeklyBudget: number;
+    weeklyBudget: (number | string);
     isActive: boolean;
 };
 

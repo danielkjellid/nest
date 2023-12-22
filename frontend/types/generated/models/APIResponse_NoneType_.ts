@@ -3,13 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type APIResponse = {
-    status: APIResponse.status;
-    message?: string;
+export type APIResponse_NoneType_ = {
+    status: APIResponse_NoneType_.status;
+    message?: (string | null);
     data: null;
 };
 
-export namespace APIResponse {
+export namespace APIResponse_NoneType_ {
 
     export enum status {
         SUCCESS = 'success',

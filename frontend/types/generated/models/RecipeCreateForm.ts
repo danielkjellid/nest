@@ -8,12 +8,12 @@ import type { RecipeStatus } from './RecipeStatus';
 
 export type RecipeCreateForm = {
     title: string;
-    searchKeywords?: string;
+    searchKeywords?: (string | null);
     defaultNumPortions: number;
     status: (RecipeStatus | string);
     difficulty: (RecipeDifficulty | string);
-    externalId?: string;
-    externalUrl?: string;
+    externalId?: (string | null);
+    externalUrl?: (string | null);
     isVegetarian?: boolean;
     isPescatarian?: boolean;
 };

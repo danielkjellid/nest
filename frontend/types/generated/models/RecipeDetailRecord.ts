@@ -16,9 +16,9 @@ export type RecipeDetailRecord = {
     title: string;
     slug: string;
     defaultNumPortions: number;
-    searchKeywords?: string;
-    externalId?: string;
-    externalUrl?: string;
+    searchKeywords?: (string | null);
+    externalId?: (string | null);
+    externalUrl?: (string | null);
     status: RecipeStatus;
     statusDisplay: string;
     difficulty: RecipeDifficulty;
@@ -26,8 +26,8 @@ export type RecipeDetailRecord = {
     isVegetarian: boolean;
     isPescatarian: boolean;
     duration: RecipeDurationRecord;
-    glycemicData?: RecipeGlycemicData;
-    healthScore?: RecipeHealthScore;
+    glycemicData?: (RecipeGlycemicData | null);
+    healthScore?: (RecipeHealthScore | null);
     ingredientGroups: Array<RecipeIngredientItemGroupRecord>;
     steps: Array<RecipeStepRecord>;
 };

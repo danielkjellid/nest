@@ -7,14 +7,14 @@ import type { OdaProductCategoryCampaignBannerPromotionBubbleRecord } from './Od
 
 export type OdaProductCategoryCampaignBannerRecord = {
     id: number;
-    imageUrl?: string;
-    leadText?: string;
-    regularText?: string;
-    title?: string;
-    description?: string;
-    buttonText?: string;
-    link?: string;
+    imageUrl?: (string | null);
+    leadText?: (string | null);
+    regularText?: (string | null);
+    title?: (string | null);
+    description?: (string | null);
+    buttonText?: (string | null);
+    link?: (string | null);
     hasDarkOverlay: boolean;
-    promotionBubble?: OdaProductCategoryCampaignBannerPromotionBubbleRecord;
+    promotionBubble?: (OdaProductCategoryCampaignBannerPromotionBubbleRecord | null);
 };
 

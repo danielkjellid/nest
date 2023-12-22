@@ -6,7 +6,7 @@
 import type { RecipeHealthScoreImpactRecord } from './RecipeHealthScoreImpactRecord';
 
 export type RecipeHealthScore = {
-    rating: number;
+    rating: (number | string);
     positiveImpact: Array<RecipeHealthScoreImpactRecord>;
     negativeImpact: Array<RecipeHealthScoreImpactRecord>;
 };

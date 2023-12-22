@@ -6,7 +6,7 @@
 export type OdaProductLocalInfoKeywordEmphasisRecord = {
     keywords: Array<string>;
     emphasisType: OdaProductLocalInfoKeywordEmphasisRecord.emphasisType;
-    reason?: string;
+    reason?: (string | null);
 };
 
 export namespace OdaProductLocalInfoKeywordEmphasisRecord {

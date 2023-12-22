@@ -7,8 +7,8 @@ export type LogEntryRecord = {
     id: number;
     action: number;
     changes: Record<string, any>;
-    userOrSource?: string;
-    remoteAddr?: string;
+    userOrSource?: (string | null);
+    remoteAddr?: (string | null);
     createdAt: string;
 };
 

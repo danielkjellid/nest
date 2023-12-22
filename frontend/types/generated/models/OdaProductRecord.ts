@@ -13,8 +13,8 @@ import type { OdaProductPromotionRecord } from './OdaProductPromotionRecord';
 export type OdaProductRecord = {
     id: number;
     fullName: string;
-    brand?: string;
-    brandId?: number;
+    brand?: (string | null);
+    brandId?: (number | null);
     name: string;
     nameExtra: string;
     frontUrl: string;
@@ -24,24 +24,15 @@ export type OdaProductRecord = {
     unitPriceQuantityAbbreviation: string;
     unitPriceQuantityName: string;
     clientClassifiers: Array<OdaProductClassifierRecord>;
-    currency: OdaProductRecord.currency;
-    discount?: OdaProductDiscountRecord;
+    currency: any;
+    discount?: (OdaProductDiscountRecord | null);
     /**
      * @deprecated
      */
-    promotion?: OdaProductPromotionRecord;
-    promotions?: Array<OdaProductPromotionRecord>;
+    promotion?: (OdaProductPromotionRecord | null);
+    promotions?: (Array<OdaProductPromotionRecord> | null);
     availability: OdaProductAvailabilityRecord;
     metadata: OdaProductMetadataRecord;
     images: Array<OdaProductImageRecord>;
 };
-
-export namespace OdaProductRecord {
-
-    export enum currency {
-        NOK = 'NOK',
-    }
-
-
-}
 

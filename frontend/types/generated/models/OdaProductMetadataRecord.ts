@@ -4,6 +4,6 @@
 /* eslint-disable */
 
 export type OdaProductMetadataRecord = {
-    isSponsorLabeled?: boolean;
+    isSponsorLabeled?: (boolean | null);
 };
 

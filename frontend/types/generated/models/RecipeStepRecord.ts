@@ -9,7 +9,7 @@ import type { RecipeStepType } from './RecipeStepType';
 export type RecipeStepRecord = {
     id: number;
     number: number;
-    duration: number;
+    duration: string;
     instruction: string;
     stepType: RecipeStepType;
     stepTypeDisplay: string;

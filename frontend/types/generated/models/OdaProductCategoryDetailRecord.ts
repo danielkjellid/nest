@@ -9,7 +9,7 @@ import type { OdaProductCategoryRecord } from './OdaProductCategoryRecord';
 export type OdaProductCategoryDetailRecord = {
     id: number;
     name: string;
-    parent?: number;
+    parent?: (number | null);
     ordering: number;
     description: string;
     isNew: boolean;

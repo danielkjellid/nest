@@ -4,10 +4,10 @@
 /* eslint-disable */
 
 export type RecipeGlycemicData = {
-    glycemicIndex: number;
+    glycemicIndex: (number | string);
     glycemicIndexRating: string;
     glycemicIndexRatingDisplay: string;
-    glycemicLoad: number;
+    glycemicLoad: (number | string);
     glycemicLoadRating: string;
     glycemicLoadRatingDisplay: string;
 };

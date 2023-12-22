@@ -6,8 +6,8 @@
 export type OdaProductCategoryRecord = {
     id: number;
     name: string;
-    uri?: string;
+    uri?: (string | null);
     slug: string;
-    parent?: number;
+    parent?: (number | null);
 };
 

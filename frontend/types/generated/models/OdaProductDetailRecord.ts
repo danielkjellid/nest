@@ -17,8 +17,8 @@ import type { OdaProductRecord } from './OdaProductRecord';
 export type OdaProductDetailRecord = {
     id: number;
     fullName: string;
-    brand?: string;
-    brandId?: number;
+    brand?: (string | null);
+    brandId?: (number | null);
     name: string;
     nameExtra: string;
     frontUrl: string;
@@ -28,33 +28,24 @@ export type OdaProductDetailRecord = {
     unitPriceQuantityAbbreviation: string;
     unitPriceQuantityName: string;
     clientClassifiers: Array<OdaProductClassifierRecord>;
-    currency: OdaProductDetailRecord.currency;
-    discount?: OdaProductDiscountRecord;
+    currency: any;
+    discount?: (OdaProductDiscountRecord | null);
     /**
      * @deprecated
      */
-    promotion?: OdaProductPromotionRecord;
-    promotions?: Array<OdaProductPromotionRecord>;
+    promotion?: (OdaProductPromotionRecord | null);
+    promotions?: (Array<OdaProductPromotionRecord> | null);
     availability: OdaProductAvailabilityRecord;
     metadata: OdaProductMetadataRecord;
     images: Array<OdaProductImageRecord>;
     categories: Array<OdaProductCategoryDetailRecord>;
     contentsHtml: string;
     nutritionHtml: string;
-    bottleDeposit?: OdaProductBottleDepositRecord;
+    bottleDeposit?: (OdaProductBottleDepositRecord | null);
     alternativeProducts: Array<OdaProductRecord>;
-    discountMixAndMatchProducts?: Array<OdaProductRecord>;
+    discountMixAndMatchProducts?: (Array<OdaProductRecord> | null);
     detailedInfo: OdaProductDetailedInfo;
-    isProductIncludedInProductLists?: boolean;
+    isProductIncludedInProductLists?: (boolean | null);
     isRestricted: boolean;
 };
-
-export namespace OdaProductDetailRecord {
-
-    export enum currency {
-        NOK = 'NOK',
-    }
-
-
-}
 

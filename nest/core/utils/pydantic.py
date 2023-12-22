@@ -1,7 +1,7 @@
 from typing import Any, Iterable, Iterator, Type, TypeVar
 
 from pydantic import BaseModel, create_model
-from pydantic.fields import FieldInfo, ModelField
+from pydantic.fields import FieldInfo
 
 M = TypeVar("M", bound=BaseModel)
 
@@ -64,14 +64,14 @@ class PartialFactory:
             overrides.keys() if overrides else []
         )
 
-        for field in self._selected_pydantic_model_fields(
-            model=model, fields=fields, exclude=fields_to_exclude
-        ):
-            field_name = field.name
-            field__type = field.outer_type_
-            field_info = field.field_info
-
-            definitions[field_name] = (field__type, field_info)
+        # for field in self._selected_pydantic_model_fields(
+        #     model=model, fields=fields, exclude=fields_to_exclude
+        # ):
+        #     field_name = field.name
+        #     field_type = field.get_internal_type()
+        #     field_info = field.field_info
+        #
+        #     definitions[field_name] = (field__type, field_info)
 
         if overrides:
             for field_name, field_value in overrides.items():
@@ -96,10 +96,10 @@ class PartialFactory:
         model: Type[M],
         fields: Iterable[str] | None = None,
         exclude: Iterable[str] | None = None,
-    ) -> Iterator[ModelField]:
-        model_fields = model.__fields__
+    ) -> Iterator[FieldInfo]:
+        model_fields = model.model_fields
 
-        all_fields: dict[str, ModelField] = model_fields
+        all_fields: dict[str, FieldInfo] = model_fields
         fields_to_iter = fields if fields else all_fields
         excluded_fields = set(exclude or [])
         invalid_fields = (set(fields or []) | excluded_fields) - model_fields.keys()

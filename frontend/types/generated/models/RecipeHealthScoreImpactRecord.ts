@@ -6,10 +6,10 @@
 export type RecipeHealthScoreImpactRecord = {
     key: string;
     title: string;
-    value: number;
+    value: (number | string);
     valueDisplay: string;
     unitDisplay: string;
-    percentageOfDailyValue: number;
+    percentageOfDailyValue: (number | string);
     percentageOfDailyValueDisplay: string;
 };
 

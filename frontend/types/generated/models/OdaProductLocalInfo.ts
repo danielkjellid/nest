@@ -11,9 +11,9 @@ export type OdaProductLocalInfo = {
     languageName: string;
     localProductName: string;
     shortDescription: string;
-    descriptionFromSupplier?: string;
+    descriptionFromSupplier?: (string | null);
     nutritionInfoTable: OdaProductLocalInfoTable;
     contentsTable: OdaProductLocalInfoTable;
-    hazards?: OdaProductHazardRecord;
+    hazards?: (OdaProductHazardRecord | null);
 };
 

@@ -8,10 +8,10 @@ import type { UnitType } from './UnitType';
 export type UnitRecord = {
     id: number;
     name: string;
-    namePluralized?: string;
+    namePluralized?: (string | null);
     abbreviation: string;
     unitType: UnitType;
-    baseFactor: number;
+    baseFactor: (number | string);
     isBaseUnit: boolean;
     isDefault: boolean;
     displayName: string;

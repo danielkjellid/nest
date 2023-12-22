@@ -14,16 +14,16 @@ from django.db.models import IntegerChoices, TextChoices
 from ninja import NinjaAPI
 from ninja.openapi.schema import (
     BODY_CONTENT_TYPES,
-    REF_PREFIX,
+    REF_TEMPLATE,
     merge_schemas,
+    NinjaGenerateJsonSchema,
 )
 from ninja.openapi.schema import (
     OpenAPISchema as NinjaOpenAPISchema,
 )
-from ninja.params_models import TModel, TModels
+from ninja.params.models import TModel, TModels
 from ninja.types import DictStrAny
 from pydantic import BaseModel
-from pydantic.schema import model_schema
 
 from nest.api.files import UploadedFile, UploadedImageFile
 from nest.core.openapi import NestOpenAPISchema
@@ -105,12 +105,21 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         definitions part and modifies the schema before it's added to the list of
         schemas.
         """
-        if hasattr(model, "_flatten_map"):
+        if hasattr(model, "__ninja_flatten_map__"):
             schema = self._flatten_schema(model)
         else:
-            schema = model_schema(
-                cast(Type[BaseModel], model), ref_prefix=REF_PREFIX, by_alias=by_alias
+            schema = model.model_json_schema(
+                ref_template=REF_TEMPLATE,
+                by_alias=by_alias,
+                schema_generator=NinjaGenerateJsonSchema,
             )
+
+        if schema.get("$defs"):
+            definitions = schema.pop("$defs")
+            updated_schema = self._update_schema(
+                component_schemas=definitions, models=[model]
+            )
+            self.add_schema_definitions(updated_schema)
 
         if schema.get("definitions"):
             definitions = schema.pop("definitions")

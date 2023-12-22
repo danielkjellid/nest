@@ -6,8 +6,8 @@
 import type { OdaProductLocalInfoTableRow } from './OdaProductLocalInfoTableRow';
 
 export type OdaProductLocalInfoTable = {
-    title?: string;
+    title?: (string | null);
     rows: Array<OdaProductLocalInfoTableRow>;
-    disclaimers?: Array<string>;
+    disclaimers?: (Array<string> | null);
 };
 

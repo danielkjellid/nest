@@ -8,7 +8,7 @@ export type OdaProductPromotionRecord = {
     titleColor: string;
     backgroundColor: string;
     textColor: string;
-    descriptionShort?: string;
+    descriptionShort?: (string | null);
     accessibilityText: string;
     displayStyle: OdaProductPromotionRecord.displayStyle;
 };

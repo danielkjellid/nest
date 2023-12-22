@@ -16,7 +16,7 @@
  */
 export type OdaProductClassifierRecord = {
     name: string;
-    imageUrl?: string;
+    imageUrl?: (string | null);
     isImportant: boolean;
     description: string;
 };

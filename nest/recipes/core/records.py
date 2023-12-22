@@ -79,9 +79,9 @@ class RecipeRecord(BaseModel):
     title: str
     slug: str
     default_num_portions: int
-    search_keywords: str | None
-    external_id: str | None
-    external_url: str | None
+    search_keywords: str | None = None
+    external_id: str | None = None
+    external_url: str | None = None
     status: RecipeStatus
     status_display: str
     difficulty: RecipeDifficulty
@@ -110,7 +110,7 @@ class RecipeRecord(BaseModel):
 
 class RecipeDetailRecord(RecipeRecord):
     duration: RecipeDurationRecord
-    glycemic_data: RecipeGlycemicData | None  # TODO: Needs to be annotated
-    health_score: RecipeHealthScore | None  # TODO: Needs to be annotated
+    glycemic_data: RecipeGlycemicData | None = None  # TODO: Needs to be annotated
+    health_score: RecipeHealthScore | None = None  # TODO: Needs to be annotated
     ingredient_groups: list[RecipeIngredientItemGroupRecord]
     steps: list[RecipeStepRecord]

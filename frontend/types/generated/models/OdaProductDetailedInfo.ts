@@ -6,16 +6,7 @@
 import type { OdaProductLocalInfo } from './OdaProductLocalInfo';
 
 export type OdaProductDetailedInfo = {
-    country: OdaProductDetailedInfo.country;
+    country: any;
     local: Array<OdaProductLocalInfo>;
 };
-
-export namespace OdaProductDetailedInfo {
-
-    export enum country {
-        NO = 'NO',
-    }
-
-
-}
 

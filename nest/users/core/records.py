@@ -16,7 +16,7 @@ class UserRecord(BaseModel):
     is_staff: bool
     is_superuser: bool
     is_hijacked: bool = False
-    home: HomeRecord | None
+    home: HomeRecord | None = None
 
     @classmethod
     def from_user(cls, user: User) -> UserRecord:

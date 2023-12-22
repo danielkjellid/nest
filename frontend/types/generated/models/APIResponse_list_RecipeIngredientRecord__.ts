@@ -5,13 +5,13 @@
 
 import type { RecipeIngredientRecord } from './RecipeIngredientRecord';
 
-export type RecipeIngredientRecordListAPIResponse = {
-    status: RecipeIngredientRecordListAPIResponse.status;
-    message?: string;
-    data?: Array<RecipeIngredientRecord>;
+export type APIResponse_list_RecipeIngredientRecord__ = {
+    status: APIResponse_list_RecipeIngredientRecord__.status;
+    message?: (string | null);
+    data: (Array<RecipeIngredientRecord> | null);
 };
 
-export namespace RecipeIngredientRecordListAPIResponse {
+export namespace APIResponse_list_RecipeIngredientRecord__ {
 
     export enum status {
         SUCCESS = 'success',
