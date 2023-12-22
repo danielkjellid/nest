@@ -46,6 +46,7 @@ export type { ProductEditIn } from './models/ProductEditIn';
 export type { ProductOdaImportConfirmIn } from './models/ProductOdaImportConfirmIn';
 export type { ProductOdaImportForm } from './models/ProductOdaImportForm';
 export type { ProductRecord } from './models/ProductRecord';
+export { ProductRecordAPIResponse } from './models/ProductRecordAPIResponse';
 export { ProductRecordListAPIResponse } from './models/ProductRecordListAPIResponse';
 export type { RecipeCreateForm } from './models/RecipeCreateForm';
 export type { RecipeCreateOut } from './models/RecipeCreateOut';

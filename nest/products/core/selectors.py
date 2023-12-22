@@ -70,7 +70,7 @@ def get_products(
                 base_factor=product.unit.base_factor,
                 is_base_unit=product.unit.is_base_unit,
                 is_default=product.unit.is_default,
-                display_name=getattr(product.unit, "display_name", None),
+                display_name=product.unit.display_name,
             ),
             unit_quantity=product.unit_quantity,
             oda_url=product.oda_url,
