@@ -68,7 +68,7 @@ class TestAuditLogServices:
             )
 
         assert log_entry.changes == changes
-        assert log_entry.user.id == user.id
+        assert log_entry.user_or_source == user.full_name
 
     def test__create_log_entry_no_changes(self, django_assert_num_queries):
         """
@@ -106,7 +106,7 @@ class TestAuditLogServices:
         )
 
         assert log_entry is not None
-        assert log_entry.user.id == user.id
+        assert log_entry.user_or_source == user.full_name
         assert log_entry.remote_addr == "127.0.0.1"
 
     def test_log_create(self):

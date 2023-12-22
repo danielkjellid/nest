@@ -3,10 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ProductDetailAuditLogsOut = {
+export type LogEntryRecord = {
+    id: number;
+    action: number;
+    changes: Record<string, any>;
     userOrSource?: string;
     remoteAddr?: string;
-    changes: Record<string, Array<any>>;
     createdAt: string;
 };
 

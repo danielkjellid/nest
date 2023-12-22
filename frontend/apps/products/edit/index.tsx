@@ -8,13 +8,13 @@ import View from '../../../components/View'
 import { useUnits } from '../../../contexts/UnitsProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { useForm } from '../../../hooks/forms'
-import { type ProductDetailOutAPIResponse } from '../../../types'
+import { type ProductRecordAPIResponse } from '../../../types'
 import { urls } from '../../urls'
 import { ProductDetailHeader } from '../components/ProductDetailHeader'
 
 interface ProductEditInnerProps {
   results: {
-    productResponse: ProductDetailOutAPIResponse
+    productResponse: ProductRecordAPIResponse
   }
   productId: number
 }
@@ -66,7 +66,7 @@ function ProductEdit() {
   const { productId } = useParams()
   invariant(productId)
 
-  const productResponse = useFetch<ProductDetailOutAPIResponse>(
+  const productResponse = useFetch<ProductRecordAPIResponse>(
     urls.products.detail({ id: productId })
   )
 

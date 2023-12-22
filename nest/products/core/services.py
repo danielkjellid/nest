@@ -7,12 +7,12 @@ from django.core.files.uploadedfile import InMemoryUploadedFile, UploadedFile
 from django.http import HttpRequest
 
 from nest.audit_logs.services import log_create_or_updated
+from nest.core.exceptions import ApplicationError
 from nest.core.services import model_update
 from nest.units.models import Unit
 
 from .models import Product
 from .records import ProductRecord
-from .selectors import _get_product
 
 logger = structlog.getLogger()
 
@@ -66,6 +66,11 @@ def edit_product(
     Edit an existing product instance.
     """
 
+    product = Product.objects.filter(id=product_id).first()
+
+    if not product:
+        raise ApplicationError(message="Product does not exist.")
+
     data = edits.copy()
 
     if thumbnail is not None:
@@ -76,7 +81,7 @@ def edit_product(
         data["unit"] = unit
 
     product_instance, _has_updated = model_update(
-        instance=_get_product(pk=product_id),
+        instance=product,
         data=data,
         request=request,
         log_ignore_fields={"thumbnail"},

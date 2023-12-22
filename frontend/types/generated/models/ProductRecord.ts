@@ -3,7 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { LogEntryRecord } from './LogEntryRecord';
 import type { ProductClassifiersRecord } from './ProductClassifiersRecord';
+import type { TableRecord } from './TableRecord';
 import type { UnitRecord } from './UnitRecord';
 
 export type ProductRecord = {
@@ -25,6 +27,7 @@ export type ProductRecord = {
     displayPrice: string;
     isOdaProduct: boolean;
     lastDataUpdate?: string;
+    lastDataUpdateDisplay?: string;
     ingredients?: string;
     allergens?: string;
     classifiers: ProductClassifiersRecord;
@@ -42,5 +45,7 @@ export type ProductRecord = {
     protein?: number;
     salt?: number;
     sodium?: number;
+    nutritionTable: Array<TableRecord>;
+    auditLogs: Array<LogEntryRecord>;
 };
 
