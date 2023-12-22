@@ -137,9 +137,9 @@ def test_service_update_or_create_product_with_pk(
     assert updated_product.name == "Updated test product"
 
 
-@pytest.mark.product(name="Test product")
+@pytest.mark.oda_product(name="Test product")
 def test_service_test_update_or_create_product_with_oda_id(
-    product: Product,
+    oda_product: Product,
     get_unit: Callable[[str], Unit],
     django_assert_num_queries: Any,
 ) -> None:
@@ -165,8 +165,7 @@ def test_service_test_update_or_create_product_with_oda_id(
 
     # One new product should have been created.
     assert Product.objects.all().count() == initial_count + 1
-
-    existing_product = product
+    existing_product = oda_product
     assert existing_product.name == "Test product"
 
     defaults = {
