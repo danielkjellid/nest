@@ -11,6 +11,7 @@ import {
   type RecipeIngredientRecordListAPIResponse,
   type RecipeCreateForm,
   type RecipeIngredientRecord,
+  type UnitRecord,
 } from '../../../types'
 import { urls } from '../../urls'
 import { type Step } from '../forms/RecipeStepsForm'
@@ -34,8 +35,8 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
 
   const defaultIngredient = {
     ingredient: {} as RecipeIngredientRecord,
+    portionQuantityUnit: {} as UnitRecord,
     portionQuantity: 0,
-    portionQuantityUnitId: '',
     additionalInfo: '',
   }
   const defaultIngredientGroup = { title: '', ordering: 0, ingredientItems: [defaultIngredient] }

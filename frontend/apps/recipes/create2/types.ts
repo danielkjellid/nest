@@ -3,10 +3,10 @@ import {
   type RecipeIngredientItemRecord,
 } from '../../../types'
 
-export interface IngredientItem
-  extends Pick<RecipeIngredientItemRecord, 'ingredient' | 'portionQuantity' | 'additionalInfo'> {
-  portionQuantityUnitId: string
-}
+export type IngredientItem = Pick<
+  RecipeIngredientItemRecord,
+  'ingredient' | 'portionQuantityUnit' | 'portionQuantity' | 'additionalInfo'
+>
 export interface IngredientItemGroup
   extends Pick<RecipeIngredientItemGroupRecord, 'title' | 'ordering'> {
   ingredientItems: IngredientItem[]

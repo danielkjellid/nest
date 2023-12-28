@@ -4,7 +4,7 @@ import React, { forwardRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
-import { type RecipeIngredientRecord } from '../../../../types'
+import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
 import { type IngredientItemGroup, type IngredientItem } from '../../create2/types'
 
 import { type IngredientOptionType } from './types'
@@ -34,10 +34,11 @@ const IngredientOption = forwardRef<HTMLDivElement, IngredientOptionProps>(
 IngredientOption.displayName = 'IngredientOption'
 
 interface IngredientInputProps {
-  units: UnitOption[]
   ingredient: IngredientItem
   ingredientOptions: IngredientOptionType[]
   ingredients?: RecipeIngredientRecord[]
+  units?: UnitRecord[]
+  unitOptions?: UnitOption[]
   canBeDeleted: boolean
   onInputDelete: () => void
   onInputChange: (data: IngredientItem) => void
@@ -48,6 +49,7 @@ function IngredientInput({
   ingredientOptions,
   ingredients,
   units,
+  unitOptions,
   canBeDeleted,
   onInputDelete,
   onInputChange,
@@ -69,16 +71,24 @@ function IngredientInput({
           ...data,
           ingredient: ingredient || ({} as RecipeIngredientRecord),
         }
+      } else if (key === 'portionQuantityUnit') {
+        const unit = units?.find((unit) => unit.id.toString() === event)
+        data = {
+          ...data,
+          portionQuantityUnit: unit || ({} as UnitRecord),
+        }
       } else {
         data = { ...data, [key]: event }
       }
     } else {
       data = { ...data, [key]: event.target.value.toString() }
     }
+    console.log(data)
     onInputChange(data)
   }
 
   const ingredientId = ingredient.ingredient.id || ''
+  const unitId = ingredient.portionQuantityUnit.id || ''
 
   return (
     <div className="relative">
@@ -103,11 +113,11 @@ function IngredientInput({
         />
         <Select
           label="Unit"
-          value={ingredient.portionQuantityUnitId}
+          value={unitId.toString()}
           required
           className="w-48"
-          data={units}
-          onChange={(event) => handleInputChange('portionQuantityUnitId', event)}
+          data={unitOptions || []}
+          onChange={(event) => handleInputChange('portionQuantityUnit', event)}
         />
         <TextInput
           label="Comment"
@@ -134,7 +144,8 @@ interface IngredientGroupInputProps {
   draggableId: string
   isDragDisabled?: boolean
   ingredientGroup: IngredientItemGroup
-  units: UnitOption[]
+  units?: UnitRecord[]
+  unitOptions?: UnitOption[]
   ingredientOptions: IngredientOptionType[]
   ingredients?: RecipeIngredientRecord[]
   canBeDeleted: boolean
@@ -149,10 +160,11 @@ function IngredientGroupInput({
   order,
   draggableId,
   isDragDisabled,
+  ingredients,
   ingredientGroup,
   ingredientOptions,
-  ingredients,
   units,
+  unitOptions,
   canBeDeleted,
   onIngredientGroupInputChange,
   onIngredientGroupInputDelete,
@@ -208,6 +220,7 @@ function IngredientGroupInput({
                   ingredientOptions={ingredientOptions}
                   ingredients={ingredients}
                   units={units}
+                  unitOptions={unitOptions}
                   canBeDeleted={ingredientGroup.ingredientItems.length > 1}
                   onInputDelete={() => onIngredientInputDelete(index)}
                   onInputChange={(data) => onIngredientInputChange(index, data)}

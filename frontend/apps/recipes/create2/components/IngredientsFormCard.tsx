@@ -27,7 +27,7 @@ function IngredientsFormCard({
   onIngredientGroupInputChange,
   onIngredientGroupInputDelete,
 }: RecipeIngredientsFormCardProps) {
-  const { unitsOptions } = useUnits()
+  const { units, unitsOptions } = useUnits()
 
   return (
     <Card>
@@ -38,7 +38,8 @@ function IngredientsFormCard({
           <RecipeIngredientsForm
             ingredients={ingredients}
             ingredientGroups={ingredientGroups}
-            units={unitsOptions || []}
+            units={units}
+            unitOptions={unitsOptions}
             onSequenceChange={onSequenceChange}
             onIngredientInputAdd={onIngredientInputAdd}
             onIngredientInputChange={onIngredientInputChange}
