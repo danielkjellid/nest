@@ -55,11 +55,21 @@ export function useForm<T extends object>({
   /**********
    ** Data **
    **********/
-
   const [formData, setFormData] = useState<Partial<T> | null>(null)
   const rawSchema = openAPISchema['components']['schemas'][key]
-
   const schema = rawSchema as FormComponentSchema
+
+  // Some keys are ignored as ajv cannot resolve the proper referenced
+  // type.
+  const ignoredKeys = ['anyOf', 'allOf', 'oneOf']
+  Object.values(schema.properties).forEach((property) => {
+    ignoredKeys.forEach((key) => {
+      if (Object.keys(property).includes(key)) {
+        // @ts-ignore
+        delete property[key]
+      }
+    })
+  })
 
   const validator = useValidator()
   validator.compile(schema)
