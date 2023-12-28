@@ -9,10 +9,9 @@ import { useFetch } from '../../../hooks/fetcher'
 import { useForm } from '../../../hooks/forms'
 import { type RecipeIngredientRecordListAPIResponse, type RecipeCreateForm } from '../../../types'
 import { urls } from '../../urls'
-import { type IngredientGroup, type Ingredient } from '../forms/RecipeIngredientsForm'
-import { type Step } from '../forms/RecipeStepsForm'
 
 import { IngredientsFormCard } from './components/IngredientsFormCard'
+import { type IngredientItem, type IngredientItemGroup } from './types'
 
 interface RecipeCreateInnerProps {
   results: {
@@ -28,10 +27,15 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
    ** IngredientGroup: data **
    ***************************/
 
-  const defaultIngredient = { ingredient: '', portionQuantity: '', unit: '', additionalInfo: '' }
-  const defaultIngredientGroup = { title: '', order: '', ingredients: [defaultIngredient] }
+  const defaultIngredient = {
+    ingredientId: '',
+    portionQuantity: 0,
+    portionQuantityUnitId: '',
+    additionalInfo: '',
+  }
+  const defaultIngredientGroup = { title: '', ordering: 0, ingredientItems: [defaultIngredient] }
   // TODO: Replace IngredientGroup with generated type.
-  const [ingredientGroups, setIngredientGroups] = useState<IngredientGroup[]>([
+  const [ingredientGroups, setIngredientGroups] = useState<IngredientItemGroup[]>([
     defaultIngredientGroup,
   ])
 
@@ -44,7 +48,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
     setIngredientGroups([...ingredientGroupsData, defaultIngredientGroup])
   }
 
-  const handleIngredientGroupInputChange = (index: number, data: IngredientGroup) => {
+  const handleIngredientGroupInputChange = (index: number, data: IngredientItemGroup) => {
     const ingredientGroupsData = [...ingredientGroups]
     ingredientGroupsData[index] = data
     setIngredientGroups(ingredientGroupsData)
@@ -56,7 +60,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
     setIngredientGroups(ingredientGroupsData)
   }
 
-  const handleIngredientGroupSequenceChange = (data: IngredientGroup[]) =>
+  const handleIngredientGroupSequenceChange = (data: IngredientItemGroup[]) =>
     setIngredientGroups([...data])
 
   /**************************
@@ -67,29 +71,30 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
     const ingredientGroupsData = [...ingredientGroups]
     const ingredientGroup = ingredientGroupsData[index]
 
-    ingredientGroup.ingredients = [...ingredientGroup.ingredients, defaultIngredient]
+    ingredientGroup.ingredientItems = [...ingredientGroup.ingredientItems, defaultIngredient]
     setIngredientGroups(ingredientGroupsData)
   }
 
   const handleIngredientInputChange = (
     index: number,
     ingredientIndex: number,
-    data: Ingredient
+    data: IngredientItem
   ) => {
     const ingredientGroupsData = [...ingredientGroups]
     const ingredientGroup = ingredientGroupsData[index]
 
-    ingredientGroup.ingredients[ingredientIndex] = data
+    ingredientGroup.ingredientItems[ingredientIndex] = data
     setIngredientGroups(ingredientGroupsData)
+    console.log(ingredientGroups)
   }
 
   const handleIngredientInputDelete = (index: number, ingredientIndex: number) => {
     const ingredientGroupsData = [...ingredientGroups]
     const ingredientGroup = ingredientGroupsData[index]
-    const ingredientsData = [...ingredientGroup.ingredients]
+    const ingredientsData = [...ingredientGroup.ingredientItems]
 
     ingredientsData.splice(ingredientIndex, 1)
-    ingredientGroup.ingredients = ingredientsData
+    ingredientGroup.ingredientItems = ingredientsData
 
     setIngredientGroups(ingredientGroupsData)
   }
@@ -97,14 +102,14 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   /*****************
    ** Steps: data **
    *****************/
-  const defaultStep = {
-    instruction: '',
-    duration: 0,
-    type: '',
-    ingredientItems: [],
-  }
-  const [steps, setSteps] = useState<Step[]>([defaultStep])
-  const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
+  // const defaultStep = {
+  //   instruction: '',
+  //   duration: 0,
+  //   type: '',
+  //   ingredientItems: [],
+  // }
+  // const [steps, setSteps] = useState<Step[]>([defaultStep])
+  // const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">

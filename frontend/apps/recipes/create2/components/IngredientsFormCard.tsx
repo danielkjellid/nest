@@ -4,17 +4,17 @@ import { Card } from '../../../../components/Card'
 import { useUnits } from '../../../../contexts/UnitsProvider'
 import { type RecipeIngredientRecord } from '../../../../types'
 import { RecipeIngredientsForm } from '../../forms/RecipeIngredientsForm'
-import { type IngredientGroup, type Ingredient } from '../../forms/RecipeIngredientsForm/types'
+import { type IngredientItemGroup, type IngredientItem } from '../types'
 
 interface RecipeIngredientsFormCardProps {
   ingredients?: RecipeIngredientRecord[]
-  ingredientGroups: IngredientGroup[]
-  onSequenceChange: (ingredientGroups: IngredientGroup[]) => void
+  ingredientGroups: IngredientItemGroup[]
+  onSequenceChange: (ingredientGroups: IngredientItemGroup[]) => void
   onIngredientInputAdd: (index: number) => void
-  onIngredientInputChange: (index: number, ingredientIndex: number, data: Ingredient) => void
+  onIngredientInputChange: (index: number, ingredientIndex: number, data: IngredientItem) => void
   onIngredientInputDelete: (index: number, ingredientIndex: number) => void
   onIngredientGroupInputAdd: () => void
-  onIngredientGroupInputChange: (index: number, data: IngredientGroup) => void
+  onIngredientGroupInputChange: (index: number, data: IngredientItemGroup) => void
   onIngredientGroupInputDelete: (index: number) => void
 }
 

@@ -4,13 +4,9 @@ import React, { forwardRef } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
+import { type IngredientItemGroup, type IngredientItem } from '../../create2/types'
 
-import {
-  type FormError,
-  type Ingredient,
-  type IngredientGroup,
-  type IngredientOptionType,
-} from './types'
+import { type FormError, type IngredientOptionType } from './types'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
   image?: string | null
@@ -39,11 +35,11 @@ IngredientOption.displayName = 'IngredientOption'
 interface IngredientInputProps {
   units: UnitOption[]
   error?: FormError
-  ingredient: Ingredient
+  ingredient: IngredientItem
   ingredientOptions: IngredientOptionType[]
   canBeDeleted: boolean
   onInputDelete: () => void
-  onInputChange: (data: Ingredient) => void
+  onInputChange: (data: IngredientItem) => void
 }
 
 function IngredientInput({
@@ -56,19 +52,19 @@ function IngredientInput({
   onInputChange,
 }: IngredientInputProps) {
   const handleInputChange = (
-    key: keyof Ingredient,
+    key: keyof IngredientItem,
     event: React.ChangeEvent<HTMLInputElement> | string | null
   ) => {
     if (!event) {
       return
     }
 
-    const data = { ...ingredient }
+    let data: IngredientItem = { ...ingredient }
 
     if (typeof event === 'string') {
-      data[key] = event
+      data = { [key]: event, ...data }
     } else {
-      data[key] = event.target.value.toString()
+      data = { [key]: event.target.value.toString(), ...data }
     }
     onInputChange(data)
   }
@@ -79,14 +75,14 @@ function IngredientInput({
       <div className="flex items-end w-full space-x-2">
         <Select
           label="Ingredient"
-          value={ingredient.ingredient}
+          value={ingredient.ingredientId}
           required
           className="w-96 ml-8"
           data={ingredientOptions}
           searchable
           error={error ? <></> : undefined}
           itemComponent={IngredientOption}
-          onChange={(event) => handleInputChange('ingredient', event)}
+          onChange={(event) => handleInputChange('ingredientId', event)}
         />
         <TextInput
           label="Quantity"
@@ -98,12 +94,12 @@ function IngredientInput({
         />
         <Select
           label="Unit"
-          value={ingredient.unit}
+          value={ingredient.portionQuantityUnitId}
           required
           error={error ? <></> : undefined}
           className="w-48"
           data={units}
-          onChange={(event) => handleInputChange('unit', event)}
+          onChange={(event) => handleInputChange('portionQuantityUnitId', event)}
         />
         <TextInput
           label="Comment"
@@ -130,15 +126,15 @@ interface IngredientGroupInputProps {
   order: number
   draggableId: string
   isDragDisabled?: boolean
-  ingredientGroup: IngredientGroup
+  ingredientGroup: IngredientItemGroup
   error?: FormError
   ingredientErrors: FormError[]
   units: UnitOption[]
   ingredientOptions: IngredientOptionType[]
   canBeDeleted: boolean
-  onIngredientGroupInputChange: (data: IngredientGroup) => void
+  onIngredientGroupInputChange: (data: IngredientItemGroup) => void
   onIngredientGroupInputDelete: () => void
-  onIngredientInputChange: (index: number, data: Ingredient) => void
+  onIngredientInputChange: (index: number, data: IngredientItem) => void
   onIngredientInputAdd: () => void
   onIngredientInputDelete: (index: number) => void
 }
@@ -201,14 +197,14 @@ function IngredientGroupInput({
               aria-hidden
             />
             <div className="relative mt-4 space-y-4">
-              {ingredientGroup.ingredients.map((ingredient, index) => (
+              {ingredientGroup.ingredientItems.map((ingredient, index) => (
                 <IngredientInput
                   key={index}
                   ingredient={ingredient}
                   error={ingredientErrors.find((error) => error.index === index)}
                   ingredientOptions={ingredientOptions}
                   units={units}
-                  canBeDeleted={ingredientGroup.ingredients.length > 1}
+                  canBeDeleted={ingredientGroup.ingredientItems.length > 1}
                   onInputDelete={() => onIngredientInputDelete(index)}
                   onInputChange={(data) => onIngredientInputChange(index, data)}
                 />

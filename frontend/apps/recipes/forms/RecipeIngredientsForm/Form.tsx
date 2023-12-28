@@ -3,27 +3,23 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { Button } from '../../../../components/Button'
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
+import { type IngredientItemGroup, type IngredientItem } from '../../create2/types'
 
 import { IngredientGroupInput } from './IngredientGroupInput'
-import {
-  type Ingredient,
-  type IngredientGroup,
-  type IngredientGroupFormError,
-  type IngredientOptionType,
-} from './types'
+import { type IngredientGroupFormError, type IngredientOptionType } from './types'
 
 interface RecipeIngredientFormProps {
   units: UnitOption[]
-  ingredientGroups: IngredientGroup[]
+  ingredientGroups: IngredientItemGroup[]
   ingredientGroupsErrors: IngredientGroupFormError[]
   ingredientOptions: IngredientOptionType[]
   ingredientErrors: IngredientGroupFormError[]
-  onSequenceChange: (ingredientGroups: IngredientGroup[]) => void
+  onSequenceChange: (ingredientGroups: IngredientItemGroup[]) => void
   onIngredientInputAdd: (index: number) => void
-  onIngredientInputChange: (index: number, ingredientIndex: number, data: Ingredient) => void
+  onIngredientInputChange: (index: number, ingredientIndex: number, data: IngredientItem) => void
   onIngredientInputDelete: (index: number, ingredientIndex: number) => void
   onIngredientGroupInputAdd: () => void
-  onIngredientGroupInputChange: (index: number, data: IngredientGroup) => void
+  onIngredientGroupInputChange: (index: number, data: IngredientItemGroup) => void
   onIngredientGroupInputDelete: (index: number) => void
 }
 
