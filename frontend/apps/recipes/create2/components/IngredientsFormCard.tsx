@@ -2,30 +2,18 @@ import { Card } from '../../../../components/Card'
 import { useUnits } from '../../../../contexts/UnitsProvider'
 import { type RecipeIngredientRecord } from '../../../../types'
 import { RecipeIngredientsForm } from '../../forms/RecipeIngredientsForm'
-import { type IngredientItemGroup, type IngredientItem } from '../types'
+import { type IngredientItemGroup, type IngredientGroupActionFunc } from '../types'
 
 interface RecipeIngredientsFormCardProps {
   ingredients?: RecipeIngredientRecord[]
-  ingredientGroups: IngredientItemGroup[]
-  onSequenceChange: (ingredientGroups: IngredientItemGroup[]) => void
-  onIngredientInputAdd: (index: number) => void
-  onIngredientInputChange: (index: number, ingredientIndex: number, data: IngredientItem) => void
-  onIngredientInputDelete: (index: number, ingredientIndex: number) => void
-  onIngredientGroupInputAdd: () => void
-  onIngredientGroupInputChange: (index: number, data: IngredientItemGroup) => void
-  onIngredientGroupInputDelete: (index: number) => void
+  ingredientGroups: IngredientItemGroup
+  onAction: IngredientGroupActionFunc
 }
 
 function IngredientsFormCard({
   ingredients,
   ingredientGroups,
-  onSequenceChange,
-  onIngredientInputAdd,
-  onIngredientInputChange,
-  onIngredientInputDelete,
-  onIngredientGroupInputAdd,
-  onIngredientGroupInputChange,
-  onIngredientGroupInputDelete,
+  onAction,
 }: RecipeIngredientsFormCardProps) {
   const { units, unitsOptions } = useUnits()
 
@@ -40,13 +28,7 @@ function IngredientsFormCard({
             ingredientGroups={ingredientGroups}
             units={units}
             unitOptions={unitsOptions}
-            onSequenceChange={onSequenceChange}
-            onIngredientInputAdd={onIngredientInputAdd}
-            onIngredientInputChange={onIngredientInputChange}
-            onIngredientInputDelete={onIngredientInputDelete}
-            onIngredientGroupInputAdd={onIngredientGroupInputAdd}
-            onIngredientGroupInputChange={onIngredientGroupInputChange}
-            onIngredientGroupInputDelete={onIngredientGroupInputDelete}
+            onAction={onAction}
           />
         }
       />

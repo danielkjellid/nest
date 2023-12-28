@@ -5,7 +5,11 @@ import { Draggable } from 'react-beautiful-dnd'
 
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
-import { type IngredientItemGroup, type IngredientItem } from '../../create2/types'
+import {
+  type IngredientItemGroup,
+  type IngredientItem,
+  type IngredientGroupActionFunc,
+} from '../../create2/types'
 
 import { type IngredientOptionType } from './types'
 
@@ -140,6 +144,7 @@ function IngredientInput({
 }
 
 interface IngredientGroupInputProps {
+  groupIndex: number
   order: number
   draggableId: string
   isDragDisabled?: boolean
@@ -149,14 +154,11 @@ interface IngredientGroupInputProps {
   ingredientOptions: IngredientOptionType[]
   ingredients?: RecipeIngredientRecord[]
   canBeDeleted: boolean
-  onIngredientGroupInputChange: (data: IngredientItemGroup) => void
-  onIngredientGroupInputDelete: () => void
-  onIngredientInputChange: (index: number, data: IngredientItem) => void
-  onIngredientInputAdd: () => void
-  onIngredientInputDelete: (index: number) => void
+  onAction: IngredientGroupActionFunc
 }
 
 function IngredientGroupInput({
+  groupIndex,
   order,
   draggableId,
   isDragDisabled,
@@ -166,17 +168,11 @@ function IngredientGroupInput({
   units,
   unitOptions,
   canBeDeleted,
-  onIngredientGroupInputChange,
-  onIngredientGroupInputDelete,
-  onIngredientInputChange,
-  onIngredientInputAdd,
-  onIngredientInputDelete,
+  onAction,
 }: IngredientGroupInputProps) {
   const handleIngredientGroupInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const data = { ...ingredientGroup }
-    data.title = event.target.value.toString()
-
-    onIngredientGroupInputChange(data)
+    const data = { ...ingredientGroup, title: event.target.value.toString() }
+    onAction('groupChange', groupIndex, data)
   }
 
   return (
@@ -201,7 +197,7 @@ function IngredientGroupInput({
               className="mb-1"
               color="red"
               variant="light"
-              onClick={onIngredientGroupInputDelete}
+              onClick={() => onAction('groupDelete', groupIndex)}
             >
               <IconX />
             </ActionIcon>
@@ -213,17 +209,19 @@ function IngredientGroupInput({
               aria-hidden
             />
             <div className="relative mt-4 space-y-4">
-              {ingredientGroup.ingredientItems.map((ingredient, index) => (
+              {ingredientGroup.ingredientItems.map((ingredient, ingredientIndex) => (
                 <IngredientInput
-                  key={index}
+                  key={ingredientIndex}
                   ingredient={ingredient}
                   ingredientOptions={ingredientOptions}
                   ingredients={ingredients}
                   units={units}
                   unitOptions={unitOptions}
                   canBeDeleted={ingredientGroup.ingredientItems.length > 1}
-                  onInputDelete={() => onIngredientInputDelete(index)}
-                  onInputChange={(data) => onIngredientInputChange(index, data)}
+                  onInputDelete={() => onAction('inputDelete', groupIndex)}
+                  onInputChange={(data) =>
+                    onAction('inputChange', groupIndex, ingredientIndex, data)
+                  }
                 />
               ))}
             </div>
@@ -232,7 +230,7 @@ function IngredientGroupInput({
             color="green"
             variant="light"
             className="mt-3 ml-8"
-            onClick={onIngredientInputAdd}
+            onClick={() => onAction('inputAdd', groupIndex)}
           >
             <IconPlus />
           </ActionIcon>

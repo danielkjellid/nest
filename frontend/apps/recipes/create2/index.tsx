@@ -17,7 +17,13 @@ import { urls } from '../../urls'
 import { type Step } from '../forms/RecipeStepsForm'
 
 import { IngredientsFormCard } from './components/IngredientsFormCard'
-import { type IngredientItem, type IngredientItemGroup } from './types'
+import {
+  type IngredientItem,
+  type IngredientItemGroup,
+  type IngredientGroupAction,
+  type IngredientGroupActionParameter,
+  type IngredientGroupActions,
+} from './types'
 
 interface RecipeCreateInnerProps {
   results: {
@@ -49,60 +55,57 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
    ** IngredientGroup: handlers **
    *******************************/
 
-  const handleIngredientGroupInputAdd = () => {
-    const ingredientGroupsData = [...ingredientGroups]
-    setIngredientGroups([...ingredientGroupsData, defaultIngredientGroup])
+  const ingredientGroupActions: IngredientGroupActions = {
+    groupAdd: function () {
+      const ingredientGroupsData = [...ingredientGroups]
+      setIngredientGroups([...ingredientGroupsData, defaultIngredientGroup])
+    },
+    groupChange: function (index: number, data: IngredientItemGroup) {
+      const ingredientGroupsData = [...ingredientGroups]
+      ingredientGroupsData[index] = data
+      setIngredientGroups(ingredientGroupsData)
+    },
+    groupDelete: function (index: number) {
+      const ingredientGroupsData = [...ingredientGroups]
+      ingredientGroupsData.splice(index, 1)
+      setIngredientGroups(ingredientGroupsData)
+    },
+    groupSequenceChange: function (data: IngredientItemGroup[]) {
+      setIngredientGroups([...data])
+    },
+    inputAdd: function (index: number) {
+      const ingredientGroupsData = [...ingredientGroups]
+      const ingredientGroup = ingredientGroupsData[index]
+
+      ingredientGroup.ingredientItems = [...ingredientGroup.ingredientItems, defaultIngredient]
+      setIngredientGroups(ingredientGroupsData)
+    },
+    inputChange: function (index: number, ingredientIndex: number, data: IngredientItem) {
+      const ingredientGroupsData = [...ingredientGroups]
+      const ingredientGroup = ingredientGroupsData[index]
+
+      ingredientGroup.ingredientItems[ingredientIndex] = data
+      setIngredientGroups(ingredientGroupsData)
+      console.log(ingredientGroups)
+    },
+    inputDelete: function (index: number, ingredientIndex: number) {
+      const ingredientGroupsData = [...ingredientGroups]
+      const ingredientGroup = ingredientGroupsData[index]
+      const ingredientsData = [...ingredientGroup.ingredientItems]
+
+      ingredientsData.splice(ingredientIndex, 1)
+      ingredientGroup.ingredientItems = ingredientsData
+
+      setIngredientGroups(ingredientGroupsData)
+    },
   }
 
-  const handleIngredientGroupInputChange = (index: number, data: IngredientItemGroup) => {
-    const ingredientGroupsData = [...ingredientGroups]
-    ingredientGroupsData[index] = data
-    setIngredientGroups(ingredientGroupsData)
-  }
-
-  const handleIngredientGroupInputDelete = (index: number) => {
-    const ingredientGroupsData = [...ingredientGroups]
-    ingredientGroupsData.splice(index, 1)
-    setIngredientGroups(ingredientGroupsData)
-  }
-
-  const handleIngredientGroupSequenceChange = (data: IngredientItemGroup[]) =>
-    setIngredientGroups([...data])
-
-  /**************************
-   ** Ingredient: handlers **
-   **************************/
-
-  const handleIngredientInputAdd = (index: number) => {
-    const ingredientGroupsData = [...ingredientGroups]
-    const ingredientGroup = ingredientGroupsData[index]
-
-    ingredientGroup.ingredientItems = [...ingredientGroup.ingredientItems, defaultIngredient]
-    setIngredientGroups(ingredientGroupsData)
-  }
-
-  const handleIngredientInputChange = (
-    index: number,
-    ingredientIndex: number,
-    data: IngredientItem
-  ) => {
-    const ingredientGroupsData = [...ingredientGroups]
-    const ingredientGroup = ingredientGroupsData[index]
-
-    ingredientGroup.ingredientItems[ingredientIndex] = data
-    setIngredientGroups(ingredientGroupsData)
-    console.log(ingredientGroups)
-  }
-
-  const handleIngredientInputDelete = (index: number, ingredientIndex: number) => {
-    const ingredientGroupsData = [...ingredientGroups]
-    const ingredientGroup = ingredientGroupsData[index]
-    const ingredientsData = [...ingredientGroup.ingredientItems]
-
-    ingredientsData.splice(ingredientIndex, 1)
-    ingredientGroup.ingredientItems = ingredientsData
-
-    setIngredientGroups(ingredientGroupsData)
+  function handleIngredientGroupAction(
+    action: IngredientGroupAction,
+    ...params: IngredientGroupActionParameter
+  ) {
+    // @ts-ignore
+    return ingredientGroupActions[action](...params)
   }
 
   /*****************
@@ -133,13 +136,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
       <IngredientsFormCard
         ingredients={ingredients}
         ingredientGroups={ingredientGroups}
-        onSequenceChange={handleIngredientGroupSequenceChange}
-        onIngredientInputAdd={handleIngredientInputAdd}
-        onIngredientInputChange={handleIngredientInputChange}
-        onIngredientInputDelete={handleIngredientInputDelete}
-        onIngredientGroupInputAdd={handleIngredientGroupInputAdd}
-        onIngredientGroupInputChange={handleIngredientGroupInputChange}
-        onIngredientGroupInputDelete={handleIngredientGroupInputDelete}
+        onAction={handleIngredientGroupAction}
       />
     </div>
   )
