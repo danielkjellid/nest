@@ -1,19 +1,18 @@
+import { useMemo } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
+import { type RecipeIngredientRecord } from '../../../../types'
 import { type IngredientItemGroup, type IngredientItem } from '../../create2/types'
 
 import { IngredientGroupInput } from './IngredientGroupInput'
-import { type IngredientGroupFormError, type IngredientOptionType } from './types'
 
 interface RecipeIngredientFormProps {
   units: UnitOption[]
   ingredientGroups: IngredientItemGroup[]
-  ingredientGroupsErrors: IngredientGroupFormError[]
-  ingredientOptions: IngredientOptionType[]
-  ingredientErrors: IngredientGroupFormError[]
+  ingredients?: RecipeIngredientRecord[]
   onSequenceChange: (ingredientGroups: IngredientItemGroup[]) => void
   onIngredientInputAdd: (index: number) => void
   onIngredientInputChange: (index: number, ingredientIndex: number, data: IngredientItem) => void
@@ -25,9 +24,7 @@ interface RecipeIngredientFormProps {
 
 function RecipeIngredientsForm({
   ingredientGroups,
-  ingredientGroupsErrors,
-  ingredientOptions,
-  ingredientErrors,
+  ingredients,
   units,
   onSequenceChange,
   onIngredientInputAdd,
@@ -41,6 +38,19 @@ function RecipeIngredientsForm({
     items: ingredientGroups,
     onSequenceChange: onSequenceChange,
   })
+
+  const ingredientOptions =
+    useMemo(
+      () =>
+        ingredients &&
+        ingredients.map((ingredient) => ({
+          label: ingredient.title,
+          image: ingredient.product.thumbnailUrl,
+          description: ingredient.product.fullName,
+          value: ingredient.id.toString(),
+        })),
+      [ingredients]
+    ) || []
 
   return (
     <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
@@ -64,9 +74,8 @@ function RecipeIngredientsForm({
                   draggableId={index.toString()}
                   order={index}
                   ingredientGroup={ingredientGroup}
-                  error={ingredientGroupsErrors.find((error) => error.index === index)}
-                  ingredientErrors={ingredientErrors}
                   ingredientOptions={ingredientOptions}
+                  ingredients={ingredients}
                   units={units}
                   canBeDeleted={ingredientGroups.length > 1}
                   onIngredientInputAdd={() => onIngredientInputAdd(index)}

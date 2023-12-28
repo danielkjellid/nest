@@ -4,8 +4,7 @@ import {
 } from '../../../types'
 
 export interface IngredientItem
-  extends Pick<RecipeIngredientItemRecord, 'portionQuantity' | 'additionalInfo'> {
-  ingredientId: string
+  extends Pick<RecipeIngredientItemRecord, 'ingredient' | 'portionQuantity' | 'additionalInfo'> {
   portionQuantityUnitId: string
 }
 export interface IngredientItemGroup

@@ -7,8 +7,13 @@ import Form from '../../../components/Form'
 import View from '../../../components/View'
 import { useFetch } from '../../../hooks/fetcher'
 import { useForm } from '../../../hooks/forms'
-import { type RecipeIngredientRecordListAPIResponse, type RecipeCreateForm } from '../../../types'
+import {
+  type RecipeIngredientRecordListAPIResponse,
+  type RecipeCreateForm,
+  type RecipeIngredientRecord,
+} from '../../../types'
 import { urls } from '../../urls'
+import { type Step } from '../forms/RecipeStepsForm'
 
 import { IngredientsFormCard } from './components/IngredientsFormCard'
 import { type IngredientItem, type IngredientItemGroup } from './types'
@@ -28,7 +33,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
    ***************************/
 
   const defaultIngredient = {
-    ingredientId: '',
+    ingredient: {} as RecipeIngredientRecord,
     portionQuantity: 0,
     portionQuantityUnitId: '',
     additionalInfo: '',
@@ -102,14 +107,14 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   /*****************
    ** Steps: data **
    *****************/
-  // const defaultStep = {
-  //   instruction: '',
-  //   duration: 0,
-  //   type: '',
-  //   ingredientItems: [],
-  // }
-  // const [steps, setSteps] = useState<Step[]>([defaultStep])
-  // const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
+  const defaultStep = {
+    instruction: '',
+    duration: 0,
+    type: '',
+    ingredientItems: [],
+  }
+  const [steps, setSteps] = useState<Step[]>([defaultStep])
+  const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">

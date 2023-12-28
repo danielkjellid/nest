@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 import { Card } from '../../../../components/Card'
 import { useUnits } from '../../../../contexts/UnitsProvider'
 import { type RecipeIngredientRecord } from '../../../../types'
@@ -30,18 +28,6 @@ function IngredientsFormCard({
   onIngredientGroupInputDelete,
 }: RecipeIngredientsFormCardProps) {
   const { unitsOptions } = useUnits()
-  const ingredientOptions =
-    useMemo(
-      () =>
-        ingredients &&
-        ingredients.map((ingredient) => ({
-          label: ingredient.title,
-          image: ingredient.product.thumbnailUrl,
-          description: ingredient.product.fullName,
-          value: ingredient.id.toString(),
-        })),
-      [ingredients]
-    ) || []
 
   return (
     <Card>
@@ -50,11 +36,9 @@ function IngredientsFormCard({
         subtitle="Add ingredients and amounts to recipe. If one ingredient is needed within multiple groups, add it to each group respectively."
         form={
           <RecipeIngredientsForm
+            ingredients={ingredients}
             ingredientGroups={ingredientGroups}
-            ingredientErrors={[]}
-            ingredientGroupsErrors={[]}
             units={unitsOptions || []}
-            ingredientOptions={ingredientOptions}
             onSequenceChange={onSequenceChange}
             onIngredientInputAdd={onIngredientInputAdd}
             onIngredientInputChange={onIngredientInputChange}
