@@ -1,15 +1,10 @@
-import { useMemo } from 'react'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
-import {
-  type IngredientItemGroup,
-  type ActionFunc,
-  type IngredientGroupActions,
-} from '../../create2/types'
+import { type IngredientItemGroup, type ActionFunc, type IngredientGroupActions } from '../types'
 
 import { IngredientGroupInput } from './IngredientGroupInput'
 
@@ -32,19 +27,6 @@ function RecipeIngredientsForm({
     items: ingredientGroups,
     onSequenceChange: (items) => onAction('groupSequenceChange', items),
   })
-
-  const ingredientOptions =
-    useMemo(
-      () =>
-        ingredients &&
-        ingredients.map((ingredient) => ({
-          label: ingredient.title,
-          image: ingredient.product.thumbnailUrl,
-          description: ingredient.product.fullName,
-          value: ingredient.id.toString(),
-        })),
-      [ingredients]
-    ) || []
 
   return (
     <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
@@ -70,7 +52,6 @@ function RecipeIngredientsForm({
                   order={index}
                   ingredients={ingredients}
                   ingredientGroup={ingredientGroup}
-                  ingredientOptions={ingredientOptions}
                   units={units}
                   unitOptions={unitOptions}
                   canBeDeleted={ingredientGroups.length > 1}

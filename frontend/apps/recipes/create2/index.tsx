@@ -18,9 +18,9 @@ import {
   type RecipeStepType,
 } from '../../../types'
 import { urls } from '../../urls'
-import { RecipeIngredientsForm } from '../forms/RecipeIngredientsForm'
-import { RecipeStepsForm } from '../forms/RecipeStepsForm'
 
+import { RecipeIngredientsForm } from './components/RecipeIngredientsForm'
+import { RecipeStepsForm } from './components/RecipeStepsForm'
 import {
   type IngredientItem,
   type IngredientItemGroup,

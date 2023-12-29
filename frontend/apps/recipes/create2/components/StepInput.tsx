@@ -7,12 +7,7 @@ import { Counter } from '../../../../components/Counter'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
-import {
-  type ActionFunc,
-  type StepActions,
-  type IngredientItemGroup,
-  type Step,
-} from '../../create2/types'
+import { type ActionFunc, type StepActions, type IngredientItemGroup, type Step } from '../types'
 
 interface StepInputProps {
   draggableId: string

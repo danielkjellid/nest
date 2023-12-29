@@ -2,12 +2,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
-import {
-  type IngredientItemGroup,
-  type Step,
-  type ActionFunc,
-  type StepActions,
-} from '../../create2/types'
+import { type IngredientItemGroup, type Step, type ActionFunc, type StepActions } from '../types'
 
 import { StepInput } from './StepInput'
 

@@ -1,6 +1,6 @@
 import { ActionIcon, Select, Text, TextInput } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
@@ -10,9 +10,7 @@ import {
   type IngredientItem,
   type ActionFunc,
   type IngredientGroupActions,
-} from '../../create2/types'
-
-import { type IngredientOptionType } from './types'
+} from '../types'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
   image?: string | null
@@ -40,7 +38,6 @@ IngredientOption.displayName = 'IngredientOption'
 
 interface IngredientInputProps {
   ingredient: IngredientItem
-  ingredientOptions: IngredientOptionType[]
   ingredients?: RecipeIngredientRecord[]
   units?: UnitRecord[]
   unitOptions?: UnitOption[]
@@ -51,7 +48,6 @@ interface IngredientInputProps {
 
 function IngredientInput({
   ingredient,
-  ingredientOptions,
   ingredients,
   units,
   unitOptions,
@@ -88,12 +84,24 @@ function IngredientInput({
     } else {
       data = { ...data, [key]: event.target.value.toString() }
     }
-    console.log(data)
     onInputChange(data)
   }
 
   const ingredientId = ingredient.ingredient.id || ''
   const unitId = ingredient.portionQuantityUnit.id || ''
+
+  const ingredientOptions =
+    useMemo(
+      () =>
+        ingredients &&
+        ingredients.map((ingredient) => ({
+          label: ingredient.title,
+          image: ingredient.product.thumbnailUrl,
+          description: ingredient.product.fullName,
+          value: ingredient.id.toString(),
+        })),
+      [ingredients]
+    ) || []
 
   return (
     <div className="relative">
@@ -152,7 +160,6 @@ interface IngredientGroupInputProps {
   ingredientGroup: IngredientItemGroup
   units?: UnitRecord[]
   unitOptions?: UnitOption[]
-  ingredientOptions: IngredientOptionType[]
   ingredients?: RecipeIngredientRecord[]
   canBeDeleted: boolean
   onAction: ActionFunc<IngredientGroupActions>
@@ -165,7 +172,6 @@ function IngredientGroupInput({
   isDragDisabled,
   ingredients,
   ingredientGroup,
-  ingredientOptions,
   units,
   unitOptions,
   canBeDeleted,
@@ -214,7 +220,6 @@ function IngredientGroupInput({
                 <IngredientInput
                   key={ingredientIndex}
                   ingredient={ingredient}
-                  ingredientOptions={ingredientOptions}
                   ingredients={ingredients}
                   units={units}
                   unitOptions={unitOptions}
