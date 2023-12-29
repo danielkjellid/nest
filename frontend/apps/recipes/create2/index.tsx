@@ -1,12 +1,15 @@
 import { Title } from '@mantine/core'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { Button } from '../../../components/Button'
 import { Card } from '../../../components/Card'
 import Form from '../../../components/Form'
 import View from '../../../components/View'
+import { useUnits } from '../../../contexts/UnitsProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { useForm } from '../../../hooks/forms'
+import { useCommonStyles } from '../../../styles/common'
 import {
   type RecipeIngredientRecordListAPIResponse,
   type RecipeCreateForm,
@@ -15,9 +18,9 @@ import {
   type RecipeStepType,
 } from '../../../types'
 import { urls } from '../../urls'
+import { RecipeIngredientsForm } from '../forms/RecipeIngredientsForm'
+import { RecipeStepsForm } from '../forms/RecipeStepsForm'
 
-import { IngredientsFormCard } from './components/IngredientsFormCard'
-import { StepsFormCard } from './components/StepsFormCard'
 import {
   type IngredientItem,
   type IngredientItemGroup,
@@ -34,8 +37,12 @@ interface RecipeCreateInnerProps {
 }
 
 function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
+  const { units, unitsOptions } = useUnits()
   const { data: ingredients } = results.ingredients
+  const { classes } = useCommonStyles()
+
   const recipeForm = useForm({ key: 'RecipeCreateForm' })
+  const navigate = useNavigate()
 
   /***************************
    ** IngredientGroup: data **
@@ -149,7 +156,6 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <Title weight={600}>Create recipe</Title>
-        <Button>Save</Button>
       </div>
       <Card>
         <Card.Form
@@ -157,16 +163,36 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
           subtitle="Specify basic recipe information"
           form={<Form<RecipeCreateForm> {...recipeForm} />}
         />
-        <IngredientsFormCard
-          ingredients={ingredients}
-          ingredientGroups={ingredientGroups}
-          onAction={handleIngredientGroupAction}
+        <Card.Form
+          title="Add ingredients"
+          subtitle="Add ingredients and amounts to recipe. If one ingredient is needed within multiple groups, add it to each group respectively."
+          form={
+            <RecipeIngredientsForm
+              ingredients={ingredients}
+              ingredientGroups={ingredientGroups}
+              units={units}
+              unitOptions={unitsOptions}
+              onAction={handleIngredientGroupAction}
+            />
+          }
         />
-        <StepsFormCard
-          steps={steps}
-          ingredientGroups={ingredientGroups}
-          onAction={handleStepAction}
+        <Card.Form
+          title="Add steps"
+          subtitle="Add steps to recipe"
+          form={
+            <RecipeStepsForm
+              steps={steps}
+              ingredientGroups={ingredientGroups}
+              onAction={handleStepAction}
+            />
+          }
         />
+        <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
+          <Button variant="default" onClick={() => navigate(-1)}>
+            Cancel
+          </Button>
+          <Button>Save</Button>
+        </div>
       </Card>
     </div>
   )
