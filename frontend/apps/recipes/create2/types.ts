@@ -1,6 +1,7 @@
 import {
   type RecipeIngredientItemGroupRecord,
   type RecipeIngredientItemRecord,
+  type RecipeStepRecord,
 } from '../../../types'
 
 export type IngredientItem = Pick<
@@ -30,3 +31,7 @@ export type IngredientGroupActionFunc = (
   action: IngredientGroupAction,
   ...params: IngredientGroupActionParameter
 ) => void
+
+interface Step extends Pick<RecipeStepRecord, 'instruction' | 'duration' | 'stepType'> {
+  ingredientItems: IngredientItem[]
+}

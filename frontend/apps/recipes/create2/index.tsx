@@ -24,6 +24,7 @@ import {
   type IngredientGroupActionParameter,
   type IngredientGroupActions,
 } from './types'
+import { StepsFormCard } from './components/StepsFormCard'
 
 interface RecipeCreateInnerProps {
   results: {
@@ -111,6 +112,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   /*****************
    ** Steps: data **
    *****************/
+
   const defaultStep = {
     instruction: '',
     duration: 0,
@@ -119,6 +121,28 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   }
   const [steps, setSteps] = useState<Step[]>([defaultStep])
   const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
+
+  const handleStepInputAdd = () => {
+    const stepsData = [...steps]
+    setSteps([...stepsData, defaultStep])
+  }
+
+  const handleStepInputChange = (index: number, data: Step) => {
+    const stepsData = [...steps]
+    stepsData[index] = data
+
+    setSteps(stepsData)
+  }
+
+  const handleStepInputDelete = (index: number) => {
+    const stepsData = [...steps]
+    stepsData.splice(index, 1)
+    setSteps(stepsData)
+  }
+
+  const handleSequenceChange = (data: Step[]) => {
+    setSteps([...data])
+  }
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
@@ -132,12 +156,21 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
           subtitle="Specify basic recipe information"
           form={<Form<RecipeCreateForm> {...recipeForm} />}
         />
+        <IngredientsFormCard
+          ingredients={ingredients}
+          ingredientGroups={ingredientGroups}
+          onAction={handleIngredientGroupAction}
+        />
+        <StepsFormCard
+          steps={steps}
+          ingredientGroups={ingredientGroups}
+          selectedIngredientItems={[]}
+          onSequenceChange={handleSequenceChange}
+          onStepInputAdd={handleStepInputAdd}
+          onStepInputChange={handleStepInputChange}
+          onStepInputDelete={handleStepInputDelete}
+        />
       </Card>
-      <IngredientsFormCard
-        ingredients={ingredients}
-        ingredientGroups={ingredientGroups}
-        onAction={handleIngredientGroupAction}
-      />
     </div>
   )
 }

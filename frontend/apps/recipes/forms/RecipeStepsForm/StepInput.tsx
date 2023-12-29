@@ -10,12 +10,14 @@ import {
   type TransferListItemComponentProps,
 } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
+import { useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 import { Counter } from '../../../../components/Counter'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
+import { type IngredientItemGroup } from '../../create2/types'
 
 import { type IngredientItemOptionType, type Step, type StepInputError } from './types'
 
@@ -49,9 +51,8 @@ interface StepInputProps {
   draggableId: string
   isDragDisabled?: boolean
   step: Step
-  error?: StepInputError
   stepNumber: number
-  ingredientItemOptions: IngredientItemOptionType[]
+  ingredientGroups: IngredientItemGroup[]
   canBeDeleted?: boolean
   onInputChange: (data: Step) => void
   onInputDelete: () => void
@@ -61,9 +62,8 @@ function StepInput({
   draggableId,
   isDragDisabled,
   step,
-  error,
   stepNumber,
-  ingredientItemOptions,
+  ingredientGroups,
   canBeDeleted,
   onInputChange,
   onInputDelete,
@@ -108,25 +108,21 @@ function StepInput({
 
   const stepTypes = useEnumToOptions(RecipeStepType)
 
-  const getErrorMessage = (key: keyof Step) => {
-    if (!error) {
-      return undefined
-    }
-
-    if (error.emptyFields?.includes(key)) {
-      return 'This field cannot be empty.'
-    }
-
-    if (key === 'duration' && error.durationBellowZero) {
-      return 'Duration cannot be equal to or bellow zero.'
-    }
-
-    if (key === 'ingredientItems' && error.unusedIngredientOptions) {
-      return 'All ingredient items has to be assigned to a step.'
-    }
-
-    return undefined
-  }
+  const ingredientOptions = useMemo(
+    () =>
+      ingredientGroups.flatMap((ingredientGroup) =>
+        ingredientGroup.ingredientItems
+          .filter((ingredientItem) => Object.keys(ingredientItem.ingredient).length)
+          .map((ingredientItem) => ({
+            label: ingredientItem.ingredient.title,
+            image: ingredientItem.ingredient.product.thumbnailUrl,
+            description: ingredientItem.ingredient.product.fullName,
+            value: ingredientItem.ingredient.id.toString(),
+            group: ingredientGroup.title,
+          }))
+      ),
+    [ingredientGroups]
+  )
 
   return (
     <Draggable draggableId={draggableId} index={stepNumber - 1} isDragDisabled={isDragDisabled}>
@@ -151,7 +147,6 @@ function StepInput({
                   className="w-full text-sm"
                   value={step.instruction}
                   onChange={(event) => handleStepInputChange('instruction', event)}
-                  error={getErrorMessage('instruction')}
                 />
               </div>
               <div className="ml-12 space-y-3">
@@ -161,7 +156,6 @@ function StepInput({
                   value={step.type}
                   data={stepTypes}
                   onChange={(event) => handleStepInputChange('type', event || '')}
-                  error={getErrorMessage('type')}
                 />
                 <Counter
                   label="Duration"
@@ -171,11 +165,10 @@ function StepInput({
                   min={1}
                   max={60}
                   onChange={(event) => handleStepInputChange('duration', event)}
-                  error={getErrorMessage('duration')}
                 />
-                <Input.Wrapper error={getErrorMessage('ingredientItems')}>
+                <Input.Wrapper>
                   <TransferList
-                    value={[ingredientItemOptions, step.ingredientItems]}
+                    value={[ingredientOptions, step.ingredientItems]}
                     onChange={handleIngredientItemTransfer}
                     searchPlaceholder="Search ingredients"
                     nothingFound="No ingredients matching query"

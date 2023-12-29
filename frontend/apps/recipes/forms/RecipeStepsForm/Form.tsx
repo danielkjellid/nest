@@ -2,14 +2,14 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
+import { type IngredientItemGroup, type IngredientItem } from '../../create2/types'
 
 import { StepInput } from './StepInput'
-import { type IngredientItemOptionType, type Step, type StepInputError } from './types'
+import { type Step } from './types'
 
 interface RecipeStepsFormProps {
   steps: Step[]
-  errors?: StepInputError[]
-  ingredientItemOptions: IngredientItemOptionType[]
+  ingredientGroups: IngredientItemGroup[]
   onSequenceChange: (steps: Step[]) => void
   onStepInputAdd: () => void
   onStepInputChange: (index: number, data: Step) => void
@@ -18,8 +18,7 @@ interface RecipeStepsFormProps {
 
 function RecipeStepsForm({
   steps,
-  errors,
-  ingredientItemOptions,
+  ingredientGroups,
   onSequenceChange,
   onStepInputAdd,
   onStepInputChange,
@@ -51,9 +50,8 @@ function RecipeStepsForm({
                   isDragDisabled={steps.length <= 1}
                   key={index}
                   step={step}
-                  error={errors?.find((error) => error.index === index)}
                   stepNumber={index + 1}
-                  ingredientItemOptions={ingredientItemOptions}
+                  ingredientGroups={ingredientGroups}
                   canBeDeleted={steps.length > 1}
                   onInputChange={(data) => onStepInputChange(index, data)}
                   onInputDelete={() => onStepInputDelete(index)}

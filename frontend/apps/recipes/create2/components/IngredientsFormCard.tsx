@@ -6,7 +6,7 @@ import { type IngredientItemGroup, type IngredientGroupActionFunc } from '../typ
 
 interface RecipeIngredientsFormCardProps {
   ingredients?: RecipeIngredientRecord[]
-  ingredientGroups: IngredientItemGroup
+  ingredientGroups: IngredientItemGroup[]
   onAction: IngredientGroupActionFunc
 }
 
@@ -18,21 +18,19 @@ function IngredientsFormCard({
   const { units, unitsOptions } = useUnits()
 
   return (
-    <Card>
-      <Card.Form
-        title="Add ingredients"
-        subtitle="Add ingredients and amounts to recipe. If one ingredient is needed within multiple groups, add it to each group respectively."
-        form={
-          <RecipeIngredientsForm
-            ingredients={ingredients}
-            ingredientGroups={ingredientGroups}
-            units={units}
-            unitOptions={unitsOptions}
-            onAction={onAction}
-          />
-        }
-      />
-    </Card>
+    <Card.Form
+      title="Add ingredients"
+      subtitle="Add ingredients and amounts to recipe. If one ingredient is needed within multiple groups, add it to each group respectively."
+      form={
+        <RecipeIngredientsForm
+          ingredients={ingredients}
+          ingredientGroups={ingredientGroups}
+          units={units}
+          unitOptions={unitsOptions}
+          onAction={onAction}
+        />
+      }
+    />
   )
 }
 
