@@ -198,7 +198,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   )
 }
 
-function RecipeCreate2() {
+function RecipeCreate() {
   const ingredients = useFetch<RecipeIngredientRecordListAPIResponse>(
     urls.recipes.ingredients.list()
   )
@@ -214,4 +214,4 @@ function RecipeCreate2() {
   )
 }
 
-export { RecipeCreate2 }
+export { RecipeCreate }

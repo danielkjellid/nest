@@ -13,22 +13,4 @@ export const routes = {
       return generatePath(this.path)
     },
   },
-  createRecipe2: {
-    path: '/recipes/create2',
-    build: function () {
-      return generatePath(this.path)
-    },
-  },
-  createRecipeIngredients: {
-    path: '/recipes/create/:recipeId/ingredients',
-    build: function ({ recipeId }: { recipeId: string | number }) {
-      return generatePath(this.path, { recipeId: recipeId })
-    },
-  },
-  createRecipeSteps: {
-    path: '/recipes/create/:recipeId/steps',
-    build: function ({ recipeId }: { recipeId: string | number }) {
-      return generatePath(this.path, { recipeId: recipeId })
-    },
-  },
 }
