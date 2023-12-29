@@ -1,14 +1,4 @@
-import {
-  ActionIcon,
-  Checkbox,
-  Input,
-  Select,
-  Text,
-  Textarea,
-  TransferList,
-  type TransferListItemComponent,
-  type TransferListItemComponentProps,
-} from '@mantine/core'
+import { ActionIcon, Select, Textarea, MultiSelect } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 import { useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
@@ -19,33 +9,7 @@ import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
 import { type IngredientItemGroup } from '../../create2/types'
 
-import { type IngredientItemOptionType, type Step, type StepInputError } from './types'
-
-const IngredientItemOption: TransferListItemComponent = ({
-  data,
-  selected,
-}: TransferListItemComponentProps) => (
-  <div>
-    <div className="w-80 grow shrink basis-0 flex items-center justify-between px-1 space-x-3">
-      <div className="flex items-center space-x-2">
-        <img src={data.image || ''} className="object-contain w-12 h-12 rounded-md" />
-        <div className="w-64 overflow-hidden">
-          <Text size="sm">{data.label}</Text>
-          <Text size="xs" opacity={0.65} className="truncate">
-            {data.description}
-          </Text>
-        </div>
-      </div>
-      <Checkbox
-        checked={selected}
-        tabIndex={-1}
-        sx={{ pointerEvents: 'none' }}
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onChange={() => {}}
-      />
-    </div>
-  </div>
-)
+import { type Step } from './types'
 
 interface StepInputProps {
   draggableId: string
@@ -69,15 +33,6 @@ function StepInput({
   onInputDelete,
 }: StepInputProps) {
   const { classes } = useStepsStyles()
-
-  const handleIngredientItemTransfer = (
-    eventData: [IngredientItemOptionType[], IngredientItemOptionType[]]
-  ) => {
-    const data = { ...step }
-    data.ingredientItems = [...eventData[1]]
-
-    onInputChange(data)
-  }
 
   const handleStepInputChange = (
     key: keyof Step,
@@ -115,8 +70,6 @@ function StepInput({
           .filter((ingredientItem) => Object.keys(ingredientItem.ingredient).length)
           .map((ingredientItem) => ({
             label: ingredientItem.ingredient.title,
-            image: ingredientItem.ingredient.product.thumbnailUrl,
-            description: ingredientItem.ingredient.product.fullName,
             value: ingredientItem.ingredient.id.toString(),
             group: ingredientGroup.title,
           }))
@@ -166,21 +119,14 @@ function StepInput({
                   max={60}
                   onChange={(event) => handleStepInputChange('duration', event)}
                 />
-                <Input.Wrapper>
-                  <TransferList
-                    value={[ingredientOptions, step.ingredientItems]}
-                    onChange={handleIngredientItemTransfer}
-                    searchPlaceholder="Search ingredients"
-                    nothingFound="No ingredients matching query"
-                    titles={['Available ingredients', 'Ingredients related to step']}
-                    listHeight={300}
-                    itemComponent={IngredientItemOption}
-                    filter={(query, item) =>
-                      item.label.toLowerCase().includes(query.toLowerCase().trim()) ||
-                      item.description.toLowerCase().includes(query.toLowerCase().trim())
-                    }
-                  />
-                </Input.Wrapper>
+                <MultiSelect
+                  label="Ingredients"
+                  description="Pick ingredients required in this step"
+                  data={ingredientOptions}
+                  required
+                  searchable
+                  clearable
+                />
               </div>
             </div>
             <ActionIcon
