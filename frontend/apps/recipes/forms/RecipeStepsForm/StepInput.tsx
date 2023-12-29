@@ -7,7 +7,12 @@ import { Counter } from '../../../../components/Counter'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
-import { type IngredientItemGroup, type Step } from '../../create2/types'
+import {
+  type ActionFunc,
+  type StepActions,
+  type IngredientItemGroup,
+  type Step,
+} from '../../create2/types'
 
 interface StepInputProps {
   draggableId: string
@@ -16,8 +21,7 @@ interface StepInputProps {
   stepNumber: number
   ingredientGroups: IngredientItemGroup[]
   canBeDeleted?: boolean
-  onInputChange: (data: Step) => void
-  onInputDelete: () => void
+  onAction: ActionFunc<StepActions>
 }
 
 function StepInput({
@@ -27,8 +31,7 @@ function StepInput({
   stepNumber,
   ingredientGroups,
   canBeDeleted,
-  onInputChange,
-  onInputDelete,
+  onAction,
 }: StepInputProps) {
   const { classes } = useStepsStyles()
 
@@ -40,7 +43,7 @@ function StepInput({
       return
     }
 
-    const data = { ...step }
+    let data = { ...step }
 
     if (
       typeof eventOrValue !== 'string' &&
@@ -49,14 +52,17 @@ function StepInput({
       (eventOrValue.target instanceof HTMLInputElement ||
         eventOrValue.target instanceof HTMLTextAreaElement)
     ) {
-      //@ts-ignore
-      data[key] = eventOrValue.target.value.toString()
+      const value = eventOrValue.target.value.toString()
+      if (key === 'stepType') {
+        data = { ...data, stepType: RecipeStepType[value as keyof typeof RecipeStepType] }
+      } else {
+        data = { ...data, [key]: eventOrValue.target.value.toString() }
+      }
     } else {
-      //@ts-ignore
-      data[key] = eventOrValue
+      data = { ...data, [key]: eventOrValue }
     }
 
-    onInputChange(data)
+    onAction('inputChange', stepNumber, data)
   }
 
   const stepTypes = useEnumToOptions(RecipeStepType)
@@ -132,7 +138,7 @@ function StepInput({
               variant="light"
               className="mt-5"
               disabled={!canBeDeleted}
-              onClick={onInputDelete}
+              onClick={() => onAction('inputDelete', stepNumber)}
             >
               <IconX />
             </ActionIcon>

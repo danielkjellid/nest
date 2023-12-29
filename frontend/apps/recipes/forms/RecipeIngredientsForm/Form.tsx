@@ -5,7 +5,11 @@ import { Button } from '../../../../components/Button'
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
-import { type IngredientItemGroup, type IngredientGroupActionFunc } from '../../create2/types'
+import {
+  type IngredientItemGroup,
+  type ActionFunc,
+  type IngredientGroupActions,
+} from '../../create2/types'
 
 import { IngredientGroupInput } from './IngredientGroupInput'
 
@@ -14,7 +18,7 @@ interface RecipeIngredientFormProps {
   ingredientGroups: IngredientItemGroup[]
   units?: UnitRecord[]
   unitOptions?: UnitOption[]
-  onAction: IngredientGroupActionFunc
+  onAction: ActionFunc<IngredientGroupActions>
 }
 
 function RecipeIngredientsForm({

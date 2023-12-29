@@ -8,7 +8,8 @@ import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
 import {
   type IngredientItemGroup,
   type IngredientItem,
-  type IngredientGroupActionFunc,
+  type ActionFunc,
+  type IngredientGroupActions,
 } from '../../create2/types'
 
 import { type IngredientOptionType } from './types'
@@ -154,7 +155,7 @@ interface IngredientGroupInputProps {
   ingredientOptions: IngredientOptionType[]
   ingredients?: RecipeIngredientRecord[]
   canBeDeleted: boolean
-  onAction: IngredientGroupActionFunc
+  onAction: ActionFunc<IngredientGroupActions>
 }
 
 function IngredientGroupInput({

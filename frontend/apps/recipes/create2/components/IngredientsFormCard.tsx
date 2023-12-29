@@ -2,12 +2,12 @@ import { Card } from '../../../../components/Card'
 import { useUnits } from '../../../../contexts/UnitsProvider'
 import { type RecipeIngredientRecord } from '../../../../types'
 import { RecipeIngredientsForm } from '../../forms/RecipeIngredientsForm'
-import { type IngredientItemGroup, type IngredientGroupActionFunc } from '../types'
+import { type IngredientItemGroup, type ActionFunc, type IngredientGroupActions } from '../types'
 
 interface RecipeIngredientsFormCardProps {
   ingredients?: RecipeIngredientRecord[]
   ingredientGroups: IngredientItemGroup[]
-  onAction: IngredientGroupActionFunc
+  onAction: ActionFunc<IngredientGroupActions>
 }
 
 function IngredientsFormCard({

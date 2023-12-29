@@ -21,10 +21,10 @@ import { StepsFormCard } from './components/StepsFormCard'
 import {
   type IngredientItem,
   type IngredientItemGroup,
-  type IngredientGroupAction,
-  type IngredientGroupActionParameter,
   type IngredientGroupActions,
   type Step,
+  type StepActions,
+  type ActionFunc,
 } from './types'
 
 interface RecipeCreateInnerProps {
@@ -102,10 +102,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
     },
   }
 
-  function handleIngredientGroupAction(
-    action: IngredientGroupAction,
-    ...params: IngredientGroupActionParameter
-  ) {
+  const handleIngredientGroupAction: ActionFunc<IngredientGroupActions> = (action, ...params) => {
     // @ts-ignore
     return ingredientGroupActions[action](...params)
   }
@@ -122,26 +119,30 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   }
   const [steps, setSteps] = useState<Step[]>([defaultStep])
 
-  const handleStepInputAdd = () => {
-    const stepsData = [...steps]
-    setSteps([...stepsData, defaultStep])
+  const stepActions: StepActions = {
+    inputAdd: function () {
+      const stepsData = [...steps]
+      setSteps([...stepsData, defaultStep])
+    },
+    inputChange: function (index: number, data: Step) {
+      const stepsData = [...steps]
+      stepsData[index] = data
+
+      setSteps(stepsData)
+    },
+    inputDelete: function (index: number) {
+      const stepsData = [...steps]
+      stepsData.splice(index, 1)
+      setSteps(stepsData)
+    },
+    stepSequenceChange: function (data) {
+      setSteps([...data])
+    },
   }
 
-  const handleStepInputChange = (index: number, data: Step) => {
-    const stepsData = [...steps]
-    stepsData[index] = data
-
-    setSteps(stepsData)
-  }
-
-  const handleStepInputDelete = (index: number) => {
-    const stepsData = [...steps]
-    stepsData.splice(index, 1)
-    setSteps(stepsData)
-  }
-
-  const handleSequenceChange = (data: Step[]) => {
-    setSteps([...data])
+  const handleStepAction: ActionFunc<StepActions> = (action, ...params) => {
+    // @ts-ignore
+    return stepActions[action](...params)
   }
 
   return (
@@ -164,10 +165,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
         <StepsFormCard
           steps={steps}
           ingredientGroups={ingredientGroups}
-          onSequenceChange={handleSequenceChange}
-          onStepInputAdd={handleStepInputAdd}
-          onStepInputChange={handleStepInputChange}
-          onStepInputDelete={handleStepInputDelete}
+          onAction={handleStepAction}
         />
       </Card>
     </div>

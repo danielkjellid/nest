@@ -2,37 +2,32 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
-import { type IngredientItemGroup, type Step } from '../../create2/types'
+import {
+  type IngredientItemGroup,
+  type Step,
+  type ActionFunc,
+  type StepActions,
+} from '../../create2/types'
 
 import { StepInput } from './StepInput'
 
 interface RecipeStepsFormProps {
   steps: Step[]
   ingredientGroups: IngredientItemGroup[]
-  onSequenceChange: (steps: Step[]) => void
-  onStepInputAdd: () => void
-  onStepInputChange: (index: number, data: Step) => void
-  onStepInputDelete: (index: number) => void
+  onAction: ActionFunc<StepActions>
 }
 
-function RecipeStepsForm({
-  steps,
-  ingredientGroups,
-  onSequenceChange,
-  onStepInputAdd,
-  onStepInputChange,
-  onStepInputDelete,
-}: RecipeStepsFormProps) {
+function RecipeStepsForm({ steps, ingredientGroups, onAction }: RecipeStepsFormProps) {
   const { onDragEnd, onDragStart } = useDragAndDropSingleList({
     items: steps,
-    onSequenceChange: onSequenceChange,
+    onSequenceChange: (items) => onAction('stepSequenceChange', items),
   })
 
   return (
     <div>
       <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <div className="flex items-center justify-end mb-1 space-x-2">
-          <Button variant="light" compact onClick={onStepInputAdd}>
+          <Button variant="light" compact onClick={() => onAction('inputAdd')}>
             Add step
           </Button>
         </div>
@@ -52,8 +47,7 @@ function RecipeStepsForm({
                   stepNumber={index + 1}
                   ingredientGroups={ingredientGroups}
                   canBeDeleted={steps.length > 1}
-                  onInputChange={(data) => onStepInputChange(index, data)}
-                  onInputDelete={() => onStepInputDelete(index)}
+                  onAction={onAction}
                 />
               ))}
               {droppableProvided.placeholder}

@@ -4,6 +4,13 @@ import {
   type RecipeStepRecord,
 } from '../../../types'
 
+type Action<T> = keyof T
+type ActionParameter<T extends Record<string, any>> = Parameters<T[Action<T>]>
+export type ActionFunc<T extends Record<string, any>> = (
+  action: Action<T>,
+  ...params: ActionParameter<T>
+) => void
+
 export type IngredientItem = Pick<
   RecipeIngredientItemRecord,
   'ingredient' | 'portionQuantityUnit' | 'portionQuantity' | 'additionalInfo'
@@ -23,15 +30,13 @@ export interface IngredientGroupActions {
   inputDelete: (index: number, ingredientIndex: number) => void
 }
 
-export type IngredientGroupAction = keyof IngredientGroupActions
-export type IngredientGroupActionParameter = Parameters<
-  IngredientGroupActions[IngredientGroupAction]
->
-export type IngredientGroupActionFunc = (
-  action: IngredientGroupAction,
-  ...params: IngredientGroupActionParameter
-) => void
-
 export interface Step extends Pick<RecipeStepRecord, 'instruction' | 'duration' | 'stepType'> {
   ingredientItems: IngredientItem[]
+}
+
+export interface StepActions {
+  inputAdd: () => void
+  inputChange: (index: number, data: Step) => void
+  inputDelete: (index: number) => void
+  stepSequenceChange: (data: Step[]) => void
 }
