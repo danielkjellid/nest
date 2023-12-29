@@ -1,14 +1,10 @@
-import { useMemo } from 'react'
-
 import { Card } from '../../../../components/Card'
-import { RecipeStepsForm, type Step } from '../../forms/RecipeStepsForm'
-import { type IngredientItemGroup } from '../types'
-import { type IngredientItemOptionType } from '../../forms/RecipeStepsForm/types'
+import { RecipeStepsForm } from '../../forms/RecipeStepsForm'
+import { type IngredientItemGroup, type Step } from '../types'
 
 interface StepsFormCardProps {
   steps: Step[]
   ingredientGroups: IngredientItemGroup[]
-  selectedIngredientItems: IngredientItemOptionType[]
   onSequenceChange: (steps: Step[]) => void
   onStepInputAdd: () => void
   onStepInputChange: (index: number, data: Step) => void

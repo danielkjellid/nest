@@ -32,6 +32,6 @@ export type IngredientGroupActionFunc = (
   ...params: IngredientGroupActionParameter
 ) => void
 
-interface Step extends Pick<RecipeStepRecord, 'instruction' | 'duration' | 'stepType'> {
+export interface Step extends Pick<RecipeStepRecord, 'instruction' | 'duration' | 'stepType'> {
   ingredientItems: IngredientItem[]
 }

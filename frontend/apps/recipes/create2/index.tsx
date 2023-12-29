@@ -12,19 +12,20 @@ import {
   type RecipeCreateForm,
   type RecipeIngredientRecord,
   type UnitRecord,
+  type RecipeStepType,
 } from '../../../types'
 import { urls } from '../../urls'
-import { type Step } from '../forms/RecipeStepsForm'
 
 import { IngredientsFormCard } from './components/IngredientsFormCard'
+import { StepsFormCard } from './components/StepsFormCard'
 import {
   type IngredientItem,
   type IngredientItemGroup,
   type IngredientGroupAction,
   type IngredientGroupActionParameter,
   type IngredientGroupActions,
+  type Step,
 } from './types'
-import { StepsFormCard } from './components/StepsFormCard'
 
 interface RecipeCreateInnerProps {
   results: {
@@ -116,11 +117,10 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   const defaultStep = {
     instruction: '',
     duration: 0,
-    type: '',
+    stepType: '' as RecipeStepType,
     ingredientItems: [],
   }
   const [steps, setSteps] = useState<Step[]>([defaultStep])
-  const selectedIngredientItems = steps.flatMap((step) => step.ingredientItems)
 
   const handleStepInputAdd = () => {
     const stepsData = [...steps]
@@ -164,7 +164,6 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
         <StepsFormCard
           steps={steps}
           ingredientGroups={ingredientGroups}
-          selectedIngredientItems={[]}
           onSequenceChange={handleSequenceChange}
           onStepInputAdd={handleStepInputAdd}
           onStepInputChange={handleStepInputChange}

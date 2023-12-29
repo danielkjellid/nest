@@ -7,9 +7,7 @@ import { Counter } from '../../../../components/Counter'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
-import { type IngredientItemGroup } from '../../create2/types'
-
-import { type Step } from './types'
+import { type IngredientItemGroup, type Step } from '../../create2/types'
 
 interface StepInputProps {
   draggableId: string
@@ -106,9 +104,17 @@ function StepInput({
                 <Select
                   label="Step type"
                   required
-                  value={step.type}
+                  value={step.stepType}
                   data={stepTypes}
-                  onChange={(event) => handleStepInputChange('type', event || '')}
+                  onChange={(event) => handleStepInputChange('stepType', event || '')}
+                />
+                <MultiSelect
+                  label="Ingredients"
+                  description="Pick ingredients required in this step"
+                  data={ingredientOptions}
+                  required
+                  searchable
+                  clearable
                 />
                 <Counter
                   label="Duration"
@@ -118,14 +124,6 @@ function StepInput({
                   min={1}
                   max={60}
                   onChange={(event) => handleStepInputChange('duration', event)}
-                />
-                <MultiSelect
-                  label="Ingredients"
-                  description="Pick ingredients required in this step"
-                  data={ingredientOptions}
-                  required
-                  searchable
-                  clearable
                 />
               </div>
             </div>
