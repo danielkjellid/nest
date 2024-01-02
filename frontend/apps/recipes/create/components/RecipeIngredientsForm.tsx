@@ -4,7 +4,12 @@ import { Button } from '../../../../components/Button'
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
-import { type IngredientItemGroup, type ActionFunc, type IngredientGroupActions } from '../types'
+import {
+  type IngredientItemGroup,
+  type ActionFunc,
+  type IngredientGroupActions,
+  type FormError,
+} from '../types'
 
 import { IngredientGroupInput } from './IngredientGroupInput'
 
@@ -14,6 +19,8 @@ interface RecipeIngredientFormProps {
   units?: UnitRecord[]
   unitOptions?: UnitOption[]
   onAction: ActionFunc<IngredientGroupActions>
+  ingredientGroupErrors: FormError
+  ingredientItemsErrors: FormError
 }
 
 function RecipeIngredientsForm({
@@ -22,6 +29,8 @@ function RecipeIngredientsForm({
   units,
   unitOptions,
   onAction,
+  ingredientGroupErrors,
+  ingredientItemsErrors,
 }: RecipeIngredientFormProps) {
   const { onDragEnd, onDragStart } = useDragAndDropSingleList({
     items: ingredientGroups,
@@ -56,6 +65,8 @@ function RecipeIngredientsForm({
                   unitOptions={unitOptions}
                   canBeDeleted={ingredientGroups.length > 1}
                   onAction={onAction}
+                  errors={ingredientGroupErrors[index]}
+                  ingredientItemsErrors={ingredientItemsErrors}
                 />
               ))}
               {provided.placeholder}

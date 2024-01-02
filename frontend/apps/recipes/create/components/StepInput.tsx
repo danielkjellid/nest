@@ -56,8 +56,7 @@ function StepInput({
     } else {
       data = { ...data, [key]: eventOrValue }
     }
-
-    onAction('inputChange', stepNumber, data)
+    onAction('inputChange', stepNumber - 1, data)
   }
 
   const stepTypes = useEnumToOptions(RecipeStepType)

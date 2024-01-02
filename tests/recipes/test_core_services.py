@@ -2,7 +2,7 @@ import pytest
 
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
 from nest.recipes.core.models import Recipe
-from nest.recipes.core.services import create_recipe
+from nest.recipes.core.services import create_base_recipe
 
 
 @pytest.mark.django_db
@@ -23,7 +23,7 @@ def test_service_create_recipe(django_assert_num_queries):
     }
 
     with django_assert_num_queries(3):
-        recipe = create_recipe(**fields)
+        recipe = create_base_recipe(**fields)
 
     assert Recipe.objects.count() == initial_count + 1
 

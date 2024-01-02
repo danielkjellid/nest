@@ -11,10 +11,13 @@ export type ActionFunc<T extends Record<string, any>> = (
   ...params: ActionParameter<T>
 ) => void
 
-export type IngredientItem = Pick<
-  RecipeIngredientItemRecord,
-  'ingredient' | 'portionQuantityUnit' | 'portionQuantity' | 'additionalInfo'
->
+export interface IngredientItem
+  extends Pick<
+    RecipeIngredientItemRecord,
+    'ingredient' | 'portionQuantityUnit' | 'additionalInfo'
+  > {
+  portionQuantity: string | number // Allow empty string for input
+}
 export interface IngredientItemGroup
   extends Pick<RecipeIngredientItemGroupRecord, 'title' | 'ordering'> {
   ingredientItems: IngredientItem[]
@@ -39,4 +42,8 @@ export interface StepActions {
   inputChange: (index: number, data: Step) => void
   inputDelete: (index: number) => void
   stepSequenceChange: (data: Step[]) => void
+}
+
+export interface FormError {
+  [x: number]: string[]
 }

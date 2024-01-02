@@ -1,4 +1,4 @@
-import { ActionIcon, Select, Text, TextInput } from '@mantine/core'
+import { ActionIcon, Select, Text, TextInput, Input } from '@mantine/core'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import React, { forwardRef, useMemo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
@@ -10,6 +10,7 @@ import {
   type IngredientItem,
   type ActionFunc,
   type IngredientGroupActions,
+  type FormError,
 } from '../types'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -37,23 +38,25 @@ const IngredientOption = forwardRef<HTMLDivElement, IngredientOptionProps>(
 IngredientOption.displayName = 'IngredientOption'
 
 interface IngredientInputProps {
-  ingredient: IngredientItem
+  ingredientItem: IngredientItem
   ingredients?: RecipeIngredientRecord[]
   units?: UnitRecord[]
   unitOptions?: UnitOption[]
   canBeDeleted: boolean
   onInputDelete: () => void
   onInputChange: (data: IngredientItem) => void
+  error?: string[]
 }
 
 function IngredientInput({
-  ingredient,
+  ingredientItem,
   ingredients,
   units,
   unitOptions,
   canBeDeleted,
   onInputDelete,
   onInputChange,
+  error,
 }: IngredientInputProps) {
   const handleInputChange = (
     key: keyof IngredientItem,
@@ -63,7 +66,7 @@ function IngredientInput({
       return
     }
 
-    let data: IngredientItem = { ...ingredient }
+    let data: IngredientItem = { ...ingredientItem }
 
     if (typeof event === 'string') {
       if (key === 'ingredient') {
@@ -71,6 +74,7 @@ function IngredientInput({
         data = {
           ...data,
           ingredient: ingredient || ({} as RecipeIngredientRecord),
+          portionQuantityUnit: ingredient?.product.unit || ({} as UnitRecord),
         }
       } else if (key === 'portionQuantityUnit') {
         const unit = units?.find((unit) => unit.id.toString() === event)
@@ -87,8 +91,8 @@ function IngredientInput({
     onInputChange(data)
   }
 
-  const ingredientId = ingredient.ingredient.id || ''
-  const unitId = ingredient.portionQuantityUnit.id || ''
+  const ingredientId = ingredientItem.ingredient.id || ''
+  const unitId = ingredientItem.portionQuantityUnit.id || ''
 
   const ingredientOptions =
     useMemo(
@@ -105,48 +109,62 @@ function IngredientInput({
 
   return (
     <div className="relative">
-      <div className="rounded-bl-md absolute bottom-0 w-6 h-8 mb-4 ml-3 bg-transparent border-b-2 border-l-2 border-gray-200" />
-      <div className="flex items-end w-full space-x-2">
-        <Select
-          label="Ingredient"
-          value={ingredientId.toString()}
-          required
-          className="w-96 ml-8"
-          data={ingredientOptions}
-          searchable
-          itemComponent={IngredientOption}
-          onChange={(event) => handleInputChange('ingredient', event)}
-        />
-        <TextInput
-          label="Quantity"
-          value={ingredient.portionQuantity}
-          required
-          className="w-48"
-          onChange={(event) => handleInputChange('portionQuantity', event)}
-        />
-        <Select
-          label="Unit"
-          value={unitId.toString()}
-          required
-          className="w-48"
-          data={unitOptions || []}
-          onChange={(event) => handleInputChange('portionQuantityUnit', event)}
-        />
-        <TextInput
-          label="Comment"
-          value={ingredient.additionalInfo}
-          className="w-80"
-          placeholder="Optional comment"
-          onChange={(event) => handleInputChange('additionalInfo', event)}
-        />
-        <ActionIcon
-          disabled={!canBeDeleted}
-          className="mb-1"
-          color="red"
-          onClick={() => onInputDelete()}
-        >
-          <IconX />
-        </ActionIcon>
+      <div className="flex items-center justify-between space-x-2">
+        <div>
+          <div className="relative">
+            <div className="rounded-bl-md absolute bottom-0 w-6 h-8 mb-4 ml-3 bg-transparent border-b-2 border-l-2 border-gray-200" />
+            <div className="flex items-center ml-8 space-x-2">
+              <Select
+                label="Ingredient"
+                value={ingredientId.toString()}
+                required
+                data={ingredientOptions}
+                searchable
+                itemComponent={IngredientOption}
+                onChange={(event) => handleInputChange('ingredient', event)}
+                error={!!error}
+              />
+              <TextInput
+                label="Quantity"
+                value={ingredientItem.portionQuantity}
+                required
+                className="w-28"
+                onChange={(event) => handleInputChange('portionQuantity', event)}
+                error={!!error}
+              />
+              <Select
+                label="Unit"
+                value={unitId.toString()}
+                required
+                className="w-32"
+                onChange={(event) => handleInputChange('portionQuantityUnit', event)}
+                data={unitOptions || []}
+                error={!!error}
+              />
+              <TextInput
+                label="Comment"
+                value={ingredientItem.additionalInfo}
+                placeholder="Optional comment"
+                onChange={(event) => handleInputChange('additionalInfo', event)}
+                error={!!error}
+              />
+              <ActionIcon
+                disabled={!canBeDeleted}
+                className="mt-6"
+                color="red"
+                onClick={() => onInputDelete()}
+              >
+                <IconX />
+              </ActionIcon>
+            </div>
+          </div>
+          {error &&
+            Object.values(error).map((err) => (
+              <Input.Error key={err} className="block ml-8">
+                {err}
+              </Input.Error>
+            ))}
+        </div>
       </div>
     </div>
   )
@@ -163,6 +181,8 @@ interface IngredientGroupInputProps {
   ingredients?: RecipeIngredientRecord[]
   canBeDeleted: boolean
   onAction: ActionFunc<IngredientGroupActions>
+  errors: string[]
+  ingredientItemsErrors: FormError
 }
 
 function IngredientGroupInput({
@@ -176,12 +196,20 @@ function IngredientGroupInput({
   unitOptions,
   canBeDeleted,
   onAction,
+  errors,
+  ingredientItemsErrors,
 }: IngredientGroupInputProps) {
   const handleIngredientGroupInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const data = { ...ingredientGroup, title: event.target.value.toString() }
     onAction('groupChange', groupIndex, data)
   }
 
+  const numErrors = Object.values(ingredientItemsErrors)
+    // Only count based on visible field's errors.
+    .filter((_error, index) => index < ingredientGroup.ingredientItems.length)
+    .flatMap((error) => Object.values(error).flatMap((e) => e)).length
+
+  const height = 30 + 15 * numErrors + 80 * (ingredientGroup.ingredientItems.length - 1)
   return (
     <Draggable draggableId={draggableId} index={order} isDragDisabled={isDragDisabled}>
       {(draggableProvided, _draggableSnapshot) => (
@@ -191,17 +219,18 @@ function IngredientGroupInput({
           {...draggableProvided.dragHandleProps}
           className="bg-white rounded-md"
         >
-          <div className="flex items-end w-full space-x-2">
+          <div className="flex items-start w-full space-x-2">
             <TextInput
               label="Ingredient group name"
               className="z-25 w-full"
               required
               value={ingredientGroup.title}
               onChange={handleIngredientGroupInputChange}
+              error={errors}
             />
             <ActionIcon
               disabled={!canBeDeleted}
-              className="mb-1"
+              className="mt-7"
               color="red"
               variant="light"
               onClick={() => onAction('groupDelete', groupIndex)}
@@ -211,15 +240,17 @@ function IngredientGroupInput({
           </div>
           <div className="relative">
             <div
-              style={{ height: 'calc(100% - 20px)' }}
+              style={{
+                height: `${height}px`,
+              }}
               className="absolute left-3 w-0.5 bg-gray-200 -mt-4"
               aria-hidden
             />
             <div className="relative mt-4 space-y-4">
-              {ingredientGroup.ingredientItems.map((ingredient, ingredientIndex) => (
+              {ingredientGroup.ingredientItems.map((ingredientItem, ingredientIndex) => (
                 <IngredientInput
                   key={ingredientIndex}
-                  ingredient={ingredient}
+                  ingredientItem={ingredientItem}
                   ingredients={ingredients}
                   units={units}
                   unitOptions={unitOptions}
@@ -228,6 +259,7 @@ function IngredientGroupInput({
                   onInputChange={(data) =>
                     onAction('inputChange', groupIndex, ingredientIndex, data)
                   }
+                  error={ingredientItemsErrors[ingredientIndex]}
                 />
               ))}
             </div>

@@ -16,6 +16,7 @@ import {
   type RecipeIngredientRecord,
   type UnitRecord,
   type RecipeStepType,
+  type RecipeCreateIn,
 } from '../../../types'
 import { urls } from '../../urls'
 
@@ -28,6 +29,7 @@ import {
   type Step,
   type StepActions,
   type ActionFunc,
+  type FormError,
 } from './types'
 
 interface RecipeCreateInnerProps {
@@ -41,7 +43,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   const { data: ingredients } = results.ingredients
   const { classes } = useCommonStyles()
 
-  const recipeForm = useForm({ key: 'RecipeCreateForm' })
+  const recipeForm = useForm<RecipeCreateForm>({ key: 'RecipeCreateForm' })
   const navigate = useNavigate()
 
   /***************************
@@ -51,11 +53,10 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   const defaultIngredient = {
     ingredient: {} as RecipeIngredientRecord,
     portionQuantityUnit: {} as UnitRecord,
-    portionQuantity: 0,
+    portionQuantity: '',
     additionalInfo: '',
   }
   const defaultIngredientGroup = { title: '', ordering: 0, ingredientItems: [defaultIngredient] }
-  // TODO: Replace IngredientGroup with generated type.
   const [ingredientGroups, setIngredientGroups] = useState<IngredientItemGroup[]>([
     defaultIngredientGroup,
   ])
@@ -68,19 +69,23 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
     groupAdd: function () {
       const ingredientGroupsData = [...ingredientGroups]
       setIngredientGroups([...ingredientGroupsData, defaultIngredientGroup])
+      resetValidation()
     },
     groupChange: function (index: number, data: IngredientItemGroup) {
       const ingredientGroupsData = [...ingredientGroups]
       ingredientGroupsData[index] = data
       setIngredientGroups(ingredientGroupsData)
+      resetValidation()
     },
     groupDelete: function (index: number) {
       const ingredientGroupsData = [...ingredientGroups]
       ingredientGroupsData.splice(index, 1)
       setIngredientGroups(ingredientGroupsData)
+      resetValidation()
     },
     groupSequenceChange: function (data: IngredientItemGroup[]) {
       setIngredientGroups([...data])
+      resetValidation()
     },
     inputAdd: function (index: number) {
       const ingredientGroupsData = [...ingredientGroups]
@@ -88,6 +93,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
 
       ingredientGroup.ingredientItems = [...ingredientGroup.ingredientItems, defaultIngredient]
       setIngredientGroups(ingredientGroupsData)
+      resetValidation()
     },
     inputChange: function (index: number, ingredientIndex: number, data: IngredientItem) {
       const ingredientGroupsData = [...ingredientGroups]
@@ -95,7 +101,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
 
       ingredientGroup.ingredientItems[ingredientIndex] = data
       setIngredientGroups(ingredientGroupsData)
-      console.log(ingredientGroups)
+      resetValidation()
     },
     inputDelete: function (index: number, ingredientIndex: number) {
       const ingredientGroupsData = [...ingredientGroups]
@@ -106,6 +112,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
       ingredientGroup.ingredientItems = ingredientsData
 
       setIngredientGroups(ingredientGroupsData)
+      resetValidation()
     },
   }
 
@@ -126,30 +133,130 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   }
   const [steps, setSteps] = useState<Step[]>([defaultStep])
 
+  /*********************
+   ** Steps: handlers **
+   *********************/
+
   const stepActions: StepActions = {
     inputAdd: function () {
       const stepsData = [...steps]
       setSteps([...stepsData, defaultStep])
+      resetValidation()
     },
     inputChange: function (index: number, data: Step) {
       const stepsData = [...steps]
       stepsData[index] = data
-
       setSteps(stepsData)
+      resetValidation()
     },
     inputDelete: function (index: number) {
       const stepsData = [...steps]
       stepsData.splice(index, 1)
       setSteps(stepsData)
+      resetValidation()
     },
     stepSequenceChange: function (data) {
       setSteps([...data])
+      resetValidation()
     },
   }
 
   const handleStepAction: ActionFunc<StepActions> = (action, ...params) => {
     // @ts-ignore
     return stepActions[action](...params)
+  }
+
+  const makeIngredientItemFromIngredient = (ingredientItem: IngredientItem) => ({
+    // TODO: Make sure we're able to do .toString()
+    ...ingredientItem,
+    ingredient: ingredientItem.ingredient.id.toString(),
+    portionQuantity: ingredientItem.portionQuantity.toString(),
+    portionQuantityUnit: ingredientItem.portionQuantityUnit.id.toString(),
+    additionalInfo: ingredientItem.additionalInfo || undefined,
+  })
+
+  /****************
+   ** Validation **
+   ****************/
+
+  const checkEmptyValue = (val: any) =>
+    val === '' || (typeof val === 'object' && !Array.isArray(val) && !Object.keys(val).length)
+
+  const [ingredientGroupErrors, setIngredientGroupErrors] = useState<FormError | null>(null)
+
+  const validateIngredientGroups = () => {
+    const errors: FormError = {}
+    ingredientGroups.map((ingredientGroup, index) =>
+      Object.values(ingredientGroup).map((val) => {
+        console.log(val)
+        if (checkEmptyValue(val)) {
+          errors[index] = ['This field cannot be empty.']
+        }
+      })
+    )
+
+    setIngredientGroupErrors({ ...errors })
+    return !!Object.keys(errors).length
+  }
+
+  const [ingredientItemsErrors, setIngredientItemsErrors] = useState<FormError | null>(null)
+
+  const validateIngredientItems = () => {
+    const errors: FormError = {}
+    ingredientGroups.map((ingredientGroup) =>
+      ingredientGroup.ingredientItems.map((ingredientItem, index) =>
+        Object.entries(ingredientItem).map(([key, val]) => {
+          if (key !== 'additionalInfo' && checkEmptyValue(val)) {
+            errors[index] = ['These fields cannot be empty, if redundant please remove it.']
+          }
+        })
+      )
+    )
+
+    setIngredientItemsErrors({ ...errors })
+    return !!Object.keys(errors).length
+  }
+
+  const validate = (): boolean => {
+    // recipeForm.validate()
+    const groupsValid = validateIngredientGroups()
+    const itemsValid = validateIngredientItems()
+
+    return groupsValid && itemsValid
+    // validateSteps()
+  }
+
+  const resetValidation = () => {
+    setIngredientGroupErrors(null)
+    setIngredientItemsErrors(null)
+  }
+
+  /*********************
+   ** Recipe creation **
+   *********************/
+
+  const makePayload = (): RecipeCreateIn => ({
+    // TODO: validate that data is set
+    baseRecipe: { ...recipeForm.buildPayload() },
+    steps: steps.map((step, index) => ({
+      ...step,
+      number: index + 1,
+      ingredientItems: step.ingredientItems.map((ingredientItem) =>
+        makeIngredientItemFromIngredient(ingredientItem)
+      ),
+    })),
+    ingredientItemGroups: ingredientGroups.map((ingredientGroup) => ({
+      ...ingredientGroup,
+      ingredients: ingredientGroup.ingredientItems
+        .map((ingredientItem) => makeIngredientItemFromIngredient(ingredientItem))
+        .filter((val) => val !== undefined),
+    })),
+  })
+
+  const addRecipe = async () => {
+    const isValid = validate()
+
+    if (!isValid) return
   }
 
   return (
@@ -173,6 +280,8 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
               units={units}
               unitOptions={unitsOptions}
               onAction={handleIngredientGroupAction}
+              ingredientGroupErrors={ingredientGroupErrors || {}}
+              ingredientItemsErrors={ingredientItemsErrors || {}}
             />
           }
         />
@@ -191,7 +300,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
           <Button variant="default" onClick={() => navigate(-1)}>
             Cancel
           </Button>
-          <Button>Save</Button>
+          <Button onClick={() => validate()}>Save</Button>
         </div>
       </Card>
     </div>
