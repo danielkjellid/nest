@@ -7,7 +7,13 @@ import { Counter } from '../../../../components/Counter'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
-import { type ActionFunc, type StepActions, type IngredientItemGroup, type Step } from '../types'
+import {
+  type ActionFunc,
+  type StepActions,
+  type IngredientItemGroup,
+  type Step,
+  type FormErrorInner,
+} from '../types'
 
 interface StepInputProps {
   draggableId: string
@@ -17,6 +23,7 @@ interface StepInputProps {
   ingredientGroups: IngredientItemGroup[]
   canBeDeleted?: boolean
   onAction: ActionFunc<StepActions>
+  errors?: FormErrorInner[]
 }
 
 function StepInput({
@@ -27,6 +34,7 @@ function StepInput({
   ingredientGroups,
   canBeDeleted,
   onAction,
+  errors,
 }: StepInputProps) {
   const { classes } = useStepsStyles()
 
@@ -75,6 +83,18 @@ function StepInput({
     [ingredientGroups]
   )
 
+  const getErrorForField = (field: string) => {
+    if (!errors) return undefined
+
+    const errorForField = errors.find((error) => error.field === field)
+
+    if (errorForField) {
+      return errorForField.message
+    } else {
+      return undefined
+    }
+  }
+
   return (
     <Draggable draggableId={draggableId} index={stepNumber - 1} isDragDisabled={isDragDisabled}>
       {(draggableProvided, _draggableSnapshot) => (
@@ -98,6 +118,7 @@ function StepInput({
                   className="w-full text-sm"
                   value={step.instruction}
                   onChange={(event) => handleStepInputChange('instruction', event)}
+                  error={getErrorForField('instruction')}
                 />
               </div>
               <div className="ml-12 space-y-3">
@@ -107,6 +128,7 @@ function StepInput({
                   value={step.stepType}
                   data={stepTypes}
                   onChange={(event) => handleStepInputChange('stepType', event || '')}
+                  error={getErrorForField('stepType')}
                 />
                 <MultiSelect
                   label="Ingredients"
@@ -115,6 +137,7 @@ function StepInput({
                   required
                   searchable
                   clearable
+                  error={getErrorForField('ingredients')}
                 />
                 <Counter
                   label="Duration"
@@ -124,6 +147,7 @@ function StepInput({
                   min={1}
                   max={60}
                   onChange={(event) => handleStepInputChange('duration', event)}
+                  error={getErrorForField('duration')}
                 />
               </div>
             </div>

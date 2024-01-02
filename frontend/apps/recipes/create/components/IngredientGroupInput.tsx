@@ -11,6 +11,7 @@ import {
   type ActionFunc,
   type IngredientGroupActions,
   type FormError,
+  type FormErrorInner,
 } from '../types'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -45,7 +46,7 @@ interface IngredientInputProps {
   canBeDeleted: boolean
   onInputDelete: () => void
   onInputChange: (data: IngredientItem) => void
-  error?: string[]
+  error?: FormErrorInner[]
 }
 
 function IngredientInput({
@@ -160,8 +161,8 @@ function IngredientInput({
           </div>
           {error &&
             Object.values(error).map((err) => (
-              <Input.Error key={err} className="block ml-8">
-                {err}
+              <Input.Error key={err.message} className="block ml-8">
+                {err.message}
               </Input.Error>
             ))}
         </div>
@@ -181,7 +182,7 @@ interface IngredientGroupInputProps {
   ingredients?: RecipeIngredientRecord[]
   canBeDeleted: boolean
   onAction: ActionFunc<IngredientGroupActions>
-  errors: string[]
+  errors?: FormErrorInner[]
   ingredientItemsErrors: FormError
 }
 
@@ -226,7 +227,7 @@ function IngredientGroupInput({
               required
               value={ingredientGroup.title}
               onChange={handleIngredientGroupInputChange}
-              error={errors}
+              error={errors && errors[0].message}
             />
             <ActionIcon
               disabled={!canBeDeleted}

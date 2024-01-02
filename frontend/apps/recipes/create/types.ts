@@ -44,6 +44,11 @@ export interface StepActions {
   stepSequenceChange: (data: Step[]) => void
 }
 
+export interface FormErrorInner {
+  message: string
+  field: string | null
+}
+
 export interface FormError {
-  [x: number]: string[]
+  [x: number]: FormErrorInner[]
 }

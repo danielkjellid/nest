@@ -188,15 +188,14 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
     const errors: FormError = {}
     ingredientGroups.map((ingredientGroup, index) =>
       Object.values(ingredientGroup).map((val) => {
-        console.log(val)
         if (checkEmptyValue(val)) {
-          errors[index] = ['This field cannot be empty.']
+          errors[index] = [{ message: 'This field cannot be empty.', field: null }]
         }
       })
     )
 
     setIngredientGroupErrors({ ...errors })
-    return !!Object.keys(errors).length
+    return !Object.keys(errors).length
   }
 
   const [ingredientItemsErrors, setIngredientItemsErrors] = useState<FormError | null>(null)
@@ -207,28 +206,59 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
       ingredientGroup.ingredientItems.map((ingredientItem, index) =>
         Object.entries(ingredientItem).map(([key, val]) => {
           if (key !== 'additionalInfo' && checkEmptyValue(val)) {
-            errors[index] = ['These fields cannot be empty, if redundant please remove it.']
+            errors[index] = [
+              {
+                message: 'These fields cannot be empty, if redundant please remove it.',
+                field: null,
+              },
+            ]
           }
         })
       )
     )
 
     setIngredientItemsErrors({ ...errors })
-    return !!Object.keys(errors).length
+    return !Object.keys(errors).length
+  }
+
+  const [stepsErrors, setStepsErrors] = useState<FormError | null>(null)
+
+  const validateSteps = () => {
+    const errors: FormError = {}
+    steps.map((step, index) =>
+      Object.entries(step).map(([key, val]) => {
+        const existingError = errors[index] || []
+        if (checkEmptyValue(val)) {
+          errors[index] = [{ message: 'This field cannot be empty', field: key }, ...existingError]
+        }
+
+        if (key === 'duration' && val <= 0) {
+          errors[index] = [
+            { message: 'Duration must be higher than zero', field: key },
+            ...existingError,
+          ]
+        }
+      })
+    )
+
+    setStepsErrors({ ...errors })
+    return !Object.keys(errors).length
   }
 
   const validate = (): boolean => {
-    // recipeForm.validate()
+    const recipeValid = recipeForm.validate()
     const groupsValid = validateIngredientGroups()
     const itemsValid = validateIngredientItems()
+    const stepsValid = validateSteps()
 
-    return groupsValid && itemsValid
-    // validateSteps()
+    return recipeValid && groupsValid && itemsValid && stepsValid
   }
 
   const resetValidation = () => {
+    recipeForm.resetErrors()
     setIngredientGroupErrors(null)
     setIngredientItemsErrors(null)
+    setStepsErrors(null)
   }
 
   /*********************
@@ -293,6 +323,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
               steps={steps}
               ingredientGroups={ingredientGroups}
               onAction={handleStepAction}
+              errors={stepsErrors || {}}
             />
           }
         />
