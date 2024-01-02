@@ -127,16 +127,14 @@ class NestOpenAPISchema:
             for default_key in {**base_defaults, **extra_defaults}.keys():
                 val.pop(default_key, None)
 
-            if enum_mapping_exists:
-                val.pop("enum", None)
-
             modified_property: dict[str, Any]
 
             if not is_form and enum_mapping_exists:
                 mapped_enum = enum_mapping[definition_key][key]
                 modified_property = {
                     **base_defaults,
-                    "enum": mapped_enum,
+                    "enum": [e["value"] for e in mapped_enum],
+                    "x-enum": mapped_enum,
                     **val,
                 }
             elif not is_form and not enum_mapping_exists:
@@ -151,7 +149,8 @@ class NestOpenAPISchema:
                 modified_property = {
                     "title": title,
                     "type": "string",
-                    "enum": mapped_enum,
+                    "enum": [e["value"] for e in mapped_enum],
+                    "x-enum": mapped_enum,
                     "x-component": component,
                     **extra_defaults,
                     **val,

@@ -40,15 +40,26 @@ function StepInput({
 
   const handleStepInputChange = (
     key: keyof Step,
-    eventOrValue: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | number | string | ''
+    eventOrValue:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | number
+      | string
+      | string[]
   ) => {
-    if (!eventOrValue || key === 'ingredientItems') {
+    if (!eventOrValue) {
       return
     }
-
+    console.log(eventOrValue)
     let data = { ...step }
-
-    if (
+    if (key === 'ingredientItems' && Array.isArray(eventOrValue)) {
+      const ingredientItems = ingredientGroups.flatMap((ingredientGroups) =>
+        ingredientGroups.ingredientItems.filter((ingredientItem) =>
+          eventOrValue.includes(ingredientItem.ingredient.id.toString())
+        )
+      )
+      data = { ...data, ingredientItems: ingredientItems }
+    } else if (
+      !Array.isArray(eventOrValue) &&
       typeof eventOrValue !== 'string' &&
       typeof eventOrValue !== 'number' &&
       eventOrValue.target &&
@@ -81,6 +92,10 @@ function StepInput({
           }))
       ),
     [ingredientGroups]
+  )
+
+  const selectedIngredientItems = step.ingredientItems.flatMap((ingredientItem) =>
+    ingredientItem.ingredient.id.toString()
   )
 
   const getErrorForField = (field: string) => {
@@ -133,11 +148,13 @@ function StepInput({
                 <MultiSelect
                   label="Ingredients"
                   description="Pick ingredients required in this step"
+                  value={selectedIngredientItems}
                   data={ingredientOptions}
                   required
                   searchable
                   clearable
-                  error={getErrorForField('ingredients')}
+                  onChange={(event) => handleStepInputChange('ingredientItems', event)}
+                  error={getErrorForField('ingredientItems')}
                 />
                 <Counter
                   label="Duration"

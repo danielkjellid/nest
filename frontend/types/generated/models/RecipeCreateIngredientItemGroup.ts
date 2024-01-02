@@ -8,6 +8,6 @@ import type { RecipeCreateIngredientItem } from './RecipeCreateIngredientItem';
 export type RecipeCreateIngredientItemGroup = {
     title: string;
     ordering: number;
-    ingredients: Array<RecipeCreateIngredientItem>;
+    ingredientItems: Array<RecipeCreateIngredientItem>;
 };
 

@@ -48,7 +48,7 @@ export type { ProductOdaImportForm } from './models/ProductOdaImportForm';
 export type { ProductRecord } from './models/ProductRecord';
 export { ProductRecordAPIResponse } from './models/ProductRecordAPIResponse';
 export { ProductRecordListAPIResponse } from './models/ProductRecordListAPIResponse';
-export type { RecipeCreateForm } from './models/RecipeCreateForm';
+export { RecipeCreateForm } from './models/RecipeCreateForm';
 export type { RecipeCreateIn } from './models/RecipeCreateIn';
 export type { RecipeCreateIngredientItem } from './models/RecipeCreateIngredientItem';
 export type { RecipeCreateIngredientItemGroup } from './models/RecipeCreateIngredientItemGroup';

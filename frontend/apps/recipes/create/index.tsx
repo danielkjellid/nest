@@ -167,8 +167,6 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   }
 
   const makeIngredientItemFromIngredient = (ingredientItem: IngredientItem) => ({
-    // TODO: Make sure we're able to do .toString()
-    ...ingredientItem,
     ingredient: ingredientItem.ingredient.id.toString(),
     portionQuantity: ingredientItem.portionQuantity.toString(),
     portionQuantityUnit: ingredientItem.portionQuantityUnit.id.toString(),
@@ -180,7 +178,9 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
    ****************/
 
   const checkEmptyValue = (val: any) =>
-    val === '' || (typeof val === 'object' && !Array.isArray(val) && !Object.keys(val).length)
+    val === '' ||
+    (typeof val === 'object' && !Array.isArray(val) && !Object.keys(val).length) ||
+    (Array.isArray(val) && !val.length)
 
   const [ingredientGroupErrors, setIngredientGroupErrors] = useState<FormError | null>(null)
 
@@ -266,27 +266,37 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
    *********************/
 
   const makePayload = (): RecipeCreateIn => ({
-    // TODO: validate that data is set
-    baseRecipe: { ...recipeForm.buildPayload() },
-    steps: steps.map((step, index) => ({
-      ...step,
-      number: index + 1,
-      ingredientItems: step.ingredientItems.map((ingredientItem) =>
-        makeIngredientItemFromIngredient(ingredientItem)
-      ),
-    })),
-    ingredientItemGroups: ingredientGroups.map((ingredientGroup) => ({
-      ...ingredientGroup,
-      ingredients: ingredientGroup.ingredientItems
-        .map((ingredientItem) => makeIngredientItemFromIngredient(ingredientItem))
-        .filter((val) => val !== undefined),
-    })),
+    baseRecipe: { ...recipeForm.buildPayload().data },
+    steps: [
+      ...steps.map((step, index) => ({
+        instruction: step.instruction,
+        stepType: step.stepType,
+        duration: step.duration,
+        number: index + 1,
+        ingredientItems: step.ingredientItems.map((ingredientItem) =>
+          makeIngredientItemFromIngredient(ingredientItem)
+        ),
+      })),
+    ],
+    ingredientItemGroups: [
+      ...ingredientGroups.map((ingredientGroup) => ({
+        title: ingredientGroup.title,
+        ordering: ingredientGroup.ordering,
+        ingredientItems: ingredientGroup.ingredientItems.map((ingredientItem) =>
+          makeIngredientItemFromIngredient(ingredientItem)
+        ),
+      })),
+    ],
   })
 
   const addRecipe = async () => {
     const isValid = validate()
-
+    console.log(isValid)
     if (!isValid) return
+
+    const payload = makePayload()
+
+    console.log(payload)
   }
 
   return (
@@ -331,7 +341,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
           <Button variant="default" onClick={() => navigate(-1)}>
             Cancel
           </Button>
-          <Button onClick={() => validate()}>Save</Button>
+          <Button onClick={() => addRecipe()}>Save</Button>
         </div>
       </Card>
     </div>

@@ -37,6 +37,7 @@ const useValidator = () => {
   ajv.addKeyword('x-max')
   ajv.addKeyword('x-columns')
   ajv.addKeyword('x-form')
+  ajv.addKeyword('x-enum')
 
   addFormats(ajv)
 

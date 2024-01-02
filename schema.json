@@ -2447,6 +2447,11 @@
                         "title": "Status",
                         "type": "string",
                         "enum": [
+                            "draft",
+                            "hidden",
+                            "published"
+                        ],
+                        "x-enum": [
                             {
                                 "label": "Draft",
                                 "value": "draft"
@@ -2483,6 +2488,11 @@
                         "title": "Difficulty",
                         "type": "string",
                         "enum": [
+                            "easy",
+                            "medium",
+                            "hard"
+                        ],
+                        "x-enum": [
                             {
                                 "label": "Easy",
                                 "value": "easy"
@@ -2644,7 +2654,7 @@
                 "required": [
                     "title",
                     "ordering",
-                    "ingredients"
+                    "ingredientItems"
                 ],
                 "properties": {
                     "title": {
@@ -2655,8 +2665,8 @@
                         "title": "Ordering",
                         "type": "integer"
                     },
-                    "ingredients": {
-                        "title": "Ingredients",
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeCreateIngredientItem"

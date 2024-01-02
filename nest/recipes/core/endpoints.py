@@ -50,7 +50,7 @@ class RecipeCreateSteps(Schema):
 class RecipeCreateIngredientItemGroup(Schema):
     title: str
     ordering: int
-    ingredients: list[RecipeCreateIngredientItem]
+    ingredient_items: list[RecipeCreateIngredientItem]
 
 
 class RecipeCreateIn(Schema):
