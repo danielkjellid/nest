@@ -68,11 +68,11 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) ->
                 (
                     item
                     for item in ingredient_items
-                    if item.ingredient_id == ingredient_item["ingredient_id"]
+                    if item.ingredient_id == int(ingredient_item["ingredient_id"])
                     and Decimal(item.portion_quantity)
                     == Decimal(ingredient_item["portion_quantity"])
                     and item.portion_quantity_unit_id
-                    == ingredient_item["portion_quantity_unit_id"]
+                    == int(ingredient_item["portion_quantity_unit_id"])
                     and item.step_id is None
                 ),
                 None,

@@ -89,14 +89,17 @@ def create_recipe(
             request=request,
         )
 
-    # Once the recipe is created, link steps and ingredient items.
-    transaction.on_commit(
-        functools.partial(
-            create_recipe_ingredient_item_groups,
-            recipe_id=recipe.id,
-            ingredient_group_items=ingredient_group_items,
+        with transaction.atomic():
+            # Run ingredient item groups on recipe commit.
+            transaction.on_commit(
+                functools.partial(
+                    create_recipe_ingredient_item_groups,
+                    recipe_id=recipe.id,
+                    ingredient_group_items=ingredient_group_items,
+                )
+            )
+
+        # Run step creation on ingredient item groups commit.
+        transaction.on_commit(
+            functools.partial(create_recipe_steps, recipe_id=recipe.id, steps=steps)
         )
-    )
-    transaction.on_commit(
-        functools.partial(create_recipe_steps, recipe_id=recipe.id, steps=steps)
-    )

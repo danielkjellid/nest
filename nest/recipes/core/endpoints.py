@@ -78,6 +78,8 @@ def recipe_create2_api(
         request=request,
     )
 
+    return 201, APIResponse(status="success", data=None)
+
 
 @router.get(
     "/recipe/{recipe_id}/",

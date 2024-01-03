@@ -1,4 +1,5 @@
 import { Title } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -8,6 +9,7 @@ import Form from '../../../components/Form'
 import View from '../../../components/View'
 import { useUnits } from '../../../contexts/UnitsProvider'
 import { useFetch } from '../../../hooks/fetcher'
+import { performPost } from '../../../hooks/fetcher/http'
 import { useForm } from '../../../hooks/forms'
 import { useCommonStyles } from '../../../styles/common'
 import {
@@ -31,6 +33,7 @@ import {
   type ActionFunc,
   type FormError,
 } from './types'
+import { routes } from '../routes'
 
 interface RecipeCreateInnerProps {
   results: {
@@ -296,7 +299,17 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
 
     const payload = makePayload()
 
-    console.log(payload)
+    try {
+      await performPost({ url: urls.recipes.create(), data: payload })
+      notifications.show({
+        color: 'green',
+        title: 'Recipe created',
+        message: 'Recipe was successfully saved.',
+      })
+      navigate(routes.overview.build())
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (
@@ -341,7 +354,7 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
           <Button variant="default" onClick={() => navigate(-1)}>
             Cancel
           </Button>
-          <Button onClick={() => addRecipe()}>Save</Button>
+          <Button onClick={addRecipe}>Save</Button>
         </div>
       </Card>
     </div>
