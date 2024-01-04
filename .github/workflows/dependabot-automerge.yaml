@@ -19,14 +19,14 @@ jobs:
           running-workflow-name: Automerge
           #          check-regexp: "(CI done|tests)"
           allowed-conclusions: success
-          
+
       - name: Get dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v1
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Enable auto-merge for Dependabot PRs
-        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        #        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
