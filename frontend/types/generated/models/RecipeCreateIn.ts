@@ -9,7 +9,7 @@ import type { RecipeCreateSteps } from './RecipeCreateSteps';
 
 export type RecipeCreateIn = {
     baseRecipe: RecipeCreateForm;
-    steps: Array<RecipeCreateSteps>;
     ingredientItemGroups: Array<RecipeCreateIngredientItemGroup>;
+    steps: Array<RecipeCreateSteps>;
 };
 

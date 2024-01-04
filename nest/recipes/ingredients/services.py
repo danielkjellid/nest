@@ -46,7 +46,6 @@ def create_recipe_ingredient_item_groups(
     Create ingredient item groups and related ingredient items and associate them with a
     recipe.
     """
-    print("Ingredient group runs")
 
     # Sanity check that we only are dealing with unique ordering properties.
     ordering = [group["ordering"] for group in ingredient_group_items]
@@ -116,4 +115,3 @@ def create_recipe_ingredient_item_groups(
         # Once groups has been created, use callback to create associated
         # ingredient_items.
         transaction.on_commit(create_ingredient_items)
-        print("Ingredient finished")
