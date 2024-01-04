@@ -4,7 +4,7 @@ on: pull_request
 
 jobs:
   automerge:
-    name: Automerge
+    #    name: Automerge
     runs-on: ubuntu-20.04
     if: github.actor == 'dependabot[bot]'
     steps:
@@ -16,7 +16,7 @@ jobs:
           ref: ${{ github.ref }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
-          running-workflow-name: Automerge
+          #          running-workflow-name: Automerge
           check-regexp: "(CI done|tests)"
           allowed-conclusions: success
       - name: Get dependabot metadata
