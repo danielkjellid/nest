@@ -39,6 +39,7 @@ const IngredientOption = forwardRef<HTMLDivElement, IngredientOptionProps>(
 IngredientOption.displayName = 'IngredientOption'
 
 interface IngredientInputProps {
+  ingredientItemGroup: IngredientItemGroup
   ingredientItem: IngredientItem
   ingredients?: RecipeIngredientRecord[]
   units?: UnitRecord[]
@@ -50,6 +51,7 @@ interface IngredientInputProps {
 }
 
 function IngredientInput({
+  ingredientItemGroup,
   ingredientItem,
   ingredients,
   units,
@@ -99,13 +101,21 @@ function IngredientInput({
     useMemo(
       () =>
         ingredients &&
-        ingredients.map((ingredient) => ({
-          label: ingredient.title,
-          image: ingredient.product.thumbnailUrl,
-          description: ingredient.product.fullName,
-          value: ingredient.id.toString(),
-        })),
-      [ingredients]
+        ingredients
+          // Filter out already used ingredients in the same group.
+          .filter(
+            (ingredient) =>
+              !ingredientItemGroup.ingredientItems
+                .flatMap((ingredientItem) => ingredientItem.ingredient.id)
+                .includes(ingredient.id)
+          )
+          .map((ingredient) => ({
+            label: ingredient.title,
+            image: ingredient.product.thumbnailUrl,
+            description: ingredient.product.fullName,
+            value: ingredient.id.toString(),
+          })),
+      [ingredients, ingredientItemGroup]
     ) || []
 
   return (
@@ -124,6 +134,7 @@ function IngredientInput({
                 itemComponent={IngredientOption}
                 onChange={(event) => handleInputChange('ingredient', event)}
                 error={!!error}
+                nothingFound="All available ingredients currently used in group, please remove the field"
               />
               <TextInput
                 label="Quantity"
@@ -160,7 +171,7 @@ function IngredientInput({
             </div>
           </div>
           {error &&
-            Object.values(error).map((err) => (
+            error.map((err) => (
               <Input.Error key={err.message} className="block ml-8">
                 {err.message}
               </Input.Error>
@@ -251,6 +262,7 @@ function IngredientGroupInput({
               {ingredientGroup.ingredientItems.map((ingredientItem, ingredientIndex) => (
                 <IngredientInput
                   key={ingredientIndex}
+                  ingredientItemGroup={ingredientGroup}
                   ingredientItem={ingredientItem}
                   ingredients={ingredients}
                   units={units}
