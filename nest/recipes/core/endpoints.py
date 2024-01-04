@@ -37,8 +37,8 @@ class RecipeCreateIngredientItemGroup(Schema):
 
 class RecipeCreateIn(Schema):
     base_recipe: RecipeCreateForm
-    steps: list[RecipeCreateSteps]
     ingredient_item_groups: list[RecipeCreateIngredientItemGroup]
+    steps: list[RecipeCreateSteps]
 
 
 @router.post("create/", response={201: APIResponse[None]})

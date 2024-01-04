@@ -24,17 +24,79 @@ recipe_create_api_factory = EndpointFactory(
         url=reverse("api-1.0.0:recipe_create_api"),
         method="POST",
         view_func=recipe_create_api,
-        mocks=[FactoryMock("create_recipe", RecipeDetailRecordFactory.build())],
+        mocks=[FactoryMock("create_recipe", None)],
         payload={
-            "title": "A new recipe",
-            "search_keywords": None,
-            "default_num_portions": 3,
-            "status": str(RecipeStatus.PUBLISHED.value),
-            "difficulty": str(RecipeDifficulty.MEDIUM.value),
-            "external_id": None,
-            "external_url": None,
-            "is_vegetarian": False,
-            "is_pescatarian": False,
+            "base_recipe": {
+                "title": "A new recipe",
+                "search_keywords": None,
+                "default_num_portions": 3,
+                "status": str(RecipeStatus.PUBLISHED.value),
+                "difficulty": str(RecipeDifficulty.MEDIUM.value),
+                "external_id": None,
+                "external_url": None,
+                "is_vegetarian": False,
+                "is_pescatarian": False,
+            },
+            "steps": [
+                {
+                    "number": 1,
+                    "duration": 5,
+                    "instruction": "Some instruction for step 1",
+                    "step_type": "cooking",
+                    "ingredient_items": [
+                        {
+                            "ingredient": "1",
+                            "portion_quantity": "150",
+                            "portion_quantity_unit": "1",
+                            "additional_info": None,
+                        },
+                        {
+                            "ingredient": "2",
+                            "portion_quantity": "200",
+                            "portion_quantity_unit": "1",
+                            "additional_info": None,
+                        },
+                        {
+                            "ingredient": "3",
+                            "portion_quantity": "190",
+                            "portion_quantity_unit": "1",
+                            "additional_info": None,
+                        },
+                    ],
+                },
+            ],
+            "ingredient_item_groups": [
+                {
+                    "title": "Cod with peppers",
+                    "ordering": 1,
+                    "ingredient_items": [
+                        {
+                            "ingredient": "1",
+                            "additional_info": None,
+                            "portion_quantity": "100",
+                            "portion_quantity_unit": "1",
+                        },
+                        {
+                            "ingredient": "2",
+                            "additional_info": "Descaled",
+                            "portion_quantity": "1",
+                            "portion_quantity_unit": "1",
+                        },
+                    ],
+                },
+                {
+                    "title": "Accessories",
+                    "ordering": 2,
+                    "ingredient_items": [
+                        {
+                            "ingredient": "2",
+                            "additional_info": None,
+                            "portion_quantity": "20",
+                            "portion_quantity_unit": "1",
+                        }
+                    ],
+                },
+            ],
         },
     ),
     requests={

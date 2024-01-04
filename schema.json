@@ -437,148 +437,6 @@
                 ]
             }
         },
-        "/api/v1/recipes/ingredients/{recipe_id}/groups/create/": {
-            "post": {
-                "operationId": "recipe_ingredient_groups_create_api",
-                "summary": "Recipe Ingredient Groups Create Api",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipe_id",
-                        "schema": {
-                            "title": "Recipe Id",
-                            "type": "integer"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Add ingredients to an existing recipe.",
-                "tags": [
-                    "Recipe ingredients"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "title": "Payload",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/RecipeIngredientsCreateIn"
-                                }
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/recipes/ingredients/{recipe_id}/groups/": {
-            "get": {
-                "operationId": "recipe_ingredient_groups_list_api",
-                "summary": "Recipe Ingredient Groups List Api",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipe_id",
-                        "schema": {
-                            "title": "Recipe Id",
-                            "type": "integer"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RecipeIngredientItemGroupRecordListAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Get a list of all RecipeIngredientItemGroups for a recipe.",
-                "tags": [
-                    "Recipe ingredients"
-                ],
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/recipes/steps/{recipe_id}/create/": {
-            "post": {
-                "operationId": "recipe_steps_create_api",
-                "summary": "Recipe Steps Create Api",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "recipe_id",
-                        "schema": {
-                            "title": "Recipe Id",
-                            "type": "integer"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/APIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Create steps related to a single recipe.",
-                "tags": [
-                    "Recipe steps"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "title": "Payload",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/RecipeStepsCreateIn"
-                                }
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/units/": {
             "get": {
                 "operationId": "unit_list_api",
@@ -2537,6 +2395,32 @@
                     }
                 }
             },
+            "RecipeCreateIngredientItemGroup": {
+                "title": "RecipeCreateIngredientItemGroup",
+                "type": "object",
+                "required": [
+                    "title",
+                    "ordering",
+                    "ingredientItems"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "ordering": {
+                        "title": "Ordering",
+                        "type": "integer"
+                    },
+                    "ingredientItems": {
+                        "title": "Ingredient Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeCreateIngredientItem"
+                        }
+                    }
+                }
+            },
             "RecipeCreateSteps": {
                 "title": "RecipeCreateSteps",
                 "type": "object",
@@ -2573,56 +2457,30 @@
                     }
                 }
             },
-            "RecipeCreateIngredientItemGroup": {
-                "title": "RecipeCreateIngredientItemGroup",
-                "type": "object",
-                "required": [
-                    "title",
-                    "ordering",
-                    "ingredientItems"
-                ],
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "ordering": {
-                        "title": "Ordering",
-                        "type": "integer"
-                    },
-                    "ingredientItems": {
-                        "title": "Ingredient Items",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeCreateIngredientItem"
-                        }
-                    }
-                }
-            },
             "RecipeCreateIn": {
                 "title": "RecipeCreateIn",
                 "type": "object",
                 "required": [
                     "baseRecipe",
-                    "steps",
-                    "ingredientItemGroups"
+                    "ingredientItemGroups",
+                    "steps"
                 ],
                 "properties": {
                     "baseRecipe": {
                         "$ref": "#/components/schemas/RecipeCreateForm"
-                    },
-                    "steps": {
-                        "title": "Steps",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeCreateSteps"
-                        }
                     },
                     "ingredientItemGroups": {
                         "title": "Ingredient Item Groups",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeCreateIngredientItemGroup"
+                        }
+                    },
+                    "steps": {
+                        "title": "Steps",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipeCreateSteps"
                         }
                     }
                 }
@@ -3220,123 +3078,6 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientRecord"
-                        }
-                    }
-                }
-            },
-            "RecipeIngredientsCreateIngredientIn": {
-                "title": "RecipeIngredientsCreateIngredientIn",
-                "type": "object",
-                "required": [
-                    "ingredient",
-                    "portionQuantity",
-                    "unit"
-                ],
-                "properties": {
-                    "ingredient": {
-                        "title": "Ingredient",
-                        "type": "string"
-                    },
-                    "portionQuantity": {
-                        "title": "Portion Quantity",
-                        "type": "string"
-                    },
-                    "unit": {
-                        "title": "Unit",
-                        "type": "string"
-                    },
-                    "additionalInfo": {
-                        "title": "Additional Info",
-                        "type": "string"
-                    }
-                }
-            },
-            "RecipeIngredientsCreateIn": {
-                "title": "RecipeIngredientsCreateIn",
-                "type": "object",
-                "required": [
-                    "title",
-                    "ordering",
-                    "ingredients"
-                ],
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "ordering": {
-                        "title": "Ordering",
-                        "type": "integer"
-                    },
-                    "ingredients": {
-                        "title": "Ingredients",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientsCreateIngredientIn"
-                        }
-                    }
-                }
-            },
-            "RecipeIngredientItemGroupRecordListAPIResponse": {
-                "title": "RecipeIngredientItemGroupRecordListAPIResponse",
-                "type": "object",
-                "required": [
-                    "status"
-                ],
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string"
-                    },
-                    "data": {
-                        "title": "Data",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/RecipeIngredientItemGroupRecord"
-                        }
-                    }
-                }
-            },
-            "RecipeStepsCreateIn": {
-                "title": "RecipeStepsCreateIn",
-                "type": "object",
-                "required": [
-                    "number",
-                    "duration",
-                    "instruction",
-                    "stepType",
-                    "ingredientItems"
-                ],
-                "properties": {
-                    "number": {
-                        "title": "Number",
-                        "type": "integer"
-                    },
-                    "duration": {
-                        "title": "Duration",
-                        "type": "integer"
-                    },
-                    "instruction": {
-                        "title": "Instruction",
-                        "type": "string"
-                    },
-                    "stepType": {
-                        "title": "Step Type",
-                        "type": "string"
-                    },
-                    "ingredientItems": {
-                        "title": "Ingredient Items",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
                         }
                     }
                 }
