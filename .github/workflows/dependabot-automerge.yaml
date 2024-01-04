@@ -4,11 +4,10 @@ on: pull_request
 
 jobs:
   automerge:
-    name: 'Automerge'
     uses: danielkjellid/github-actions/.github/workflows/dependabot-automerge.yaml@main
     permissions:
       contents: write
       pull-requests: write
     with:
-      name: 'Automerge'
+      name: 'automerge'
       check-regexp: '(CI done|tests)'
