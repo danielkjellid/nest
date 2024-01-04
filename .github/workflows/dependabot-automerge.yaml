@@ -4,30 +4,11 @@ on: pull_request
 
 jobs:
   automerge:
-    name: Automerge
-    runs-on: ubuntu-20.04
-    if: github.actor == 'dependabot[bot]'
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-      - name: Wait for CI
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
-          running-workflow-name: Automerge
-          check-regexp: "(CI done|tests)"
-          allowed-conclusions: success
-
-      - name: Get dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Enable auto-merge for Dependabot PRs
-        if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: gh pr merge --auto --squash "$PR_URL"
+    name: 'Automerge'
+    uses: danielkjellid/github-actions/.github/workflows/dependabot-automerge.yaml@main
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      name: 'Automerge'
+      check-regexp: '(CI done|tests)'
