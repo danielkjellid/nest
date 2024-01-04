@@ -201,7 +201,7 @@ function IngredientGroupInput({
   ingredientItemsErrors,
 }: IngredientGroupInputProps) {
   const handleIngredientGroupInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const data = { ...ingredientGroup, title: event.target.value.toString() }
+    const data = { ...ingredientGroup, title: event.target.value.toString(), ordering: order }
     onAction('groupChange', groupIndex, data)
   }
 
