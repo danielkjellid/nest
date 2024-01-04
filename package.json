@@ -21,7 +21,7 @@
     "openapi:generate": "node ./frontend/utils/generate-types.cjs"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.6",
+    "@emotion/react": "^11.11.3",
     "@mantine/core": "^6.0.5",
     "@mantine/form": "^7.2.2",
     "@mantine/hooks": "^6.0.5",
