@@ -85,7 +85,7 @@ def test_service_create_recipe_ingredient_item_groups(
         {
             "title": "Cod with peppers",
             "ordering": 1,
-            "ingredients": [
+            "ingredient_items": [
                 {
                     "ingredient_id": recipe_ingredients["ingredient_1"].id,
                     "additional_info": None,
@@ -103,7 +103,7 @@ def test_service_create_recipe_ingredient_item_groups(
         {
             "title": "Accessories",
             "ordering": 2,
-            "ingredients": [
+            "ingredient_items": [
                 {
                     "ingredient_id": recipe_ingredients["ingredient_3"].id,
                     "additional_info": None,
@@ -145,12 +145,12 @@ def test_service_create_recipe_ingredient_item_groups(
                 {
                     "title": "Cod with peppers",
                     "ordering": 1,
-                    "ingredients": [],
+                    "ingredient_items": [],
                 },
                 {
                     "title": "Accessories",
                     "ordering": 1,
-                    "ingredients": [],
+                    "ingredient_items": [],
                 },
             ],
         )
@@ -163,12 +163,12 @@ def test_service_create_recipe_ingredient_item_groups(
                 {
                     "title": "Cod with peppers",
                     "ordering": 1,
-                    "ingredients": [],
+                    "ingredient_items": [],
                 },
                 {
                     "title": "Cod with peppers",
                     "ordering": 2,
-                    "ingredients": [],
+                    "ingredient_items": [],
                 },
             ],
         )
