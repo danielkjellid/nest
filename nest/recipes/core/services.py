@@ -57,7 +57,7 @@ def create_base_recipe(
     return RecipeRecord.from_recipe(recipe)
 
 
-def create_recipe(
+def create_recipe(  # noqa: PLR0913
     *,
     title: str,
     search_keywords: str | None = None,

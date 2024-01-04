@@ -8,8 +8,8 @@ from nest.recipes.ingredients.tests.utils import (
     create_recipe_ingredient_item,
     create_recipe_ingredient_item_group,
 )
-from django.forms.models import model_to_dict
 from nest.units.tests.utils import get_unit
+
 from ..models import RecipeStep
 from ..services import create_recipe_steps
 

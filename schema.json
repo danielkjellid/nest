@@ -245,44 +245,6 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeCreateOutAPIResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "description": "Create a recipe.",
-                "tags": [
-                    "Recipe"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RecipeCreateForm"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "security": [
-                    {
-                        "SessionAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/recipes/create2/": {
-            "post": {
-                "operationId": "recipe_create2_api",
-                "summary": "Recipe Create2 Api",
-                "parameters": [],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
                                     "$ref": "#/components/schemas/APIResponse"
                                 }
                             }
@@ -2325,43 +2287,6 @@
                     "odaProductId": {
                         "title": "Oda Product Id",
                         "type": "integer"
-                    }
-                }
-            },
-            "RecipeCreateOut": {
-                "title": "RecipeCreateOut",
-                "type": "object",
-                "required": [
-                    "recipeId"
-                ],
-                "properties": {
-                    "recipeId": {
-                        "title": "Recipe Id",
-                        "type": "integer"
-                    }
-                }
-            },
-            "RecipeCreateOutAPIResponse": {
-                "title": "RecipeCreateOutAPIResponse",
-                "type": "object",
-                "required": [
-                    "status"
-                ],
-                "properties": {
-                    "status": {
-                        "title": "Status",
-                        "type": "string",
-                        "enum": [
-                            "success",
-                            "error"
-                        ]
-                    },
-                    "message": {
-                        "title": "Message",
-                        "type": "string"
-                    },
-                    "data": {
-                        "$ref": "#/components/schemas/RecipeCreateOut"
                     }
                 }
             },

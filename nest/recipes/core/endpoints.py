@@ -9,27 +9,9 @@ from nest.core.fields import FormField
 from .forms import RecipeCreateForm
 from .records import RecipeDetailRecord, RecipeRecord
 from .selectors import get_recipe, get_recipes
-from .services import create_base_recipe, create_recipe
+from .services import create_recipe
 
 router = Router(tags=["Recipe"])
-
-
-class RecipeCreateOut(Schema):
-    recipe_id: int
-
-
-@router.post("create/", response={201: APIResponse[RecipeCreateOut]})
-@staff_required
-def recipe_create_api(
-    request: HttpRequest, payload: RecipeCreateForm
-) -> tuple[int, APIResponse[RecipeCreateOut]]:
-    """
-    Create a recipe.
-    """
-    recipe = create_base_recipe(**payload.dict(), request=request)
-    return status.HTTP_201_CREATED, APIResponse(
-        status="success", data=RecipeCreateOut(recipe_id=recipe.id)
-    )
 
 
 class RecipeCreateIngredientItem(Schema):
@@ -59,9 +41,9 @@ class RecipeCreateIn(Schema):
     ingredient_item_groups: list[RecipeCreateIngredientItemGroup]
 
 
-@router.post("create2/", response={201: APIResponse[None]})
+@router.post("create/", response={201: APIResponse[None]})
 @staff_required
-def recipe_create2_api(
+def recipe_create_api(
     request: HttpRequest, payload: RecipeCreateIn
 ) -> tuple[int, APIResponse[None]]:
     """
@@ -78,7 +60,7 @@ def recipe_create2_api(
         request=request,
     )
 
-    return 201, APIResponse(status="success", data=None)
+    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
 
 
 @router.get(

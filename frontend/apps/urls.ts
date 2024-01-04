@@ -13,7 +13,7 @@ const urls = {
   },
   recipes: {
     list: () => '/api/v1/recipes/',
-    create: () => '/api/v1/recipes/create2/',
+    create: () => '/api/v1/recipes/create/',
     detail: ({ id }: { id: Param }) => `/api/v1/recipes/recipe/${id}/`,
 
     ingredients: {
