@@ -128,14 +128,14 @@ def test_service_create_recipe_ingredient_item_groups(
     assert item_groups[0].ordering == payload[0]["ordering"]
     assert set(
         item_groups[0].ingredient_items.all().values_list("ingredient__id", flat=True)
-    ) == {item["ingredient_id"] for item in payload[0]["ingredients"]}
+    ) == {item["ingredient_id"] for item in payload[0]["ingredient_items"]}
 
     assert item_groups[1].recipe_id == recipe.id
     assert item_groups[1].title == payload[1]["title"]
     assert item_groups[1].ordering == payload[1]["ordering"]
     assert set(
         item_groups[1].ingredient_items.all().values_list("ingredient__id", flat=True)
-    ) == {item["ingredient_id"] for item in payload[1]["ingredients"]}
+    ) == {item["ingredient_id"] for item in payload[1]["ingredient_items"]}
 
     # Test that ApplicationError is raised when ordering is not unique.
     with pytest.raises(ApplicationError):
