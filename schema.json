@@ -2258,12 +2258,9 @@
                         "x-order": 4,
                         "x-min": null,
                         "x-max": null,
-                        "anyOf": [
+                        "allOf": [
                             {
                                 "$ref": "#/components/schemas/RecipeStatus"
-                            },
-                            {
-                                "type": "string"
                             }
                         ]
                     },
@@ -2299,12 +2296,9 @@
                         "x-order": 5,
                         "x-min": null,
                         "x-max": null,
-                        "anyOf": [
+                        "allOf": [
                             {
                                 "$ref": "#/components/schemas/RecipeDifficulty"
-                            },
-                            {
-                                "type": "string"
                             }
                         ]
                     },

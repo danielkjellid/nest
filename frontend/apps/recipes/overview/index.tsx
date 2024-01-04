@@ -28,7 +28,7 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
         {currentUser && currentUser.isStaff && (
           <div className="flex items-center space-x-3">
             <Button.Group>
-              <Button variant="default" onClick={() => navigate(routes.createRecipe.build())}>
+              <Button variant="default" onClick={() => navigate(routes.create.build())}>
                 Add new
               </Button>
             </Button.Group>

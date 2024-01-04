@@ -7,13 +7,14 @@ import { Counter } from '../../../../components/Counter'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
+
 import {
   type ActionFunc,
   type StepActions,
   type IngredientItemGroup,
   type Step,
   type FormErrorInner,
-} from '../types'
+} from './types'
 
 interface StepInputProps {
   draggableId: string
@@ -103,12 +104,12 @@ function StepInput({
   const getSelectedIngredientGroupItems = () => {
     const sequenceMapping: string[][] = []
     ingredientGroups.flatMap((ingredientGroup, ingredientGroupIndex) =>
-      ingredientGroup.ingredientItems.filter((ingredientItem) => {
+      ingredientGroup.ingredientItems.map((ingredientItem) => {
         const ingredientItemFromStep = step.ingredientItems.find(
           (stepIngredientItem) =>
-            ingredientItem.ingredient === stepIngredientItem.ingredient &&
+            ingredientItem.ingredient.id === stepIngredientItem.ingredient.id &&
             ingredientItem.portionQuantity === stepIngredientItem.portionQuantity &&
-            ingredientItem.portionQuantityUnit === stepIngredientItem.portionQuantityUnit &&
+            ingredientItem.portionQuantityUnit.id === stepIngredientItem.portionQuantityUnit.id &&
             ingredientItem.additionalInfo === stepIngredientItem.additionalInfo
         )
 

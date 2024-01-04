@@ -5,6 +5,7 @@ import { Draggable } from 'react-beautiful-dnd'
 
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
+
 import {
   type IngredientItemGroup,
   type IngredientItem,
@@ -12,7 +13,7 @@ import {
   type IngredientGroupActions,
   type FormError,
   type FormErrorInner,
-} from '../types'
+} from './types'
 
 interface IngredientOptionProps extends React.ComponentPropsWithoutRef<'div'> {
   image?: string | null
@@ -105,8 +106,10 @@ function IngredientInput({
           // Filter out already used ingredients in the same group.
           .filter(
             (ingredient) =>
+              (ingredientItem && ingredientItem.ingredient.id === ingredient.id) ||
               !ingredientItemGroup.ingredientItems
                 .flatMap((ingredientItem) => ingredientItem.ingredient.id)
+                .filter((id) => id !== undefined)
                 .includes(ingredient.id)
           )
           .map((ingredient) => ({
@@ -155,7 +158,7 @@ function IngredientInput({
               />
               <TextInput
                 label="Comment"
-                value={ingredientItem.additionalInfo}
+                value={ingredientItem.additionalInfo || ''}
                 placeholder="Optional comment"
                 onChange={(event) => handleInputChange('additionalInfo', event)}
                 error={!!error}
