@@ -49,14 +49,18 @@ function StepInput({
     if (!eventOrValue) {
       return
     }
-    console.log(eventOrValue)
+
     let data = { ...step }
+
     if (key === 'ingredientItems' && Array.isArray(eventOrValue)) {
-      const ingredientItems = ingredientGroups.flatMap((ingredientGroups) =>
-        ingredientGroups.ingredientItems.filter((ingredientItem) =>
-          eventOrValue.includes(ingredientItem.ingredient.id.toString())
+      // The value of the event is <groupIndex>-<ingredientId>, so split and find correct ingredient item.
+      const ingredientGroupItemSequences: string[][] = eventOrValue.map((event) => event.split('-'))
+      const ingredientItems = ingredientGroupItemSequences.flatMap(([groupIndex, ingredientId]) =>
+        ingredientGroups[Number(groupIndex)].ingredientItems.filter(
+          (ingredientItem) => ingredientItem.ingredient.id.toString() === ingredientId
         )
       )
+
       data = { ...data, ingredientItems: ingredientItems }
     } else if (
       !Array.isArray(eventOrValue) &&
@@ -82,21 +86,43 @@ function StepInput({
 
   const ingredientOptions = useMemo(
     () =>
-      ingredientGroups.flatMap((ingredientGroup) =>
+      ingredientGroups.flatMap((ingredientGroup, ingredientGroupIndex) =>
         ingredientGroup.ingredientItems
           .filter((ingredientItem) => Object.keys(ingredientItem.ingredient).length)
           .map((ingredientItem) => ({
             label: ingredientItem.ingredient.title,
-            value: ingredientItem.ingredient.id.toString(),
+            value: `${ingredientGroupIndex}-${ingredientItem.ingredient.id.toString()}`,
             group: ingredientGroup.title,
           }))
       ),
     [ingredientGroups]
   )
 
-  const selectedIngredientItems = step.ingredientItems.flatMap((ingredientItem) =>
-    ingredientItem.ingredient.id.toString()
-  )
+  // Since we need the group index and the ingredient id, back map the ingredient item and find appropriate
+  // item group.
+  const getSelectedIngredientGroupItems = () => {
+    const sequenceMapping: string[][] = []
+    ingredientGroups.flatMap((ingredientGroup, ingredientGroupIndex) =>
+      ingredientGroup.ingredientItems.filter((ingredientItem) => {
+        const ingredientItemFromStep = step.ingredientItems.find(
+          (stepIngredientItem) =>
+            ingredientItem.ingredient === stepIngredientItem.ingredient &&
+            ingredientItem.portionQuantity === stepIngredientItem.portionQuantity &&
+            ingredientItem.portionQuantityUnit === stepIngredientItem.portionQuantityUnit &&
+            ingredientItem.additionalInfo === stepIngredientItem.additionalInfo
+        )
+
+        if (ingredientItemFromStep) {
+          sequenceMapping.push([
+            ingredientGroupIndex.toString(),
+            ingredientItemFromStep?.ingredient.id.toString(),
+          ])
+        }
+      })
+    )
+
+    return sequenceMapping.flatMap(([groupIndex, ingredientId]) => `${groupIndex}-${ingredientId}`)
+  }
 
   const getErrorForField = (field: string) => {
     if (!errors) return undefined
@@ -148,7 +174,7 @@ function StepInput({
                 <MultiSelect
                   label="Ingredients"
                   description="Pick ingredients required in this step"
-                  value={selectedIngredientItems}
+                  value={getSelectedIngredientGroupItems()}
                   data={ingredientOptions}
                   required
                   searchable

@@ -294,7 +294,6 @@ function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
 
   const addRecipe = async () => {
     const isValid = validate()
-    console.log(isValid)
     if (!isValid) return
 
     const payload = makePayload()
