@@ -102,7 +102,7 @@ def create_recipe_ingredient_item_groups(
                     ),
                 )
                 for item_group in ingredient_group_items
-                for ingredient_item in item_group["ingredients"]
+                for ingredient_item in item_group["ingredient_items"]
             ]
         except StopIteration as exc:
             raise ApplicationError(

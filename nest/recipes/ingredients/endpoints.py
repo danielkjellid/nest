@@ -4,17 +4,14 @@ from store_kit.http import status
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.core.fields import FormField
 
 from .forms import IngredientCreateForm
-from .records import RecipeIngredientItemGroupRecord, RecipeIngredientRecord
+from .records import RecipeIngredientRecord
 from .selectors import (
-    get_recipe_ingredient_item_groups_for_recipe,
     get_recipe_ingredients,
 )
 from .services import (
     create_recipe_ingredient,
-    create_recipe_ingredient_item_groups,
     delete_recipe_ingredient,
 )
 
@@ -61,47 +58,3 @@ def recipe_ingredient_list_api(
 
     ingredients = get_recipe_ingredients()
     return APIResponse(status="success", data=ingredients)
-
-
-class RecipeIngredientsCreateIngredientIn(Schema):
-    ingredient_id: str = FormField(..., alias="ingredient")
-    portion_quantity: str
-    portion_quantity_unit_id: str = FormField(..., alias="unit")
-    additional_info: str | None
-
-
-class RecipeIngredientsCreateIn(Schema):
-    title: str
-    ordering: int
-    ingredients: list[RecipeIngredientsCreateIngredientIn]
-
-
-@router.post("{recipe_id}/groups/create/", response={201: APIResponse[None]})
-@staff_required
-def recipe_ingredient_groups_create_api(
-    request: HttpRequest, recipe_id: int, payload: list[RecipeIngredientsCreateIn]
-) -> tuple[int, APIResponse[None]]:
-    """
-    Add ingredients to an existing recipe.
-    """
-    create_recipe_ingredient_item_groups(
-        recipe_id=recipe_id,
-        ingredient_group_items=[p.dict() for p in payload],
-    )
-    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
-
-
-@router.get(
-    "{recipe_id}/groups/",
-    response=APIResponse[list[RecipeIngredientItemGroupRecord]],
-)
-@staff_required
-def recipe_ingredient_groups_list_api(
-    request: HttpRequest, recipe_id: int
-) -> APIResponse[list[RecipeIngredientItemGroupRecord]]:
-    """
-    Get a list of all RecipeIngredientItemGroups for a recipe.
-    """
-
-    groups = get_recipe_ingredient_item_groups_for_recipe(recipe_id=recipe_id)
-    return APIResponse(status="success", data=groups)

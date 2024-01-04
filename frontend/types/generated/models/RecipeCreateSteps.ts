@@ -3,11 +3,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecipeStepsCreateIn = {
+import type { RecipeCreateIngredientItem } from './RecipeCreateIngredientItem';
+
+export type RecipeCreateSteps = {
     number: number;
     duration: number;
     instruction: string;
     stepType: string;
-    ingredientItems: Array<string>;
+    ingredientItems: Array<RecipeCreateIngredientItem>;
 };
 

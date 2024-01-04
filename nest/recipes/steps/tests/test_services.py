@@ -8,6 +8,7 @@ from nest.recipes.ingredients.tests.utils import (
     create_recipe_ingredient_item,
     create_recipe_ingredient_item_group,
 )
+from nest.units.tests.utils import get_unit
 
 from ..models import RecipeStep
 from ..services import create_recipe_steps
@@ -28,6 +29,44 @@ class TestRecipeStepsServices:
         item_group_2 = create_recipe_ingredient_item_group(
             title="Accessories", recipe=recipe
         )
+        unit = get_unit("g")
+
+        ingredient_item1 = create_recipe_ingredient_item(
+            ingredient_group=item_group_1,
+            portion_quantity=150,
+            portion_quantity_unit="g",
+            ingredient=create_recipe_ingredient(
+                title="Green peppers",
+                product=create_product(name="Peppers, green"),
+            ),
+        )
+        ingredient_item2 = create_recipe_ingredient_item(
+            ingredient_group=item_group_1,
+            portion_quantity=200,
+            portion_quantity_unit="g",
+            ingredient=create_recipe_ingredient(
+                title="Cod",
+                product=create_product(name="Fresh luxury cod"),
+            ),
+        )
+        ingredient_item3 = create_recipe_ingredient_item(
+            ingredient_group=item_group_2,
+            portion_quantity=190,
+            portion_quantity_unit="g",
+            ingredient=create_recipe_ingredient(
+                title="Parsly",
+                product=create_product(name="Fresh parsly"),
+            ),
+        )
+        ingredient_item4 = create_recipe_ingredient_item(
+            ingredient_group=item_group_2,
+            portion_quantity=100,
+            portion_quantity_unit="g",
+            ingredient=create_recipe_ingredient(
+                title="Salt",
+                product=create_product(name="Kosher salt"),
+            ),
+        )
 
         payload = [
             {
@@ -36,26 +75,24 @@ class TestRecipeStepsServices:
                 "instruction": "Some instruction for step 1",
                 "step_type": "cooking",
                 "ingredient_items": [
-                    create_recipe_ingredient_item(
-                        ingredient_group=item_group_1,
-                        ingredient=create_recipe_ingredient(
-                            title="Green peppers",
-                            product=create_product(name="Peppers, green"),
-                        ),
-                    ).id,
-                    create_recipe_ingredient_item(
-                        ingredient_group=item_group_1,
-                        ingredient=create_recipe_ingredient(
-                            title="Cod", product=create_product(name="Fresh luxury cod")
-                        ),
-                    ).id,
-                    create_recipe_ingredient_item(
-                        ingredient_group=item_group_2,
-                        ingredient=create_recipe_ingredient(
-                            title="Parsly",
-                            product=create_product(name="Fresh parsly"),
-                        ),
-                    ).id,
+                    {
+                        "ingredient_id": ingredient_item1.ingredient_id,
+                        "portion_quantity": "150",
+                        "portion_quantity_unit_id": unit.id,
+                        "additional_info": None,
+                    },
+                    {
+                        "ingredient_id": ingredient_item2.ingredient_id,
+                        "portion_quantity": "200",
+                        "portion_quantity_unit_id": unit.id,
+                        "additional_info": None,
+                    },
+                    {
+                        "ingredient_id": ingredient_item3.ingredient_id,
+                        "portion_quantity": "190",
+                        "portion_quantity_unit_id": unit.id,
+                        "additional_info": None,
+                    },
                 ],
             },
             {
@@ -64,13 +101,12 @@ class TestRecipeStepsServices:
                 "instruction": "Some instruction for step 2",
                 "step_type": "cooking",
                 "ingredient_items": [
-                    create_recipe_ingredient_item(
-                        ingredient_group=item_group_2,
-                        ingredient=create_recipe_ingredient(
-                            title="Salt",
-                            product=create_product(name="Kosher salt"),
-                        ),
-                    ).id,
+                    {
+                        "ingredient_id": ingredient_item4.ingredient_id,
+                        "portion_quantity": "100",
+                        "portion_quantity_unit_id": unit.id,
+                        "additional_info": None,
+                    },
                 ],
             },
         ]
@@ -89,14 +125,14 @@ class TestRecipeStepsServices:
         assert recipe_steps[0].instruction == payload[0]["instruction"]
         assert set(
             recipe_steps[0].ingredient_items.all().values_list("id", flat=True)
-        ) == set(payload[0]["ingredient_items"])
+        ) == {ingredient_item1.id, ingredient_item2.id, ingredient_item3.id}
 
         assert recipe_steps[1].recipe_id == recipe.id
         assert recipe_steps[1].number == payload[1]["number"]
         assert recipe_steps[1].instruction == payload[1]["instruction"]
         assert set(
             recipe_steps[1].ingredient_items.all().values_list("id", flat=True)
-        ) == set(payload[1]["ingredient_items"])
+        ) == {ingredient_item4.id}
 
         # Test that application error is raised if number is off sequence.
         with pytest.raises(ApplicationError):

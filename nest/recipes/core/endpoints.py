@@ -4,6 +4,7 @@ from store_kit.http import status
 
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
+from nest.core.fields import FormField
 
 from .forms import RecipeCreateForm
 from .records import RecipeDetailRecord, RecipeRecord
@@ -13,22 +14,53 @@ from .services import create_recipe
 router = Router(tags=["Recipe"])
 
 
-class RecipeCreateOut(Schema):
-    recipe_id: int
+class RecipeCreateIngredientItem(Schema):
+    ingredient_id: str = FormField(..., alias="ingredient")
+    portion_quantity: str
+    portion_quantity_unit_id: str = FormField(..., alias="portion_quantity_unit")
+    additional_info: str | None
 
 
-@router.post("create/", response={201: APIResponse[RecipeCreateOut]})
+class RecipeCreateSteps(Schema):
+    number: int
+    duration: int
+    instruction: str
+    step_type: str
+    ingredient_items: list[RecipeCreateIngredientItem]
+
+
+class RecipeCreateIngredientItemGroup(Schema):
+    title: str
+    ordering: int
+    ingredient_items: list[RecipeCreateIngredientItem]
+
+
+class RecipeCreateIn(Schema):
+    base_recipe: RecipeCreateForm
+    ingredient_item_groups: list[RecipeCreateIngredientItemGroup]
+    steps: list[RecipeCreateSteps]
+
+
+@router.post("create/", response={201: APIResponse[None]})
 @staff_required
 def recipe_create_api(
-    request: HttpRequest, payload: RecipeCreateForm
-) -> tuple[int, APIResponse[RecipeCreateOut]]:
+    request: HttpRequest, payload: RecipeCreateIn
+) -> tuple[int, APIResponse[None]]:
     """
-    Create a recipe.
+    Create a full recipe instance.
     """
-    recipe = create_recipe(**payload.dict(), request=request)
-    return status.HTTP_201_CREATED, APIResponse(
-        status="success", data=RecipeCreateOut(recipe_id=recipe.id)
+    base_recipe = payload.base_recipe.dict()
+    ingredient_item_groups = [p.dict() for p in payload.ingredient_item_groups]
+    steps = [p.dict() for p in payload.steps]
+
+    create_recipe(
+        **base_recipe,
+        ingredient_group_items=ingredient_item_groups,
+        steps=steps,
+        request=request,
     )
+
+    return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
 
 
 @router.get(

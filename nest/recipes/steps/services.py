@@ -1,4 +1,5 @@
 from datetime import timedelta
+from decimal import Decimal
 from typing import Any
 
 from nest.core.exceptions import ApplicationError
@@ -31,13 +32,8 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) ->
         raise ApplicationError(message="All steps has to have instructions defined.")
 
     ingredient_items_to_update = []
-    ingredient_item_ids = [
-        int(item_id) for step in steps for item_id in step["ingredient_items"]
-    ]
     ingredient_items = list(
-        RecipeIngredientItem.objects.filter(
-            ingredient_group__recipe_id=recipe_id, id__in=ingredient_item_ids
-        )
+        RecipeIngredientItem.objects.filter(ingredient_group__recipe_id=recipe_id)
     )
 
     recipe_steps_to_create = [
@@ -68,19 +64,26 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) ->
         if not created_step:
             continue
 
-        items = [
-            item
-            for item in ingredient_items
-            if item.id
-            in [int(step_item_id) for step_item_id in step["ingredient_items"]]
-        ]
+        for ingredient_item in step["ingredient_items"]:
+            ingredient_item_from_db = next(
+                (
+                    item
+                    for item in ingredient_items
+                    if item.ingredient_id == int(ingredient_item["ingredient_id"])
+                    and Decimal(item.portion_quantity)
+                    == Decimal(ingredient_item["portion_quantity"])
+                    and item.portion_quantity_unit_id
+                    == int(ingredient_item["portion_quantity_unit_id"])
+                    and item.step_id is None
+                ),
+                None,
+            )
 
-        for item in items:
-            if item.step_id is not None:
+            if not ingredient_item_from_db:
                 continue
 
-            item.step_id = created_step.id
-            ingredient_items_to_update.append(item)
+            ingredient_item_from_db.step_id = created_step.id
+            ingredient_items_to_update.append(ingredient_item_from_db)
 
     # Update ingredient items with new step_ids in bulk.
     RecipeIngredientItem.objects.bulk_update(ingredient_items_to_update, ["step"])

@@ -9,7 +9,7 @@ type Mapping = Record<KS, K>
 const MAPPING: Mapping = {
   title: 'title',
   type: 'type',
-  enum: 'enum',
+  'x-enum': 'enum',
   'x-helpText': 'helpText',
   'x-component': 'component',
   'x-defaultValue': 'defaultValue',

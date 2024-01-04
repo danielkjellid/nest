@@ -3,18 +3,32 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { RecipeDifficulty } from './RecipeDifficulty';
-import type { RecipeStatus } from './RecipeStatus';
-
 export type RecipeCreateForm = {
     title: string;
     searchKeywords?: string;
     defaultNumPortions: number;
-    status: (RecipeStatus | string);
-    difficulty: (RecipeDifficulty | string);
+    status: RecipeCreateForm.status;
+    difficulty: RecipeCreateForm.difficulty;
     externalId?: string;
     externalUrl?: string;
     isVegetarian?: boolean;
     isPescatarian?: boolean;
 };
+
+export namespace RecipeCreateForm {
+
+    export enum status {
+        DRAFT = 'draft',
+        HIDDEN = 'hidden',
+        PUBLISHED = 'published',
+    }
+
+    export enum difficulty {
+        EASY = 'easy',
+        MEDIUM = 'medium',
+        HARD = 'hard',
+    }
+
+
+}
 

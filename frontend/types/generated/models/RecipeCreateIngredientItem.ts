@@ -3,10 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecipeIngredientsCreateIngredientIn = {
+export type RecipeCreateIngredientItem = {
     ingredient: string;
     portionQuantity: string;
-    unit: string;
+    portionQuantityUnit: string;
     additionalInfo?: string;
 };
 

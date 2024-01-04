@@ -2,39 +2,34 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
+import {
+  type IngredientItemGroup,
+  type Step,
+  type ActionFunc,
+  type StepActions,
+  type FormError,
+} from '../types'
 
 import { StepInput } from './StepInput'
-import { type IngredientItemOptionType, type Step, type StepInputError } from './types'
 
 interface RecipeStepsFormProps {
   steps: Step[]
-  errors?: StepInputError[]
-  ingredientItemOptions: IngredientItemOptionType[]
-  onSequenceChange: (steps: Step[]) => void
-  onStepInputAdd: () => void
-  onStepInputChange: (index: number, data: Step) => void
-  onStepInputDelete: (index: number) => void
+  ingredientGroups: IngredientItemGroup[]
+  onAction: ActionFunc<StepActions>
+  errors: FormError
 }
 
-function RecipeStepsForm({
-  steps,
-  errors,
-  ingredientItemOptions,
-  onSequenceChange,
-  onStepInputAdd,
-  onStepInputChange,
-  onStepInputDelete,
-}: RecipeStepsFormProps) {
+function RecipeStepsForm({ steps, ingredientGroups, onAction, errors }: RecipeStepsFormProps) {
   const { onDragEnd, onDragStart } = useDragAndDropSingleList({
     items: steps,
-    onSequenceChange: onSequenceChange,
+    onSequenceChange: (items) => onAction('stepSequenceChange', items),
   })
 
   return (
     <div>
       <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
         <div className="flex items-center justify-end mb-1 space-x-2">
-          <Button variant="light" compact onClick={onStepInputAdd}>
+          <Button variant="light" compact onClick={() => onAction('inputAdd')}>
             Add step
           </Button>
         </div>
@@ -51,12 +46,11 @@ function RecipeStepsForm({
                   isDragDisabled={steps.length <= 1}
                   key={index}
                   step={step}
-                  error={errors?.find((error) => error.index === index)}
                   stepNumber={index + 1}
-                  ingredientItemOptions={ingredientItemOptions}
+                  ingredientGroups={ingredientGroups}
                   canBeDeleted={steps.length > 1}
-                  onInputChange={(data) => onStepInputChange(index, data)}
-                  onInputDelete={() => onStepInputDelete(index)}
+                  onAction={onAction}
+                  errors={errors[index]}
                 />
               ))}
               {droppableProvided.placeholder}

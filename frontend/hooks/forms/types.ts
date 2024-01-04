@@ -3,7 +3,7 @@ import { type FormEnum } from '../../components/Form/types'
 export interface SchemaFormElementObj {
   title: string
   type: string
-  enum?: FormEnum[]
+  'x-enum'?: FormEnum[]
   'x-helpText'?: string | null
   'x-component': string
   'x-defaultValue'?: string | number | boolean | null
