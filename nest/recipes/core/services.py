@@ -12,6 +12,8 @@ from ..steps.services import create_recipe_steps
 from .enums import RecipeDifficulty, RecipeStatus
 from .models import Recipe
 from .records import RecipeRecord
+from nest.core.exceptions import ApplicationError
+from nest.core.services import model_update
 
 
 def create_base_recipe(
@@ -55,6 +57,25 @@ def create_base_recipe(
 
     log_create_or_updated(old=None, new=recipe, request_or_user=request)
     return RecipeRecord.from_recipe(recipe)
+
+
+def edit_base_recipe(
+    *, recipe_id: int, request: HttpRequest, **edits: dict[str, Any]
+) -> None:
+    """
+    Edit an existing base recipe.
+    """
+
+    recipe = Recipe.objects.filter(id=recipe_id).first()
+
+    if not recipe:
+        raise ApplicationError(message="Recipe does not exist.")
+
+    data = edits.copy()
+
+    _recipe_instance, _has_updated = model_update(
+        instance=recipe, data=data, request=request
+    )
 
 
 def create_recipe(  # noqa: PLR0913

@@ -37,10 +37,13 @@ interface RecipeFormProps {
 function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
   const { units, unitsOptions } = useUnits()
   const { classes } = useCommonStyles()
+  const [recipeData, setRecipeData] = useState<RecipeDetailRecord>({
+    ...(recipe || ({} as RecipeDetailRecord)),
+  })
 
   const recipeForm = useForm<RecipeDetailRecord>({
     key: 'RecipeCreateForm',
-    initialData: recipe || null,
+    initialData: recipeData || null,
   })
   const navigate = useNavigate()
 
@@ -56,7 +59,7 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
   }
   const defaultIngredientGroup = { title: '', ordering: 0, ingredientItems: [defaultIngredient] }
   const [ingredientGroups, setIngredientGroups] = useState<IngredientItemGroup[]>(
-    recipe?.ingredientGroups || [defaultIngredientGroup]
+    structuredClone(recipeData?.ingredientItemGroups) || [defaultIngredientGroup]
   )
 
   /*******************************
@@ -129,7 +132,13 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
     stepType: '' as RecipeStepType,
     ingredientItems: [],
   }
-  const [steps, setSteps] = useState<Step[]>(recipe?.steps || [defaultStep])
+  const [steps, setSteps] = useState<Step[]>(
+    // Step duration field is passed in seconds, as is the standard for duration fields.
+    // Convert to minutes before passing it.
+    structuredClone(
+      recipeData?.steps.map((step) => ({ ...step, duration: step.duration / 60 }))
+    ) || [defaultStep]
+  )
 
   /*********************
    ** Steps: handlers **
@@ -237,12 +246,12 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
   }
 
   const validate = (): boolean => {
-    const recipeValid = recipeForm.validate()
+    // const recipeValid = recipeForm.validate()
     const groupsValid = validateIngredientGroups()
     const itemsValid = validateIngredientItems()
     const stepsValid = validateSteps()
 
-    return recipeValid && groupsValid && itemsValid && stepsValid
+    return groupsValid && itemsValid && stepsValid
   }
 
   const resetValidation = () => {

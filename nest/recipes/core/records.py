@@ -112,5 +112,5 @@ class RecipeDetailRecord(RecipeRecord):
     duration: RecipeDurationRecord
     glycemic_data: RecipeGlycemicData | None  # TODO: Needs to be annotated
     health_score: RecipeHealthScore | None  # TODO: Needs to be annotated
-    ingredient_groups: list[RecipeIngredientItemGroupRecord]
+    ingredient_item_groups: list[RecipeIngredientItemGroupRecord]
     steps: list[RecipeStepRecord]

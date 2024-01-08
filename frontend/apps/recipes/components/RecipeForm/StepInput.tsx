@@ -101,16 +101,12 @@ function StepInput({
 
   // Since we need the group index and the ingredient id, back map the ingredient item and find appropriate
   // item group.
-  const getSelectedIngredientGroupItems = () => {
+  const getSelectedIngredientGroupItems = useMemo(() => {
     const sequenceMapping: string[][] = []
     ingredientGroups.flatMap((ingredientGroup, ingredientGroupIndex) =>
       ingredientGroup.ingredientItems.map((ingredientItem) => {
         const ingredientItemFromStep = step.ingredientItems.find(
-          (stepIngredientItem) =>
-            ingredientItem.ingredient.id === stepIngredientItem.ingredient.id &&
-            ingredientItem.portionQuantity === stepIngredientItem.portionQuantity &&
-            ingredientItem.portionQuantityUnit.id === stepIngredientItem.portionQuantityUnit.id &&
-            ingredientItem.additionalInfo === stepIngredientItem.additionalInfo
+          (stepIngredientItem) => ingredientItem.ingredient.id === stepIngredientItem.ingredient.id
         )
 
         if (ingredientItemFromStep) {
@@ -123,7 +119,7 @@ function StepInput({
     )
 
     return sequenceMapping.flatMap(([groupIndex, ingredientId]) => `${groupIndex}-${ingredientId}`)
-  }
+  }, [ingredientGroups, step])
 
   const getErrorForField = (field: string) => {
     if (!errors) return undefined
@@ -175,7 +171,7 @@ function StepInput({
                 <MultiSelect
                   label="Ingredients"
                   description="Pick ingredients required in this step"
-                  value={getSelectedIngredientGroupItems()}
+                  value={getSelectedIngredientGroupItems}
                   data={ingredientOptions}
                   required
                   searchable

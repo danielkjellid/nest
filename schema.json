@@ -2796,7 +2796,7 @@
                     "isVegetarian",
                     "isPescatarian",
                     "duration",
-                    "ingredientGroups",
+                    "ingredientItemGroups",
                     "steps"
                 ],
                 "properties": {
@@ -2859,8 +2859,8 @@
                     "healthScore": {
                         "$ref": "#/components/schemas/RecipeHealthScore"
                     },
-                    "ingredientGroups": {
-                        "title": "Ingredient Groups",
+                    "ingredientItemGroups": {
+                        "title": "Ingredient Item Groups",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientItemGroupRecord"

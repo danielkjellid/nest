@@ -28,7 +28,7 @@ export type RecipeDetailRecord = {
     duration: RecipeDurationRecord;
     glycemicData?: RecipeGlycemicData;
     healthScore?: RecipeHealthScore;
-    ingredientGroups: Array<RecipeIngredientItemGroupRecord>;
+    ingredientItemGroups: Array<RecipeIngredientItemGroupRecord>;
     steps: Array<RecipeStepRecord>;
 };
 
