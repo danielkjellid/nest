@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
-import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff'
 
 import View from '../../../components/View'
 import { useFetch } from '../../../hooks/fetcher'
 import {
+  type RecipeDetailRecord,
   type RecipeDetailRecordAPIResponse,
   type RecipeIngredientRecordListAPIResponse,
 } from '../../../types'
@@ -22,12 +22,16 @@ function RecipeEditInner({ results }: RecipeEditInnerProps) {
   const { data: ingredients } = results.ingredients
   const { data: recipe } = results.recipe
 
-  const isEmpty = (o: any) => Object.keys(o).length === 0
   const isObject = (o: any) => o != null && typeof o === 'object' && !Array.isArray(o)
   const isArray = (o: any) => o != null && Array.isArray(o)
 
-  const isEqual = (newValue: any, oldValue: any) => {
-    if (isArray(newValue) && isArray(oldValue)) {
+  function isEqual(newValue: any, oldValue: any) {
+    if (
+      Array.isArray(newValue) &&
+      Array.isArray(oldValue) &&
+      isArray(newValue) &&
+      isArray(oldValue)
+    ) {
       let isEqualValues = true
       newValue.forEach((newVal: any) =>
         oldValue.forEach((oldVal: any) => {
@@ -49,10 +53,13 @@ function RecipeEditInner({ results }: RecipeEditInnerProps) {
     }
   }
 
-  const getObjectDifference = (oldObj: Record<string, any>, newObj: Record<string, any>) => {
+  function getObjectDifference<A extends Record<string, any>, B extends Record<string, any>>(
+    oldObj?: A,
+    newObj?: B
+  ) {
     let difference = {}
 
-    if (isEmpty(newObj) || isEmpty(oldObj) || !isObject(oldObj) || !isObject(newObj)) {
+    if (oldObj === undefined || newObj === undefined || !isObject(oldObj) || !isObject(newObj)) {
       return difference
     }
 
@@ -68,10 +75,10 @@ function RecipeEditInner({ results }: RecipeEditInnerProps) {
           }
         } else if (isArray(oldObj[key]) && isArray(newObj[key])) {
           // Filter out changes made.
-          const updates: any[] = []
-          newObj[key].flatMap((unpackedNewObj: any) =>
+          const updates: B[] = []
+          newObj[key].flatMap((unpackedNewObj: B) =>
             Object.keys(unpackedNewObj).flatMap((k) =>
-              oldObj[key].flatMap((unpackedOldObj: any) => {
+              oldObj[key].flatMap((unpackedOldObj: A) => {
                 const existingUpdateIndex = updates.indexOf(unpackedNewObj)
                 if (!isEqual(unpackedNewObj[k], unpackedOldObj[k])) {
                   if (existingUpdateIndex === -1) {
@@ -98,13 +105,26 @@ function RecipeEditInner({ results }: RecipeEditInnerProps) {
     return difference
   }
 
+  type Unpack<T> = {
+    [K in keyof T]: T[K] extends object ? Unpack<T[K]> : T[K]
+  }
+
+  interface ModifiedRecipe extends Unpack<Recipe['baseRecipe']> {
+    ingredientItemGroups: Recipe['ingredientItemGroups']
+    steps: Recipe['steps']
+  }
+
   const editRecipe = (recipeData: Recipe) => {
-    const flattenedRecipeData = {
+    const flattenedRecipeData: ModifiedRecipe = {
       ...recipeData.baseRecipe,
       ingredientItemGroups: [...recipeData.ingredientItemGroups],
       steps: [...recipeData.steps.flatMap((step) => ({ ...step, duration: step.duration * 60 }))],
     }
-    console.log(getObjectDifference(recipe, flattenedRecipeData))
+    const difference = getObjectDifference<RecipeDetailRecord, ModifiedRecipe>(
+      recipe,
+      flattenedRecipeData
+    )
+    console.log(difference)
   }
 
   return <RecipeForm recipe={recipe} ingredients={ingredients || []} onSubmit={editRecipe} />

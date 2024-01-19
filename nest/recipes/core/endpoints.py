@@ -5,20 +5,19 @@ from store_kit.http import status
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
 from nest.core.fields import FormField
-
+import functools
 from .forms import RecipeCreateForm
 from .records import RecipeDetailRecord, RecipeRecord
 from .selectors import get_recipe, get_recipes
-from .services import create_recipe
+from .services import create_recipe, create_base_recipe, edit_recipe
+from nest.recipes.ingredients.services import (
+    create_or_update_recipe_ingredient_item_groups,
+    IngredientGroupItem,
+    IngredientItem,
+)
+from django.db import transaction
 
 router = Router(tags=["Recipe"])
-
-
-class RecipeCreateIngredientItem(Schema):
-    ingredient_id: str = FormField(..., alias="ingredient")
-    portion_quantity: str
-    portion_quantity_unit_id: str = FormField(..., alias="portion_quantity_unit")
-    additional_info: str | None
 
 
 class RecipeCreateSteps(Schema):
@@ -26,41 +25,61 @@ class RecipeCreateSteps(Schema):
     duration: int
     instruction: str
     step_type: str
-    ingredient_items: list[RecipeCreateIngredientItem]
-
-
-class RecipeCreateIngredientItemGroup(Schema):
-    title: str
-    ordering: int
-    ingredient_items: list[RecipeCreateIngredientItem]
+    ingredient_items: list[IngredientItem]
 
 
 class RecipeCreateIn(Schema):
     base_recipe: RecipeCreateForm
-    ingredient_item_groups: list[RecipeCreateIngredientItemGroup]
+    ingredient_item_groups: list[IngredientGroupItem]
     steps: list[RecipeCreateSteps]
 
 
 @router.post("create/", response={201: APIResponse[None]})
 @staff_required
 def recipe_create_api(
-    request: HttpRequest, payload: RecipeCreateIn
+        request: HttpRequest, payload: RecipeCreateIn
 ) -> tuple[int, APIResponse[None]]:
     """
     Create a full recipe instance.
     """
-    base_recipe = payload.base_recipe.dict()
-    ingredient_item_groups = [p.dict() for p in payload.ingredient_item_groups]
     steps = [p.dict() for p in payload.steps]
 
+    base_recipe = payload.base_recipe
     create_recipe(
-        **base_recipe,
-        ingredient_group_items=ingredient_item_groups,
+        title=base_recipe.title,
+        search_keywords=base_recipe.search_keywords,
+        status=base_recipe.status,
+        difficulty=base_recipe.difficulty,
+        default_num_portions=base_recipe.default_num_portions,
+        external_id=base_recipe.external_id,
+        external_url=base_recipe.external_url,
+        is_vegetarian=base_recipe.is_vegetarian,
+        is_pescatarian=base_recipe.is_pescatarian,
+        ingredient_group_items=payload.ingredient_item_groups,
         steps=steps,
         request=request,
     )
 
     return status.HTTP_201_CREATED, APIResponse(status="success", data=None)
+
+
+class RecipeEditIn(Schema):
+    base_recipe: RecipeCreateForm
+    ingredient_item_groups: list[IngredientGroupItem] | None = None
+    steps: list[RecipeCreateSteps] | None = None
+
+
+@router.put("/recipe/{recipe_id}/", response=APIResponse[None])
+@staff_required
+def recipe_edit_api(
+        request: HttpRequest, recipe_id: int, payload: RecipeEditIn
+) -> APIResponse[None]:
+    edit_recipe(
+        recipe_id=recipe_id,
+        base_edits=payload.base_recipe.dict(),
+        ingredient_group_items=payload.ingredient_item_groups,
+        request=request,
+    )
 
 
 @router.get(
@@ -69,7 +88,7 @@ def recipe_create_api(
     auth=None,
 )
 def recipe_detail_api(
-    request: HttpRequest, recipe_id: int
+        request: HttpRequest, recipe_id: int
 ) -> APIResponse[RecipeDetailRecord]:
     """
     Retrieve a single recipe instance based in recipe id.

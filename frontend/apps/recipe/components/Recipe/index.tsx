@@ -97,7 +97,7 @@ function Recipe({ recipe }: RecipeProps) {
       <div className="lg:grid-cols-3 xl:grid-cols-5 grid grid-cols-1 gap-6 px-12">
         <div className="xl:row-span-2 order-1 col-span-1">
           <RecipeSection title="Ingredients">
-            {recipe.ingredientGroups.map((group) => (
+            {recipe.ingredientItemGroups.map((group) => (
               <RecipeIngredientGroup key={group.id} title={group.title}>
                 {group.ingredientItems.map((item) => (
                   <RecipeIngredientGroup.Item

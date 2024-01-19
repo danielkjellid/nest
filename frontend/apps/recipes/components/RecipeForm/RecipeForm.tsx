@@ -13,6 +13,7 @@ import {
   type UnitRecord,
   type RecipeStepType,
   type RecipeDetailRecord,
+  type RecipeCreateForm,
 } from '../../../../types'
 
 import { RecipeIngredientsForm } from './RecipeIngredientsForm'
@@ -41,9 +42,9 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
     ...(recipe || ({} as RecipeDetailRecord)),
   })
 
-  const recipeForm = useForm<RecipeDetailRecord>({
+  const recipeForm = useForm<RecipeCreateForm>({
     key: 'RecipeCreateForm',
-    initialData: recipeData || null,
+    initialData: Object.keys(recipeData).length ? recipeData : null,
   })
   const navigate = useNavigate()
 
@@ -136,7 +137,7 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
     // Step duration field is passed in seconds, as is the standard for duration fields.
     // Convert to minutes before passing it.
     structuredClone(
-      recipeData?.steps.map((step) => ({ ...step, duration: step.duration / 60 }))
+      recipeData?.steps?.map((step) => ({ ...step, duration: step.duration / 60 }))
     ) || [defaultStep]
   )
 

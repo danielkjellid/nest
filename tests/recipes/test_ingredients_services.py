@@ -9,11 +9,19 @@ from nest.products.core.models import Product
 from nest.recipes.ingredients.models import (
     RecipeIngredient,
     RecipeIngredientItemGroup,
+    RecipeIngredientItem,
 )
 from nest.recipes.ingredients.services import (
     create_recipe_ingredient,
     create_recipe_ingredient_item_groups,
     delete_recipe_ingredient,
+    IngredientItem,
+    IngredientGroupItem,
+    create_or_update_recipe_ingredient_item_groups,
+)
+from nest.recipes.ingredients.tests.utils import (
+    create_recipe_ingredient_item,
+    create_recipe_ingredient_item_group,
 )
 
 
@@ -46,6 +54,64 @@ def test_service_create_recipe_ingredient(
     # with the same product.
     with pytest.raises(ValidationError):
         create_recipe_ingredient(title="Test ingredient 2", product_id=product.id)
+
+
+@pytest.mark.recipe
+@pytest.mark.recipe_ingredients(
+    ingredient_1={"title": "Green peppers", "product": "product_1"},
+    ingredient_2={"title": "Cod", "product": "product_2"},
+    ingredient_3={"title": "Parsly", "product": "product_3"},
+)
+def test_service__create_or_update_recipe_ingredient_item_groups(
+    recipe, recipe_ingredients, django_assert_num_queries, get_unit, immediate_on_commit
+):
+    group = create_recipe_ingredient_item_group(recipe=recipe, ordering=1)
+    ingredient_item = create_recipe_ingredient_item(
+        ingredient_group=group, ingredient=recipe_ingredients["ingredient_1"]
+    )
+    unit = get_unit("kg")
+
+    data = [
+        IngredientGroupItem(
+            id=group.id,
+            title=group.title,
+            ordering=group.ordering,
+            ingredient_items=[
+                IngredientItem(
+                    id=ingredient_item.id,
+                    ingredient=ingredient_item.ingredient_id,
+                    portion_quantity=ingredient_item.portion_quantity,
+                    portion_quantity_unit=ingredient_item.portion_quantity_unit_id,
+                    additional_info=ingredient_item.additional_info,
+                )
+            ],
+        ),
+        IngredientGroupItem(
+            id=None,
+            title="Test title",
+            ordering=2,
+            ingredient_items=[
+                IngredientItem(
+                    id=None,
+                    ingredient=recipe_ingredients["ingredient_2"].id,
+                    portion_quantity="100",
+                    portion_quantity_unit=unit.id,
+                    additional_info=None,
+                )
+            ],
+        ),
+    ]
+    print(RecipeIngredientItemGroup.objects.count())
+    print(RecipeIngredientItem.objects.count())
+    with immediate_on_commit, django_assert_num_queries(9):
+        create_or_update_recipe_ingredient_item_groups(
+            recipe_id=recipe.id, ingredient_item_groups=data
+        )
+    print("----")
+    print(RecipeIngredientItemGroup.objects.count())
+    print(RecipeIngredientItem.objects.count())
+
+    assert False
 
 
 @pytest.mark.recipe_ingredient
