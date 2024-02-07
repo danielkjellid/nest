@@ -2,8 +2,9 @@ from decimal import Decimal
 from typing import Any, Callable
 
 import pytest
+from django.db.models import QuerySet
 from django.core.files.uploadedfile import SimpleUploadedFile
-
+from nest.core.exceptions import ApplicationError
 from nest.products.core.models import Product
 from nest.products.core.services import (
     create_product,
@@ -62,13 +63,11 @@ def test_service_create_product(
     assert product.thumbnail_url is not None
 
 
-@pytest.mark.product(
-    name="A cool product", supplier="A cool supplier", unit="g", oda_id=None
-)
+@pytest.mark.product(name="A cool product", supplier="Sample supplier")
 def test_service_edit_product(
+    django_assert_max_num_queries,
     product: Product,
-    get_unit: Callable[[str], Unit],
-    django_assert_max_num_queries: Any,
+    get_unit,
 ) -> None:
     """
     Test that the edit_product service edits a product within query limits.
@@ -77,7 +76,10 @@ def test_service_edit_product(
     unit_kg = get_unit("kg")
     with django_assert_max_num_queries(7):
         updated_product = edit_product(
-            product_id=product.id, name="Wubadubadub", unit_id=unit_kg.id
+            product_id=product.id,
+            name="Wubadubadub",
+            unit_id=unit_kg.id,
+            supplier="A cool supplier",
         )
 
     assert updated_product.id == product.id
