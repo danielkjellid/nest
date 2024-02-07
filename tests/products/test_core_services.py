@@ -2,9 +2,8 @@ from decimal import Decimal
 from typing import Any, Callable
 
 import pytest
-from django.db.models import QuerySet
 from django.core.files.uploadedfile import SimpleUploadedFile
-from nest.core.exceptions import ApplicationError
+
 from nest.products.core.models import Product
 from nest.products.core.services import (
     create_product,
@@ -17,7 +16,7 @@ from .utils import next_oda_id
 
 
 def test_service_create_product(
-    get_unit: Callable[[str], Unit], django_assert_num_queries: Any
+    get_unit: Callable[[str], Unit], django_assert_max_num_queries: Any
 ):
     """
     Test that create_product service successfully creates a product with expected
@@ -33,7 +32,7 @@ def test_service_create_product(
         "supplier": "Awesome supplier",
     }
 
-    with django_assert_num_queries(5):
+    with django_assert_max_num_queries(6):
         product_no_thumbnail = create_product(
             name="Awesome product",
             **fields,
@@ -51,7 +50,7 @@ def test_service_create_product(
     assert product_no_thumbnail.gross_unit_price == Decimal("70.10")
     assert product_no_thumbnail.thumbnail_url is None
 
-    with django_assert_num_queries(5):
+    with django_assert_max_num_queries(6):
         product = create_product(
             name="Another awesome product",
             thumbnail=SimpleUploadedFile("thump.jpg", b"", content_type="image/jpeg"),

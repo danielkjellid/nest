@@ -1,10 +1,12 @@
 from decimal import Decimal
 from typing import Any, Callable, TypedDict
+
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from nest.products.core.models import Product
 from nest.units.models import Unit
+
 from .utils import next_oda_id
 
 
@@ -49,7 +51,7 @@ def default_product_spec() -> ProductSpec:
 
 @pytest.fixture
 def create_product_from_spec(db: Any, get_unit: Callable[[str], Unit]):
-    def _create_product(spec: dict[str, Any]):
+    def _create_product(spec: ProductSpec):
         unit_abbreviation = spec.pop("unit")
         unit = get_unit(unit_abbreviation)
         product, _created = Product.objects.get_or_create(unit=unit, **spec)

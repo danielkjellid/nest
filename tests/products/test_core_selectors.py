@@ -64,6 +64,7 @@ def test_selector_get_products(
     )
 
 
+@pytest.mark.product
 def test_selector_get_product(
     product: Product, mocker: MagicMock, django_assert_num_queries: Any
 ) -> None:
@@ -77,6 +78,7 @@ def test_selector_get_product(
     get_products_mock.assert_called_once_with(product_ids=[product.id])
 
 
+# @pytest.mark.oda_product
 def test_selector_get_oda_product(
     oda_product: Product, mocker: MagicMock, django_assert_num_queries: Any
 ) -> None:

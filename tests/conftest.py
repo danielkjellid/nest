@@ -57,10 +57,29 @@ def create_instances(request: pytest.FixtureRequest, spec):
 @pytest.fixture
 def create_instance(request: pytest.FixtureRequest, spec):
     def _create_instance(create_callback, default_spec, marker_name):
-        request_spec = request.node.get_closest_marker(marker_name).kwargs
+        marker = request.node.get_closest_marker(marker_name)
+        assert not getattr(
+            marker, "args", None
+        ), "Only kwargs is accepted with this fixture"
+        request_spec = getattr(marker, "kwargs", None) or default_spec
+
         return create_callback(spec(request_spec, default_spec))
 
     return _create_instance
+
+
+@pytest.fixture
+def get_related_instance():
+    def _get_related_instance(
+        key: str, spec: dict[str, Any], related_instance, related_instances
+    ):
+        value_from_spec = spec.pop(key, None)
+
+        if value_from_spec == "default":
+            return related_instance
+        return related_instances.get(value_from_spec)
+
+    return _get_related_instance
 
 
 ################
