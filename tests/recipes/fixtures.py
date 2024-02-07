@@ -1,6 +1,6 @@
 from datetime import timedelta
 from decimal import Decimal
-from typing import Any, TypedDict
+from typing import Callable, TypedDict
 
 import pytest
 
@@ -32,6 +32,9 @@ class RecipeSpec(TypedDict, total=False):
     is_pescatarian: bool
 
 
+CreateRecipe = Callable[[RecipeSpec], Recipe]
+
+
 @pytest.fixture
 def default_recipe_spec() -> RecipeSpec:
     return RecipeSpec(
@@ -49,8 +52,8 @@ def default_recipe_spec() -> RecipeSpec:
 
 
 @pytest.fixture
-def create_recipe_from_spec(db: Any):
-    def _create_recipe(spec: RecipeSpec):
+def create_recipe_from_spec(db) -> CreateRecipe:
+    def _create_recipe(spec: RecipeSpec) -> Recipe:
         recipe, _created = Recipe.objects.get_or_create(**spec)
         return recipe
 
@@ -62,7 +65,7 @@ def recipe(
     create_instance,
     create_recipe_from_spec,
     default_recipe_spec,
-):
+) -> Recipe:
     return create_instance(
         create_callback=create_recipe_from_spec,
         default_spec=default_recipe_spec,
@@ -71,7 +74,9 @@ def recipe(
 
 
 @pytest.fixture
-def recipes(create_instances, create_recipe_from_spec, default_recipe_spec):
+def recipes(
+    create_instances, create_recipe_from_spec, default_recipe_spec
+) -> dict[str, Recipe]:
     return create_instances(
         create_callback=create_recipe_from_spec,
         default_spec=default_recipe_spec,
@@ -92,6 +97,9 @@ class RecipeStepSpec(TypedDict, total=False):
     step_type: RecipeStepType
 
 
+CreateRecipeStep = Callable[[RecipeStepSpec], RecipeStep]
+
+
 @pytest.fixture
 def default_recipe_step_spec() -> RecipeStepSpec:
     return RecipeStepSpec(
@@ -104,8 +112,10 @@ def default_recipe_step_spec() -> RecipeStepSpec:
 
 
 @pytest.fixture
-def create_recipe_step_from_spec(db: Any, recipe, recipes, get_related_instance):
-    def _create_recipe_step(spec: RecipeStepSpec):
+def create_recipe_step_from_spec(
+    db, recipe, recipes, get_related_instance
+) -> CreateRecipeStep:
+    def _create_recipe_step(spec: RecipeStepSpec) -> RecipeStep:
         recipe_from_spec = get_related_instance(
             key="recipe", spec=spec, related_instance=recipe, related_instances=recipes
         )
@@ -120,7 +130,7 @@ def create_recipe_step_from_spec(db: Any, recipe, recipes, get_related_instance)
 @pytest.fixture
 def recipe_step(
     create_instance, create_recipe_step_from_spec, default_recipe_step_spec
-):
+) -> RecipeStep:
     return create_instance(
         create_callback=create_recipe_step_from_spec,
         default_spec=default_recipe_step_spec,
@@ -131,7 +141,7 @@ def recipe_step(
 @pytest.fixture
 def recipe_steps(
     create_instances, create_recipe_step_from_spec, default_recipe_step_spec
-):
+) -> dict[str, RecipeStep]:
     return create_instances(
         create_callback=create_recipe_step_from_spec,
         default_spec=default_recipe_step_spec,
@@ -149,6 +159,9 @@ class RecipeIngredientSpec(TypedDict, total=False):
     product: str
 
 
+CreateRecipeIngredient = Callable[[RecipeIngredientSpec], RecipeIngredient]
+
+
 @pytest.fixture
 def default_recipe_ingredient_spec() -> RecipeIngredientSpec:
     return RecipeIngredientSpec(title="Sample ingredient", product="default")
@@ -156,9 +169,9 @@ def default_recipe_ingredient_spec() -> RecipeIngredientSpec:
 
 @pytest.fixture
 def create_recipe_ingredient_from_spec(
-    db: Any, product, products, get_related_instance
-):
-    def _create_recipe_ingredient(spec: RecipeIngredientSpec):
+    db, product, products, get_related_instance
+) -> CreateRecipeIngredient:
+    def _create_recipe_ingredient(spec: RecipeIngredientSpec) -> RecipeIngredient:
         product_from_spec = get_related_instance(
             key="product",
             spec=spec,
@@ -176,7 +189,7 @@ def create_recipe_ingredient_from_spec(
 @pytest.fixture
 def recipe_ingredient(
     create_instance, create_recipe_ingredient_from_spec, default_recipe_ingredient_spec
-):
+) -> RecipeIngredient:
     return create_instance(
         create_callback=create_recipe_ingredient_from_spec,
         default_spec=default_recipe_ingredient_spec,
@@ -187,7 +200,7 @@ def recipe_ingredient(
 @pytest.fixture
 def recipe_ingredients(
     create_instances, create_recipe_ingredient_from_spec, default_recipe_ingredient_spec
-):
+) -> dict[str, RecipeIngredient]:
     return create_instances(
         create_callback=create_recipe_ingredient_from_spec,
         default_spec=default_recipe_ingredient_spec,
@@ -206,6 +219,11 @@ class RecipeIngredientItemGroupSpec(TypedDict, total=False):
     ordering: int
 
 
+CreateRecipeIngredientItemGroup = Callable[
+    [RecipeIngredientItemGroupSpec], RecipeIngredientItemGroup
+]
+
+
 @pytest.fixture
 def default_recipe_ingredient_item_group_spec() -> RecipeIngredientItemGroupSpec:
     return RecipeIngredientItemGroupSpec(
@@ -215,9 +233,11 @@ def default_recipe_ingredient_item_group_spec() -> RecipeIngredientItemGroupSpec
 
 @pytest.fixture
 def create_recipe_ingredient_item_group_from_spec(
-    db: Any, recipe, recipes, get_related_instance
-):
-    def _create_recipe_ingredient_item_group(spec: RecipeIngredientItemGroupSpec):
+    db, recipe, recipes, get_related_instance
+) -> CreateRecipeIngredientItemGroup:
+    def _create_recipe_ingredient_item_group(
+        spec: RecipeIngredientItemGroupSpec
+    ) -> RecipeIngredientItemGroup:
         recipe_from_spec = get_related_instance(
             key="recipe", spec=spec, related_instance=recipe, related_instances=recipes
         )
@@ -234,7 +254,7 @@ def recipe_ingredient_item_group(
     create_instance,
     create_recipe_ingredient_item_group_from_spec,
     default_recipe_ingredient_item_group_spec,
-):
+) -> RecipeIngredientItemGroup:
     return create_instance(
         create_callback=create_recipe_ingredient_item_group_from_spec,
         default_spec=default_recipe_ingredient_item_group_spec,
@@ -247,7 +267,7 @@ def recipe_ingredient_item_groups(
     create_instances,
     create_recipe_ingredient_item_group_from_spec,
     default_recipe_ingredient_item_group_spec,
-):
+) -> dict[str, RecipeIngredientItemGroup]:
     return create_instances(
         create_callback=create_recipe_ingredient_item_group_from_spec,
         default_spec=default_recipe_ingredient_item_group_spec,
@@ -269,6 +289,9 @@ class RecipeIngredientItemSpec(TypedDict, total=False):
     portion_quantity_unit: str
 
 
+CreateRecipeIngredientItem = Callable[[RecipeIngredientItemSpec], RecipeIngredientItem]
+
+
 @pytest.fixture
 def default_recipe_ingredient_item_spec() -> RecipeIngredientItemSpec:
     return RecipeIngredientItemSpec(
@@ -283,7 +306,7 @@ def default_recipe_ingredient_item_spec() -> RecipeIngredientItemSpec:
 
 @pytest.fixture
 def create_recipe_ingredient_item_from_spec(
-    db: Any,
+    db,
     recipe_ingredient_item_group,
     recipe_ingredient_item_groups,
     recipe_ingredient,
@@ -292,8 +315,10 @@ def create_recipe_ingredient_item_from_spec(
     recipe_steps,
     get_unit,
     get_related_instance,
-):
-    def _create_recipe_ingredient_item(spec: RecipeIngredientItemSpec):
+) -> CreateRecipeIngredientItem:
+    def _create_recipe_ingredient_item(
+        spec: RecipeIngredientItemSpec
+    ) -> RecipeIngredientItem:
         group_from_spec = get_related_instance(
             key="ingredient_group",
             spec=spec,
@@ -332,7 +357,7 @@ def recipe_ingredient_item(
     create_instance,
     create_recipe_ingredient_item_from_spec,
     default_recipe_ingredient_item_spec,
-):
+) -> RecipeIngredientItem:
     return create_instance(
         create_callback=create_recipe_ingredient_item_from_spec,
         default_spec=default_recipe_ingredient_item_spec,
@@ -345,7 +370,7 @@ def recipe_ingredient_items(
     create_instances,
     create_recipe_ingredient_item_from_spec,
     default_recipe_ingredient_item_spec,
-):
+) -> dict[str, RecipeIngredientItem]:
     return create_instances(
         create_callback=create_recipe_ingredient_item_from_spec,
         default_spec=default_recipe_ingredient_item_spec,

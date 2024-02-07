@@ -1,12 +1,21 @@
 import pytest
+
 import requests_mock
+from django.db import transaction, models
+from typing import TypeVar, TypedDict, Callable  # noqa
+
+from collections.abc import Mapping
 from unittest import mock
-import django.db.transaction
+
+from nest.core.clients import BaseHTTPClient
+
 from .products.fixtures import *  # noqa
 from .units.fixtures import *  # noqa
 from .recipes.fixtures import *  # noqa
-from nest.core.clients import BaseHTTPClient
-from collections.abc import Mapping
+
+T_MODEL = TypeVar("T_MODEL", bound=models.Model)
+T_SPEC = TypeVar("T_SPEC", bound=TypedDict)
+CreateCallback = Callable[[T_SPEC], T_MODEL]
 
 
 ################
@@ -15,8 +24,8 @@ from collections.abc import Mapping
 
 
 @pytest.fixture
-def spec():
-    def _spec(request_spec, default_spec):
+def spec() -> Callable[[...], T_SPEC]:
+    def _spec(request_spec: T_SPEC, default_spec: T_SPEC) -> T_SPEC:
         default_spec = default_spec.copy()
 
         if not request_spec or not isinstance(request_spec, dict):
@@ -38,8 +47,12 @@ def spec():
 
 
 @pytest.fixture
-def create_instances(request: pytest.FixtureRequest, spec):
-    def _create_instances(create_callback, default_spec, marker_name):
+def create_instances(request: pytest.FixtureRequest, spec: T_SPEC):
+    def _create_instances(
+        create_callback,
+        default_spec,
+        marker_name,
+    ):
         instances = {}
 
         for marker in request.node.iter_markers(marker_name):
@@ -55,8 +68,12 @@ def create_instances(request: pytest.FixtureRequest, spec):
 
 
 @pytest.fixture
-def create_instance(request: pytest.FixtureRequest, spec):
-    def _create_instance(create_callback, default_spec, marker_name):
+def create_instance(request: pytest.FixtureRequest, spec: T_SPEC) -> Any:
+    def _create_instance(
+        create_callback: Callable[[T_SPEC], T_MODEL],
+        default_spec: T_SPEC,
+        marker_name: str,
+    ):
         marker = request.node.get_closest_marker(marker_name)
         assert not getattr(
             marker, "args", None
@@ -69,10 +86,13 @@ def create_instance(request: pytest.FixtureRequest, spec):
 
 
 @pytest.fixture
-def get_related_instance():
+def get_related_instance() -> Any:
     def _get_related_instance(
-        key: str, spec: dict[str, Any], related_instance, related_instances
-    ):
+        key: str,
+        spec: dict[str, Any],
+        related_instance: T_MODEL,
+        related_instances: dict[str, T_MODEL],
+    ) -> T_MODEL | None:
         value_from_spec = spec.pop(key, None)
 
         if value_from_spec == "default":
@@ -122,4 +142,4 @@ def immediate_on_commit():
     the transaction.on_commit(...) callback.
     """
 
-    return mock.patch.object(django.db.transaction, "on_commit", lambda t: t())
+    return mock.patch.object(transaction, "on_commit", lambda t: t())

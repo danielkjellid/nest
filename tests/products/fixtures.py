@@ -28,6 +28,9 @@ class ProductSpec(TypedDict, total=False):
     contains_lactose: bool
 
 
+CreateProduct = Callable[[ProductSpec], Product]
+
+
 @pytest.fixture
 def default_product_spec() -> ProductSpec:
     return ProductSpec(
@@ -50,8 +53,8 @@ def default_product_spec() -> ProductSpec:
 
 
 @pytest.fixture
-def create_product_from_spec(db: Any, get_unit: Callable[[str], Unit]):
-    def _create_product(spec: ProductSpec):
+def create_product_from_spec(db: Any, get_unit: Callable[[str], Unit]) -> CreateProduct:
+    def _create_product(spec: ProductSpec) -> Product:
         unit_abbreviation = spec.pop("unit")
         unit = get_unit(unit_abbreviation)
         product, _created = Product.objects.get_or_create(unit=unit, **spec)
@@ -61,7 +64,7 @@ def create_product_from_spec(db: Any, get_unit: Callable[[str], Unit]):
 
 
 @pytest.fixture
-def product(create_instance, create_product_from_spec, default_product_spec):
+def product(create_instance, create_product_from_spec, default_product_spec) -> Product:
     return create_instance(
         create_callback=create_product_from_spec,
         default_spec=default_product_spec,
@@ -70,7 +73,9 @@ def product(create_instance, create_product_from_spec, default_product_spec):
 
 
 @pytest.fixture
-def oda_product(create_instance, create_product_from_spec, default_product_spec):
+def oda_product(
+    create_instance, create_product_from_spec, default_product_spec
+) -> Product:
     modified_spec = default_product_spec.copy()
     modified_spec["oda_id"] = next_oda_id()
     modified_spec["oda_url"] = "https://example.com/"
@@ -83,7 +88,9 @@ def oda_product(create_instance, create_product_from_spec, default_product_spec)
 
 
 @pytest.fixture
-def products(create_instances, default_product_spec, create_product_from_spec):
+def products(
+    create_instances, default_product_spec, create_product_from_spec
+) -> dict[str, Product]:
     return create_instances(
         create_callback=create_product_from_spec,
         default_spec=default_product_spec,
