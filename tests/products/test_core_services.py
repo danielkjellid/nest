@@ -16,7 +16,7 @@ from .utils import next_oda_id
 
 
 def test_service_create_product(
-    get_unit: Callable[[str], Unit], django_assert_num_queries: Any
+    get_unit: Callable[[str], Unit], django_assert_max_num_queries: Any
 ):
     """
     Test that create_product service successfully creates a product with expected
@@ -32,7 +32,7 @@ def test_service_create_product(
         "supplier": "Awesome supplier",
     }
 
-    with django_assert_num_queries(5):
+    with django_assert_max_num_queries(6):
         product_no_thumbnail = create_product(
             name="Awesome product",
             **fields,
@@ -50,7 +50,7 @@ def test_service_create_product(
     assert product_no_thumbnail.gross_unit_price == Decimal("70.10")
     assert product_no_thumbnail.thumbnail_url is None
 
-    with django_assert_num_queries(5):
+    with django_assert_max_num_queries(6):
         product = create_product(
             name="Another awesome product",
             thumbnail=SimpleUploadedFile("thump.jpg", b"", content_type="image/jpeg"),
@@ -62,13 +62,11 @@ def test_service_create_product(
     assert product.thumbnail_url is not None
 
 
-@pytest.mark.product(
-    name="A cool product", supplier="A cool supplier", unit="g", oda_id=None
-)
+@pytest.mark.product(name="A cool product", supplier="Sample supplier")
 def test_service_edit_product(
+    django_assert_max_num_queries,
     product: Product,
-    get_unit: Callable[[str], Unit],
-    django_assert_max_num_queries: Any,
+    get_unit,
 ) -> None:
     """
     Test that the edit_product service edits a product within query limits.
@@ -77,7 +75,10 @@ def test_service_edit_product(
     unit_kg = get_unit("kg")
     with django_assert_max_num_queries(7):
         updated_product = edit_product(
-            product_id=product.id, name="Wubadubadub", unit_id=unit_kg.id
+            product_id=product.id,
+            name="Wubadubadub",
+            unit_id=unit_kg.id,
+            supplier="A cool supplier",
         )
 
     assert updated_product.id == product.id

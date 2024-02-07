@@ -66,7 +66,7 @@ def edit_product(
     Edit an existing product instance.
     """
 
-    product = Product.objects.filter(id=product_id).first()
+    product = Product.objects.filter(id=product_id).select_related("unit").first()
 
     if not product:
         raise ApplicationError(message="Product does not exist.")

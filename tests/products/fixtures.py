@@ -7,12 +7,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from nest.products.core.models import Product
 from nest.units.models import Unit
 
-from ..factories.fixtures import (
-    get_instance,
-    get_spec_for_instance,
-    instance,
-    instances,
-)
 from .utils import next_oda_id
 
 
@@ -38,30 +32,7 @@ CreateProduct = Callable[[ProductSpec], Product]
 
 
 @pytest.fixture
-def create_product(db: Any, get_unit: Callable[[str], Unit]) -> CreateProduct:
-    """
-    Creates a single product.
-
-    This function does not provide any defaults, so everything needed has to be
-    specified. You should probably use the get_product fixture instead.
-    """
-
-    def _create_product(spec: ProductSpec) -> Product:
-        unit_abbreviation = spec.pop("unit")
-        unit = get_unit(unit_abbreviation)
-        product = Product.objects.create(unit=unit, **spec)
-
-        return product
-
-    return _create_product
-
-
-@pytest.fixture
-def default_product_spec(request: pytest.FixtureRequest) -> ProductSpec:
-    """
-    Get the default spec for a product.
-    """
-
+def default_product_spec() -> ProductSpec:
     return ProductSpec(
         name="Sample product",
         oda_id=None,
@@ -82,74 +53,46 @@ def default_product_spec(request: pytest.FixtureRequest) -> ProductSpec:
 
 
 @pytest.fixture
-def get_product_spec(default_product_spec: ProductSpec, request: pytest.FixtureRequest):
-    def _get_product_spec(slug: str) -> ProductSpec:
-        return get_spec_for_instance(
-            slug=slug,
-            default_spec=default_product_spec,
-            request=request,
-            marker="products",
-        )
+def create_product_from_spec(db: Any, get_unit: Callable[[str], Unit]) -> CreateProduct:
+    def _create_product(spec: ProductSpec) -> Product:
+        unit_abbreviation = spec.pop("unit")
+        unit = get_unit(unit_abbreviation)
+        product, _created = Product.objects.get_or_create(unit=unit, **spec)
+        return product
 
-    return _get_product_spec
+    return _create_product
 
 
 @pytest.fixture
-def get_product(
-    create_product: CreateProduct,
-    get_product_spec: Callable[[str], ProductSpec],
-) -> Callable[[str], Product]:
-    products: dict[str, Product] = {}
-
-    def get_or_create_product(slug: str) -> Product:
-        return get_instance(
-            slug=slug,
-            instances=products,
-            create_callback=create_product,
-            get_spec_callback=get_product_spec,
-        )
-
-    return get_or_create_product
-
-
-@pytest.fixture
-def product(
-    request: pytest.FixtureRequest,
-    create_product: CreateProduct,
-    default_product_spec: ProductSpec,
-) -> Product:
-    return instance(
-        create_callback=create_product,
+def product(create_instance, create_product_from_spec, default_product_spec) -> Product:
+    return create_instance(
+        create_callback=create_product_from_spec,
         default_spec=default_product_spec,
-        request=request,
-        marker="product",
+        marker_name="product",
     )
 
 
 @pytest.fixture
 def oda_product(
-    request: pytest.FixtureRequest,
-    create_product: CreateProduct,
-    default_product_spec: ProductSpec,
+    create_instance, create_product_from_spec, default_product_spec
 ) -> Product:
-    spec = default_product_spec.copy()
-    spec.update({"oda_id": next_oda_id(), "oda_url": "https://example.com/"})
+    modified_spec = default_product_spec.copy()
+    modified_spec["oda_id"] = next_oda_id()
+    modified_spec["oda_url"] = "https://example.com/"
 
-    return instance(
-        create_callback=create_product,
-        default_spec=spec,
-        request=request,
-        marker="oda_product",
+    return create_instance(
+        create_callback=create_product_from_spec,
+        default_spec=modified_spec,
+        marker_name="oda_product",
     )
 
 
 @pytest.fixture
 def products(
-    get_product: Callable[[str], Product], request: pytest.FixtureRequest
+    create_instances, default_product_spec, create_product_from_spec
 ) -> dict[str, Product]:
-    """
-    Get all products provided as kwargs as
-    """
-    return instances(
-        request=request, markers="products", get_instance_callback=get_product
+    return create_instances(
+        create_callback=create_product_from_spec,
+        default_spec=default_product_spec,
+        marker_name="products",
     )

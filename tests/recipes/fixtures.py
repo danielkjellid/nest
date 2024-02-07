@@ -1,19 +1,22 @@
-from typing import Any, Callable, TypedDict
+from datetime import timedelta
+from decimal import Decimal
+from typing import Callable, TypedDict
 
 import pytest
 
-from nest.products.core.models import Product
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
 from nest.recipes.core.models import Recipe
-from nest.recipes.ingredients.models import RecipeIngredient
-
-from ..factories.fixtures import (
-    get_instance,
-    get_spec_for_instance,
-    instance,
-    instances,
+from nest.recipes.ingredients.models import (
+    RecipeIngredient,
+    RecipeIngredientItem,
+    RecipeIngredientItemGroup,
 )
-from ..products.fixtures import ProductSpec
+from nest.recipes.steps.enums import RecipeStepType
+from nest.recipes.steps.models import RecipeStep
+
+##########
+# Recipe #
+##########
 
 
 class RecipeSpec(TypedDict, total=False):
@@ -33,27 +36,7 @@ CreateRecipe = Callable[[RecipeSpec], Recipe]
 
 
 @pytest.fixture
-def create_recipe(db: Any) -> CreateRecipe:
-    """
-    Creates a single recipe.
-
-    This function does not provide any defaults, so everything needed has to be
-    specified. You should probably use the get_recipe fixture instead.
-    """
-
-    def _create_recipe(spec: RecipeSpec) -> Recipe:
-        recipe = Recipe.objects.create(**spec)
-        return recipe
-
-    return _create_recipe
-
-
-@pytest.fixture
-def default_recipe_spec(request: pytest.FixtureRequest) -> RecipeSpec:
-    """
-    Get the default spec for a recipe.
-    """
-
+def default_recipe_spec() -> RecipeSpec:
     return RecipeSpec(
         title="Sample recipe",
         slug="sample-product",
@@ -69,163 +52,327 @@ def default_recipe_spec(request: pytest.FixtureRequest) -> RecipeSpec:
 
 
 @pytest.fixture
-def get_recipe_spec(
-    default_recipe_spec: RecipeSpec, request: pytest.FixtureRequest
-) -> RecipeSpec:
-    """
-    Replace spec defaults with kwargs passed in marker.
-    """
+def create_recipe_from_spec(db) -> CreateRecipe:
+    def _create_recipe(spec: RecipeSpec) -> Recipe:
+        recipe, _created = Recipe.objects.get_or_create(**spec)
+        return recipe
 
-    def _get_recipe_spec(slug: str) -> RecipeSpec:
-        return get_spec_for_instance(
-            slug=slug,
-            default_spec=default_recipe_spec,
-            request=request,
-            marker="recipes",
-        )
-
-    return _get_recipe_spec
-
-
-@pytest.fixture
-def get_recipe(
-    create_recipe: CreateRecipe,
-    get_recipe_spec: Callable[[str], RecipeSpec],
-) -> Callable[[str], Recipe]:
-    recipes: dict[str, Recipe] = {}
-
-    def get_or_create_recipe(slug: str) -> Recipe:
-        return get_instance(
-            slug=slug,
-            instances=recipes,
-            create_callback=create_recipe,
-            get_spec_callback=get_recipe_spec,
-        )
-
-    return get_or_create_recipe
+    return _create_recipe
 
 
 @pytest.fixture
 def recipe(
-    request: pytest.FixtureRequest,
-    create_recipe: CreateRecipe,
-    default_recipe_spec: RecipeSpec,
+    create_instance,
+    create_recipe_from_spec,
+    default_recipe_spec,
 ) -> Recipe:
-    return instance(
-        create_callback=create_recipe,
+    return create_instance(
+        create_callback=create_recipe_from_spec,
         default_spec=default_recipe_spec,
-        request=request,
-        marker="recipe",
+        marker_name="recipe",
     )
 
 
 @pytest.fixture
 def recipes(
-    get_recipe: Callable[[str], Recipe], request: pytest.FixtureRequest
+    create_instances, create_recipe_from_spec, default_recipe_spec
 ) -> dict[str, Recipe]:
-    return instances(
-        request=request, markers="recipes", get_instance_callback=get_recipe
+    return create_instances(
+        create_callback=create_recipe_from_spec,
+        default_spec=default_recipe_spec,
+        marker_name="recipes",
     )
+
+
+################
+# Recipe steps #
+################
+
+
+class RecipeStepSpec(TypedDict, total=False):
+    recipe: str
+    number: int
+    duration: timedelta
+    instruction: str
+    step_type: RecipeStepType
+
+
+CreateRecipeStep = Callable[[RecipeStepSpec], RecipeStep]
+
+
+@pytest.fixture
+def default_recipe_step_spec() -> RecipeStepSpec:
+    return RecipeStepSpec(
+        recipe="default",
+        number=1,
+        duration=timedelta(minutes=5),
+        instruction="A sample instruction for a recipe step.",
+        step_type=RecipeStepType.COOKING,
+    )
+
+
+@pytest.fixture
+def create_recipe_step_from_spec(
+    db, recipe, recipes, get_related_instance
+) -> CreateRecipeStep:
+    def _create_recipe_step(spec: RecipeStepSpec) -> RecipeStep:
+        recipe_from_spec = get_related_instance(
+            key="recipe", spec=spec, related_instance=recipe, related_instances=recipes
+        )
+        step, _created = RecipeStep.objects.get_or_create(
+            recipe=recipe_from_spec, **spec
+        )
+        return step
+
+    return _create_recipe_step
+
+
+@pytest.fixture
+def recipe_step(
+    create_instance, create_recipe_step_from_spec, default_recipe_step_spec
+) -> RecipeStep:
+    return create_instance(
+        create_callback=create_recipe_step_from_spec,
+        default_spec=default_recipe_step_spec,
+        marker_name="recipe_step",
+    )
+
+
+@pytest.fixture
+def recipe_steps(
+    create_instances, create_recipe_step_from_spec, default_recipe_step_spec
+) -> dict[str, RecipeStep]:
+    return create_instances(
+        create_callback=create_recipe_step_from_spec,
+        default_spec=default_recipe_step_spec,
+        marker_name="recipe_steps",
+    )
+
+
+#####################
+# Recipe ingredient #
+#####################
 
 
 class RecipeIngredientSpec(TypedDict, total=False):
     title: str
-    product: dict[str, ProductSpec]
+    product: str
 
 
 CreateRecipeIngredient = Callable[[RecipeIngredientSpec], RecipeIngredient]
 
 
 @pytest.fixture
-def create_recipe_ingredient(
-    db: Any, get_product: Callable[[str], Product]
+def default_recipe_ingredient_spec() -> RecipeIngredientSpec:
+    return RecipeIngredientSpec(title="Sample ingredient", product="default")
+
+
+@pytest.fixture
+def create_recipe_ingredient_from_spec(
+    db, product, products, get_related_instance
 ) -> CreateRecipeIngredient:
-    """
-    Creates a single recipe ingredient.
-
-    This function does not provide any defaults, so everything needed has to be
-    specified. You should probably use the get_recipe_ingredient fixture instead.
-    """
-
     def _create_recipe_ingredient(spec: RecipeIngredientSpec) -> RecipeIngredient:
-        product_from_spec = get_product(spec["product"])
-
-        recipe_ingredient = RecipeIngredient.objects.create(
-            title=spec["title"], product=product_from_spec
+        product_from_spec = get_related_instance(
+            key="product",
+            spec=spec,
+            related_instance=product,
+            related_instances=products,
         )
-        return recipe_ingredient
+        ingredient, _created = RecipeIngredient.objects.get_or_create(
+            product=product_from_spec, **spec
+        )
+        return ingredient
 
     return _create_recipe_ingredient
 
 
 @pytest.fixture
-def default_recipe_ingredient_spec(
-    request: pytest.FixtureRequest, product: Product
-) -> RecipeIngredientSpec:
-    """
-    Get the default spec for a recipe ingredient,
-    """
-    return RecipeIngredientSpec(title="Sample ingredient", product=product)
-
-
-@pytest.fixture
-def get_recipe_ingredient_spec(
-    default_recipe_ingredient_spec: RecipeIngredientSpec, request: pytest.FixtureRequest
-) -> RecipeIngredientSpec:
-    """
-    Replace spec defaults with kwargs passed in marker.
-    """
-
-    def _get_recipe_ingredient_spec(slug: str) -> RecipeIngredientSpec:
-        return get_spec_for_instance(
-            slug=slug,
-            default_spec=default_recipe_ingredient_spec,
-            request=request,
-            marker="recipe_ingredients",
-        )
-
-    return _get_recipe_ingredient_spec
-
-
-@pytest.fixture
-def get_recipe_ingredient(
-    create_recipe_ingredient: CreateRecipeIngredient,
-    get_recipe_ingredient_spec: Callable[[str], RecipeIngredientSpec],
-) -> Callable[[str], RecipeIngredient]:
-    recipe_ingredients: dict[str, RecipeIngredient] = {}
-
-    def get_or_create_recipe_ingredient(slug: str) -> RecipeIngredient:
-        return get_instance(
-            slug=slug,
-            instances=recipe_ingredients,
-            create_callback=create_recipe_ingredient,
-            get_spec_callback=get_recipe_ingredient_spec,
-        )
-
-    return get_or_create_recipe_ingredient
-
-
-@pytest.fixture
 def recipe_ingredient(
-    request: pytest.FixtureRequest,
-    create_recipe_ingredient: CreateRecipeIngredient,
-    default_recipe_ingredient_spec: RecipeIngredientSpec,
+    create_instance, create_recipe_ingredient_from_spec, default_recipe_ingredient_spec
 ) -> RecipeIngredient:
-    return instance(
-        create_callback=create_recipe_ingredient,
+    return create_instance(
+        create_callback=create_recipe_ingredient_from_spec,
         default_spec=default_recipe_ingredient_spec,
-        request=request,
-        marker="recipe_ingredient",
+        marker_name="recipe_ingredient",
     )
 
 
 @pytest.fixture
 def recipe_ingredients(
-    get_recipe_ingredient: Callable[[str], RecipeIngredient],
-    request: pytest.FixtureRequest,
+    create_instances, create_recipe_ingredient_from_spec, default_recipe_ingredient_spec
 ) -> dict[str, RecipeIngredient]:
-    return instances(
-        request=request,
-        markers="recipe_ingredients",
-        get_instance_callback=get_recipe_ingredient,
+    return create_instances(
+        create_callback=create_recipe_ingredient_from_spec,
+        default_spec=default_recipe_ingredient_spec,
+        marker_name="recipe_ingredients",
+    )
+
+
+#################################
+# Recipe ingredient item groups #
+#################################
+
+
+class RecipeIngredientItemGroupSpec(TypedDict, total=False):
+    recipe: str | None
+    title: str
+    ordering: int
+
+
+CreateRecipeIngredientItemGroup = Callable[
+    [RecipeIngredientItemGroupSpec], RecipeIngredientItemGroup
+]
+
+
+@pytest.fixture
+def default_recipe_ingredient_item_group_spec() -> RecipeIngredientItemGroupSpec:
+    return RecipeIngredientItemGroupSpec(
+        recipe="default", title="Sample group", ordering=1
+    )
+
+
+@pytest.fixture
+def create_recipe_ingredient_item_group_from_spec(
+    db, recipe, recipes, get_related_instance
+) -> CreateRecipeIngredientItemGroup:
+    def _create_recipe_ingredient_item_group(
+        spec: RecipeIngredientItemGroupSpec
+    ) -> RecipeIngredientItemGroup:
+        recipe_from_spec = get_related_instance(
+            key="recipe", spec=spec, related_instance=recipe, related_instances=recipes
+        )
+        group, _created = RecipeIngredientItemGroup.objects.get_or_create(
+            recipe=recipe_from_spec, **spec
+        )
+        return group
+
+    return _create_recipe_ingredient_item_group
+
+
+@pytest.fixture
+def recipe_ingredient_item_group(
+    create_instance,
+    create_recipe_ingredient_item_group_from_spec,
+    default_recipe_ingredient_item_group_spec,
+) -> RecipeIngredientItemGroup:
+    return create_instance(
+        create_callback=create_recipe_ingredient_item_group_from_spec,
+        default_spec=default_recipe_ingredient_item_group_spec,
+        marker_name="recipe_ingredient_item_group",
+    )
+
+
+@pytest.fixture
+def recipe_ingredient_item_groups(
+    create_instances,
+    create_recipe_ingredient_item_group_from_spec,
+    default_recipe_ingredient_item_group_spec,
+) -> dict[str, RecipeIngredientItemGroup]:
+    return create_instances(
+        create_callback=create_recipe_ingredient_item_group_from_spec,
+        default_spec=default_recipe_ingredient_item_group_spec,
+        marker_name="recipe_ingredient_item_groups",
+    )
+
+
+##########################
+# Recipe ingredient item #
+##########################
+
+
+class RecipeIngredientItemSpec(TypedDict, total=False):
+    ingredient_group: str
+    ingredient: str
+    step: str
+    additional_info: str | None
+    portion_quantity: Decimal
+    portion_quantity_unit: str
+
+
+CreateRecipeIngredientItem = Callable[[RecipeIngredientItemSpec], RecipeIngredientItem]
+
+
+@pytest.fixture
+def default_recipe_ingredient_item_spec() -> RecipeIngredientItemSpec:
+    return RecipeIngredientItemSpec(
+        ingredient_group="default",
+        ingredient="default",
+        step="default",
+        additional_info=None,
+        portion_quantity=Decimal("250.00"),
+        portion_quantity_unit="g",
+    )
+
+
+@pytest.fixture
+def create_recipe_ingredient_item_from_spec(
+    db,
+    recipe_ingredient_item_group,
+    recipe_ingredient_item_groups,
+    recipe_ingredient,
+    recipe_ingredients,
+    recipe_step,
+    recipe_steps,
+    get_unit,
+    get_related_instance,
+) -> CreateRecipeIngredientItem:
+    def _create_recipe_ingredient_item(
+        spec: RecipeIngredientItemSpec
+    ) -> RecipeIngredientItem:
+        group_from_spec = get_related_instance(
+            key="ingredient_group",
+            spec=spec,
+            related_instance=recipe_ingredient_item_group,
+            related_instances=recipe_ingredient_item_groups,
+        )
+        ingredient_from_spec = get_related_instance(
+            key="ingredient",
+            spec=spec,
+            related_instance=recipe_ingredient,
+            related_instances=recipe_ingredients,
+        )
+        step_from_spec = get_related_instance(
+            key="step",
+            spec=spec,
+            related_instance=recipe_step,
+            related_instances=recipe_steps,
+        )
+        unit_from_spec = get_unit(spec.pop("portion_quantity_unit"))
+
+        item, _created = RecipeIngredientItem.objects.get_or_create(
+            ingredient_group=group_from_spec,
+            ingredient=ingredient_from_spec,
+            step=step_from_spec,
+            portion_quantity_unit=unit_from_spec,
+            **spec,
+        )
+
+        return item
+
+    return _create_recipe_ingredient_item
+
+
+@pytest.fixture
+def recipe_ingredient_item(
+    create_instance,
+    create_recipe_ingredient_item_from_spec,
+    default_recipe_ingredient_item_spec,
+) -> RecipeIngredientItem:
+    return create_instance(
+        create_callback=create_recipe_ingredient_item_from_spec,
+        default_spec=default_recipe_ingredient_item_spec,
+        marker_name="recipe_ingredient_item",
+    )
+
+
+@pytest.fixture
+def recipe_ingredient_items(
+    create_instances,
+    create_recipe_ingredient_item_from_spec,
+    default_recipe_ingredient_item_spec,
+) -> dict[str, RecipeIngredientItem]:
+    return create_instances(
+        create_callback=create_recipe_ingredient_item_from_spec,
+        default_spec=default_recipe_ingredient_item_spec,
+        marker_name="recipe_ingredient_items",
     )
