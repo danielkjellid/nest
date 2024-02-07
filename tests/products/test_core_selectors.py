@@ -12,14 +12,13 @@ from nest.products.core.selectors import get_oda_product, get_product, get_produ
     product2={"name": "Product 2"},
     product3={"name": "Product 3"},
 )
-@pytest.mark.product
+@pytest.mark.oda_product
 def test_selector_get_products(
-    product: Product,
+    oda_product: Product,
     products: dict[str, Product],
     mocker: MagicMock,
     django_assert_num_queries: Any,
 ) -> None:
-    oda_product = product
     log_entries_mock_return = {
         oda_product.id: [],
         **{p.id: [] for p in products.values()},

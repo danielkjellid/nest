@@ -6,6 +6,61 @@ from .products.fixtures import *  # noqa
 from .units.fixtures import *  # noqa
 from .recipes.fixtures import *  # noqa
 from nest.core.clients import BaseHTTPClient
+from collections.abc import Mapping
+
+
+################
+# Spec helpers #
+################
+
+
+@pytest.fixture
+def spec():
+    def _spec(request_spec, default_spec):
+        default_spec = default_spec.copy()
+
+        if not request_spec or not isinstance(request_spec, dict):
+            return default_spec
+
+        def update_spec(
+            original: dict[str, Any], new: dict[str, Any]
+        ) -> dict[str, Any]:
+            for key, value in new.items():
+                if isinstance(value, Mapping):
+                    original[key] = update_spec(original.get(key, {}), value)
+                else:
+                    original[key] = value
+            return original
+
+        return update_spec(default_spec, request_spec)
+
+    return _spec
+
+
+@pytest.fixture
+def create_instances(request: pytest.FixtureRequest, spec):
+    def _create_instances(create_callback, default_spec, marker_name):
+        instances = {}
+
+        for marker in request.node.iter_markers(marker_name):
+            assert not marker.args, "Only kwargs is accepted with this fixture"
+
+            for slug in marker.kwargs:
+                request_spec = marker.kwargs.get(slug, {})
+                instances[slug] = create_callback(spec(request_spec, default_spec))
+
+        return instances
+
+    return _create_instances
+
+
+@pytest.fixture
+def create_instance(request: pytest.FixtureRequest, spec):
+    def _create_instance(create_callback, default_spec, marker_name):
+        request_spec = request.node.get_closest_marker(marker_name).kwargs
+        return create_callback(spec(request_spec, default_spec))
+
+    return _create_instance
 
 
 ################

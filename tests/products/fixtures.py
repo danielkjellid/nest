@@ -1,6 +1,5 @@
 from decimal import Decimal
 from typing import Any, Callable, TypedDict
-from collections.abc import Mapping
 import pytest
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -49,37 +48,6 @@ def default_product_spec() -> ProductSpec:
 
 
 @pytest.fixture
-def spec():
-    def _spec(request_spec, default_spec):
-        default_spec = default_spec.copy()
-
-        if not request_spec or not isinstance(request_spec, dict):
-            return default_spec
-
-        def update_spec(
-            original: dict[str, Any], new: dict[str, Any]
-        ) -> dict[str, Any]:
-            for key, value in new.items():
-                if isinstance(value, Mapping):
-                    original[key] = update_spec(original.get(key, {}), value)
-                else:
-                    original[key] = value
-            return original
-
-        return update_spec(default_spec, request_spec)
-
-    return _spec
-
-
-@pytest.fixture
-def product_spec(
-    request: pytest.FixtureRequest, spec, default_product_spec
-) -> dict[str, Any]:
-    request_spec = request.node.get_closest_marker("product").kwargs
-    return spec(request_spec, default_product_spec)
-
-
-@pytest.fixture
 def create_product_from_spec(db: Any, get_unit: Callable[[str], Unit]):
     def _create_product(spec: dict[str, Any]):
         unit_abbreviation = spec.pop("unit")
@@ -91,31 +59,31 @@ def create_product_from_spec(db: Any, get_unit: Callable[[str], Unit]):
 
 
 @pytest.fixture
-def product(create_product_from_spec, product_spec):
-    return create_product_from_spec(product_spec)
+def product(create_instance, create_product_from_spec, default_product_spec):
+    return create_instance(
+        create_callback=create_product_from_spec,
+        default_spec=default_product_spec,
+        marker_name="product",
+    )
 
 
 @pytest.fixture
-def oda_product(create_product_from_spec, default_product_spec):
+def oda_product(create_instance, create_product_from_spec, default_product_spec):
     modified_spec = default_product_spec.copy()
     modified_spec["oda_id"] = next_oda_id()
     modified_spec["oda_url"] = "https://example.com/"
-    return create_product_from_spec(modified_spec)
+
+    return create_instance(
+        create_callback=create_product_from_spec,
+        default_spec=modified_spec,
+        marker_name="oda_product",
+    )
 
 
 @pytest.fixture
-def products(
-    request: pytest.FixtureRequest, spec, default_product_spec, create_product_from_spec
-):
-    products = {}
-
-    for marker in request.node.iter_markers("products"):
-        assert not marker.args, "Only kwargs is accepted with this fixture"
-
-        for slug in marker.kwargs:
-            request_spec = marker.kwargs.get(slug, {})
-            products[slug] = create_product_from_spec(
-                spec(request_spec, default_product_spec)
-            )
-
-    return products
+def products(create_instances, default_product_spec, create_product_from_spec):
+    return create_instances(
+        create_callback=create_product_from_spec,
+        default_spec=default_product_spec,
+        marker_name="products",
+    )
