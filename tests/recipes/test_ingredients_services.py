@@ -4,12 +4,15 @@ import pytest
 from django.core.exceptions import ValidationError
 
 from nest.audit_logs.models import LogEntry
+from nest.core.exceptions import ApplicationError
 from nest.products.core.models import Product
 from nest.recipes.ingredients.models import (
     RecipeIngredient,
+    RecipeIngredientItemGroup,
 )
 from nest.recipes.ingredients.services import (
     create_recipe_ingredient,
+    create_recipe_ingredient_item_groups,
     delete_recipe_ingredient,
 )
 
@@ -64,108 +67,108 @@ def test_service_delete_recipe_ingredient(
     assert LogEntry.objects.count() == initial_log_count + 1
 
 
-# @pytest.mark.recipe
-# @pytest.mark.products(
-#     product_1={"name": "Peppers, green"},
-#     product_2={"name": "Fresh luxury cod"},
-#     product_3={"name": "Fresh parsly"},
-# )
-# @pytest.mark.recipe_ingredients(
-#     ingredient_1={"title": "Green peppers", "product": "product_1"},
-#     ingredient_2={"title": "Cod", "product": "product_2"},
-#     ingredient_3={"title": "Parsly", "product": "product_3"},
-# )
-# def test_service_create_recipe_ingredient_item_groups(
-#     recipe, recipe_ingredients, get_unit, immediate_on_commit, django_assert_num_queries
-# ):
-#     payload = [
-#         {
-#             "title": "Cod with peppers",
-#             "ordering": 1,
-#             "ingredient_items": [
-#                 {
-#                     "ingredient_id": recipe_ingredients["ingredient_1"].id,
-#                     "additional_info": None,
-#                     "portion_quantity": "100",
-#                     "portion_quantity_unit_id": get_unit("g").id,
-#                 },
-#                 {
-#                     "ingredient_id": recipe_ingredients["ingredient_2"].id,
-#                     "additional_info": "Descaled",
-#                     "portion_quantity": "1",
-#                     "portion_quantity_unit_id": get_unit("kg").id,
-#                 },
-#             ],
-#         },
-#         {
-#             "title": "Accessories",
-#             "ordering": 2,
-#             "ingredient_items": [
-#                 {
-#                     "ingredient_id": recipe_ingredients["ingredient_3"].id,
-#                     "additional_info": None,
-#                     "portion_quantity": "20",
-#                     "portion_quantity_unit_id": get_unit("g").id,
-#                 }
-#             ],
-#         },
-#     ]
-#
-#     with immediate_on_commit, django_assert_num_queries(4):
-#         create_recipe_ingredient_item_groups(
-#             recipe_id=recipe.id, ingredient_group_items=payload
-#         )
-#
-#     item_groups = RecipeIngredientItemGroup.objects.all().order_by("ordering")
-#
-#     assert len(item_groups) == 2
-#
-#     assert item_groups[0].recipe_id == recipe.id
-#     assert item_groups[0].title == payload[0]["title"]
-#     assert item_groups[0].ordering == payload[0]["ordering"]
-#     assert set(
-#         item_groups[0].ingredient_items.all().values_list("ingredient__id", flat=True)
-#     ) == {item["ingredient_id"] for item in payload[0]["ingredient_items"]}
-#
-#     assert item_groups[1].recipe_id == recipe.id
-#     assert item_groups[1].title == payload[1]["title"]
-#     assert item_groups[1].ordering == payload[1]["ordering"]
-#     assert set(
-#         item_groups[1].ingredient_items.all().values_list("ingredient__id", flat=True)
-#     ) == {item["ingredient_id"] for item in payload[1]["ingredient_items"]}
-#
-#     # Test that ApplicationError is raised when ordering is not unique.
-#     with pytest.raises(ApplicationError):
-#         create_recipe_ingredient_item_groups(
-#             recipe_id=recipe.id,
-#             ingredient_group_items=[
-#                 {
-#                     "title": "Cod with peppers",
-#                     "ordering": 1,
-#                     "ingredient_items": [],
-#                 },
-#                 {
-#                     "title": "Accessories",
-#                     "ordering": 1,
-#                     "ingredient_items": [],
-#                 },
-#             ],
-#         )
-#
-#     # Test that ApplicationError is raised when title is not unique.
-#     with pytest.raises(ApplicationError):
-#         create_recipe_ingredient_item_groups(
-#             recipe_id=recipe.id,
-#             ingredient_group_items=[
-#                 {
-#                     "title": "Cod with peppers",
-#                     "ordering": 1,
-#                     "ingredient_items": [],
-#                 },
-#                 {
-#                     "title": "Cod with peppers",
-#                     "ordering": 2,
-#                     "ingredient_items": [],
-#                 },
-#             ],
-#         )
+@pytest.mark.recipe
+@pytest.mark.products(
+    product_1={"name": "Peppers, green"},
+    product_2={"name": "Fresh luxury cod"},
+    product_3={"name": "Fresh parsly"},
+)
+@pytest.mark.recipe_ingredients(
+    ingredient_1={"title": "Green peppers", "product": "product_1"},
+    ingredient_2={"title": "Cod", "product": "product_2"},
+    ingredient_3={"title": "Parsly", "product": "product_3"},
+)
+def test_service_create_recipe_ingredient_item_groups(
+    recipe, recipe_ingredients, get_unit, immediate_on_commit, django_assert_num_queries
+):
+    payload = [
+        {
+            "title": "Cod with peppers",
+            "ordering": 1,
+            "ingredient_items": [
+                {
+                    "ingredient_id": recipe_ingredients["ingredient_1"].id,
+                    "additional_info": None,
+                    "portion_quantity": "100",
+                    "portion_quantity_unit_id": get_unit("g").id,
+                },
+                {
+                    "ingredient_id": recipe_ingredients["ingredient_2"].id,
+                    "additional_info": "Descaled",
+                    "portion_quantity": "1",
+                    "portion_quantity_unit_id": get_unit("kg").id,
+                },
+            ],
+        },
+        {
+            "title": "Accessories",
+            "ordering": 2,
+            "ingredient_items": [
+                {
+                    "ingredient_id": recipe_ingredients["ingredient_3"].id,
+                    "additional_info": None,
+                    "portion_quantity": "20",
+                    "portion_quantity_unit_id": get_unit("g").id,
+                }
+            ],
+        },
+    ]
+
+    with immediate_on_commit, django_assert_num_queries(4):
+        create_recipe_ingredient_item_groups(
+            recipe_id=recipe.id, ingredient_group_items=payload
+        )
+
+    item_groups = RecipeIngredientItemGroup.objects.all().order_by("ordering")
+
+    assert len(item_groups) == 2
+
+    assert item_groups[0].recipe_id == recipe.id
+    assert item_groups[0].title == payload[0]["title"]
+    assert item_groups[0].ordering == payload[0]["ordering"]
+    assert set(
+        item_groups[0].ingredient_items.all().values_list("ingredient__id", flat=True)
+    ) == {item["ingredient_id"] for item in payload[0]["ingredient_items"]}
+
+    assert item_groups[1].recipe_id == recipe.id
+    assert item_groups[1].title == payload[1]["title"]
+    assert item_groups[1].ordering == payload[1]["ordering"]
+    assert set(
+        item_groups[1].ingredient_items.all().values_list("ingredient__id", flat=True)
+    ) == {item["ingredient_id"] for item in payload[1]["ingredient_items"]}
+
+    # Test that ApplicationError is raised when ordering is not unique.
+    with pytest.raises(ApplicationError):
+        create_recipe_ingredient_item_groups(
+            recipe_id=recipe.id,
+            ingredient_group_items=[
+                {
+                    "title": "Cod with peppers",
+                    "ordering": 1,
+                    "ingredient_items": [],
+                },
+                {
+                    "title": "Accessories",
+                    "ordering": 1,
+                    "ingredient_items": [],
+                },
+            ],
+        )
+
+    # Test that ApplicationError is raised when title is not unique.
+    with pytest.raises(ApplicationError):
+        create_recipe_ingredient_item_groups(
+            recipe_id=recipe.id,
+            ingredient_group_items=[
+                {
+                    "title": "Cod with peppers",
+                    "ordering": 1,
+                    "ingredient_items": [],
+                },
+                {
+                    "title": "Cod with peppers",
+                    "ordering": 2,
+                    "ingredient_items": [],
+                },
+            ],
+        )

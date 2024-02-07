@@ -14,6 +14,10 @@ from nest.recipes.ingredients.models import (
 from nest.recipes.steps.enums import RecipeStepType
 from nest.recipes.steps.models import RecipeStep
 
+##########
+# Recipe #
+##########
+
 
 class RecipeSpec(TypedDict, total=False):
     title: str
@@ -26,11 +30,6 @@ class RecipeSpec(TypedDict, total=False):
     difficulty: RecipeDifficulty
     is_vegetarian: bool
     is_pescatarian: bool
-
-
-##########
-# Recipe #
-##########
 
 
 @pytest.fixture
