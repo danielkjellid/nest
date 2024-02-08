@@ -52,6 +52,25 @@ def test_service_create_recipe_ingredient(
         create_recipe_ingredient(title="Test ingredient 2", product_id=product.id)
 
 
+@pytest.mark.recipe_ingredient
+def test_service_delete_recipe_ingredient(
+    recipe_ingredient: RecipeIngredient, django_assert_num_queries: Any
+) -> None:
+    """
+    Test that delete_ingredient successfully deletes an ingredient and logs it.
+    """
+
+    initial_log_count = LogEntry.objects.count()
+
+    assert RecipeIngredient.objects.filter(id=recipe_ingredient.id).first() is not None
+
+    with django_assert_num_queries(4):
+        delete_recipe_ingredient(pk=recipe_ingredient.id)
+
+    assert RecipeIngredient.objects.filter(id=recipe_ingredient.id).first() is None
+    assert LogEntry.objects.count() == initial_log_count + 1
+
+
 @pytest.mark.recipe
 @pytest.mark.products(
     product1={"name": "Product 1"},
@@ -65,7 +84,7 @@ def test_service_create_recipe_ingredient(
 )
 @pytest.mark.recipe_ingredient_item_groups(group1={"ordering": 1})
 @pytest.mark.recipe_ingredient_item(ingredient_group="group1", ingredient="ingredient1")
-def test_service__create_or_update_recipe_ingredient_item_groups(
+def test_service_create_or_update_recipe_ingredient_item_groups(
     recipe,
     recipe_ingredient_item_group,
     recipe_ingredient_item,
@@ -74,6 +93,10 @@ def test_service__create_or_update_recipe_ingredient_item_groups(
     get_unit,
     immediate_on_commit,
 ):
+    """
+    Test that create_or_update_recipe_ingredient_item_groups successfully creates or
+    updates item groups within query limits.
+    """
     unit = get_unit("kg")
 
     assert recipe_ingredient_item.portion_quantity_unit != unit
@@ -210,22 +233,3 @@ def test_service__create_or_update_recipe_ingredient_item_groups(
         )
         assert RecipeIngredientItemGroup.objects.count() == initial_group_count
         assert RecipeIngredientItem.objects.count() == initial_item_count
-
-
-@pytest.mark.recipe_ingredient
-def test_service_delete_recipe_ingredient(
-    recipe_ingredient: RecipeIngredient, django_assert_num_queries: Any
-) -> None:
-    """
-    Test that delete_ingredient successfully deletes an ingredient and logs it.
-    """
-
-    initial_log_count = LogEntry.objects.count()
-
-    assert RecipeIngredient.objects.filter(id=recipe_ingredient.id).first() is not None
-
-    with django_assert_num_queries(4):
-        delete_recipe_ingredient(pk=recipe_ingredient.id)
-
-    assert RecipeIngredient.objects.filter(id=recipe_ingredient.id).first() is None
-    assert LogEntry.objects.count() == initial_log_count + 1
