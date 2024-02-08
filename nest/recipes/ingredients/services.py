@@ -1,15 +1,15 @@
+import functools
 from decimal import Decimal
-from typing import Any
 
 from django.db import transaction
 from django.http import HttpRequest
-import functools
+from pydantic import BaseModel, Field
+
 from nest.audit_logs.services import log_create_or_updated, log_delete
 from nest.core.exceptions import ApplicationError
 
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from .records import RecipeIngredientRecord
-from pydantic import BaseModel, Field
 
 
 def create_recipe_ingredient(
@@ -157,6 +157,10 @@ def create_or_update_recipe_ingredient_item_groups(
                 ordering=item_group.ordering,
             )
         )
+
+    _validate_ingredient_item_groups(
+        ingredient_group_items=groups_to_update + groups_to_create
+    )
 
     if len(groups_to_create):
         RecipeIngredientItemGroup.objects.bulk_create(groups_to_create)
