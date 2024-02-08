@@ -4,14 +4,14 @@ import { Button } from '../../../../components/Button'
 import { type UnitOption } from '../../../../contexts/UnitsProvider'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
 import { type UnitRecord, type RecipeIngredientRecord } from '../../../../types'
+
+import { IngredientGroupInput } from './IngredientGroupInput'
 import {
   type IngredientItemGroup,
   type ActionFunc,
   type IngredientGroupActions,
   type FormError,
-} from '../types'
-
-import { IngredientGroupInput } from './IngredientGroupInput'
+} from './types'
 
 interface RecipeIngredientFormProps {
   ingredients?: RecipeIngredientRecord[]

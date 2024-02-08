@@ -2,7 +2,8 @@ import {
   type RecipeIngredientItemGroupRecord,
   type RecipeIngredientItemRecord,
   type RecipeStepRecord,
-} from '../../../types'
+  type RecipeCreateForm,
+} from '../../../../types'
 
 type Action<T> = keyof T
 type ActionParameter<T extends Record<string, any>> = Parameters<T[Action<T>]>
@@ -51,4 +52,10 @@ export interface FormErrorInner {
 
 export interface FormError {
   [x: number]: FormErrorInner[]
+}
+
+export interface Recipe {
+  baseRecipe: RecipeCreateForm
+  ingredientItemGroups: IngredientItemGroup[]
+  steps: Step[]
 }

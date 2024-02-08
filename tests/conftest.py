@@ -1,5 +1,5 @@
 import pytest
-
+import structlog
 import requests_mock
 from django.db import transaction, models
 from typing import TypeVar, TypedDict, Callable  # noqa
@@ -12,6 +12,8 @@ from nest.core.clients import BaseHTTPClient
 from .products.fixtures import *  # noqa
 from .units.fixtures import *  # noqa
 from .recipes.fixtures import *  # noqa
+
+logger = structlog.get_logger()
 
 T_MODEL = TypeVar("T_MODEL", bound=models.Model)
 T_SPEC = TypeVar("T_SPEC", bound=TypedDict)
@@ -93,11 +95,24 @@ def get_related_instance() -> Any:
         related_instance: T_MODEL,
         related_instances: dict[str, T_MODEL],
     ) -> T_MODEL | None:
+        instance: T_MODEL | None = None
         value_from_spec = spec.pop(key, None)
 
         if value_from_spec == "default":
-            return related_instance
-        return related_instances.get(value_from_spec)
+            instance = related_instance
+            return instance
+
+        instance = related_instances.get(value_from_spec)
+
+        if instance is None:
+            logger.warning(
+                "Failed to resolve related instance, are you sure the related key is "
+                "correct?",
+                related_instance=related_instance,
+                related_instances=related_instances,
+            )
+
+        return instance
 
     return _get_related_instance
 
