@@ -38,4 +38,4 @@ class RecipeStep(BaseModel):
 
     @property
     def duration_minutes(self) -> int:
-        return self.duration.seconds / 60
+        return round(self.duration.seconds / 60)
