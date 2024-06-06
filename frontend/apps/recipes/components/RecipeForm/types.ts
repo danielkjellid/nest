@@ -56,6 +56,6 @@ export interface FormError {
 
 export interface Recipe {
   baseRecipe: RecipeCreateForm
-  ingredientItemGroups: IngredientItemGroup[]
-  steps: Step[]
+  ingredientItemGroups: RecipeIngredientItemGroupRecord[] | IngredientItemGroup[]
+  steps: RecipeStepRecord[] | Step[]
 }

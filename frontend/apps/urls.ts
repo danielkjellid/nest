@@ -14,6 +14,7 @@ const urls = {
   recipes: {
     list: () => '/api/v1/recipes/',
     create: () => '/api/v1/recipes/create/',
+    edit: ({ id }: { id: Param }) => `/api/v1/recipes/recipe/${id}/`,
     detail: ({ id }: { id: Param }) => `/api/v1/recipes/recipe/${id}/`,
 
     ingredients: {

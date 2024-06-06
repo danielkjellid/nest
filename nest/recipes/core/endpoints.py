@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.http import HttpRequest
 from ninja import Router, Schema
 from store_kit.http import status
@@ -13,34 +14,26 @@ from .forms import RecipeCreateForm
 from .records import RecipeDetailRecord, RecipeRecord
 from .selectors import get_recipe, get_recipes
 from .services import create_recipe, edit_recipe
+from ..steps.services import Step
 
 router = Router(tags=["Recipe"])
-
-
-class RecipeCreateSteps(Schema):
-    number: int
-    duration: int
-    instruction: str
-    step_type: str
-    ingredient_items: list[IngredientItem]
 
 
 class RecipeCreateIn(Schema):
     base_recipe: RecipeCreateForm
     ingredient_item_groups: list[IngredientGroupItem]
-    steps: list[RecipeCreateSteps]
+    steps: list[Step]
 
 
 @router.post("create/", response={201: APIResponse[None]})
 @staff_required
+@transaction.atomic
 def recipe_create_api(
     request: HttpRequest, payload: RecipeCreateIn
 ) -> tuple[int, APIResponse[None]]:
     """
     Create a full recipe instance.
     """
-    steps = [p.dict() for p in payload.steps]
-
     base_recipe = payload.base_recipe
     create_recipe(
         title=base_recipe.title,
@@ -53,7 +46,7 @@ def recipe_create_api(
         is_vegetarian=base_recipe.is_vegetarian,
         is_pescatarian=base_recipe.is_pescatarian,
         ingredient_group_items=payload.ingredient_item_groups,
-        steps=steps,
+        steps=payload.steps,
         request=request,
     )
 
@@ -63,7 +56,7 @@ def recipe_create_api(
 class RecipeEditIn(Schema):
     base_recipe: RecipeCreateForm
     ingredient_item_groups: list[IngredientGroupItem] | None = None
-    steps: list[RecipeCreateSteps] | None = None
+    steps: list[Step] | None = None
 
 
 @router.put("/recipe/{recipe_id}/", response=APIResponse[None])
@@ -75,8 +68,10 @@ def recipe_edit_api(
         recipe_id=recipe_id,
         base_edits=payload.base_recipe.dict(),
         ingredient_group_items=payload.ingredient_item_groups,
+        steps=payload.steps,
         request=request,
     )
+    return APIResponse(status="success", data=None)
 
 
 @router.get(

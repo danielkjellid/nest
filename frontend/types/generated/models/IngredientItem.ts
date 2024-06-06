@@ -3,7 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecipeCreateIngredientItem = {
+export type IngredientItem = {
+    id?: number;
     ingredient: string;
     portionQuantity: string;
     portionQuantityUnit: string;

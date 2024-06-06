@@ -118,7 +118,7 @@ def create_recipe(  # noqa: PLR0913
         functools.partial(
             create_or_update_recipe_attributes,
             recipe_id=recipe.id,
-            ingredient_group_items=ingredient_group_items,
+            ingredient_item_groups=ingredient_group_items,
             steps=steps,
         )
     )

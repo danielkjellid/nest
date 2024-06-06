@@ -38,11 +38,9 @@ interface RecipeFormProps {
 function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
   const { units, unitsOptions } = useUnits()
   const { classes } = useCommonStyles()
-  const [recipeData, setRecipeData] = useState<RecipeDetailRecord>({
-    ...(recipe || ({} as RecipeDetailRecord)),
-  })
+  const recipeData = recipe || ({} as RecipeDetailRecord)
 
-  const recipeForm = useForm<RecipeCreateForm>({
+  const recipeForm = useForm<RecipeCreateForm | RecipeDetailRecord>({
     key: 'RecipeCreateForm',
     initialData: Object.keys(recipeData).length ? recipeData : null,
   })
@@ -288,7 +286,7 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
         <Card.Form
           title="Recipe information"
           subtitle="Specify basic recipe information"
-          form={<Form<RecipeDetailRecord> {...recipeForm} />}
+          form={<Form<RecipeDetailRecord | RecipeCreateForm> {...recipeForm} />}
         />
         <Card.Form
           title="Add ingredients"

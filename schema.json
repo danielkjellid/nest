@@ -2468,8 +2468,20 @@
                     }
                 }
             },
-            "RecipeCreateSteps": {
-                "title": "RecipeCreateSteps",
+            "RecipeStepType": {
+                "title": "RecipeStepType",
+                "description": "An enumeration.",
+                "enum": [
+                    "cooking",
+                    "preparation"
+                ],
+                "x-enum-varnames": [
+                    "Cooking Step",
+                    "Preparation"
+                ]
+            },
+            "Step": {
+                "title": "Step",
                 "type": "object",
                 "required": [
                     "number",
@@ -2479,6 +2491,10 @@
                     "ingredientItems"
                 ],
                 "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
                     "number": {
                         "title": "Number",
                         "type": "integer"
@@ -2492,8 +2508,7 @@
                         "type": "string"
                     },
                     "stepType": {
-                        "title": "Step Type",
-                        "type": "string"
+                        "$ref": "#/components/schemas/RecipeStepType"
                     },
                     "ingredientItems": {
                         "title": "Ingredient Items",
@@ -2527,7 +2542,7 @@
                         "title": "Steps",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeCreateSteps"
+                            "$ref": "#/components/schemas/Step"
                         }
                     }
                 }
@@ -2553,7 +2568,7 @@
                         "title": "Steps",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeCreateSteps"
+                            "$ref": "#/components/schemas/Step"
                         }
                     }
                 }
@@ -2801,18 +2816,6 @@
                         }
                     }
                 }
-            },
-            "RecipeStepType": {
-                "title": "RecipeStepType",
-                "description": "An enumeration.",
-                "enum": [
-                    "cooking",
-                    "preparation"
-                ],
-                "x-enum-varnames": [
-                    "Cooking Step",
-                    "Preparation"
-                ]
             },
             "RecipeStepRecord": {
                 "title": "RecipeStepRecord",

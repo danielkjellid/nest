@@ -4,13 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import View from '../../../components/View'
 import { useFetch } from '../../../hooks/fetcher'
 import { performPost } from '../../../hooks/fetcher/http'
-import {
-  type RecipeIngredientRecordListAPIResponse,
-  type RecipeCreateIn,
-  type RecipeCreateIngredientItem,
-} from '../../../types'
+import { type RecipeIngredientRecordListAPIResponse } from '../../../types'
 import { urls } from '../../urls'
-import { RecipeForm, type Recipe, type IngredientItem } from '../components/RecipeForm'
+import { RecipeForm, makePayload, type Recipe } from '../components/RecipeForm'
 import { routes } from '../routes'
 
 interface RecipeCreateInnerProps {
@@ -22,37 +18,6 @@ interface RecipeCreateInnerProps {
 function RecipeCreateInner({ results }: RecipeCreateInnerProps) {
   const { data: ingredients } = results.ingredients
   const navigate = useNavigate()
-
-  const makeIngredientItemType = (ingredientItem: IngredientItem): RecipeCreateIngredientItem => ({
-    ingredient: ingredientItem.ingredient.id.toString(),
-    portionQuantity: ingredientItem.portionQuantity.toString(),
-    portionQuantityUnit: ingredientItem.portionQuantityUnit.id.toString(),
-    additionalInfo: ingredientItem.additionalInfo || undefined,
-  })
-
-  const makePayload = (recipeData: Recipe): RecipeCreateIn => ({
-    baseRecipe: { ...recipeData.baseRecipe },
-    steps: [
-      ...recipeData.steps.map((step, index) => ({
-        instruction: step.instruction,
-        stepType: step.stepType,
-        duration: step.duration,
-        number: index + 1,
-        ingredientItems: step.ingredientItems.map((ingredientItem) =>
-          makeIngredientItemType(ingredientItem)
-        ),
-      })),
-    ],
-    ingredientItemGroups: [
-      ...recipeData.ingredientItemGroups.map((ingredientGroup) => ({
-        title: ingredientGroup.title,
-        ordering: ingredientGroup.ordering,
-        ingredientItems: ingredientGroup.ingredientItems.map((ingredientItem) =>
-          makeIngredientItemType(ingredientItem)
-        ),
-      })),
-    ],
-  })
 
   const addRecipe = async (recipeData: Recipe) => {
     const payload = makePayload(recipeData)

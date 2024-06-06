@@ -1,6 +1,7 @@
+from __future__ import annotations
 from datetime import timedelta
 from decimal import Decimal
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import structlog
 from django.db import transaction
@@ -9,6 +10,7 @@ from pydantic import BaseModel
 from nest.core.exceptions import ApplicationError
 
 from ..ingredients.models import RecipeIngredientItem
+from ..ingredients.services import IngredientItem
 from .enums import RecipeStepType
 from .models import RecipeStep
 
@@ -18,10 +20,10 @@ logger = structlog.get_logger()
 class Step(BaseModel):
     id: int | None = None
     number: int
-    duration: timedelta
+    duration: int
     instruction: str
     step_type: RecipeStepType
-    ingredient_items: list[Any]
+    ingredient_items: list["IngredientItem"]  # TODO fix without circular import
 
 
 def _validate_steps(steps: list[Step]):
@@ -116,13 +118,14 @@ def create_or_update_recipe_steps(recipe_id: int, steps: list[Step]) -> None:
 
     for step in steps:
         step_id = getattr(step, "id", None)
-        correct_list = steps_to_update if step_id else steps_to_create
+        correct_list = steps_to_update if step_id is not None else steps_to_create
+        print(step.duration)
         correct_list.append(
             RecipeStep(
                 recipe_id=recipe_id,
                 id=step_id,
                 number=step.number,
-                duration=step.duration,
+                duration=timedelta(minutes=step.duration),
                 instruction=step.instruction,
                 step_type=step.step_type,
             )
@@ -137,14 +140,6 @@ def create_or_update_recipe_steps(recipe_id: int, steps: list[Step]) -> None:
         RecipeStep.objects.bulk_update(
             steps_to_update, fields=["number", "duration", "instruction", "step_type"]
         )
-
-    # transaction.on_commit(
-    #     functools.partial(
-    #         _create_or_update_recipe_steps_ingredient_items,
-    #         recipe_id=recipe_id,
-    #         steps=steps,
-    #     )
-    # )
 
 
 def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) -> None:

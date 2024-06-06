@@ -1,14 +1,19 @@
+from datetime import timedelta
+
 from django.db import models
 from django.http import HttpRequest
 from pydantic import BaseModel, Field
+from typing import TYPE_CHECKING
 
 from nest.audit_logs.services import log_create_or_updated, log_delete
 from nest.core.exceptions import ApplicationError
 from nest.recipes.steps.models import RecipeStep
-from nest.recipes.steps.services import Step
 
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from .records import RecipeIngredientRecord
+
+if TYPE_CHECKING:
+    from nest.recipes.steps.services import Step
 
 
 def create_recipe_ingredient(
@@ -66,7 +71,7 @@ def _get_ingredient_item_group_id(
 
 
 def _get_step_id_for_item(
-    item: IngredientItem, steps: list[Step], recipe_steps: models.QuerySet[RecipeStep]
+    item: IngredientItem, steps: list["Step"], recipe_steps: models.QuerySet[RecipeStep]
 ) -> int | None:
     # See if we can find the Step based on the possible child in the list.
     step_for_item = next(
@@ -78,22 +83,24 @@ def _get_step_id_for_item(
 
     # If a step exists, see if we can find the related RecipeStep that is created
     # in the db.
-    return next(
+    step = next(
         (
             s.id
             for s in recipe_steps
             if s.number == step_for_item.number
-            and s.duration == step_for_item.duration
+            and s.duration == timedelta(minutes=step_for_item.duration)
             and s.step_type == step_for_item.step_type
         ),
         None,
     )
 
+    return step
+
 
 def create_or_update_recipe_ingredient_items(
     recipe_id: int,
     groups: list[IngredientGroupItem],
-    steps: list[Step],
+    steps: list["Step"],
 ):
     ingredient_items_to_create = []
     ingredient_items_to_update = []
@@ -109,7 +116,7 @@ def create_or_update_recipe_ingredient_items(
             ingredient_item_id = getattr(ingredient_item, "id", None)
             correct_list = (
                 ingredient_items_to_update
-                if ingredient_item_id
+                if ingredient_item_id is not None
                 else ingredient_items_to_create
             )
 
@@ -135,9 +142,11 @@ def create_or_update_recipe_ingredient_items(
                 ) from exc
 
     if len(ingredient_items_to_create):
+        print("create", ingredient_items_to_create)
         RecipeIngredientItem.objects.bulk_create(ingredient_items_to_create)
 
     if len(ingredient_items_to_update):
+        print("update", ingredient_items_to_update)
         RecipeIngredientItem.objects.bulk_update(
             ingredient_items_to_update,
             fields=[
