@@ -1,21 +1,31 @@
+from __future__ import annotations
+
 from datetime import timedelta
-from decimal import Decimal
-from typing import Any
+
+import structlog
+from pydantic import BaseModel
 
 from nest.core.exceptions import ApplicationError
 
-from ..ingredients.models import RecipeIngredientItem
+from ..ingredients.services import IngredientItem
 from .enums import RecipeStepType
 from .models import RecipeStep
 
+logger = structlog.get_logger()
 
-def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) -> None:
-    """
-    Create steps related to a single recipe instance.
-    """
 
+class Step(BaseModel):
+    id: int | None = None
+    number: int
+    duration: int
+    instruction: str
+    step_type: RecipeStepType
+    ingredient_items: list[IngredientItem]
+
+
+def _validate_steps(steps: list[Step]) -> None:
     # Get all step numbers from payload to run som sanity checks.
-    step_numbers = sorted([step["number"] for step in steps])
+    step_numbers = sorted([step.number for step in steps])
 
     # Sanity check that there is a "step 1" in the payload.
     if not step_numbers[0] == 1:
@@ -28,62 +38,37 @@ def create_recipe_steps(*, recipe_id: int | str, steps: list[dict[str, Any]]) ->
         raise ApplicationError(message="Step numbers has to be in sequence.")
 
     # Sanity check that all instruction fields have content.
-    if any(not step["instruction"] for step in steps):
+    if any(not step.instruction for step in steps):
         raise ApplicationError(message="All steps has to have instructions defined.")
 
-    ingredient_items_to_update = []
-    ingredient_items = list(
-        RecipeIngredientItem.objects.filter(ingredient_group__recipe_id=recipe_id)
-    )
 
-    recipe_steps_to_create = [
-        RecipeStep(
-            recipe_id=recipe_id,
-            number=step["number"],
-            duration=timedelta(minutes=step["duration"]),
-            instruction=step["instruction"],
-            step_type=RecipeStepType(step["step_type"]),
-        )
-        for step in steps
-    ]
-    created_recipe_steps = RecipeStep.objects.bulk_create(recipe_steps_to_create)
+def create_or_update_recipe_steps(recipe_id: int, steps: list[Step]) -> None:
+    if not steps:
+        return None
+
+    steps_to_create: list[RecipeStep] = []
+    steps_to_update: list[RecipeStep] = []
 
     for step in steps:
-        # Find related step that has been created to get appropriate id to attach to
-        # the ingredient item.
-        created_step = next(
-            (
-                created_step
-                for created_step in created_recipe_steps
-                if step["number"] == created_step.number
-                and step["instruction"] == created_step.instruction
-            ),
-            None,
+        step_id = getattr(step, "id", None)
+        correct_list = steps_to_update if step_id is not None else steps_to_create
+        correct_list.append(
+            RecipeStep(
+                recipe_id=recipe_id,
+                id=step_id,
+                number=step.number,
+                duration=timedelta(minutes=step.duration),
+                instruction=step.instruction,
+                step_type=step.step_type,
+            )
         )
 
-        if not created_step:
-            continue
+    _validate_steps(steps)
 
-        for ingredient_item in step["ingredient_items"]:
-            ingredient_item_from_db = next(
-                (
-                    item
-                    for item in ingredient_items
-                    if item.ingredient_id == int(ingredient_item["ingredient_id"])
-                    and Decimal(item.portion_quantity)
-                    == Decimal(ingredient_item["portion_quantity"])
-                    and item.portion_quantity_unit_id
-                    == int(ingredient_item["portion_quantity_unit_id"])
-                    and item.step_id is None
-                ),
-                None,
-            )
+    if len(steps_to_create):
+        RecipeStep.objects.bulk_create(steps_to_create)
 
-            if not ingredient_item_from_db:
-                continue
-
-            ingredient_item_from_db.step_id = created_step.id
-            ingredient_items_to_update.append(ingredient_item_from_db)
-
-    # Update ingredient items with new step_ids in bulk.
-    RecipeIngredientItem.objects.bulk_update(ingredient_items_to_update, ["step"])
+    if len(steps_to_update):
+        RecipeStep.objects.bulk_update(
+            steps_to_update, fields=["number", "duration", "instruction", "step_type"]
+        )

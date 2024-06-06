@@ -273,6 +273,51 @@
             }
         },
         "/api/v1/recipes/recipe/{recipe_id}/": {
+            "put": {
+                "operationId": "recipe_edit_api",
+                "summary": "Recipe Edit Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "recipe_id",
+                        "schema": {
+                            "title": "Recipe Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Recipe"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecipeEditIn"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            },
             "get": {
                 "operationId": "recipe_detail_api",
                 "summary": "Recipe Detail Api",
@@ -2258,12 +2303,9 @@
                         "x-order": 4,
                         "x-min": null,
                         "x-max": null,
-                        "anyOf": [
+                        "allOf": [
                             {
                                 "$ref": "#/components/schemas/RecipeStatus"
-                            },
-                            {
-                                "type": "string"
                             }
                         ]
                     },
@@ -2299,12 +2341,9 @@
                         "x-order": 5,
                         "x-min": null,
                         "x-max": null,
-                        "anyOf": [
+                        "allOf": [
                             {
                                 "$ref": "#/components/schemas/RecipeDifficulty"
-                            },
-                            {
-                                "type": "string"
                             }
                         ]
                     },
@@ -2368,8 +2407,8 @@
                     }
                 }
             },
-            "RecipeCreateIngredientItem": {
-                "title": "RecipeCreateIngredientItem",
+            "IngredientItem": {
+                "title": "IngredientItem",
                 "type": "object",
                 "required": [
                     "ingredient",
@@ -2377,6 +2416,10 @@
                     "portionQuantityUnit"
                 ],
                 "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
                     "ingredient": {
                         "title": "Ingredient",
                         "type": "string"
@@ -2395,8 +2438,8 @@
                     }
                 }
             },
-            "RecipeCreateIngredientItemGroup": {
-                "title": "RecipeCreateIngredientItemGroup",
+            "IngredientGroupItem": {
+                "title": "IngredientGroupItem",
                 "type": "object",
                 "required": [
                     "title",
@@ -2404,6 +2447,10 @@
                     "ingredientItems"
                 ],
                 "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
                     "title": {
                         "title": "Title",
                         "type": "string"
@@ -2416,13 +2463,25 @@
                         "title": "Ingredient Items",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeCreateIngredientItem"
+                            "$ref": "#/components/schemas/IngredientItem"
                         }
                     }
                 }
             },
-            "RecipeCreateSteps": {
-                "title": "RecipeCreateSteps",
+            "RecipeStepType": {
+                "title": "RecipeStepType",
+                "description": "An enumeration.",
+                "enum": [
+                    "cooking",
+                    "preparation"
+                ],
+                "x-enum-varnames": [
+                    "Cooking Step",
+                    "Preparation"
+                ]
+            },
+            "Step": {
+                "title": "Step",
                 "type": "object",
                 "required": [
                     "number",
@@ -2432,6 +2491,10 @@
                     "ingredientItems"
                 ],
                 "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
                     "number": {
                         "title": "Number",
                         "type": "integer"
@@ -2445,14 +2508,13 @@
                         "type": "string"
                     },
                     "stepType": {
-                        "title": "Step Type",
-                        "type": "string"
+                        "$ref": "#/components/schemas/RecipeStepType"
                     },
                     "ingredientItems": {
                         "title": "Ingredient Items",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeCreateIngredientItem"
+                            "$ref": "#/components/schemas/IngredientItem"
                         }
                     }
                 }
@@ -2473,14 +2535,40 @@
                         "title": "Ingredient Item Groups",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeCreateIngredientItemGroup"
+                            "$ref": "#/components/schemas/IngredientGroupItem"
                         }
                     },
                     "steps": {
                         "title": "Steps",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeCreateSteps"
+                            "$ref": "#/components/schemas/Step"
+                        }
+                    }
+                }
+            },
+            "RecipeEditIn": {
+                "title": "RecipeEditIn",
+                "type": "object",
+                "required": [
+                    "baseRecipe"
+                ],
+                "properties": {
+                    "baseRecipe": {
+                        "$ref": "#/components/schemas/RecipeCreateForm"
+                    },
+                    "ingredientItemGroups": {
+                        "title": "Ingredient Item Groups",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IngredientGroupItem"
+                        }
+                    },
+                    "steps": {
+                        "title": "Steps",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Step"
                         }
                     }
                 }
@@ -2729,18 +2817,6 @@
                     }
                 }
             },
-            "RecipeStepType": {
-                "title": "RecipeStepType",
-                "description": "An enumeration.",
-                "enum": [
-                    "cooking",
-                    "preparation"
-                ],
-                "x-enum-varnames": [
-                    "Cooking Step",
-                    "Preparation"
-                ]
-            },
             "RecipeStepRecord": {
                 "title": "RecipeStepRecord",
                 "type": "object",
@@ -2802,7 +2878,7 @@
                     "isVegetarian",
                     "isPescatarian",
                     "duration",
-                    "ingredientGroups",
+                    "ingredientItemGroups",
                     "steps"
                 ],
                 "properties": {
@@ -2865,8 +2941,8 @@
                     "healthScore": {
                         "$ref": "#/components/schemas/RecipeHealthScore"
                     },
-                    "ingredientGroups": {
-                        "title": "Ingredient Groups",
+                    "ingredientItemGroups": {
+                        "title": "Ingredient Item Groups",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientItemGroupRecord"

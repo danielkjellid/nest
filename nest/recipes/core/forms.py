@@ -26,8 +26,8 @@ class RecipeCreateForm(BaseModel):
         max=10,
         col_span=4,
     )
-    status: RecipeStatus | str = FormField(..., order=4, col_span=2)
-    difficulty: RecipeDifficulty | str = FormField(..., order=5, col_span=2)
+    status: RecipeStatus = FormField(..., order=4, col_span=2)
+    difficulty: RecipeDifficulty = FormField(..., order=5, col_span=2)
     external_id: str | None = FormField(
         None, order=6, help_text="Providers identifier.", col_span=1
     )

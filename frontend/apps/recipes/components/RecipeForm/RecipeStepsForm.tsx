@@ -2,15 +2,15 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 
 import { Button } from '../../../../components/Button'
 import { useDragAndDropSingleList } from '../../../../hooks/drag-and-drop'
+
+import { StepInput } from './StepInput'
 import {
   type IngredientItemGroup,
   type Step,
   type ActionFunc,
   type StepActions,
   type FormError,
-} from '../types'
-
-import { StepInput } from './StepInput'
+} from './types'
 
 interface RecipeStepsFormProps {
   steps: Step[]

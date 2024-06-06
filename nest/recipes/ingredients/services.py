@@ -1,14 +1,19 @@
-from decimal import Decimal
-from typing import Any
+from datetime import timedelta
+from typing import TYPE_CHECKING
 
-from django.db import transaction
+from django.db import models
 from django.http import HttpRequest
+from pydantic import BaseModel, Field
 
 from nest.audit_logs.services import log_create_or_updated, log_delete
 from nest.core.exceptions import ApplicationError
+from nest.recipes.steps.models import RecipeStep
 
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from .records import RecipeIngredientRecord
+
+if TYPE_CHECKING:
+    from nest.recipes.steps.services import Step
 
 
 def create_recipe_ingredient(
@@ -39,79 +44,166 @@ def delete_recipe_ingredient(
     ingredient.delete()
 
 
-def create_recipe_ingredient_item_groups(
-    *, recipe_id: int | str, ingredient_group_items: list[dict[str, Any]]
-) -> None:
-    """
-    Create ingredient item groups and related ingredient items and associate them with a
-    recipe.
-    """
+class IngredientItem(BaseModel):
+    id: int | None = None
+    ingredient_id: str = Field(..., alias="ingredient")
+    portion_quantity: str
+    portion_quantity_unit_id: str = Field(..., alias="portion_quantity_unit")
+    additional_info: str | None = None
 
+
+class IngredientGroupItem(BaseModel):
+    id: int | None = None
+    title: str
+    ordering: int
+    ingredient_items: list[IngredientItem]
+
+
+def _get_ingredient_item_group_id(
+    group_item: IngredientGroupItem,
+    recipe_groups: models.QuerySet[RecipeIngredientItemGroup],
+) -> int:
+    return next(
+        g.id
+        for g in recipe_groups
+        if g.title == group_item.title and g.ordering == group_item.ordering
+    )
+
+
+def _get_step_id_for_item(
+    item: IngredientItem, steps: list["Step"], recipe_steps: models.QuerySet[RecipeStep]
+) -> int | None:
+    # See if we can find the Step based on the possible child in the list.
+    step_for_item = next(
+        (step for step in steps if item in step.ingredient_items), None
+    )
+
+    if not step_for_item:
+        return None
+
+    # If a step exists, see if we can find the related RecipeStep that is created
+    # in the db.
+    step = next(
+        (
+            s.id
+            for s in recipe_steps
+            if s.number == step_for_item.number
+            and s.duration == timedelta(minutes=step_for_item.duration)
+            and s.step_type == step_for_item.step_type
+        ),
+        None,
+    )
+
+    return step
+
+
+def create_or_update_recipe_ingredient_items(
+    recipe_id: int,
+    groups: list[IngredientGroupItem],
+    steps: list["Step"],
+) -> None:
+    ingredient_items_to_create: list[RecipeIngredientItem] = []
+    ingredient_items_to_update: list[RecipeIngredientItem] = []
+
+    recipe_groups = RecipeIngredientItemGroup.objects.filter(recipe_id=recipe_id)
+    recipe_steps = RecipeStep.objects.filter(recipe_id=recipe_id)
+
+    # All ingredient items needs to have an ingredient group, therefore, the subset of
+    # all items in groups combined should make up the whole set, therefore, it makes
+    # sense to use this as a starting place.
+    for group in groups:
+        for ingredient_item in group.ingredient_items:
+            ingredient_item_id = getattr(ingredient_item, "id", None)
+            correct_list = (
+                ingredient_items_to_update
+                if ingredient_item_id is not None
+                else ingredient_items_to_create
+            )
+
+            try:
+                correct_list.append(
+                    RecipeIngredientItem(
+                        id=ingredient_item_id,
+                        ingredient_group_id=_get_ingredient_item_group_id(
+                            group, recipe_groups
+                        ),
+                        step_id=_get_step_id_for_item(
+                            ingredient_item, steps, recipe_steps
+                        ),
+                        ingredient_id=ingredient_item.ingredient_id,
+                        additional_info=ingredient_item.additional_info,
+                        portion_quantity=ingredient_item.portion_quantity,
+                        portion_quantity_unit_id=ingredient_item.portion_quantity_unit_id,
+                    )
+                )
+            except StopIteration as exc:
+                raise ApplicationError(
+                    message="Could not find group to connect to ingredient item."
+                ) from exc
+
+    if len(ingredient_items_to_create):
+        RecipeIngredientItem.objects.bulk_create(ingredient_items_to_create)
+
+    if len(ingredient_items_to_update):
+        RecipeIngredientItem.objects.bulk_update(
+            ingredient_items_to_update,
+            fields=[
+                "ingredient_group_id",
+                "step_id",
+                "ingredient_id",
+                "portion_quantity",
+                "portion_quantity_unit_id",
+            ],
+        )
+
+
+def _validate_ingredient_item_groups(
+    ingredient_group_items: list[IngredientGroupItem]
+) -> None:
     # Sanity check that we only are dealing with unique ordering properties.
-    ordering = [group["ordering"] for group in ingredient_group_items]
+    ordering = [group.ordering for group in ingredient_group_items]
     if not len(set(ordering)) == len(ordering):
         raise ApplicationError(
             message="Ordering for ingredient group items has to be unique"
         )
 
     # Sanity check that we are only dealing with unique instructions.
-    titles = [group["title"] for group in ingredient_group_items]
+    titles = [group.title for group in ingredient_group_items]
     if not len(set(titles)) == len(titles):
         raise ApplicationError(
             message="Titles for ingredient group items has to be unique"
         )
 
-    # Create a list of which ingredient_group_items to bulk create.
-    recipe_ingredient_groups_to_create = [
-        RecipeIngredientItemGroup(
-            recipe_id=recipe_id,
-            title=item_group["title"],
-            ordering=item_group["ordering"],
+
+def create_or_update_recipe_ingredient_item_groups(
+    recipe_id: int,
+    ingredient_item_groups: list[IngredientGroupItem],
+) -> None:
+    if not ingredient_item_groups:
+        return None
+
+    _validate_ingredient_item_groups(ingredient_group_items=ingredient_item_groups)
+
+    groups_to_create: list[RecipeIngredientItemGroup] = []
+    groups_to_update: list[RecipeIngredientItemGroup] = []
+
+    for item_group in ingredient_item_groups:
+        item_group_id = getattr(item_group, "id", None)
+        correct_list = groups_to_update if item_group_id else groups_to_create
+        correct_list.append(
+            RecipeIngredientItemGroup(
+                recipe_id=recipe_id,
+                id=item_group_id,
+                title=item_group.title,
+                ordering=item_group.ordering,
+            )
         )
-        for item_group in ingredient_group_items
-    ]
 
-    # Do all transactions atomically so that we can take advantage of the on_commit
-    # callback.
-    with transaction.atomic():
-        # Create ingredient_item_groups.
-        created_ingredient_item_groups = RecipeIngredientItemGroup.objects.bulk_create(
-            recipe_ingredient_groups_to_create
+    if len(groups_to_create):
+        RecipeIngredientItemGroup.objects.bulk_create(groups_to_create)
+
+    if len(groups_to_update):
+        RecipeIngredientItemGroup.objects.bulk_update(
+            groups_to_update,
+            fields=["title", "ordering"],
         )
-
-        try:
-            ingredient_items_to_create = [
-                RecipeIngredientItem(
-                    # Try to find associated group though generator, as created_
-                    # ingredient_item_groups should return a list of created objects.
-                    ingredient_group_id=next(
-                        group.id
-                        for group in created_ingredient_item_groups
-                        if group.title == item_group["title"]
-                        and group.ordering == item_group["ordering"]
-                    ),
-                    ingredient_id=ingredient_item["ingredient_id"],
-                    additional_info=(
-                        ingredient_item["additional_info"]
-                        if ingredient_item["additional_info"]
-                        else None
-                    ),
-                    portion_quantity=Decimal(ingredient_item["portion_quantity"]),
-                    portion_quantity_unit_id=int(
-                        ingredient_item["portion_quantity_unit_id"]
-                    ),
-                )
-                for item_group in ingredient_group_items
-                for ingredient_item in item_group["ingredient_items"]
-            ]
-        except StopIteration as exc:
-            raise ApplicationError(
-                message="Could not find group to connect to ingredient item."
-            ) from exc
-
-        def create_ingredient_items() -> None:
-            RecipeIngredientItem.objects.bulk_create(ingredient_items_to_create)
-
-        # Once groups has been created, use callback to create associated
-        # ingredient_items.
-        transaction.on_commit(create_ingredient_items)

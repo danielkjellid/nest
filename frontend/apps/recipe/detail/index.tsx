@@ -7,16 +7,18 @@ import View from '../../../components/View'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
 import { type RecipeDetailRecordAPIResponse, RecipeStatus } from '../../../types'
+import { routes as recipesRoutes } from '../../recipes/routes'
 import { urls } from '../../urls'
 import { Recipe } from '../components/Recipe'
 
 interface RecipeDetailInnerProps {
+  recipeId: string
   results: {
     recipeResponse: RecipeDetailRecordAPIResponse
   }
 }
 
-function RecipeDetailInner({ results }: RecipeDetailInnerProps) {
+function RecipeDetailInner({ recipeId, results }: RecipeDetailInnerProps) {
   const navigate = useNavigate()
   const { currentUser } = useCommonContext()
   const { data: recipe } = results.recipeResponse
@@ -65,7 +67,9 @@ function RecipeDetailInner({ results }: RecipeDetailInnerProps) {
                 View in admin
               </MButton>
             )}
-            <Button onClick={() => navigate('/')}>Edit recipe</Button>
+            <a href={recipesRoutes.edit.build({ recipeId: recipeId })}>
+              <Button>Edit recipe</Button>
+            </a>
           </div>
         </div>
       )}
@@ -86,7 +90,7 @@ function RecipeDetail() {
     <View<object, RecipeDetailInnerProps>
       component={RecipeDetailInner}
       results={{ recipeResponse: recipeResponse }}
-      componentProps={{}}
+      componentProps={{ recipeId: recipeId }}
       loadingProps={{ description: 'Loading recipe' }}
       errorProps={{
         description: 'There was an error retrieving the recipe. Please try again later.',

@@ -77,7 +77,7 @@ export function useForm<T extends object>({
 
   useEffect(() => {
     if (initialData) {
-      setFormData(initialData)
+      setFormData(structuredClone(initialData))
       setFormKey(key)
     }
   }, [initialData])

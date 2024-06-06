@@ -40,7 +40,7 @@ def get_recipe(*, pk: int) -> RecipeDetailRecord:
         duration=RecipeDurationRecord.from_db_model(recipe),
         glycemic_data=None,
         health_score=None,
-        ingredient_groups=ingredient_groups,
+        ingredient_item_groups=ingredient_groups,
         steps=steps,
     )
 

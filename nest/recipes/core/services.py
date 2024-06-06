@@ -6,15 +6,21 @@ from django.http import HttpRequest
 from django.utils.text import slugify
 
 from nest.audit_logs.services import log_create_or_updated
+from nest.core.exceptions import ApplicationError
+from nest.core.services import model_update
 
-from ..ingredients.services import create_recipe_ingredient_item_groups
-from ..steps.services import create_recipe_steps
+from ..ingredients.services import (
+    IngredientGroupItem,
+    create_or_update_recipe_ingredient_item_groups,
+    create_or_update_recipe_ingredient_items,
+)
+from ..steps.services import Step, create_or_update_recipe_steps
 from .enums import RecipeDifficulty, RecipeStatus
 from .models import Recipe
 from .records import RecipeRecord
 
 
-def create_base_recipe(
+def _create_base_recipe(
     *,
     title: str,
     search_keywords: str | None = None,
@@ -57,6 +63,26 @@ def create_base_recipe(
     return RecipeRecord.from_recipe(recipe)
 
 
+def _edit_base_recipe(
+    *, recipe_id: int, request: HttpRequest | None, **edits: dict[str, Any]
+) -> None:
+    """
+    Edit an existing base recipe.
+    """
+
+    recipe = Recipe.objects.filter(id=recipe_id).first()
+
+    if not recipe:
+        raise ApplicationError(message="Recipe does not exist.")
+
+    data = edits.copy()
+
+    _recipe_instance, _has_updated = model_update(
+        instance=recipe, data=data, request=request
+    )
+
+
+@transaction.atomic
 def create_recipe(  # noqa: PLR0913
     *,
     title: str,
@@ -68,38 +94,83 @@ def create_recipe(  # noqa: PLR0913
     external_url: str | None = None,
     is_vegetarian: bool = False,
     is_pescatarian: bool = False,
-    ingredient_group_items: list[dict[str, Any]],
-    steps: list[dict[str, Any]],
+    ingredient_group_items: list[IngredientGroupItem],
+    steps: list[Step],
     request: HttpRequest | None = None,
 ) -> None:
     """
     Create a full recipe instance with ingredient items and steps.
     """
-    with transaction.atomic():
-        recipe = create_base_recipe(
-            title=title,
-            search_keywords=search_keywords,
-            status=status,
-            difficulty=difficulty,
-            default_num_portions=default_num_portions,
-            external_id=external_id,
-            external_url=external_url,
-            is_vegetarian=is_vegetarian,
-            is_pescatarian=is_pescatarian,
-            request=request,
-        )
+    recipe = _create_base_recipe(
+        title=title,
+        search_keywords=search_keywords,
+        status=status,
+        difficulty=difficulty,
+        default_num_portions=default_num_portions,
+        external_id=external_id,
+        external_url=external_url,
+        is_vegetarian=is_vegetarian,
+        is_pescatarian=is_pescatarian,
+        request=request,
+    )
 
-        with transaction.atomic():
-            # Run ingredient item groups on recipe commit.
-            transaction.on_commit(
-                functools.partial(
-                    create_recipe_ingredient_item_groups,
-                    recipe_id=recipe.id,
-                    ingredient_group_items=ingredient_group_items,
-                )
-            )
-
-        # Run step creation on ingredient item groups commit.
-        transaction.on_commit(
-            functools.partial(create_recipe_steps, recipe_id=recipe.id, steps=steps)
+    transaction.on_commit(
+        functools.partial(
+            create_or_update_recipe_attributes,
+            recipe_id=recipe.id,
+            ingredient_item_groups=ingredient_group_items,
+            steps=steps,
         )
+    )
+
+
+@transaction.atomic
+def create_or_update_recipe_attributes(
+    *,
+    recipe_id: int,
+    ingredient_item_groups: list[IngredientGroupItem],
+    steps: list[Step],
+) -> None:
+    create_or_update_recipe_ingredient_item_groups(
+        recipe_id=recipe_id, ingredient_item_groups=ingredient_item_groups
+    )
+    create_or_update_recipe_steps(recipe_id=recipe_id, steps=steps)
+
+    # Once item groups and steps has been successfully updated, create or update
+    # existing ingredient items.
+    transaction.on_commit(
+        functools.partial(
+            create_or_update_recipe_ingredient_items,
+            recipe_id=recipe_id,
+            groups=ingredient_item_groups,
+            steps=steps,
+        )
+    )
+
+
+@transaction.atomic
+def edit_recipe(
+    *,
+    recipe_id: int,
+    base_edits: dict[str, Any] | None = None,
+    ingredient_group_items: list[IngredientGroupItem] | None = None,
+    steps: list[Step] | None = None,
+    request: HttpRequest | None = None,
+) -> None:
+    """
+    Edit an existing recipe instance.
+    """
+    base_edits = base_edits or {}
+    ingredient_group_items = ingredient_group_items or []
+    steps = steps or []
+
+    _edit_base_recipe(recipe_id=recipe_id, request=request, **base_edits)
+
+    transaction.on_commit(
+        functools.partial(
+            create_or_update_recipe_attributes,
+            recipe_id=recipe_id,
+            ingredient_item_groups=ingredient_group_items,
+            steps=steps,
+        )
+    )

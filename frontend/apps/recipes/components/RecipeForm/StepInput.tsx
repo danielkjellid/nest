@@ -7,13 +7,14 @@ import { Counter } from '../../../../components/Counter'
 import { useEnumToOptions } from '../../../../hooks/enum-to-options'
 import { RecipeStepType } from '../../../../types'
 import { useStepsStyles } from '../../../recipe/components/Recipe/Steps/Steps.styles'
+
 import {
   type ActionFunc,
   type StepActions,
   type IngredientItemGroup,
   type Step,
   type FormErrorInner,
-} from '../types'
+} from './types'
 
 interface StepInputProps {
   draggableId: string
@@ -100,16 +101,12 @@ function StepInput({
 
   // Since we need the group index and the ingredient id, back map the ingredient item and find appropriate
   // item group.
-  const getSelectedIngredientGroupItems = () => {
+  const getSelectedIngredientGroupItems = useMemo(() => {
     const sequenceMapping: string[][] = []
     ingredientGroups.flatMap((ingredientGroup, ingredientGroupIndex) =>
-      ingredientGroup.ingredientItems.filter((ingredientItem) => {
+      ingredientGroup.ingredientItems.map((ingredientItem) => {
         const ingredientItemFromStep = step.ingredientItems.find(
-          (stepIngredientItem) =>
-            ingredientItem.ingredient === stepIngredientItem.ingredient &&
-            ingredientItem.portionQuantity === stepIngredientItem.portionQuantity &&
-            ingredientItem.portionQuantityUnit === stepIngredientItem.portionQuantityUnit &&
-            ingredientItem.additionalInfo === stepIngredientItem.additionalInfo
+          (stepIngredientItem) => ingredientItem.ingredient.id === stepIngredientItem.ingredient.id
         )
 
         if (ingredientItemFromStep) {
@@ -122,7 +119,7 @@ function StepInput({
     )
 
     return sequenceMapping.flatMap(([groupIndex, ingredientId]) => `${groupIndex}-${ingredientId}`)
-  }
+  }, [ingredientGroups, step])
 
   const getErrorForField = (field: string) => {
     if (!errors) return undefined
@@ -174,7 +171,7 @@ function StepInput({
                 <MultiSelect
                   label="Ingredients"
                   description="Pick ingredients required in this step"
-                  value={getSelectedIngredientGroupItems()}
+                  value={getSelectedIngredientGroupItems}
                   data={ingredientOptions}
                   required
                   searchable

@@ -7,9 +7,9 @@ import type { IngredientGroupItem } from './IngredientGroupItem';
 import type { RecipeCreateForm } from './RecipeCreateForm';
 import type { Step } from './Step';
 
-export type RecipeCreateIn = {
+export type RecipeEditIn = {
     baseRecipe: RecipeCreateForm;
-    ingredientItemGroups: Array<IngredientGroupItem>;
-    steps: Array<Step>;
+    ingredientItemGroups?: Array<IngredientGroupItem>;
+    steps?: Array<Step>;
 };
 
