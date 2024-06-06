@@ -5,7 +5,6 @@ from store_kit.http import status
 from nest.api.files import UploadedFile
 from nest.api.responses import APIResponse
 from nest.core.decorators import staff_required
-from nest.core.utils import Exclude
 
 from .forms import ProductCreateForm, ProductEditForm
 from .records import ProductRecord
@@ -24,14 +23,11 @@ def product_list_api(request: HttpRequest) -> APIResponse[list[ProductRecord]]:
     return APIResponse(status="success", data=products)
 
 
-ProductCreateIn = Exclude("ProductCreateIn", ProductCreateForm, ["thumbnail"])
-
-
 @router.post("create/", response={201: APIResponse[None]})
 @staff_required
 def product_create_api(
     request: HttpRequest,
-    payload: ProductCreateIn = Form(...),  # type: ignore # noqa
+    payload: ProductCreateForm = Form(...),  # type: ignore # noqa
     thumbnail: UploadedFile | None = File(None),  # noqa
 ) -> tuple[int, APIResponse[None]]:
     """
@@ -57,15 +53,12 @@ def product_detail_api(
     return APIResponse(status="success", data=product)
 
 
-ProductEditIn = Exclude("ProductEditIn", ProductEditForm, ["thumbnail"])
-
-
 @router.post("{product_id}/edit/", response=APIResponse[None])
 @staff_required
 def product_edit_api(
     request: HttpRequest,
     product_id: int,
-    payload: ProductEditIn = Form(...),  # type: ignore # noqa
+    payload: ProductEditForm = Form(...),  # type: ignore # noqa
     thumbnail: UploadedFile | None = File(None),  # noqa
 ) -> APIResponse[None]:
     """

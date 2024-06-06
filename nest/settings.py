@@ -7,8 +7,6 @@ import sentry_sdk
 import structlog
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from nest.frontend.components import FrontendComponents
-
 ###############
 # Environment #
 ###############
@@ -355,17 +353,17 @@ if SENTRY_DSN is not None:
 # Forms #
 #########
 
-FORM_COMPONENT_MAPPING_DEFAULTS: dict[str, FrontendComponents] = {
-    "string": FrontendComponents.TEXT_INPUT,
-    "text": FrontendComponents.TEXT_INPUT,
-    "integer": FrontendComponents.TEXT_INPUT,
-    "boolean": FrontendComponents.CHECKBOX,
-    "enum": FrontendComponents.SELECT,
-    "array": FrontendComponents.MULTISELECT,
-    "file": FrontendComponents.FILE_INPUT,
-    "image": FrontendComponents.FILE_INPUT,
-    "number": FrontendComponents.TEXT_INPUT,
-    "object": FrontendComponents.NUMBER_INPUT,
+FORM_COMPONENT_MAPPING_DEFAULTS: dict[str, str] = {
+    # "string": FrontendComponents.TEXT_INPUT,
+    # "text": FrontendComponents.TEXT_INPUT,
+    # "integer": FrontendComponents.TEXT_INPUT,
+    # "boolean": FrontendComponents.CHECKBOX,
+    # "enum": FrontendComponents.SELECT,
+    # "array": FrontendComponents.MULTISELECT,
+    # "file": FrontendComponents.FILE_INPUT,
+    # "image": FrontendComponents.FILE_INPUT,
+    # "number": FrontendComponents.TEXT_INPUT,
+    # "object": FrontendComponents.NUMBER_INPUT,
 }
 
 #####################

@@ -14,16 +14,13 @@ from django.db.models import IntegerChoices, TextChoices
 from ninja import NinjaAPI
 from ninja.openapi.schema import (
     BODY_CONTENT_TYPES,
-    REF_PREFIX,
     merge_schemas,
 )
 from ninja.openapi.schema import (
     OpenAPISchema as NinjaOpenAPISchema,
 )
-from ninja.params_models import TModel, TModels
+from ninja.params.models import TModel, TModels
 from ninja.types import DictStrAny
-from pydantic import BaseModel
-from pydantic.schema import model_schema
 
 from nest.api.files import UploadedFile, UploadedImageFile
 from nest.core.openapi import NestOpenAPISchema
@@ -100,7 +97,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         self, model: TModel, by_alias: bool = True, remove_level: bool = True
     ) -> tuple[dict[str, Any], bool]:
         """
-        Overriden method that is responsible for converting the different ninja.Schema
+        Overridden method that is responsible for converting the different ninja.Schema
         models to an openapi dict representation that we can use. We hook into the
         definitions part and modifies the schema before it's added to the list of
         schemas.
@@ -108,9 +105,7 @@ class OpenAPISchema(NinjaOpenAPISchema, NestOpenAPISchema):
         if hasattr(model, "_flatten_map"):
             schema = self._flatten_schema(model)
         else:
-            schema = model_schema(
-                cast(Type[BaseModel], model), ref_prefix=REF_PREFIX, by_alias=by_alias
-            )
+            schema = model.model_json_schema(by_alias=by_alias)
 
         if schema.get("definitions"):
             definitions = schema.pop("definitions")
