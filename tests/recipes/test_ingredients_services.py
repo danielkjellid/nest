@@ -442,7 +442,7 @@ def test_service_create_or_update_recipe_ingredient_item_groups(
     initial_group_count = RecipeIngredientItemGroup.objects.count()
     initial_item_count = RecipeIngredientItem.objects.count()
 
-    with immediate_on_commit, django_assert_num_queries(9):
+    with immediate_on_commit, django_assert_num_queries(2):
         create_or_update_recipe_ingredient_item_groups(
             recipe_id=recipe.id, ingredient_item_groups=data
         )

@@ -89,7 +89,7 @@ def test_service_create_or_update_recipe_steps(
 
     initial_step_count = RecipeStep.objects.count()
 
-    with immediate_on_commit, django_assert_num_queries(7):
+    with immediate_on_commit, django_assert_num_queries(2):
         create_or_update_recipe_steps(recipe_id=recipe.id, steps=data)
 
     # A step already exists, but a new one should be created as well, bringing the total
