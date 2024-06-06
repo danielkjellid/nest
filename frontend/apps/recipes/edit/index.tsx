@@ -1,5 +1,5 @@
 import { notifications } from '@mantine/notifications'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import invariant from 'tiny-invariant'
 
 import View from '../../../components/View'
@@ -11,6 +11,7 @@ import {
 } from '../../../types'
 import { urls } from '../../urls'
 import { type Recipe, RecipeForm, makePayload } from '../components/RecipeForm'
+import { routes } from '../routes'
 
 interface RecipeEditInnerProps {
   recipeId: string
@@ -23,6 +24,7 @@ interface RecipeEditInnerProps {
 function RecipeEditInner({ recipeId, results }: RecipeEditInnerProps) {
   const { data: ingredients } = results.ingredients
   const { data: recipe } = results.recipe
+  const navigate = useNavigate()
 
   const editRecipe = async (recipeData: Recipe) => {
     const payload = makePayload(recipeData)
@@ -34,6 +36,7 @@ function RecipeEditInner({ recipeId, results }: RecipeEditInnerProps) {
         title: 'Recipe updated',
         message: 'Recipe was successfully updated.',
       })
+      navigate(routes.overview.build())
     } catch (e) {
       console.log(e)
     }

@@ -108,37 +108,30 @@ export function useForm<T extends object>({
 
   const validate = () => {
     const errors = {}
-    // TODO: Emit empty, non required, values from validation
-    // Object.entries(formData || {}).map(([k, v]) => {
-    //   if (v === null) {
-    //     delete formData[k]
-    //   }
-    // })
-    // console.log(formData)
-    // validator.validate(schema, formData || {})
+    validator.validate(schema, formData || {})
 
-    // if (!formData) {
-    //   Object.keys(schema.properties).map((key) => {
-    //     if (schema.required.includes(key)) {
-    //       // @ts-ignore
-    //       errors[key] = 'Field must not be empty'
-    //     }
-    //   })
-    // }
+    if (!formData) {
+      Object.keys(schema.properties).map((key) => {
+        if (schema.required.includes(key)) {
+          // @ts-ignore
+          errors[key] = 'Field must not be empty'
+        }
+      })
+    }
 
-    // if (validator.errors) {
-    //   console.error(validator.errors)
-    //   validator.errors.map((error) => {
-    //     const pathParts = error.instancePath.split('/')
-    //     const inputKey = pathParts[pathParts.length - 1]
-    //     const errorMsg = error.message
+    if (validator.errors) {
+      console.error(validator.errors)
+      validator.errors.map((error) => {
+        const pathParts = error.instancePath.split('/')
+        const inputKey = pathParts[pathParts.length - 1]
+        const errorMsg = error.message
 
-    //     if (!inputKey || !errorMsg) return undefined
+        if (!inputKey || !errorMsg) return undefined
 
-    //     // @ts-ignore
-    //     errors[inputKey] = errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1).toLocaleLowerCase()
-    //   })
-    // }
+        // @ts-ignore
+        errors[inputKey] = errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1).toLocaleLowerCase()
+      })
+    }
 
     setErrors(errors)
     return !Object.keys(errors).length

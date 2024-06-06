@@ -71,9 +71,6 @@ _RecipeIngredientItemGroupManager = models.Manager.from_queryset(
 )
 
 
-# TODO: Should be called RecipeIngredientGroup?
-
-
 class RecipeIngredientItemGroup(BaseModel):
     recipe = models.ForeignKey(
         "recipes.Recipe",

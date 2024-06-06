@@ -20,7 +20,7 @@ class Step(BaseModel):
     duration: int
     instruction: str
     step_type: RecipeStepType
-    ingredient_items: list["IngredientItem"]  # TODO fix without circular import
+    ingredient_items: list[IngredientItem]
 
 
 def _validate_steps(steps: list[Step]) -> None:
