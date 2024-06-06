@@ -12,8 +12,9 @@ from nest.core.services import model_update
 from ..ingredients.services import (
     IngredientGroupItem,
     create_or_update_recipe_ingredient_item_groups,
+    create_or_update_recipe_ingredient_items,
 )
-from ..steps.services import create_recipe_steps
+from ..steps.services import Step, create_or_update_recipe_steps
 from .enums import RecipeDifficulty, RecipeStatus
 from .models import Recipe
 from .records import RecipeRecord
@@ -113,19 +114,37 @@ def create_recipe(  # noqa: PLR0913
         request=request,
     )
 
-    with transaction.atomic():
-        # Run ingredient item groups on recipe commit.
-        transaction.on_commit(
-            functools.partial(
-                create_or_update_recipe_ingredient_item_groups,
-                recipe_id=recipe.id,
-                ingredient_item_groups=ingredient_group_items,
-            )
-        )
-
-    # Run step creation on ingredient item groups commit.
     transaction.on_commit(
-        functools.partial(create_recipe_steps, recipe_id=recipe.id, steps=steps)
+        functools.partial(
+            create_or_update_recipe_attributes,
+            recipe_id=recipe.id,
+            ingredient_group_items=ingredient_group_items,
+            steps=steps,
+        )
+    )
+
+
+@transaction.atomic
+def create_or_update_recipe_attributes(
+    *,
+    recipe_id: int,
+    ingredient_item_groups: list[IngredientGroupItem],
+    steps: list[Step],
+):
+    create_or_update_recipe_ingredient_item_groups(
+        recipe_id=recipe_id, ingredient_item_groups=ingredient_item_groups
+    )
+    create_or_update_recipe_steps(recipe_id=recipe_id, steps=steps)
+
+    # Once item groups and steps has been successfully updated, create or update
+    # existing ingredient items.
+    transaction.on_commit(
+        functools.partial(
+            create_or_update_recipe_ingredient_items,
+            recipe_id=recipe_id,
+            groups=ingredient_item_groups,
+            steps=steps,
+        )
     )
 
 
@@ -135,6 +154,7 @@ def edit_recipe(
     recipe_id: int,
     base_edits: dict[str, Any] | None = None,
     ingredient_group_items: list[IngredientGroupItem],
+    steps: list[Step],
     request: HttpRequest | None = None,
 ):
     """
@@ -142,7 +162,11 @@ def edit_recipe(
     """
     edit_base_recipe(recipe_id=recipe_id, request=request, **base_edits)
 
-    if ingredient_group_items is not None:
-        create_or_update_recipe_ingredient_item_groups(
-            recipe_id=recipe_id, ingredient_item_groups=ingredient_group_items
+    transaction.on_commit(
+        functools.partial(
+            create_or_update_recipe_attributes,
+            recipe_id=recipe_id,
+            ingredient_item_groups=ingredient_group_items,
+            steps=steps,
         )
+    )
