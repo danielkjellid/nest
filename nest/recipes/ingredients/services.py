@@ -1,9 +1,9 @@
 from datetime import timedelta
+from typing import TYPE_CHECKING
 
 from django.db import models
 from django.http import HttpRequest
 from pydantic import BaseModel, Field
-from typing import TYPE_CHECKING
 
 from nest.audit_logs.services import log_create_or_updated, log_delete
 from nest.core.exceptions import ApplicationError

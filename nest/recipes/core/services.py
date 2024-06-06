@@ -20,7 +20,7 @@ from .models import Recipe
 from .records import RecipeRecord
 
 
-def create_base_recipe(
+def _create_base_recipe(
     *,
     title: str,
     search_keywords: str | None = None,
@@ -63,7 +63,7 @@ def create_base_recipe(
     return RecipeRecord.from_recipe(recipe)
 
 
-def edit_base_recipe(
+def _edit_base_recipe(
     *, recipe_id: int, request: HttpRequest, **edits: dict[str, Any]
 ) -> None:
     """
@@ -101,7 +101,7 @@ def create_recipe(  # noqa: PLR0913
     """
     Create a full recipe instance with ingredient items and steps.
     """
-    recipe = create_base_recipe(
+    recipe = _create_base_recipe(
         title=title,
         search_keywords=search_keywords,
         status=status,
@@ -160,7 +160,7 @@ def edit_recipe(
     """
     Edit an existing recipe instance.
     """
-    edit_base_recipe(recipe_id=recipe_id, request=request, **base_edits)
+    _edit_base_recipe(recipe_id=recipe_id, request=request, **base_edits)
 
     transaction.on_commit(
         functools.partial(
