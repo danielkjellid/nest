@@ -23,7 +23,7 @@ class Step(BaseModel):
     ingredient_items: list["IngredientItem"]  # TODO fix without circular import
 
 
-def _validate_steps(steps: list[Step]):
+def _validate_steps(steps: list[Step]) -> None:
     # Get all step numbers from payload to run som sanity checks.
     step_numbers = sorted([step.number for step in steps])
 
@@ -46,8 +46,8 @@ def create_or_update_recipe_steps(recipe_id: int, steps: list[Step]) -> None:
     if not steps:
         return None
 
-    steps_to_create = []
-    steps_to_update = []
+    steps_to_create: list[RecipeStep] = []
+    steps_to_update: list[RecipeStep] = []
 
     for step in steps:
         step_id = getattr(step, "id", None)

@@ -101,9 +101,9 @@ def create_or_update_recipe_ingredient_items(
     recipe_id: int,
     groups: list[IngredientGroupItem],
     steps: list["Step"],
-):
-    ingredient_items_to_create = []
-    ingredient_items_to_update = []
+) -> None:
+    ingredient_items_to_create: list[RecipeIngredientItem] = []
+    ingredient_items_to_update: list[RecipeIngredientItem] = []
 
     recipe_groups = RecipeIngredientItemGroup.objects.filter(recipe_id=recipe_id)
     recipe_steps = RecipeStep.objects.filter(recipe_id=recipe_id)
@@ -142,11 +142,9 @@ def create_or_update_recipe_ingredient_items(
                 ) from exc
 
     if len(ingredient_items_to_create):
-        print("create", ingredient_items_to_create)
         RecipeIngredientItem.objects.bulk_create(ingredient_items_to_create)
 
     if len(ingredient_items_to_update):
-        print("update", ingredient_items_to_update)
         RecipeIngredientItem.objects.bulk_update(
             ingredient_items_to_update,
             fields=[
@@ -159,7 +157,9 @@ def create_or_update_recipe_ingredient_items(
         )
 
 
-def _validate_ingredient_item_groups(ingredient_group_items: list[IngredientGroupItem]):
+def _validate_ingredient_item_groups(
+    ingredient_group_items: list[IngredientGroupItem]
+) -> None:
     # Sanity check that we only are dealing with unique ordering properties.
     ordering = [group.ordering for group in ingredient_group_items]
     if not len(set(ordering)) == len(ordering):
@@ -182,8 +182,10 @@ def create_or_update_recipe_ingredient_item_groups(
     if not ingredient_item_groups:
         return None
 
-    groups_to_create = []
-    groups_to_update = []
+    _validate_ingredient_item_groups(ingredient_group_items=ingredient_item_groups)
+
+    groups_to_create: list[RecipeIngredientItemGroup] = []
+    groups_to_update: list[RecipeIngredientItemGroup] = []
 
     for item_group in ingredient_item_groups:
         item_group_id = getattr(item_group, "id", None)
@@ -196,10 +198,6 @@ def create_or_update_recipe_ingredient_item_groups(
                 ordering=item_group.ordering,
             )
         )
-
-    _validate_ingredient_item_groups(
-        ingredient_group_items=groups_to_update + groups_to_create
-    )
 
     if len(groups_to_create):
         RecipeIngredientItemGroup.objects.bulk_create(groups_to_create)

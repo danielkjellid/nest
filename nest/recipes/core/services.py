@@ -64,7 +64,7 @@ def _create_base_recipe(
 
 
 def _edit_base_recipe(
-    *, recipe_id: int, request: HttpRequest, **edits: dict[str, Any]
+    *, recipe_id: int, request: HttpRequest | None, **edits: dict[str, Any]
 ) -> None:
     """
     Edit an existing base recipe.
@@ -95,7 +95,7 @@ def create_recipe(  # noqa: PLR0913
     is_vegetarian: bool = False,
     is_pescatarian: bool = False,
     ingredient_group_items: list[IngredientGroupItem],
-    steps: list[dict[str, Any]],
+    steps: list[Step],
     request: HttpRequest | None = None,
 ) -> None:
     """
@@ -130,7 +130,7 @@ def create_or_update_recipe_attributes(
     recipe_id: int,
     ingredient_item_groups: list[IngredientGroupItem],
     steps: list[Step],
-):
+) -> None:
     create_or_update_recipe_ingredient_item_groups(
         recipe_id=recipe_id, ingredient_item_groups=ingredient_item_groups
     )
@@ -153,13 +153,17 @@ def edit_recipe(
     *,
     recipe_id: int,
     base_edits: dict[str, Any] | None = None,
-    ingredient_group_items: list[IngredientGroupItem],
-    steps: list[Step],
+    ingredient_group_items: list[IngredientGroupItem] | None = None,
+    steps: list[Step] | None = None,
     request: HttpRequest | None = None,
-):
+) -> None:
     """
     Edit an existing recipe instance.
     """
+    base_edits = base_edits or {}
+    ingredient_group_items = ingredient_group_items or []
+    steps = steps or []
+
     _edit_base_recipe(recipe_id=recipe_id, request=request, **base_edits)
 
     transaction.on_commit(

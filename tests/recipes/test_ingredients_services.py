@@ -149,7 +149,7 @@ def test_service__get_step_id_for_item(
         Step(
             id=step.id,
             number=step.number,
-            duration=step.duration,
+            duration=step.duration_minutes,
             instruction=step.instruction,
             step_type=step.step_type,
             ingredient_items=[
@@ -289,7 +289,7 @@ def test_service_create_or_update_recipe_ingredient_items(
         Step(
             id=step1.id,
             number=step1.number,
-            duration=step1.duration,
+            duration=step1.duration_minutes,
             instruction=step1.instruction,
             step_type=RecipeStepType(step1.step_type),
             ingredient_items=[
@@ -305,7 +305,7 @@ def test_service_create_or_update_recipe_ingredient_items(
         Step(
             id=step2.id,
             number=step2.number,
-            duration=step2.duration,
+            duration=step2.duration_minutes,
             instruction=step2.instruction,
             step_type=RecipeStepType(step2.step_type),
             ingredient_items=[item_to_create],

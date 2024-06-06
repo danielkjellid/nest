@@ -41,9 +41,9 @@ def test_service_create_or_update_recipe_steps(
     item2 = recipe_ingredient_items["item2"]
     item3 = recipe_ingredient_items["item3"]
 
-    new_duration = timedelta(minutes=5)
+    new_duration = 6
 
-    assert recipe_step.duration != new_duration
+    assert recipe_step.duration != timedelta(minutes=new_duration)
 
     data = [
         Step(
@@ -65,7 +65,7 @@ def test_service_create_or_update_recipe_steps(
         Step(
             id=None,
             number=2,
-            duration=timedelta(minutes=5),
+            duration=5,
             instruction="Some sample instruction",
             step_type=RecipeStepType.PREPARATION,
             ingredient_items=[
@@ -95,3 +95,7 @@ def test_service_create_or_update_recipe_steps(
     # A step already exists, but a new one should be created as well, bringing the total
     # up to initial_count + 1.
     assert RecipeStep.objects.count() == initial_step_count + 1
+
+    recipe_step.refresh_from_db()
+
+    assert recipe_step.duration == timedelta(minutes=new_duration)

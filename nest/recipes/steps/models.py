@@ -35,3 +35,7 @@ class RecipeStep(BaseModel):
     @property
     def get_step_type(self) -> RecipeStepType:
         return RecipeStepType(self.step_type)
+
+    @property
+    def duration_minutes(self) -> int:
+        return self.duration.seconds / 60
