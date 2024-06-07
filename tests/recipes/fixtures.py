@@ -1,8 +1,9 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from decimal import Decimal
 from typing import Callable, TypedDict
 
 import pytest
+from django.utils import timezone
 
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
 from nest.recipes.core.models import Recipe
@@ -11,8 +12,10 @@ from nest.recipes.ingredients.models import (
     RecipeIngredientItem,
     RecipeIngredientItemGroup,
 )
+from nest.recipes.plans.models import RecipePlan, RecipePlanItem
 from nest.recipes.steps.enums import RecipeStepType
 from nest.recipes.steps.models import RecipeStep
+
 
 ##########
 # Recipe #
@@ -375,4 +378,129 @@ def recipe_ingredient_items(
         create_callback=create_recipe_ingredient_item_from_spec,
         default_spec=default_recipe_ingredient_item_spec,
         marker_name="recipe_ingredient_items",
+    )
+
+
+###############
+# Recipe plan #
+###############
+
+
+class RecipePlanSpec(TypedDict, total=False):
+    title: str
+    description: str | None
+    slug: str
+    from_date: datetime
+
+
+CreateRecipePlan = Callable[[RecipePlanSpec], RecipePlan]
+
+
+@pytest.fixture
+def default_recipe_plan_spec() -> RecipePlanSpec:
+    return RecipePlanSpec(
+        title="Recipe test plan",
+        description=None,
+        slug="recipe-test-plan",
+        from_date=timezone.now(),
+    )
+
+
+@pytest.fixture
+def create_recipe_plan_from_spec(db) -> CreateRecipePlan:
+    def _create_recipe_plan(spec: RecipePlanSpec) -> RecipePlan:
+        recipe_plan, _created = RecipePlan.objects.get_or_create(**spec)
+        return recipe_plan
+
+    return _create_recipe_plan
+
+
+@pytest.fixture
+def recipe_plan(
+    create_instance,
+    create_recipe_plan_from_spec,
+    default_recipe_plan_spec,
+) -> RecipePlan:
+    return create_instance(
+        create_callback=create_recipe_plan_from_spec,
+        default_spec=default_recipe_plan_spec,
+        marker_name="recipe_plan",
+    )
+
+
+@pytest.fixture
+def recipe_plans(
+    create_instances, create_recipe_plan_from_spec, default_recipe_plan_spec
+) -> dict[str, RecipePlan]:
+    return create_instances(
+        create_callback=create_recipe_plan_from_spec,
+        default_spec=default_recipe_plan_spec,
+        marker_name="recipe_plans",
+    )
+
+
+#####################
+# Recipe plan items #
+#####################
+
+
+class RecipePlanItemSpec(TypedDict, total=False):
+    recipe_plan: str
+    recipe: str
+    ordering: int
+
+
+CreateRecipePlanItem = Callable[[RecipePlanItemSpec], RecipePlanItem]
+
+
+@pytest.fixture
+def default_recipe_plan_item_spec() -> RecipePlanItemSpec:
+    return RecipePlanItemSpec(recipe_plan="default", recipe="default", ordering=1)
+
+
+@pytest.fixture
+def create_recipe_plan_item_from_spec(
+    db, recipe_plan, recipe_plans, recipe, recipes, get_related_instance
+) -> CreateRecipePlanItem:
+    def _create_recipe_plan_item(spec: RecipePlanItemSpec) -> RecipePlanItem:
+        recipe_plan_from_spec = get_related_instance(
+            key="recipe_plan",
+            spec=spec,
+            related_instance=recipe_plan,
+            related_instances=recipe_plans,
+        )
+        recipe_from_spec = get_related_instance(
+            key="recipe",
+            spec=spec,
+            related_instance=recipe,
+            related_instances=recipes,
+        )
+        recipe_plan_item, _created = RecipePlanItem.objects.get_or_create(
+            recipe=recipe_from_spec, recipe_plan=recipe_plan_from_spec, **spec
+        )
+
+        return recipe_plan_item
+
+    return _create_recipe_plan_item
+
+
+@pytest.fixture
+def recipe_plan_item(
+    create_instance, create_recipe_plan_item_from_spec, default_recipe_
+):
+    return create_instance(
+        create_callback=create_recipe_plan_item_from_spec,
+        default_spec=default_recipe_plan_item_spec,
+        marker_name="recipe_plan_item",
+    )
+
+
+@pytest.fixture
+def recipe_plan_items(
+    create_instances, create_recipe_plan_item_from_spec, default_recipe_plan_item_spec
+) -> dict[str, RecipePlanItem]:
+    return create_instances(
+        create_callback=create_recipe_plan_item_from_spec,
+        default_spec=default_recipe_plan_item_spec,
+        marker_name="recipe_plan_items",
     )

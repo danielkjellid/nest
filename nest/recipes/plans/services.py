@@ -9,14 +9,21 @@ from nest.recipes.plans.models import RecipePlan, RecipePlanItem
 from nest.recipes.plans.selectors import find_recipes_applicable_for_plan
 
 
-def create_weekly_recipe_plan(*, from_date: date, num_items: int = 7):
+def create_weekly_recipe_plan(
+    *, from_date: date, num_items: int = 7, auto_generated: bool = False
+):
     week_number = from_date.isocalendar().week
     to_date = from_date + timedelta(days=num_items)
     title = f"Weekly plan {week_number} ({from_date} - {to_date}"
+    description = (
+        f"Automatically generated recipe plan for week {week_number}"
+        if auto_generated
+        else f"Weekly recipe plan for week {week_number}"
+    )
 
     create_recipe_plan(
         title=title,
-        description=f"Weekly recipe plan for week {week_number}",
+        description=description,
         from_date=from_date,
         num_items=num_items,
     )
@@ -48,10 +55,10 @@ def create_recipe_plan(
 
 
 def _create_recipe_plan_items(plan_id: int, recipes: list[RecipeRecord]) -> None:
+    plan_items_to_create: list[RecipePlanItem] = []
     ordering = getattr(
         RecipePlanItem.objects.filter(recipe_plan_id=plan_id).last(), "ordering", 1
     )
-    plan_items_to_create: list[RecipePlanItem] = []
 
     for recipe in recipes:
         plan_items_to_create.append(
@@ -63,5 +70,7 @@ def _create_recipe_plan_items(plan_id: int, recipes: list[RecipeRecord]) -> None
         )
 
         ordering += 1
+
+    # TODO: assert ordering unique
 
     RecipePlanItem.objects.bulk_create(plan_items_to_create)
