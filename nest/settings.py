@@ -111,6 +111,7 @@ PROJECT_APPS = [
     "nest.products.oda",
     "nest.recipes.core",
     "nest.recipes.ingredients",
+    "nest.recipes.plans",
     "nest.recipes.steps",
     "nest.units",
     "nest.users.core",
