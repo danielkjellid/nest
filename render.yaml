@@ -9,7 +9,7 @@ databases:
 services:
   - type: web
     region: frankfurt
-    plan: free # starter 7usd/month
+    plan: starter
     name: nest-web-prod
     env: docker
     dockerCommand: ./docker-entrypoint.sh start
