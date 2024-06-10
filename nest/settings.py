@@ -44,6 +44,7 @@ ROOT_URLCONF = "nest.urls"
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
 WSGI_APPLICATION = "nest.wsgi.application"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CSRF_TRUSTED_ORIGINS = ["https://nest.kjellid.no"]
 
 ################
 # Localization #
