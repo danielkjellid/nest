@@ -3,6 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+
 ##############
 # Categories #
 ##############
@@ -30,21 +31,14 @@ class OdaProductCategoryRecord(BaseModel):
     id: int
     name: str
     uri: str | None
-    slug: str
-    parent: int | None
 
 
 class OdaProductCategoryDetailRecord(BaseModel):
     id: int
     name: str
+    slug: str
     parent: int | None
-    ordering: int
-    description: str
-    is_new: bool
-    children: list["OdaProductCategoryDetailRecord"]
     parents: list[OdaProductCategoryRecord]
-    siblings: list[OdaProductCategoryRecord]
-    campaign_banners: list[OdaProductCategoryCampaignBannerRecord]
 
 
 ############################
@@ -270,8 +264,6 @@ class OdaProductRecord(BaseModel):
 
 class OdaProductDetailRecord(OdaProductRecord):
     categories: list[OdaProductCategoryDetailRecord]
-    contents_html: str
-    nutrition_html: str
     bottle_deposit: OdaProductBottleDepositRecord | None
     alternative_products: list[OdaProductRecord]
     discount_mix_and_match_products: list[OdaProductRecord] | None

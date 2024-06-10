@@ -39,8 +39,6 @@ export type OdaProductDetailRecord = {
     metadata: OdaProductMetadataRecord;
     images: Array<OdaProductImageRecord>;
     categories: Array<OdaProductCategoryDetailRecord>;
-    contentsHtml: string;
-    nutritionHtml: string;
     bottleDeposit?: OdaProductBottleDepositRecord;
     alternativeProducts: Array<OdaProductRecord>;
     discountMixAndMatchProducts?: Array<OdaProductRecord>;

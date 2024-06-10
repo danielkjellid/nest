@@ -1371,8 +1371,7 @@
                 "type": "object",
                 "required": [
                     "id",
-                    "name",
-                    "slug"
+                    "name"
                 ],
                 "properties": {
                     "id": {
@@ -1386,81 +1385,6 @@
                     "uri": {
                         "title": "Uri",
                         "type": "string"
-                    },
-                    "slug": {
-                        "title": "Slug",
-                        "type": "string"
-                    },
-                    "parent": {
-                        "title": "Parent",
-                        "type": "integer"
-                    }
-                }
-            },
-            "OdaProductCategoryCampaignBannerPromotionBubbleRecord": {
-                "title": "OdaProductCategoryCampaignBannerPromotionBubbleRecord",
-                "type": "object",
-                "required": [
-                    "text",
-                    "color"
-                ],
-                "properties": {
-                    "text": {
-                        "title": "Text",
-                        "type": "string"
-                    },
-                    "color": {
-                        "title": "Color",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductCategoryCampaignBannerRecord": {
-                "title": "OdaProductCategoryCampaignBannerRecord",
-                "type": "object",
-                "required": [
-                    "id",
-                    "hasDarkOverlay"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "imageUrl": {
-                        "title": "Image Url",
-                        "type": "string"
-                    },
-                    "leadText": {
-                        "title": "Lead Text",
-                        "type": "string"
-                    },
-                    "regularText": {
-                        "title": "Regular Text",
-                        "type": "string"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "description": {
-                        "title": "Description",
-                        "type": "string"
-                    },
-                    "buttonText": {
-                        "title": "Button Text",
-                        "type": "string"
-                    },
-                    "link": {
-                        "title": "Link",
-                        "type": "string"
-                    },
-                    "hasDarkOverlay": {
-                        "title": "Has Dark Overlay",
-                        "type": "boolean"
-                    },
-                    "promotionBubble": {
-                        "$ref": "#/components/schemas/OdaProductCategoryCampaignBannerPromotionBubbleRecord"
                     }
                 }
             },
@@ -1470,13 +1394,8 @@
                 "required": [
                     "id",
                     "name",
-                    "ordering",
-                    "description",
-                    "isNew",
-                    "children",
-                    "parents",
-                    "siblings",
-                    "campaignBanners"
+                    "slug",
+                    "parents"
                 ],
                 "properties": {
                     "id": {
@@ -1487,48 +1406,19 @@
                         "title": "Name",
                         "type": "string"
                     },
+                    "slug": {
+                        "title": "Slug",
+                        "type": "string"
+                    },
                     "parent": {
                         "title": "Parent",
                         "type": "integer"
-                    },
-                    "ordering": {
-                        "title": "Ordering",
-                        "type": "integer"
-                    },
-                    "description": {
-                        "title": "Description",
-                        "type": "string"
-                    },
-                    "isNew": {
-                        "title": "Is New",
-                        "type": "boolean"
-                    },
-                    "children": {
-                        "title": "Children",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductCategoryDetailRecord"
-                        }
                     },
                     "parents": {
                         "title": "Parents",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/OdaProductCategoryRecord"
-                        }
-                    },
-                    "siblings": {
-                        "title": "Siblings",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductCategoryRecord"
-                        }
-                    },
-                    "campaignBanners": {
-                        "title": "Campaign Banners",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductCategoryCampaignBannerRecord"
                         }
                     }
                 }
@@ -1985,8 +1875,6 @@
                     "metadata",
                     "images",
                     "categories",
-                    "contentsHtml",
-                    "nutritionHtml",
                     "alternativeProducts",
                     "detailedInfo",
                     "isRestricted"
@@ -2092,14 +1980,6 @@
                         "items": {
                             "$ref": "#/components/schemas/OdaProductCategoryDetailRecord"
                         }
-                    },
-                    "contentsHtml": {
-                        "title": "Contents Html",
-                        "type": "string"
-                    },
-                    "nutritionHtml": {
-                        "title": "Nutrition Html",
-                        "type": "string"
                     },
                     "bottleDeposit": {
                         "$ref": "#/components/schemas/OdaProductBottleDepositRecord"
