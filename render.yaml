@@ -1,7 +1,7 @@
 databases:
   - name: nest-db-prod
     region: frankfurt
-    plan: free # starter 7usd/month
+    plan: starter
     databaseName: nest
     user: nest
     postgresMajorVersion: 14
