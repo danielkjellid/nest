@@ -1,5 +1,6 @@
 import functools
 from datetime import date, timedelta
+from decimal import Decimal
 
 from django.db import transaction
 from django.utils.text import slugify
@@ -31,7 +32,14 @@ def create_weekly_recipe_plan(
 
 @transaction.atomic
 def create_recipe_plan(
-    *, title: str, description: str | None = None, from_date: date, num_items: int
+    *,
+    title: str,
+    description: str | None = None,
+    from_date: date,
+    num_items: int,
+    num_pescatarian: int,
+    num_vegetarian: int,
+    monetary_cap: Decimal,
 ):
     plan_slug = slugify(title)
     recipe_plan = RecipePlan.objects.create(
@@ -41,24 +49,33 @@ def create_recipe_plan(
         from_date=from_date,
     )
 
-    recipes = find_recipes_applicable_for_plan(
-        plan_id=recipe_plan.id, num_recipes=num_items
-    )
-
     transaction.on_commit(
         functools.partial(
             _create_recipe_plan_items,
             plan_id=recipe_plan.od,
-            recipes=recipes,
         )
     )
 
 
-def _create_recipe_plan_items(plan_id: int, recipes: list[RecipeRecord]) -> None:
+def _create_recipe_plan_items(plan_id: int) -> None:
     plan_items_to_create: list[RecipePlanItem] = []
     ordering = getattr(
         RecipePlanItem.objects.filter(recipe_plan_id=plan_id).last(), "ordering", 1
     )
+
+    recipes = find_recipes_applicable_for_plan(plan_id=plan_id)
+
+    normal_recipes = []
+    pescatarian_recipes = []
+    vegetarian_recipes = []
+
+    for recipe in recipes:
+        if recipe.is_vegetarian:
+            vegetarian_recipes.append(recipe)
+        elif recipe.is_pescatarian:
+            pescatarian_recipes.append(recipe)
+        else:
+            normal_recipes.append(recipe)
 
     for recipe in recipes:
         plan_items_to_create.append(

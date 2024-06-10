@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from nest.core.exceptions import ApplicationError
 
 from ..ingredients.selectors import get_recipe_ingredient_item_groups_for_recipe
@@ -9,6 +11,7 @@ from .records import (
     RecipeDurationRecord,
     RecipeRecord,
 )
+from ...core.types import FetchedResult
 
 
 def get_recipe(*, pk: int) -> RecipeDetailRecord:
