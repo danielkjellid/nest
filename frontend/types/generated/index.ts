@@ -17,8 +17,6 @@ export type { IngredientItem } from './models/IngredientItem';
 export type { LogEntryRecord } from './models/LogEntryRecord';
 export { OdaProductAvailabilityRecord } from './models/OdaProductAvailabilityRecord';
 export type { OdaProductBottleDepositRecord } from './models/OdaProductBottleDepositRecord';
-export type { OdaProductCategoryCampaignBannerPromotionBubbleRecord } from './models/OdaProductCategoryCampaignBannerPromotionBubbleRecord';
-export type { OdaProductCategoryCampaignBannerRecord } from './models/OdaProductCategoryCampaignBannerRecord';
 export type { OdaProductCategoryDetailRecord } from './models/OdaProductCategoryDetailRecord';
 export type { OdaProductCategoryRecord } from './models/OdaProductCategoryRecord';
 export type { OdaProductClassifierRecord } from './models/OdaProductClassifierRecord';
