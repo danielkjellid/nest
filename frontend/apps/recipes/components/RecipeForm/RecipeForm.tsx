@@ -227,7 +227,7 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
     steps.map((step, index) =>
       Object.entries(step).map(([key, val]) => {
         const existingError = errors[index] || []
-        if (checkEmptyValue(val)) {
+        if (key !== 'ingredientItems' && checkEmptyValue(val)) {
           errors[index] = [{ message: 'This field cannot be empty', field: key }, ...existingError]
         }
 

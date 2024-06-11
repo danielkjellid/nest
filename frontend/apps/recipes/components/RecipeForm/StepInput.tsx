@@ -173,7 +173,6 @@ function StepInput({
                   description="Pick ingredients required in this step"
                   value={getSelectedIngredientGroupItems}
                   data={ingredientOptions}
-                  required
                   searchable
                   clearable
                   onChange={(event) => handleStepInputChange('ingredientItems', event)}

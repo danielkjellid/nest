@@ -2149,7 +2149,7 @@
                         "x-order": 3,
                         "x-min": 1,
                         "x-max": 10,
-                        "x-component": "TextInput"
+                        "x-component": "Counter"
                     },
                     "status": {
                         "title": "Status",
@@ -2993,7 +2993,7 @@
                         "x-order": 2,
                         "x-min": null,
                         "x-max": null,
-                        "x-component": "TextInput"
+                        "x-component": "Select"
                     }
                 }
             },
@@ -3298,7 +3298,7 @@
                         "x-order": 4,
                         "x-min": null,
                         "x-max": null,
-                        "x-component": "TextInput"
+                        "x-component": "Select"
                     },
                     "supplier": {
                         "title": "Supplier",
@@ -3340,7 +3340,7 @@
                         "x-order": 7,
                         "x-min": null,
                         "x-max": null,
-                        "x-component": "TextInput"
+                        "x-component": "Textarea"
                     },
                     "allergens": {
                         "title": "Allergens",
@@ -3354,7 +3354,7 @@
                         "x-order": 8,
                         "x-min": null,
                         "x-max": null,
-                        "x-component": "TextInput"
+                        "x-component": "Textarea"
                     },
                     "fat": {
                         "title": "Fat",
@@ -3610,7 +3610,7 @@
                         "x-order": 4,
                         "x-min": null,
                         "x-max": null,
-                        "x-component": "TextInput"
+                        "x-component": "Select"
                     },
                     "supplier": {
                         "title": "Supplier",
