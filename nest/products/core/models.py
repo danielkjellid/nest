@@ -134,8 +134,6 @@ class Product(BaseModel):
 
     @property
     def display_price(self) -> str:
-        if self.unit is not None and self.gross_unit_price is not None:
-            return f"{self.gross_price} kr ({self.gross_unit_price} per {self.unit.abbreviation})"
         return f"{self.gross_price}"
 
     @property
