@@ -101,6 +101,7 @@ class NestOpenAPISchema:
             title = key.replace("_", " ").title()
             type_ = val.get("type", None)
 
+            old_val = val.copy()
             val.pop("component", None)
             val_copy = val.copy()
 
@@ -159,7 +160,7 @@ class NestOpenAPISchema:
                 modified_property = {
                     **base_defaults,
                     **extra_defaults,
-                    "x-component": self.get_component(val_copy),
+                    "x-component": self.get_component(old_val),
                     **val,
                 }
 

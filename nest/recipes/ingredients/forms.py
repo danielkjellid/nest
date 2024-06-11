@@ -15,5 +15,8 @@ class IngredientCreateForm(BaseModel):
         ..., order=1, help_text="User friendly title. E.g. Red tomatoes."
     )
     product_id: int = FormField(
-        ..., alias="product", order=2, component=FrontendComponents.SELECT.value
+        ...,
+        alias="product",
+        order=2,
+        component=FrontendComponents.SELECT.value,
     )
