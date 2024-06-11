@@ -103,7 +103,6 @@ class NestOpenAPISchema:
 
             old_val = val.copy()
             val.pop("component", None)
-            val_copy = val.copy()
 
             base_defaults: dict[str, Any] = {}
 
