@@ -1,92 +1,7 @@
-from decimal import Decimal, ROUND_HALF_UP
-
-import math
-from pydantic import BaseModel, Field
-import pandas as pd
-from itertools import combinations, chain
-import subprocess
+from decimal import Decimal
 import polars as pl
 
 from nest.recipes.core.records import RecipeDetailRecord
-
-
-class PlanIngredient(BaseModel):
-    unit_price: Decimal
-    unit_quantity: Decimal
-    required_quantity: Decimal
-
-    @property
-    def total_quantity(self) -> int:
-        return math.ceil(self.required_quantity / self.unit_quantity)
-
-    @property
-    def total_price(self) -> Decimal:
-        return self.unit_price * self.total_quantity
-
-    def add_quantity(self, quantity_to_add: Decimal) -> None:
-        self.required_quantity += quantity_to_add
-
-
-ProductId = int
-
-
-class Plan(BaseModel):
-    budget: Decimal
-    recipes: dict[int, int]
-    complete_ingredients: dict[ProductId, PlanIngredient]
-    warnings: list[str]
-
-    @property
-    def remaining_budget(self) -> Decimal:
-        ingredient_price = sum(
-            ingredient.total_price for ingredient in self.complete_ingredients.values()
-        )
-        return Decimal(self.budget - ingredient_price).quantize(rounding=ROUND_HALF_UP)
-
-    def add_recipe(self):
-        ...
-
-
-def run_plan_recipes_placement_distributor(recipes: list[RecipeDetailRecord]) -> Plan:
-    # plan = Plan(budget=budget, recipes=[], complete_ingredients={}, warnings=[])
-    product_data = []
-    recipe_products = {recipe.id: [] for recipe in recipes}
-
-    for recipe in recipes:
-        for group in recipe.ingredient_item_groups:
-            for item in group.ingredient_items:
-                product = item.ingredient.product
-                data = {
-                    "recipe_id": recipe.id,
-                    "product_id": product.id,
-                    "name": product.full_name,
-                    "unit_price": product.gross_unit_price,
-                    "unit_quantity": product.unit_quantity,
-                    "portion_quantity": item.portion_quantity,
-                }
-                recipe_products[recipe.id].append(product.id)
-                product_data.append(data)
-
-    product_df = pl.DataFrame(product_data)
-
-    print(product_df)
-
-    recipe_df = pl.DataFrame(
-        [{"recipe_id": recipe.id, "title": recipe.title} for recipe in recipes]
-    )
-
-    print(product_df.filter(pl.col("recipe_id") == 26))
-
-    print(recipe_df)
-
-    # Itere gjennom og gi score basert på:
-    # - fisk (om det ikke finnes andre middager med det)
-    # - kostnad (kanskje basert på top occurances, da burde man gi en høyere score til
-    #   oppskrifter med like produkter)
-    # - ta n øverste score og se om de passer inn i constraints, hvis ikke, bytt ut
-    # - den med minst score med den med høyest som passer
-
-    # Trenger man en connection df med recipe_id, product_id, portion_quantity?
 
 
 class Distributor:
@@ -151,8 +66,12 @@ class Distributor:
 
     def _calculate_score_for_recipes(self):
         recipes_data = []
-        score_weights = {"equal_products": 10, "pescatarian": 5, "vegetarian": 1}
-        print("Recipes", [recipe.id for recipe in self.recipes])
+        score_weights = {
+            "equal_products": 10,
+            "pescatarian": 5,
+            "vegetarian": 1,
+        }
+
         for recipe in self.recipes:
             recipe_score = 0
 
@@ -171,6 +90,7 @@ class Distributor:
                 related_recipes.select(pl.col("product_id")).count().item()
             )
 
+            # Pitfall: commonalities like butter, oil etc. Maybe ok?
             recipe_score += similar_products_count * score_weights["equal_products"]
 
             num_pescatarian_recipes_added = len(
@@ -226,6 +146,8 @@ class Distributor:
                 {
                     "recipe_id": recipe.id,
                     "recipe_title": recipe.title,
+                    "is_pescatarian": recipe.is_pescatarian,
+                    "is_vegetarian": recipe.is_vegetarian,
                     "score": recipe_score,
                     "cost": recipe_cost,
                 }
@@ -246,6 +168,10 @@ class Distributor:
                 for recipe in self.recipes
                 if recipe.id not in recipe_ids_to_exclude
             ]
+
+            if not len(filtered_recipes):
+                raise Exception("Unable to find any applicable plan...")
+
             self.recipes = filtered_recipes
 
         recipes_data = self._calculate_score_for_recipes()
@@ -312,8 +238,6 @@ class Distributor:
             pl.col("total_price").sum()
         ).item()
 
-        print(total_plan_price)
-
         if total_plan_price <= self.budget:
             recipe_ids = (
                 recipes_df.select([pl.col("recipe_id")])
@@ -331,13 +255,17 @@ class Distributor:
 
         else:
             # run plan without least occured
-            least_occured_recipe_id = self.recipe_products_df.select(
-                pl.col("recipe_id").value_counts(sort=True).last()
-            ).item()["recipe_id"]
+            least_occured_recipe_id = (
+                self.recipe_products_df.filter(
+                    pl.col("recipe_id").is_in(recipes_df.select(pl.col("recipe_id")))
+                )
+                .select(pl.col("recipe_id").value_counts(sort=True).last())
+                .item()["recipe_id"]
+            )
 
-            self._create_plan(recipe_ids_to_exclude=[least_occured_recipe_id])
+            return self._create_plan(recipe_ids_to_exclude=[least_occured_recipe_id])
+
+        return [recipe for recipe in self.recipes if recipe.id in self.plan_recipe_ids]
 
     def create_plan(self):
-        self._create_plan()
-
-        print(self.plan_recipe_ids)
+        return self._create_plan()
