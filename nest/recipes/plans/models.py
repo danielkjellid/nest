@@ -18,6 +18,12 @@ class RecipePlan(BaseModel):
     description = models.TextField(max_length=100, blank=True)
     slug = models.SlugField(max_length=50)
     from_date = models.DateTimeField(blank=True, null=True)
+    home = models.ForeignKey(
+        "homes.Home",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
 
     objects = _RecipePlanManager()
 

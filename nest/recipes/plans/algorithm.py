@@ -1,10 +1,19 @@
 from decimal import Decimal
+from typing import TypedDict
+
 import polars as pl
 
 from nest.recipes.core.records import RecipeDetailRecord
 
 
-class Distributor:
+class RecipeScoreData(TypedDict, total=True):
+    recipe_id: int
+    is_vegetarian: bool
+    is_pescatarian: bool
+    score: int
+
+
+class PlanDistributor:
     def __init__(
         self,
         budget: Decimal,
@@ -26,6 +35,9 @@ class Distributor:
         self.plan_recipe_ids = []
 
     def _get_products_dataframe(self) -> pl.DataFrame:
+        """
+        Create pl.DataFrame containing product and ingredient data.
+        """
         product_data = []
 
         for recipe in self.recipes:
@@ -49,7 +61,11 @@ class Distributor:
 
         return pl.DataFrame(product_data)
 
-    def _calculate_score_for_recipes(self):
+    def _calculate_score_for_recipes(self) -> list[RecipeScoreData]:
+        """
+        Calculate a pleminiray score for all recipes based on common products used,
+        pescatarian and vegetarian.
+        """
         recipes_data = []
         score_weights = {
             "equal_products": 10,
@@ -60,6 +76,7 @@ class Distributor:
         for recipe in self.recipes:
             recipe_score = 0
 
+            # Get a frame of product ids associated with the current iteration.
             recipe_product_ids = self.products_df.filter(recipe_id=recipe.id).select(
                 "product_id"
             )
@@ -76,6 +93,7 @@ class Distributor:
                 .item()
             )
 
+            # Add score base on similarities with other producuts.
             # Pitfall: commonalities like butter, oil etc. Maybe ok?
             recipe_score += similar_products_count * score_weights["equal_products"]
 
@@ -102,23 +120,35 @@ class Distributor:
                 recipe_score += score_weights["vegetarian"]
 
             recipes_data.append(
-                {
-                    "recipe_id": recipe.id,
-                    "recipe_title": recipe.title,
-                    "is_pescatarian": recipe.is_pescatarian,
-                    "is_vegetarian": recipe.is_vegetarian,
-                    "score": recipe_score,
-                }
+                RecipeScoreData(
+                    recipe_id=recipe.id,
+                    is_pescatarian=recipe.is_pescatarian,
+                    is_vegetarian=recipe.is_vegetarian,
+                    score=recipe_score,
+                )
             )
 
         return recipes_data
 
-    def _create_plan(self, recipe_ids_to_exclude: list[int] | None = None):
+    def create_plan(
+        self, recipe_ids_to_exclude: list[int] | None = None
+    ) -> list[RecipeDetailRecord]:
+        """
+        Attempt to create the recipe plan itself.
+        """
+
+        # Bump num to keep track of iterations made.
         self.num_iterations += 1
 
+        # If we've spent the allowed total iterations and still have not found an
+        # applicable plan, we give up.
         if self.num_iterations >= self.max_num_iterations:
             raise Exception("Unable to find an applicable plan...")
 
+        # Filter out recipe ids we want to exclude from the current and subsequent
+        # iterations. We attempt to create the plan requirively, which also menas that
+        # we're filtering recursively. Might have to rethink this as it severely narrows
+        # down options the further down the chain you go, but maybe it's alright?
         recipe_ids_to_exclude = recipe_ids_to_exclude or []
         if len(recipe_ids_to_exclude):
             filtered_recipes = [
@@ -127,6 +157,7 @@ class Distributor:
                 if recipe.id not in recipe_ids_to_exclude
             ]
 
+            # No more recipes to attempt to create plan from, give up.
             if not len(filtered_recipes):
                 raise Exception("Unable to find any applicable plan...")
 
@@ -142,6 +173,10 @@ class Distributor:
             .slice(0, self.total_num_recipes)
         )
 
+        # Calculate the total plan price by combining ingredients from all recipes being
+        # evaluated. E.g. if recipe 1 needs 0,5 cheese, and recipe 2 needs 0,5 cheese,
+        # we aggregate these into requiring 1 cheese in total, and thereafter
+        # calculating the price.
         total_plan_price = (
             self.products_df.filter(
                 pl.col("recipe_id").is_in(recipes_df.select("recipe_id"))
@@ -171,6 +206,8 @@ class Distributor:
         ).item()
 
         if total_plan_price <= self.budget:
+            # If we're within budget, get the ids from the recipes_df, do a sanity check
+            # and populate the plan_recipe_ids list.
             recipe_ids = (
                 recipes_df.select([pl.col("recipe_id")])
                 .get_column("recipe_id")
@@ -186,8 +223,10 @@ class Distributor:
             self.plan_recipe_ids = recipe_ids
 
         else:
-            # Find the recipe that has the least common products with other recipes and
-            # Try to re-run plan without that to maximize ingredient yield.
+            # We're not within budget and have to re-iterate on the solution. Find the
+            # recipe that has the least common products with other recipes and try to
+            # re-run plan without that to avoid affecting the planned recipe list too
+            # much.
             least_occured_recipe_id = (
                 self.products_df.filter(
                     pl.col("recipe_id").is_in(recipes_df.select("recipe_id"))
@@ -196,9 +235,7 @@ class Distributor:
                 .item()["recipe_id"]
             )
 
-            return self._create_plan(recipe_ids_to_exclude=[least_occured_recipe_id])
+            # Recurisvely try to create plan without the least occured recipe.
+            return self.create_plan(recipe_ids_to_exclude=[least_occured_recipe_id])
 
         return [recipe for recipe in self.recipes if recipe.id in self.plan_recipe_ids]
-
-    def create_plan(self):
-        return self._create_plan()
