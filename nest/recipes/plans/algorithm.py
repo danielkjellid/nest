@@ -106,6 +106,11 @@ class Distributor:
         self.num_iterations = 0
         self.max_num_iterations = 20
 
+        self.products_df = self._get_products_dataframe()
+        self.recipe_products_df = self._get_recipe_products_connection_dataframe()
+
+        self.plan_recipe_ids = []
+
     def _get_products_dataframe(self) -> pl.DataFrame:
         product_data = []
 
@@ -145,24 +150,17 @@ class Distributor:
         return pl.DataFrame(recipe_product_connection_data)
 
     def _calculate_score_for_recipes(self):
-        ...
-
-    def create_plan(self):
-        products_df = self._get_products_dataframe()
-        recipe_products_df = self._get_recipe_products_connection_dataframe()
-
         recipes_data = []
-
-        # Calculate score
+        score_weights = {"equal_products": 10, "pescatarian": 5, "vegetarian": 1}
+        print("Recipes", [recipe.id for recipe in self.recipes])
         for recipe in self.recipes:
             recipe_score = 0
-            score_weights = {"equal_products": 10, "pescatarian": 5, "vegetarian": 1}
 
-            recipe_product_ids = recipe_products_df.filter(recipe_id=recipe.id).select(
-                pl.col("product_id")
-            )
+            recipe_product_ids = self.recipe_products_df.filter(
+                recipe_id=recipe.id
+            ).select(pl.col("product_id"))
 
-            related_recipes = recipe_products_df.filter(
+            related_recipes = self.recipe_products_df.filter(
                 (pl.col("recipe_id") != recipe.id)
                 & (pl.col("product_id").is_in(recipe_product_ids))
             )
@@ -175,42 +173,42 @@ class Distributor:
 
             recipe_score += similar_products_count * score_weights["equal_products"]
 
-            # num_pescatarian_recipes_added = len(
-            #     [
-            #         data
-            #         for data in recipes_data
-            #         if data.get("is_pescatarian", False) is True
-            #     ]
-            # )
-            #
-            # if (
-            #     self.num_pescatarian
-            #     and num_pescatarian_recipes_added <= self.num_pescatarian
-            #     and recipe.is_pescatarian
-            # ):
-            #     recipe_score += score_weights["pescatarian"]
-            #
-            # num_vegeterian_recipes_added = len(
-            #     [
-            #         data
-            #         for data in recipes_data
-            #         if data.get("is_pescatarian", False) is True
-            #     ]
-            # )
-            #
-            # if (
-            #     self.num_vegetarian
-            #     and num_vegeterian_recipes_added <= self.num_vegetarian
-            #     and recipe.is_vegetarian
-            # ):
-            #     recipe_score += score_weights["vegetarian"]
+            num_pescatarian_recipes_added = len(
+                [
+                    data
+                    for data in recipes_data
+                    if data.get("is_pescatarian", False) is True
+                ]
+            )
+
+            if (
+                self.num_pescatarian
+                and num_pescatarian_recipes_added <= self.num_pescatarian
+                and recipe.is_pescatarian
+            ):
+                recipe_score += score_weights["pescatarian"]
+
+            num_vegeterian_recipes_added = len(
+                [
+                    data
+                    for data in recipes_data
+                    if data.get("is_pescatarian", False) is True
+                ]
+            )
+
+            if (
+                self.num_vegetarian
+                and num_vegeterian_recipes_added <= self.num_vegetarian
+                and recipe.is_vegetarian
+            ):
+                recipe_score += score_weights["vegetarian"]
 
             # Find the total cost of a recipe by calculating required amount unit price
             # across dataframes.
             recipe_cost = (
-                products_df.filter(pl.col("product_id").is_in(recipe_product_ids))
+                self.products_df.filter(pl.col("product_id").is_in(recipe_product_ids))
                 .join(
-                    recipe_products_df.filter(recipe_id=recipe.id),
+                    self.recipe_products_df.filter(recipe_id=recipe.id),
                     on=pl.col("product_id"),
                 )
                 .unique()
@@ -233,21 +231,113 @@ class Distributor:
                 }
             )
 
+        return recipes_data
+
+    def _create_plan(self, recipe_ids_to_exclude: list[int] | None = None):
+        self.num_iterations += 1
+
+        if self.num_iterations >= self.max_num_iterations:
+            raise Exception("Unable to find an applicable plan...")
+
+        recipe_ids_to_exclude = recipe_ids_to_exclude or []
+        if len(recipe_ids_to_exclude):
+            filtered_recipes = [
+                recipe
+                for recipe in self.recipes
+                if recipe.id not in recipe_ids_to_exclude
+            ]
+            self.recipes = filtered_recipes
+
+        recipes_data = self._calculate_score_for_recipes()
+
+        # Convert recipes into a dataframe and get the top n (total_num_recipes) with
+        # the highest scores.
         recipes_df = (
             pl.DataFrame(recipes_data)
             .sort(by="score", descending=True)
             .slice(0, self.total_num_recipes)
         )
 
-        complete_recipe_products = []
-        products_df.filter(pl.col("product_id"))
+        # Create a dataframe
+        complete_recipe_products_df = (
+            self.recipe_products_df.select(
+                [
+                    pl.col("recipe_id"),
+                    pl.col("product_id"),
+                    pl.col("required_amount"),
+                ]
+            )
+            .filter(pl.col("recipe_id").is_in(recipes_df.select(pl.col("recipe_id"))))
+            .groupby(pl.col("product_id"))
+            .agg(
+                [
+                    pl.col("required_amount").sum(),
+                    pl.col("recipe_id").alias("recipes"),
+                ]
+            )
+        )
 
-        # Calculate price - how? Do we have to list dependencies? Re-run if recipes does not fit into budget excluding one of the recipes?
+        complete_products_needed_df = (
+            self.products_df.select(
+                [
+                    pl.col("product_id"),
+                    pl.col("unit_price"),
+                ]
+            )
+            .filter(
+                pl.col("product_id").is_in(
+                    complete_recipe_products_df.select(pl.col("product_id"))
+                )
+            )
+            .unique()
+            .join(
+                complete_recipe_products_df.select(
+                    [
+                        pl.col("product_id"),
+                        pl.col("recipes"),
+                        pl.col("required_amount"),
+                    ]
+                ),
+                on=pl.col("product_id"),
+            )
+            .with_columns(
+                (
+                    pl.col("unit_price")
+                    * pl.col("required_amount").cast(pl.Float64).ceil()
+                ).alias("total_price")
+            )
+        )
 
-        print(recipes_df)
+        total_plan_price = complete_products_needed_df.select(
+            pl.col("total_price").sum()
+        ).item()
 
-        # Once num recipes is selected, go through and see if we can save some by combining recipe products
+        print(total_plan_price)
 
-        # if selected_plan is over budget, find most expensive recipe an try to rerun
+        if total_plan_price <= self.budget:
+            recipe_ids = (
+                recipes_df.select([pl.col("recipe_id")])
+                .get_column("recipe_id")
+                .to_list()
+            )
 
-        print(recipes_data)
+            if len(recipe_ids) != self.total_num_recipes:
+                raise Exception(
+                    "Something went wrong, we found more or less recipes than we were "
+                    "supposed to."
+                )
+
+            self.plan_recipe_ids = recipe_ids
+
+        else:
+            # run plan without least occured
+            least_occured_recipe_id = self.recipe_products_df.select(
+                pl.col("recipe_id").value_counts(sort=True).last()
+            ).item()["recipe_id"]
+
+            self._create_plan(recipe_ids_to_exclude=[least_occured_recipe_id])
+
+    def create_plan(self):
+        self._create_plan()
+
+        print(self.plan_recipe_ids)
