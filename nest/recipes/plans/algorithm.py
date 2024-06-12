@@ -3,6 +3,7 @@ from typing import TypedDict
 
 import polars as pl
 
+from nest.core.exceptions import ApplicationError
 from nest.recipes.core.records import RecipeDetailRecord
 
 
@@ -32,7 +33,7 @@ class PlanDistributor:
 
         self.products_df = self._get_products_dataframe()
 
-        self.plan_recipe_ids = []
+        self.plan_recipe_ids: list[int] = []
 
     def _get_products_dataframe(self) -> pl.DataFrame:
         """
@@ -44,6 +45,14 @@ class PlanDistributor:
             for group in recipe.ingredient_item_groups:
                 for item in group.ingredient_items:
                     product = item.ingredient.product
+
+                    if product.unit_quantity is None:
+                        raise ApplicationError(
+                            "Product is missing unit quantity, impossible to "
+                            "calculate required quantity without it",
+                            extra={"product_id": product.id},
+                        )
+
                     data = {
                         "recipe_id": recipe.id,
                         "product_id": product.id,
@@ -66,7 +75,7 @@ class PlanDistributor:
         Calculate a pleminiray score for all recipes based on common products used,
         pescatarian and vegetarian.
         """
-        recipes_data = []
+        recipes_data: list[RecipeScoreData] = []
         score_weights = {
             "equal_products": 10,
             "pescatarian": 5,
@@ -77,9 +86,9 @@ class PlanDistributor:
             recipe_score = 0
 
             # Get a frame of product ids associated with the current iteration.
-            recipe_product_ids = self.products_df.filter(recipe_id=recipe.id).select(
-                "product_id"
-            )
+            recipe_product_ids = self.products_df.filter(
+                recipe_id=recipe.id
+            ).get_column("product_id")
 
             # Count amount of products used in this recipe, which is also used in other
             # recipes.
@@ -173,14 +182,14 @@ class PlanDistributor:
             .slice(0, self.total_num_recipes)
         )
 
+        recipes_df_ids = recipes_df.get_column("recipe_id")
+
         # Calculate the total plan price by combining ingredients from all recipes being
         # evaluated. E.g. if recipe 1 needs 0,5 cheese, and recipe 2 needs 0,5 cheese,
         # we aggregate these into requiring 1 cheese in total, and thereafter
         # calculating the price.
         total_plan_price = (
-            self.products_df.filter(
-                pl.col("recipe_id").is_in(recipes_df.select("recipe_id"))
-            )
+            self.products_df.filter(pl.col("recipe_id").is_in(recipes_df_ids))
             .select(
                 [
                     "recipe_id",
@@ -228,9 +237,7 @@ class PlanDistributor:
             # re-run plan without that to avoid affecting the planned recipe list too
             # much.
             least_occured_recipe_id = (
-                self.products_df.filter(
-                    pl.col("recipe_id").is_in(recipes_df.select("recipe_id"))
-                )
+                self.products_df.filter(pl.col("recipe_id").is_in(recipes_df_ids))
                 .select(pl.col("recipe_id").value_counts(sort=True).last())
                 .item()["recipe_id"]
             )
