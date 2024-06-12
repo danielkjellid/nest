@@ -22,7 +22,6 @@ class Distributor:
         self.max_num_iterations = 20
 
         self.products_df = self._get_products_dataframe()
-        self.recipe_products_df = self._get_recipe_products_connection_dataframe()
 
         self.plan_recipe_ids = []
 
@@ -34,35 +33,21 @@ class Distributor:
                 for item in group.ingredient_items:
                     product = item.ingredient.product
                     data = {
+                        "recipe_id": recipe.id,
                         "product_id": product.id,
                         "name": product.full_name,
                         "unit_price": product.gross_unit_price,
                         "unit_quantity": product.unit_quantity,
                         "unit_abbreviation": product.unit.abbreviation,
-                    }
-                    product_data.append(data)
-
-        return pl.DataFrame(product_data)
-
-    def _get_recipe_products_connection_dataframe(self) -> pl.DataFrame:
-        recipe_product_connection_data = []
-
-        for recipe in self.recipes:
-            for group in recipe.ingredient_item_groups:
-                for item in group.ingredient_items:
-                    product = item.ingredient.product
-                    data = {
-                        "recipe_id": recipe.id,
-                        "product_id": product.id,
                         "portion_quantity": item.portion_quantity,
                         "portion_quantity_unit_abbr": item.portion_quantity_unit.abbreviation,
                         "required_amount": (
                             item.portion_quantity / product.unit_quantity
                         ),
                     }
-                    recipe_product_connection_data.append(data)
+                    product_data.append(data)
 
-        return pl.DataFrame(recipe_product_connection_data)
+        return pl.DataFrame(product_data)
 
     def _calculate_score_for_recipes(self):
         recipes_data = []
@@ -75,30 +60,27 @@ class Distributor:
         for recipe in self.recipes:
             recipe_score = 0
 
-            recipe_product_ids = self.recipe_products_df.filter(
-                recipe_id=recipe.id
-            ).select(pl.col("product_id"))
-
-            related_recipes = self.recipe_products_df.filter(
-                (pl.col("recipe_id") != recipe.id)
-                & (pl.col("product_id").is_in(recipe_product_ids))
+            recipe_product_ids = self.products_df.filter(recipe_id=recipe.id).select(
+                "product_id"
             )
 
             # Count amount of products used in this recipe, which is also used in other
             # recipes.
             similar_products_count = (
-                related_recipes.select(pl.col("product_id")).count().item()
+                self.products_df.filter(
+                    (pl.col("recipe_id") != recipe.id)
+                    & (pl.col("product_id").is_in(recipe_product_ids))
+                )
+                .select("product_id")
+                .count()
+                .item()
             )
 
             # Pitfall: commonalities like butter, oil etc. Maybe ok?
             recipe_score += similar_products_count * score_weights["equal_products"]
 
             num_pescatarian_recipes_added = len(
-                [
-                    data
-                    for data in recipes_data
-                    if data.get("is_pescatarian", False) is True
-                ]
+                [d for d in recipes_data if d.get("is_pescatarian", False) is True]
             )
 
             if (
@@ -109,11 +91,7 @@ class Distributor:
                 recipe_score += score_weights["pescatarian"]
 
             num_vegeterian_recipes_added = len(
-                [
-                    data
-                    for data in recipes_data
-                    if data.get("is_pescatarian", False) is True
-                ]
+                [d for d in recipes_data if d.get("is_vegetarian", False) is True]
             )
 
             if (
@@ -123,25 +101,6 @@ class Distributor:
             ):
                 recipe_score += score_weights["vegetarian"]
 
-            # Find the total cost of a recipe by calculating required amount unit price
-            # across dataframes.
-            recipe_cost = (
-                self.products_df.filter(pl.col("product_id").is_in(recipe_product_ids))
-                .join(
-                    self.recipe_products_df.filter(recipe_id=recipe.id),
-                    on=pl.col("product_id"),
-                )
-                .unique()
-                .with_columns(
-                    (
-                        pl.col("unit_price")
-                        * pl.col("required_amount").cast(pl.Float64).ceil()
-                    ).alias("total_price")
-                )
-                .select(pl.sum("total_price"))
-                .item()
-            )
-
             recipes_data.append(
                 {
                     "recipe_id": recipe.id,
@@ -149,7 +108,6 @@ class Distributor:
                     "is_pescatarian": recipe.is_pescatarian,
                     "is_vegetarian": recipe.is_vegetarian,
                     "score": recipe_score,
-                    "cost": recipe_cost,
                 }
             )
 
@@ -184,58 +142,32 @@ class Distributor:
             .slice(0, self.total_num_recipes)
         )
 
-        # Create a dataframe
-        complete_recipe_products_df = (
-            self.recipe_products_df.select(
+        total_plan_price = (
+            self.products_df.filter(
+                pl.col("recipe_id").is_in(recipes_df.select("recipe_id"))
+            )
+            .select(
                 [
-                    pl.col("recipe_id"),
-                    pl.col("product_id"),
-                    pl.col("required_amount"),
+                    "recipe_id",
+                    "product_id",
+                    "unit_price",
+                    "required_amount",
                 ]
             )
-            .filter(pl.col("recipe_id").is_in(recipes_df.select(pl.col("recipe_id"))))
-            .groupby(pl.col("product_id"))
+            .groupby(["product_id", "unit_price"])
             .agg(
                 [
                     pl.col("required_amount").sum(),
-                    pl.col("recipe_id").alias("recipes"),
+                    pl.col("recipe_id").alias("recipes").unique(),
                 ]
-            )
-        )
-
-        complete_products_needed_df = (
-            self.products_df.select(
-                [
-                    pl.col("product_id"),
-                    pl.col("unit_price"),
-                ]
-            )
-            .filter(
-                pl.col("product_id").is_in(
-                    complete_recipe_products_df.select(pl.col("product_id"))
-                )
-            )
-            .unique()
-            .join(
-                complete_recipe_products_df.select(
-                    [
-                        pl.col("product_id"),
-                        pl.col("recipes"),
-                        pl.col("required_amount"),
-                    ]
-                ),
-                on=pl.col("product_id"),
             )
             .with_columns(
                 (
-                    pl.col("unit_price")
-                    * pl.col("required_amount").cast(pl.Float64).ceil()
+                    "unit_price" * pl.col("required_amount").cast(pl.Float64).ceil()
                 ).alias("total_price")
             )
-        )
-
-        total_plan_price = complete_products_needed_df.select(
-            pl.col("total_price").sum()
+            .select("total_price")
+            .sum()
         ).item()
 
         if total_plan_price <= self.budget:
@@ -254,10 +186,11 @@ class Distributor:
             self.plan_recipe_ids = recipe_ids
 
         else:
-            # run plan without least occured
+            # Find the recipe that has the least common products with other recipes and
+            # Try to re-run plan without that to maximize ingredient yield.
             least_occured_recipe_id = (
-                self.recipe_products_df.filter(
-                    pl.col("recipe_id").is_in(recipes_df.select(pl.col("recipe_id")))
+                self.products_df.filter(
+                    pl.col("recipe_id").is_in(recipes_df.select("recipe_id"))
                 )
                 .select(pl.col("recipe_id").value_counts(sort=True).last())
                 .item()["recipe_id"]
