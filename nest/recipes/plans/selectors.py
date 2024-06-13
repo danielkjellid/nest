@@ -15,18 +15,18 @@ from nest.recipes.steps.selectors import get_steps_for_recipes
 RECIPE_GRACE_PERIOD_WEEKS = 2
 
 
-def find_recipes_applicable_for_plan(plan_id: int) -> list[RecipeDetailRecord]:
-    first_possible_from_date = timezone.now() - timedelta(
-        weeks=RECIPE_GRACE_PERIOD_WEEKS
-    )
+def find_recipes_applicable_for_plan(
+    *, grace_period_weeks: int = RECIPE_GRACE_PERIOD_WEEKS
+) -> list[RecipeDetailRecord]:
+    first_possible_from_date = timezone.now() - timedelta(weeks=grace_period_weeks)
     recipes = (
         Recipe.objects.exclude(
-            plan_items__recipe_plan_id=plan_id,
             plan_items__recipe_plan__from_date__lte=first_possible_from_date,
         )
         .filter(
             status=RecipeStatus.PUBLISHED,
         )
+        # TODO: Necessary? Should this rather be weighted in the algo?
         .annotate(num_plan_usages=Count("plan_items"))
         .annotate_duration()
         .order_by("-num_plan_usages")

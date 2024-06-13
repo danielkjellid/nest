@@ -5,6 +5,7 @@ import polars as pl
 
 from nest.core.exceptions import ApplicationError
 from nest.recipes.core.records import RecipeDetailRecord
+from nest.units.utils import convert_unit_quantity
 
 
 class RecipeScoreData(TypedDict, total=True):
@@ -46,9 +47,15 @@ class PlanDistributor:
                 for item in group.ingredient_items:
                     product = item.ingredient.product
 
-                    if product.unit_quantity is None:
+                    converted_quantity = convert_unit_quantity(
+                        quantity=item.portion_quantity,
+                        from_unit=item.portion_quantity_unit,
+                        to_unit=product.unit,
+                    )
+
+                    if converted_quantity is None or product.unit_quantity is None:
                         raise ApplicationError(
-                            "Product is missing unit quantity, impossible to "
+                            "Recipe or product is missing quantity, impossible to "
                             "calculate required quantity without it",
                             extra={"product_id": product.id},
                         )
@@ -62,9 +69,7 @@ class PlanDistributor:
                         "unit_abbreviation": product.unit.abbreviation,
                         "portion_quantity": item.portion_quantity,
                         "portion_quantity_unit_abbr": item.portion_quantity_unit.abbreviation,
-                        "required_amount": (
-                            item.portion_quantity / product.unit_quantity
-                        ),
+                        "required_amount": converted_quantity / product.unit_quantity,
                     }
                     product_data.append(data)
 
