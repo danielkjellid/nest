@@ -51,6 +51,7 @@ class PlanDistributor:
                         quantity=item.portion_quantity,
                         from_unit=item.portion_quantity_unit,
                         to_unit=product.unit,
+                        piece_weight=product.unit_quantity,
                     )
 
                     if converted_quantity is None or product.unit_quantity is None:

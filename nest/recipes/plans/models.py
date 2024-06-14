@@ -15,7 +15,7 @@ class RecipePlan(BaseModel):
     """
 
     title = models.CharField(max_length=50)
-    description = models.TextField(max_length=100, blank=True)
+    description = models.TextField(max_length=100, blank=True, null=True)
     slug = models.SlugField(max_length=50)
     from_date = models.DateTimeField(blank=True, null=True)
     home = models.ForeignKey(
