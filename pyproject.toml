@@ -171,7 +171,8 @@ DEP002 = [
     "django-vite",
     "pillow",
     "gunicorn",
-    "whitenoise"
+    "whitenoise",
+    "freezegun",
 ]
 # Dev dependencies that are imported in the codebase
 DEP004 = ["debug_toolbar"]
