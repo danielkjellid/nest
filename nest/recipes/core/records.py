@@ -114,3 +114,4 @@ class RecipeDetailRecord(RecipeRecord):
     health_score: RecipeHealthScore | None  # TODO: Needs to be annotated
     ingredient_item_groups: list[RecipeIngredientItemGroupRecord]
     steps: list[RecipeStepRecord]
+    num_plan_usages: int

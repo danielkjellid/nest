@@ -15,7 +15,12 @@ def get_recipe(*, pk: int) -> RecipeDetailRecord:
     """
     Get a recipe instance.
     """
-    recipe = Recipe.objects.filter(id=pk).annotate_duration().first()
+    recipe = (
+        Recipe.objects.filter(id=pk)
+        .annotate_duration()
+        .annotate_num_plan_usages()  # type: ignore
+        .first()
+    )
 
     if not recipe:
         raise ApplicationError(message="Recipe does not exist.")
@@ -42,6 +47,7 @@ def get_recipe(*, pk: int) -> RecipeDetailRecord:
         health_score=None,
         ingredient_item_groups=ingredient_groups,
         steps=steps,
+        num_plan_usages=getattr(recipe, "num_plan_usages", 0),
     )
 
 
