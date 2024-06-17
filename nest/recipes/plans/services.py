@@ -6,7 +6,7 @@ from django.db import transaction
 from django.utils.text import slugify
 
 from nest.homes.records import HomeRecord
-from nest.recipes.core.records import RecipeRecord, RecipeDetailRecord
+from nest.recipes.core.records import RecipeDetailRecord
 from nest.recipes.plans.algorithm import PlanDistributor
 from nest.recipes.plans.models import RecipePlan, RecipePlanItem
 from nest.recipes.plans.selectors import find_recipes_applicable_for_plan
@@ -17,7 +17,7 @@ def create_weekly_recipe_plan_for_home(
     home: HomeRecord,
     from_date: date,
     auto_generated: bool = False,
-):
+) -> None:
     num_items = 7
     week_number = from_date.isocalendar().week
     to_date = from_date + timedelta(days=num_items)
@@ -29,12 +29,14 @@ def create_weekly_recipe_plan_for_home(
     )
 
     create_recipe_plan(
-        home=home,
         title=title,
         description=description,
         from_date=from_date,
         budget=home.weekly_budget,
         num_items=num_items,
+        num_portions_per_recipe=home.num_residents,
+        num_pescatarian=0,
+        num_vegetarian=0,
         grace_period_weeks=home.num_weeks_recipe_rotation,
     )
 
@@ -46,11 +48,12 @@ def create_recipe_plan(
     description: str | None = None,
     from_date: date,
     budget: Decimal,
+    num_portions_per_recipe: int,
     num_items: int,
     num_pescatarian: int,
     num_vegetarian: int,
     grace_period_weeks: int | None = None,
-):
+) -> None:
     plan_slug = slugify(title)
     recipe_plan = RecipePlan.objects.create(
         title=title,
@@ -65,6 +68,7 @@ def create_recipe_plan(
     plan_distributor = PlanDistributor(
         budget=budget,
         total_num_recipes=num_items,
+        num_portions_per_recipe=num_portions_per_recipe,
         num_pescatarian=num_pescatarian,
         num_vegetarian=num_vegetarian,
         applicable_recipes=applicable_recipes,

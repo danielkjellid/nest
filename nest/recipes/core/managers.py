@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import TYPE_CHECKING
 
-from django.db.models import DurationField, Q, Sum
+from django.db.models import Count, DurationField, Q, Sum
 from django.db.models.functions import Coalesce
 
 from nest.core.managers import BaseQuerySet
@@ -40,3 +40,10 @@ class RecipeQuerySet(BaseQuerySet["models.Recipe"]):
                 timedelta(seconds=0),
             ),
         )
+
+    def annotate_num_plan_usages(self) -> BaseQuerySet["models.Recipe"]:
+        """
+        Annotate how many times this recipe has been used in plans.
+        """
+
+        return self.annotate(num_plan_usages=Count("plan_items__recipe_plan"))

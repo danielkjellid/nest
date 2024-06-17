@@ -2759,7 +2759,8 @@
                     "isPescatarian",
                     "duration",
                     "ingredientItemGroups",
-                    "steps"
+                    "steps",
+                    "numPlanUsages"
                 ],
                 "properties": {
                     "id": {
@@ -2834,6 +2835,10 @@
                         "items": {
                             "$ref": "#/components/schemas/RecipeStepRecord"
                         }
+                    },
+                    "numPlanUsages": {
+                        "title": "Num Plan Usages",
+                        "type": "integer"
                     }
                 }
             },

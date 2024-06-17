@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-from django.db.models import Count
 from django.utils import timezone
 
 from nest.recipes.core.enums import RecipeStatus
@@ -16,20 +15,19 @@ RECIPE_GRACE_PERIOD_WEEKS = 2
 
 
 def find_recipes_applicable_for_plan(
-    *, grace_period_weeks: int = RECIPE_GRACE_PERIOD_WEEKS
+    *, grace_period_weeks: int | None = RECIPE_GRACE_PERIOD_WEEKS
 ) -> list[RecipeDetailRecord]:
     first_possible_from_date = timezone.now() - timedelta(weeks=grace_period_weeks)
+    print(first_possible_from_date.date())
     recipes = (
         Recipe.objects.exclude(
-            plan_items__recipe_plan__from_date__lte=first_possible_from_date,
+            plan_items__recipe_plan__from_date__lt=first_possible_from_date,
         )
         .filter(
             status=RecipeStatus.PUBLISHED,
         )
-        # TODO: Necessary? Should this rather be weighted in the algo?
-        .annotate(num_plan_usages=Count("plan_items"))
         .annotate_duration()
-        .order_by("-num_plan_usages")
+        .annotate_num_plan_usages()
     )
 
     recipe_ids = [recipe.id for recipe in recipes]
@@ -58,6 +56,7 @@ def find_recipes_applicable_for_plan(
             health_score=None,
             ingredient_item_groups=recipe_ingredient_item_groups[recipe.id],
             steps=recipe_steps[recipe.id],
+            num_plan_usages=getattr(recipe, "num_plan_usages", 0),
         )
         for recipe in recipes
     ]

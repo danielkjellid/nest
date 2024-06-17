@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from nest.core.exceptions import ApplicationError
 
 from ..ingredients.selectors import get_recipe_ingredient_item_groups_for_recipe
@@ -11,14 +9,18 @@ from .records import (
     RecipeDurationRecord,
     RecipeRecord,
 )
-from ...core.types import FetchedResult
 
 
 def get_recipe(*, pk: int) -> RecipeDetailRecord:
     """
     Get a recipe instance.
     """
-    recipe = Recipe.objects.filter(id=pk).annotate_duration().first()
+    recipe = (
+        Recipe.objects.filter(id=pk)
+        .annotate_duration()
+        .annotate_num_plan_usages()
+        .first()
+    )
 
     if not recipe:
         raise ApplicationError(message="Recipe does not exist.")
@@ -45,6 +47,7 @@ def get_recipe(*, pk: int) -> RecipeDetailRecord:
         health_score=None,
         ingredient_item_groups=ingredient_groups,
         steps=steps,
+        num_plan_usages=getattr(recipe, "num_plan_usages", 0),
     )
 
 

@@ -18,7 +18,8 @@ def s3_asset_delete(*, storage_key: str | None = None) -> None:
             "Storage key cannot be empty, to able to cleanup remote folder."
         )
 
-    storage = S3Storage(aws_s3_bucket_name=settings.AWS_S3_BUCKET_NAME)
+    bucket_name: str = settings.AWS_S3_BUCKET_NAME  # type: ignore[misc]
+    storage = S3Storage(aws_s3_bucket_name=bucket_name)
     parent_path_key = storage_key.rsplit("/", 1)[0]  # Get everything before the last /
 
     if storage.exists(parent_path_key):

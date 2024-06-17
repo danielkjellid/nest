@@ -1,7 +1,9 @@
 from django.db import models
+
 from nest.core.models import BaseModel
+
 from ..core.models import Recipe
-from .managers import RecipePlanQuerySet, RecipePlanItemQuerySet
+from .managers import RecipePlanItemQuerySet, RecipePlanQuerySet
 
 # Create your models here.
 
@@ -28,7 +30,9 @@ class RecipePlan(BaseModel):
     objects = _RecipePlanManager()
 
     def __str__(self) -> str:
-        return f"{self.title} - {self.from_date.date()}"
+        if self.from_date:
+            return f"{self.title} - {self.from_date.date()}"
+        return self.title
 
 
 _RecipePlanItemManager = models.Manager.from_queryset(RecipePlanItemQuerySet)

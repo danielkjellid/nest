@@ -2,9 +2,10 @@ from decimal import Decimal
 
 import pytest
 from django.utils import timezone
+
 from nest.recipes.plans.algorithm import PlanDistributor
 from nest.recipes.plans.models import RecipePlan, RecipePlanItem
-from nest.recipes.plans.services import create_recipe_plan, _create_recipe_plan_items
+from nest.recipes.plans.services import _create_recipe_plan_items, create_recipe_plan
 from tests.factories.records import RecipeDetailRecordFactory
 
 pytestmark = pytest.mark.django_db

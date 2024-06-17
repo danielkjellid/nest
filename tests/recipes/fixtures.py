@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 from typing import Callable, TypedDict
 
@@ -15,7 +15,6 @@ from nest.recipes.ingredients.models import (
 from nest.recipes.plans.models import RecipePlan, RecipePlanItem
 from nest.recipes.steps.enums import RecipeStepType
 from nest.recipes.steps.models import RecipeStep
-
 
 ##########
 # Recipe #
@@ -486,7 +485,7 @@ def create_recipe_plan_item_from_spec(
 
 @pytest.fixture
 def recipe_plan_item(
-    create_instance, create_recipe_plan_item_from_spec, default_recipe_
+    create_instance, create_recipe_plan_item_from_spec, default_recipe_plan_item_spec
 ):
     return create_instance(
         create_callback=create_recipe_plan_item_from_spec,

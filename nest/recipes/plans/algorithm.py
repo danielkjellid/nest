@@ -20,12 +20,14 @@ class PlanDistributor:
         self,
         budget: Decimal,
         total_num_recipes: int,
+        num_portions_per_recipe: int,
         num_pescatarian: int,
         num_vegetarian: int,
         applicable_recipes: list[RecipeDetailRecord],
     ) -> None:
         self.budget = budget
         self.total_num_recipes = total_num_recipes
+        self.num_portions_per_recipe = num_portions_per_recipe
         self.num_pescatarian = num_pescatarian
         self.num_vegetarian = num_vegetarian
         self.recipes = applicable_recipes
@@ -43,12 +45,18 @@ class PlanDistributor:
         product_data = []
 
         for recipe in self.recipes:
+            recipe_portion_factor = (
+                self.num_portions_per_recipe / recipe.default_num_portions
+            )
+
             for group in recipe.ingredient_item_groups:
                 for item in group.ingredient_items:
                     product = item.ingredient.product
 
+                    portion_quantity = item.portion_quantity * recipe_portion_factor
+
                     converted_quantity = convert_unit_quantity(
-                        quantity=item.portion_quantity,
+                        quantity=portion_quantity,
                         from_unit=item.portion_quantity_unit,
                         to_unit=product.unit,
                         piece_weight=product.unit_quantity,
@@ -86,6 +94,7 @@ class PlanDistributor:
             "equal_products": 10,
             "pescatarian": 5,
             "vegetarian": 1,
+            "num_usages": -3,  # Punish recipes that's often used in plans.
         }
 
         for recipe in self.recipes:
@@ -133,6 +142,8 @@ class PlanDistributor:
                 and recipe.is_vegetarian
             ):
                 recipe_score += score_weights["vegetarian"]
+
+            recipe_score += recipe.num_plan_usages * score_weights["num_usages"]
 
             recipes_data.append(
                 RecipeScoreData(
