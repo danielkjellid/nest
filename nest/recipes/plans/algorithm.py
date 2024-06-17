@@ -45,9 +45,9 @@ class PlanDistributor:
         product_data = []
 
         for recipe in self.recipes:
-            recipe_portion_factor = (
+            recipe_portion_factor = Decimal(
                 self.num_portions_per_recipe / recipe.default_num_portions
-            )
+            ).quantize(Decimal("1.0"))
 
             for group in recipe.ingredient_item_groups:
                 for item in group.ingredient_items:

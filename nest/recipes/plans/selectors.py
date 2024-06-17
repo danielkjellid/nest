@@ -11,13 +11,14 @@ from nest.recipes.ingredients.selectors import (
 from nest.recipes.steps.selectors import get_steps_for_recipes
 
 # Have at least two weeks between recipes being used in plans.
-RECIPE_GRACE_PERIOD_WEEKS = 2
+RECIPE_GRACE_PERIOD_WEEKS = 2.0
 
 
 def find_recipes_applicable_for_plan(
-    *, grace_period_weeks: int | None = RECIPE_GRACE_PERIOD_WEEKS
+    *, grace_period_weeks: float | None = None
 ) -> list[RecipeDetailRecord]:
-    first_possible_from_date = timezone.now() - timedelta(weeks=grace_period_weeks)
+    grace_period = grace_period_weeks or RECIPE_GRACE_PERIOD_WEEKS
+    first_possible_from_date = timezone.now() - timedelta(weeks=float(grace_period))
     print(first_possible_from_date.date())
     recipes = (
         Recipe.objects.exclude(
