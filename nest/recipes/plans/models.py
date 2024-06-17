@@ -5,8 +5,6 @@ from nest.core.models import BaseModel
 from ..core.models import Recipe
 from .managers import RecipePlanItemQuerySet, RecipePlanQuerySet
 
-# Create your models here.
-
 _RecipePlanManager = models.Manager.from_queryset(RecipePlanQuerySet)
 
 
