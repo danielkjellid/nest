@@ -18,7 +18,7 @@ def get_recipe(*, pk: int) -> RecipeDetailRecord:
     recipe = (
         Recipe.objects.filter(id=pk)
         .annotate_duration()
-        .annotate_num_plan_usages()
+        .annotate_num_plan_usages()  # type: ignore
         .first()
     )
 

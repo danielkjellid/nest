@@ -28,7 +28,7 @@ def find_recipes_applicable_for_plan(
             status=RecipeStatus.PUBLISHED,
         )
         .annotate_duration()
-        .annotate_num_plan_usages()
+        .annotate_num_plan_usages()  # type: ignore
     )
 
     recipe_ids = [recipe.id for recipe in recipes]
