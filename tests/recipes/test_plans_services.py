@@ -41,6 +41,7 @@ def test_service_create_recipe_plan(
             title="Example title",
             description=None,
             budget=budget,
+            num_portions_per_recipe=4,
             num_items=num_items,
             num_pescatarian=num_pescatarian,
             num_vegetarian=num_vegetarian,
