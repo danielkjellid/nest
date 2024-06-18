@@ -108,10 +108,35 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
       const ingredientGroup = ingredientGroupsData[index]
       const ingredientsData = [...ingredientGroup.ingredientItems]
 
-      ingredientsData.splice(ingredientIndex, 1)
+      const deletedIngredientItems = ingredientsData.splice(ingredientIndex, 1)
       ingredientGroup.ingredientItems = ingredientsData
 
       setIngredientGroups(ingredientGroupsData)
+
+      // Update related steps as well so that they don't automatically get assigned the ingredient
+      // if it's added back.
+      const stepsData = [...steps]
+      const deletedIngredientIds = deletedIngredientItems.map(
+        (ingredientItem) => ingredientItem.ingredient.id
+      )
+      const stepsWithAssignedIngredientItem = steps.filter((step) =>
+        step.ingredientItems.filter((ingredientItem) =>
+          deletedIngredientIds.includes(ingredientItem.ingredient.id)
+        )
+      )
+
+      stepsWithAssignedIngredientItem.forEach((step) => {
+        const stepIndex = stepsData.indexOf(step)
+
+        if (stepIndex === -1) return
+
+        const ingredientsData = [...step.ingredientItems]
+        ingredientsData.splice(ingredientIndex, 1)
+        step.ingredientItems = ingredientsData
+
+        stepsData[stepIndex] = step
+      })
+      setSteps(stepsData)
       resetValidation()
     },
   }

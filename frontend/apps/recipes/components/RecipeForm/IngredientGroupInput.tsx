@@ -106,10 +106,11 @@ function IngredientInput({
           // Filter out already used ingredients in the same group.
           .filter(
             (ingredient) =>
+              // Not the ingredient already assigned to this IngredientItem.
               (ingredientItem && ingredientItem.ingredient.id === ingredient.id) ||
+              // Or ingredients already assigned to other ingredient items.
               !ingredientItemGroup.ingredientItems
                 .flatMap((ingredientItem) => ingredientItem.ingredient.id)
-                .filter((id) => id !== undefined)
                 .includes(ingredient.id)
           )
           .map((ingredient) => ({
@@ -118,7 +119,7 @@ function IngredientInput({
             description: ingredient.product.fullName,
             value: ingredient.id.toString(),
           })),
-      [ingredients, ingredientItemGroup]
+      [ingredients, ingredientItemGroup, ingredientItem]
     ) || []
 
   return (
@@ -271,7 +272,7 @@ function IngredientGroupInput({
                   units={units}
                   unitOptions={unitOptions}
                   canBeDeleted={ingredientGroup.ingredientItems.length > 1}
-                  onInputDelete={() => onAction('inputDelete', groupIndex)}
+                  onInputDelete={() => onAction('inputDelete', groupIndex, ingredientIndex)}
                   onInputChange={(data) =>
                     onAction('inputChange', groupIndex, ingredientIndex, data)
                   }
