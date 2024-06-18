@@ -28,7 +28,6 @@ function RecipeEditInner({ recipeId, results }: RecipeEditInnerProps) {
 
   const editRecipe = async (recipeData: Recipe) => {
     const payload = makePayload(recipeData)
-    console.log(payload)
     try {
       await performPut({ url: urls.recipes.edit({ id: recipeId }), data: payload })
       notifications.show({
@@ -42,7 +41,14 @@ function RecipeEditInner({ recipeId, results }: RecipeEditInnerProps) {
     }
   }
 
-  return <RecipeForm recipe={recipe} ingredients={ingredients || []} onSubmit={editRecipe} />
+  return (
+    <RecipeForm
+      recipe={recipe}
+      ingredients={ingredients || []}
+      onSubmit={editRecipe}
+      key={new Date().toString()}
+    />
+  )
 }
 
 function RecipeEdit() {

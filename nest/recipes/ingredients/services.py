@@ -8,12 +8,14 @@ from pydantic import BaseModel, Field
 from nest.audit_logs.services import log_create_or_updated, log_delete
 from nest.core.exceptions import ApplicationError
 from nest.recipes.steps.models import RecipeStep
-
+import structlog
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from .records import RecipeIngredientRecord
 
 if TYPE_CHECKING:
     from nest.recipes.steps.services import Step
+
+logger = structlog.get_logger()
 
 
 def create_recipe_ingredient(
@@ -102,11 +104,16 @@ def create_or_update_recipe_ingredient_items(
     groups: list[IngredientGroupItem],
     steps: list["Step"],
 ) -> None:
+    logger.info("Creating and updating ingredient items")
+
     ingredient_items_to_create: list[RecipeIngredientItem] = []
     ingredient_items_to_update: list[RecipeIngredientItem] = []
 
     recipe_groups = RecipeIngredientItemGroup.objects.filter(recipe_id=recipe_id)
     recipe_steps = RecipeStep.objects.filter(recipe_id=recipe_id)
+    existing_recipe_ingredient_items = list(
+        RecipeIngredientItem.objects.filter(ingredient_group__recipe_id=recipe_id)
+    )
 
     # All ingredient items needs to have an ingredient group, therefore, the subset of
     # all items in groups combined should make up the whole set, therefore, it makes
@@ -142,9 +149,14 @@ def create_or_update_recipe_ingredient_items(
                 ) from exc
 
     if len(ingredient_items_to_create):
+        logger.info("Creating ingredient items", amount=len(ingredient_items_to_create))
         RecipeIngredientItem.objects.bulk_create(ingredient_items_to_create)
 
     if len(ingredient_items_to_update):
+        logger.info(
+            "Updating ingredient items",
+            items=[item.id for item in ingredient_items_to_update],
+        )
         RecipeIngredientItem.objects.bulk_update(
             ingredient_items_to_update,
             fields=[
@@ -155,6 +167,18 @@ def create_or_update_recipe_ingredient_items(
                 "portion_quantity_unit_id",
             ],
         )
+
+    ingreident_items_ids_to_delete = [
+        ingredient_item.id
+        for ingredient_item in existing_recipe_ingredient_items
+        if ingredient_item.id not in [item.id for item in ingredient_items_to_update]
+    ]
+
+    if len(ingreident_items_ids_to_delete):
+        logger.info("Deleting ingredient items", items=ingreident_items_ids_to_delete)
+        RecipeIngredientItem.objects.filter(
+            id__in=ingreident_items_ids_to_delete
+        ).delete()
 
 
 def _validate_ingredient_item_groups(
