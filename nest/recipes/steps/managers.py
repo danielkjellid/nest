@@ -8,3 +8,7 @@ if TYPE_CHECKING:
 
 class RecipeStepQuerySet(BaseQuerySet["models.RecipeStep"]):
     ...
+
+
+class RecipeStepIngredientItemQuerySet(BaseQuerySet["models.RecipeStepIngredientItem"]):
+    ...

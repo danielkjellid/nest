@@ -134,15 +134,12 @@ def create_or_update_recipe_attributes(
     create_or_update_recipe_ingredient_item_groups(
         recipe_id=recipe_id, ingredient_item_groups=ingredient_item_groups
     )
-    create_or_update_recipe_steps(recipe_id=recipe_id, steps=steps)
 
-    # Once item groups and steps has been successfully updated, create or update
-    # existing ingredient items.
+    # Once items groups has been created, create steps and step item relations.
     transaction.on_commit(
         functools.partial(
-            create_or_update_recipe_ingredient_items,
+            create_or_update_recipe_steps,
             recipe_id=recipe_id,
-            groups=ingredient_item_groups,
             steps=steps,
         )
     )

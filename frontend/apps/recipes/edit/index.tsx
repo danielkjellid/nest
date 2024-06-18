@@ -19,9 +19,10 @@ interface RecipeEditInnerProps {
     recipe: RecipeDetailRecordAPIResponse
     ingredients: RecipeIngredientRecordListAPIResponse
   }
+  refetch: () => void
 }
 
-function RecipeEditInner({ recipeId, results }: RecipeEditInnerProps) {
+function RecipeEditInner({ recipeId, results, refetch }: RecipeEditInnerProps) {
   const { data: ingredients } = results.ingredients
   const { data: recipe } = results.recipe
   const navigate = useNavigate()
@@ -36,6 +37,7 @@ function RecipeEditInner({ recipeId, results }: RecipeEditInnerProps) {
         message: 'Recipe was successfully updated.',
       })
       navigate(routes.overview.build())
+      refetch()
     } catch (e) {
       console.log(e)
     }
@@ -53,11 +55,15 @@ function RecipeEdit() {
     urls.recipes.ingredients.list()
   )
 
+  const refetch = () => {
+    recipe.reload()
+  }
+
   return (
     <View<object, RecipeEditInnerProps>
       results={{ recipe: recipe, ingredients: ingredients }}
       component={RecipeEditInner}
-      componentProps={{ recipeId: recipeId }}
+      componentProps={{ recipeId: recipeId, refetch: refetch }}
       loadingProps={{ description: 'Loading' }}
       errorProps={{ description: 'There was an error loading, please try again.' }}
     />

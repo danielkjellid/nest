@@ -1,8 +1,9 @@
+import functools
 from datetime import timedelta
 from typing import TYPE_CHECKING
 
 import structlog
-from django.db import models
+from django.db import models, transaction
 from django.http import HttpRequest
 from pydantic import BaseModel, Field
 
@@ -73,37 +74,9 @@ def _get_ingredient_item_group_id(
     )
 
 
-def _get_step_id_for_item(
-    item: IngredientItem, steps: list["Step"], recipe_steps: models.QuerySet[RecipeStep]
-) -> int | None:
-    # See if we can find the Step based on the possible child in the list.
-    step_for_item = next(
-        (step for step in steps if item in step.ingredient_items), None
-    )
-
-    if not step_for_item:
-        return None
-
-    # If a step exists, see if we can find the related RecipeStep that is created
-    # in the db.
-    step = next(
-        (
-            s.id
-            for s in recipe_steps
-            if s.number == step_for_item.number
-            and s.duration == timedelta(minutes=step_for_item.duration)
-            and s.step_type == step_for_item.step_type
-        ),
-        None,
-    )
-
-    return step
-
-
 def create_or_update_recipe_ingredient_items(
     recipe_id: int,
     groups: list[IngredientGroupItem],
-    steps: list["Step"],
 ) -> None:
     logger.info("Creating and updating ingredient items")
 
@@ -111,7 +84,6 @@ def create_or_update_recipe_ingredient_items(
     ingredient_items_to_update: list[RecipeIngredientItem] = []
 
     recipe_groups = RecipeIngredientItemGroup.objects.filter(recipe_id=recipe_id)
-    recipe_steps = RecipeStep.objects.filter(recipe_id=recipe_id)
     existing_recipe_ingredient_items = list(
         RecipeIngredientItem.objects.filter(ingredient_group__recipe_id=recipe_id)
     )
@@ -134,9 +106,6 @@ def create_or_update_recipe_ingredient_items(
                         id=ingredient_item_id,
                         ingredient_group_id=_get_ingredient_item_group_id(
                             group, recipe_groups
-                        ),
-                        step_id=_get_step_id_for_item(
-                            ingredient_item, steps, recipe_steps
                         ),
                         ingredient_id=ingredient_item.ingredient_id,
                         additional_info=ingredient_item.additional_info,
@@ -162,7 +131,6 @@ def create_or_update_recipe_ingredient_items(
             ingredient_items_to_update,
             fields=[
                 "ingredient_group_id",
-                "step_id",
                 "ingredient_id",
                 "portion_quantity",
                 "portion_quantity_unit_id",
@@ -200,6 +168,7 @@ def _validate_ingredient_item_groups(
         )
 
 
+@transaction.atomic
 def create_or_update_recipe_ingredient_item_groups(
     recipe_id: int,
     ingredient_item_groups: list[IngredientGroupItem],
@@ -232,3 +201,11 @@ def create_or_update_recipe_ingredient_item_groups(
             groups_to_update,
             fields=["title", "ordering"],
         )
+
+    transaction.on_commit(
+        functools.partial(
+            create_or_update_recipe_ingredient_items,
+            recipe_id=recipe_id,
+            groups=ingredient_item_groups,
+        )
+    )
