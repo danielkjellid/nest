@@ -53,6 +53,9 @@ class PlanDistributor:
                 for item in group.ingredient_items:
                     product = item.ingredient.product
 
+                    if product is None:
+                        continue
+
                     portion_quantity = item.portion_quantity * recipe_portion_factor
 
                     converted_quantity = convert_unit_quantity(

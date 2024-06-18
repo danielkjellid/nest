@@ -2609,8 +2609,7 @@
                 "type": "object",
                 "required": [
                     "id",
-                    "title",
-                    "product"
+                    "title"
                 ],
                 "properties": {
                     "id": {
@@ -2968,8 +2967,7 @@
                 "x-form": true,
                 "x-columns": 1,
                 "required": [
-                    "title",
-                    "product"
+                    "title"
                 ],
                 "properties": {
                     "title": {

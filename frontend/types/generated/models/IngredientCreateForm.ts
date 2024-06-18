@@ -5,6 +5,6 @@
 
 export type IngredientCreateForm = {
     title: string;
-    product: string;
+    product?: string;
 };
 

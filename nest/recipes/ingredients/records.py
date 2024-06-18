@@ -13,14 +13,16 @@ from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItem
 class RecipeIngredientRecord(BaseModel):
     id: int
     title: str
-    product: ProductRecord
+    product: ProductRecord | None
 
     @classmethod
     def from_db_model(cls, model: RecipeIngredient) -> RecipeIngredientRecord:
         return cls(
             id=model.id,
             title=model.title,
-            product=ProductRecord.from_product(model.product),
+            product=ProductRecord.from_product(model.product)
+            if model.product
+            else None,
         )
 
 

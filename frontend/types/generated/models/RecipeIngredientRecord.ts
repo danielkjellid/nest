@@ -8,6 +8,6 @@ import type { ProductRecord } from './ProductRecord';
 export type RecipeIngredientRecord = {
     id: number;
     title: string;
-    product: ProductRecord;
+    product?: ProductRecord;
 };
 
