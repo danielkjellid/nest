@@ -21,7 +21,7 @@ function Recipe({ recipe }: RecipeProps) {
   const theme = useMantineTheme()
   const { classes } = useCommonStyles()
 
-  const defaultNumPortions = 4
+  const { defaultNumPortions } = recipe
   const [portions, setPortions] = useState<number>(recipe.defaultNumPortions)
 
   const formatDuration = (duration: string) =>
