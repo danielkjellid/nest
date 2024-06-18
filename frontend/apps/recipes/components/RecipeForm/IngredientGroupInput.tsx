@@ -78,7 +78,7 @@ function IngredientInput({
         data = {
           ...data,
           ingredient: ingredient || ({} as RecipeIngredientRecord),
-          portionQuantityUnit: ingredient?.product.unit || ({} as UnitRecord),
+          portionQuantityUnit: ingredient?.product?.unit || ({} as UnitRecord),
         }
       } else if (key === 'portionQuantityUnit') {
         const unit = units?.find((unit) => unit.id.toString() === event)
@@ -115,8 +115,8 @@ function IngredientInput({
           )
           .map((ingredient) => ({
             label: ingredient.title,
-            image: ingredient.product.thumbnailUrl,
-            description: ingredient.product.fullName,
+            image: ingredient.product?.thumbnailUrl,
+            description: ingredient.product?.fullName,
             value: ingredient.id.toString(),
           })),
       [ingredients, ingredientItemGroup, ingredientItem]

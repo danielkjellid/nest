@@ -21,10 +21,12 @@ function IngredientsOverviewTable({ data, onDeleteIngredient }: IngredientsOverv
           accessorKey: 'product.fullName',
           Cell: ({ row, renderedCellValue }) => (
             <div className="flex items-center space-x-3">
-              <img src={row.original.product.thumbnailUrl} className="object-contain w-8 h-8" />
-              <Anchor href={productRoutes.detail.build({ productId: row.original.product.id })}>
-                {renderedCellValue}
-              </Anchor>
+              <img src={row.original.product?.thumbnailUrl} className="object-contain w-8 h-8" />
+              {row.original.product?.id && (
+                <Anchor href={productRoutes.detail.build({ productId: row.original.product.id })}>
+                  {renderedCellValue}
+                </Anchor>
+              )}
             </div>
           ),
         },

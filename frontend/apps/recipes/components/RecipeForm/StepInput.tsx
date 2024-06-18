@@ -195,7 +195,7 @@ function StepInput({
               variant="light"
               className="mt-5"
               disabled={!canBeDeleted}
-              onClick={() => onAction('inputDelete', stepNumber)}
+              onClick={() => onAction('inputDelete', stepNumber - 1)}
             >
               <IconX />
             </ActionIcon>

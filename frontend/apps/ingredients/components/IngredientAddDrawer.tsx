@@ -58,7 +58,7 @@ function IngredientAddDrawer({
         // Filter out products already assigned other ingredients.
         .filter(
           (product) =>
-            !ingredients.flatMap((ingredient) => ingredient.product.id).includes(product.id)
+            !ingredients.flatMap((ingredient) => ingredient.product?.id).includes(product.id)
         )
         .map((product) => ({
           image: product.thumbnailUrl,

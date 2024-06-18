@@ -340,11 +340,21 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
             />
           }
         />
-        <div className={`flex space-x-3 justify-end py-4 border-t ${classes.border}`}>
-          <Button variant="default" onClick={() => navigate(-1)}>
-            Cancel
-          </Button>
-          <Button onClick={submit}>Save</Button>
+        <div className={`flex space-x-3 justify-between py-4 border-t ${classes.border}`}>
+          <div className="flex space-x-3">
+            <Button variant="light" onClick={ingredientGroupActions.groupAdd}>
+              Add group
+            </Button>
+            <Button variant="light" onClick={stepActions.inputAdd}>
+              Add step
+            </Button>
+          </div>
+          <div className="flex space-x-3">
+            <Button variant="default" onClick={() => navigate(-1)}>
+              Cancel
+            </Button>
+            <Button onClick={submit}>Save</Button>
+          </div>
         </div>
       </Card>
     </div>

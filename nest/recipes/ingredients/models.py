@@ -17,6 +17,8 @@ class RecipeIngredient(BaseModel):
         "products.Product",
         related_name="ingredient",
         on_delete=models.CASCADE,
+        blank=True,
+        null=True,
     )
 
     objects = _RecipeIngredientManager()
