@@ -1,6 +1,7 @@
 from datetime import timedelta
 from typing import TYPE_CHECKING
 
+import structlog
 from django.db import models
 from django.http import HttpRequest
 from pydantic import BaseModel, Field
@@ -8,7 +9,7 @@ from pydantic import BaseModel, Field
 from nest.audit_logs.services import log_create_or_updated, log_delete
 from nest.core.exceptions import ApplicationError
 from nest.recipes.steps.models import RecipeStep
-import structlog
+
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from .records import RecipeIngredientRecord
 
