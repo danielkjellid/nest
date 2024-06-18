@@ -353,10 +353,7 @@ function Form<T extends object>({
                       elementKey: key as K,
                       element: element,
                       options: options,
-                      placeholder: optionsForElem.placeholder,
-                      helpText: optionsForElem.helpText,
-                      searchable: optionsForElem.searchable,
-                      itemComponent: optionsForElem.itemComponent,
+                      ...optionsForElem,
                     })}
                     {optionsForElem.afterSlot}
                   </div>
