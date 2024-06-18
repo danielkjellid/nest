@@ -1,3 +1,6 @@
+from importlib import import_module
+from pathlib import Path
+
 import pytest
 import structlog
 import requests_mock
@@ -18,6 +21,23 @@ logger = structlog.get_logger()
 T_MODEL = TypeVar("T_MODEL", bound=models.Model)
 T_SPEC = TypeVar("T_SPEC", bound=TypedDict)
 CreateCallback = Callable[[T_SPEC], T_MODEL]
+
+PROJECT_ROOT = Path(__file__).parent
+for fixture_file in PROJECT_ROOT.glob("**/fixtures.py"):
+    # Construct the name of the module
+    relative_path = fixture_file.relative_to(PROJECT_ROOT)
+    module_path = ".".join(p.name for p in reversed(relative_path.parents))
+    module_name = f"{module_path}.{fixture_file.stem}"
+
+    # Import the module and add all attributes to the current namespace
+    module = import_module(module_name, package="tests")
+    globals().update(
+        {
+            name: getattr(module, name)
+            for name in dir(module)
+            if hasattr(getattr(module, name), "_pytestfixturefunction")
+        }
+    )
 
 
 ################
@@ -145,7 +165,12 @@ def http_client(requests_mock):
 
 @pytest.fixture(autouse=True)
 def create_temp_storage(settings, tmp_path):
-    settings.DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    settings.STORAGES = {
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+        },
+    }
     settings.MEDIA_ROOT = tmp_path
     yield
 

@@ -1,12 +1,15 @@
 from datetime import datetime, timedelta
 
 import pytest
+from django.utils.timezone import make_aware
 from freezegun import freeze_time
 
 from nest.recipes.core.enums import RecipeStatus
 from nest.recipes.plans.selectors import find_recipes_applicable_for_plan
 
-_FREEZE_TIME = datetime(year=2024, month=1, day=8, hour=12, minute=0, second=0)
+_FREEZE_TIME = make_aware(
+    datetime(year=2024, month=1, day=8, hour=12, minute=0, second=0)
+)
 _GRACE_PERIOD = timedelta(weeks=2)
 
 
