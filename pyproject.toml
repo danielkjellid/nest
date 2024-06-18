@@ -154,6 +154,24 @@ DJANGO_SETTINGS_MODULE = "nest.settings"
 # --- pytest-env settings
 env = ["ENV_PATH=.env.test"]
 
+markers = [
+    # Products
+    "product: mark a single product",
+    "products: mark a collection of products",
+    "oda_product: mark a single product with oda_id set",
+    # Recipes
+    "recipe: mark a single recipe",
+    "recipes: mark a collection of recipes",
+    "recipe_steps: mark a collection of recipe steps",
+    "recipe_ingredient: mark a single recipe ingredient",
+    "recipe_ingredients: mark a collection of recipe ingredients",
+    "recipe_ingredient_items: mark a collection of recipe ingredient items",
+    "recipe_ingredient_item_groups: mark a collection of recipe ingredient item groups",
+    "recipe_plan: mark a single recipe plan",
+    "recipe_plans: mark a collection of recipe plans",
+    "recipe_plan_item: mark a single recipe plan item",
+]
+
 
 ##########
 # Deptry #

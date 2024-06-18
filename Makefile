@@ -65,7 +65,7 @@ lint-ruff: ; $(info $(M) running ruff lint...) @
 
 .PHONY: lint-ruff-format
 lint-ruff-format: ; $(info $(M) running ruff format...) @
-	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE) $(TESTS) --check
+	$Q cd $(BASE) && $(POETRY) run ruff format $(PACKAGE) $(TESTS) --diff
 
 .PHONY: lint-mypy
 lint-mypy: ; $(info $(M) running mypy...) @

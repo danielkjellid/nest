@@ -134,9 +134,13 @@ DJANGO_VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 # Files #
 #########
 
+STORAGES = {
+    "default": {"BACKEND": "django_s3_storage.storage.S3Storage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+
 # Media
 MEDIA_URL = env.str("MEDIA_URL", default="/media/")
-DEFAULT_FILE_STORAGE = "django_s3_storage.storage.S3Storage"
 AWS_REGION = env.str("AWS_REGION", default="local")
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="nest")
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="nesttestpassword")
@@ -153,7 +157,6 @@ AWS_S3_SIGNATURE_VERSION = None
 STATIC_URL = env.str("STATIC_URL", default="/static/")
 STATIC_ROOT = BASE_DIR / "static"
 STATICFILES_DIRS = [DJANGO_VITE_ASSETS_PATH]
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 SERVE_STATICFILES = env.bool("SERVE_STATICFILES", default=False)
 

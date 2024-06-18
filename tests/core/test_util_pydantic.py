@@ -5,7 +5,7 @@ from nest.core.fields import FormField
 from nest.core.utils import Exclude, Partial
 
 
-class TestModel(BaseModel):
+class MyModel(BaseModel):
     name: str
     age: int
     is_active: bool
@@ -15,9 +15,9 @@ class TestModel(BaseModel):
 def test_core_util_pydantic_partial():
     fields = ["name", "gender"]
 
-    PartialModel = Partial("PartialModel", TestModel, fields)
+    PartialModel = Partial("PartialModel", MyModel, fields)
     partial_model_fields = PartialModel.__fields__
-    original_model_fields = TestModel.__fields__
+    original_model_fields = MyModel.__fields__
 
     assert issubclass(PartialModel, BaseModel)
     assert set(fields) == set(partial_model_fields.keys())
@@ -31,15 +31,15 @@ def test_core_util_pydantic_partial():
         assert original_field.required == partial_field.required
 
     with pytest.raises(ValueError):
-        Partial("Testing", TestModel, ["field_does_not_exist"])
+        Partial("Testing", MyModel, ["field_does_not_exist"])
 
 
 def test_core_util_pydantic_exclude():
     excluded_fields = ["name", "age"]
 
-    ExcludedModel = Exclude("ExcludedModel", TestModel, excluded_fields)
+    ExcludedModel = Exclude("ExcludedModel", MyModel, excluded_fields)
     excluded_model_fields = ExcludedModel.__fields__
-    original_model_fields = TestModel.__fields__
+    original_model_fields = MyModel.__fields__
 
     original_fields_name = [f.name for f in original_model_fields.values()]
     picked_fields = set(original_fields_name) - set(excluded_fields)
@@ -56,4 +56,4 @@ def test_core_util_pydantic_exclude():
         assert original_field.required == partial_field.required
 
     with pytest.raises(ValueError):
-        Exclude("Testing", TestModel, ["field_does_not_exist"])
+        Exclude("Testing", MyModel, ["field_does_not_exist"])
