@@ -168,7 +168,6 @@ if SERVE_STATICFILES:
         # e.g. app.db8f2edc0c8a.js
         return re.match(r"^.+\.[0-9a-f]{8,12}\..+$", url)
 
-
     WHITENOISE_IMMUTABLE_FILE_TEST = immutable_file_test
     MIDDLEWARE += ["whitenoise.middleware.WhiteNoiseMiddleware"]
 
