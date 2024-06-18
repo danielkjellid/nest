@@ -126,7 +126,7 @@ export function useForm<T extends object>({
         const inputKey = pathParts[pathParts.length - 1]
         const errorMsg = error.message
 
-        if (!inputKey || !errorMsg) return undefined
+        if (!inputKey || !errorMsg || !schema.required.includes(inputKey)) return
 
         // @ts-ignore
         errors[inputKey] = errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1).toLocaleLowerCase()

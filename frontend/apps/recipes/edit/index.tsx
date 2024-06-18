@@ -41,14 +41,7 @@ function RecipeEditInner({ recipeId, results }: RecipeEditInnerProps) {
     }
   }
 
-  return (
-    <RecipeForm
-      recipe={recipe}
-      ingredients={ingredients || []}
-      onSubmit={editRecipe}
-      key={new Date().toString()}
-    />
-  )
+  return <RecipeForm recipe={recipe} ingredients={ingredients || []} onSubmit={editRecipe} />
 }
 
 function RecipeEdit() {
