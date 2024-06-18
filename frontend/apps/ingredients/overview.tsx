@@ -79,6 +79,7 @@ function IngredientsOverviewInner({ results, refetch }: IngredientsOverviewInner
       <IngredientAddDrawer
         opened={addDrawerOpened}
         products={products.data || []}
+        ingredients={ingredients.data || []}
         onClose={addDrawerClose}
         refetch={refetch}
       />

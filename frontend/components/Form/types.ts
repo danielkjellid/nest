@@ -11,6 +11,7 @@ export interface FormElementOptionsObj {
   placeholder?: string
   accessorKey?: string
   searchable?: boolean
+  disabled?: boolean
   itemComponent?: ForwardRefExoticComponent<any>
 }
 

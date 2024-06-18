@@ -1,11 +1,15 @@
-import { Text } from '@mantine/core'
-import React, { forwardRef } from 'react'
+import { Alert, Text } from '@mantine/core'
+import React, { forwardRef, useMemo } from 'react'
 
 import { Button } from '../../../components/Button'
 import Drawer from '../../../components/Drawer'
 import Form from '../../../components/Form'
 import { useForm } from '../../../hooks/forms'
-import { type IngredientCreateForm, type ProductRecord } from '../../../types'
+import {
+  type RecipeIngredientRecord,
+  type IngredientCreateForm,
+  type ProductRecord,
+} from '../../../types'
 import { urls } from '../../urls'
 
 interface ProductOptionProps extends React.ComponentPropsWithoutRef<'div'> {
@@ -35,18 +39,35 @@ ProductOption.displayName = 'ProductOption'
 interface IngredientAddDrawerProps {
   opened: boolean
   products: ProductRecord[]
+  ingredients: RecipeIngredientRecord[]
   onClose: () => void
   refetch: () => void
 }
 
-function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientAddDrawerProps) {
+function IngredientAddDrawer({
+  opened,
+  products,
+  ingredients,
+  onClose,
+  refetch,
+}: IngredientAddDrawerProps) {
   const form = useForm<IngredientCreateForm>({ key: 'IngredientCreateForm' })
-  const productsOptions = products.map((product) => ({
-    image: product.thumbnailUrl,
-    label: product.fullName,
-    value: product.id.toString(),
-    description: `${product.displayPrice}`,
-  }))
+  const productsOptions = useMemo(
+    () =>
+      products
+        // Filter out products already assigned other ingredients.
+        .filter(
+          (product) =>
+            !ingredients.flatMap((ingredient) => ingredient.product.id).includes(product.id)
+        )
+        .map((product) => ({
+          image: product.thumbnailUrl,
+          label: product.fullName,
+          value: product.id.toString(),
+          description: `${product.displayPrice}`,
+        })),
+    [products, ingredients]
+  )
 
   const close = () => {
     onClose()
@@ -80,10 +101,17 @@ function IngredientAddDrawer({ opened, products, onClose, refetch }: IngredientA
       }
     >
       <div className="space-y-5">
+        {!productsOptions.length && (
+          <Alert color="blue">There are no products available to be assigned as ingredients.</Alert>
+        )}
         <Form<IngredientCreateForm>
           {...form}
           elementsOptions={{
-            product: { options: productsOptions || [], itemComponent: ProductOption },
+            product: {
+              options: productsOptions || [],
+              itemComponent: ProductOption,
+              disabled: !productsOptions.length,
+            },
           }}
         />
       </div>
