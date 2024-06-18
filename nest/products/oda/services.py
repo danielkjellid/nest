@@ -1,3 +1,4 @@
+import math
 from decimal import Decimal
 
 import structlog
@@ -79,7 +80,7 @@ def import_product_from_oda(*, oda_product_id: int) -> ProductRecord | None:
         "gross_price": product_response.gross_price,
         "gross_unit_price": product_response.gross_unit_price,
         "unit_id": converted_unit.id,
-        "unit_quantity": converted_quantity,
+        "unit_quantity": math.ceil(converted_quantity),
         "is_available": product_response.availability.is_available,
         "supplier": product_response.brand,
         "thumbnail": get_product_image(),

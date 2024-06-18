@@ -1,4 +1,5 @@
-import { Anchor, Title } from '@mantine/core'
+import { Anchor, Menu, Title } from '@mantine/core'
+import { IconEdit } from '@tabler/icons-react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '../../../components/Button'
@@ -55,6 +56,15 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
           { header: 'Pescatarian', accessorKey: 'isPescatarian', options: { isBoolean: true } },
         ]}
         data={recipes.data || []}
+        actionMenuItems={({ row }) => [
+          <Menu.Item
+            key="delete"
+            icon={<IconEdit />}
+            onClick={() => navigate(routes.edit.build({ recipeId: row.original.id }))}
+          >
+            Edit
+          </Menu.Item>,
+        ]}
       />
     </div>
   )

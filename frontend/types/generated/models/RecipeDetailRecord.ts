@@ -30,5 +30,6 @@ export type RecipeDetailRecord = {
     healthScore?: RecipeHealthScore;
     ingredientItemGroups: Array<RecipeIngredientItemGroupRecord>;
     steps: Array<RecipeStepRecord>;
+    numPlanUsages: number;
 };
 

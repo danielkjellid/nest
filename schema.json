@@ -2988,7 +2988,7 @@
                     },
                     "product": {
                         "title": "Product",
-                        "type": "integer",
+                        "type": "string",
                         "x-helpText": null,
                         "x-defaultValue": null,
                         "x-placeholder": null,

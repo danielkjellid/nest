@@ -311,7 +311,7 @@ def test_service_create_or_update_recipe_ingredient_items(
         ),
     ]
 
-    with django_assert_num_queries(4):
+    with django_assert_num_queries(5):
         create_or_update_recipe_ingredient_items(
             recipe_id=recipe.id, groups=groups, steps=steps
         )
