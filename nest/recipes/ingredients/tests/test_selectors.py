@@ -3,7 +3,6 @@ from django.db.models import Q
 
 from nest.products.core.tests.utils import create_product
 from nest.recipes.core.tests.utils import create_recipe
-from nest.recipes.steps.tests.utils import create_recipe_step
 
 from ..selectors import (
     _get_recipe_ingredient_items,
