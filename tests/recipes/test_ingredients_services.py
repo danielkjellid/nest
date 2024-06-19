@@ -21,8 +21,6 @@ from nest.recipes.ingredients.services import (
     create_recipe_ingredient,
     delete_recipe_ingredient,
 )
-from nest.recipes.steps.enums import RecipeStepType
-from nest.recipes.steps.services import Step
 
 
 @pytest.mark.product

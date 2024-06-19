@@ -1,7 +1,7 @@
 import functools
 
 import structlog
-from django.db import models, transaction
+from django.db import transaction
 from django.http import HttpRequest
 from pydantic import BaseModel, Field
 
@@ -59,7 +59,7 @@ class IngredientGroupItem(BaseModel):
 
 def _get_ingredient_item_group_id(
     group_item: IngredientGroupItem,
-    recipe_groups: models.QuerySet[RecipeIngredientItemGroup],
+    recipe_groups: list[RecipeIngredientItemGroup],
 ) -> int:
     return next(
         g.id
