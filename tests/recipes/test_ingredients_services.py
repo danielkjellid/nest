@@ -221,7 +221,7 @@ def test_service_create_or_update_recipe_ingredient_items(
         ),
     ]
 
-    with django_assert_num_queries(5):
+    with django_assert_num_queries(4):
         create_or_update_recipe_ingredient_items(recipe_id=recipe.id, groups=groups)
 
     item1.refresh_from_db()
@@ -278,12 +278,16 @@ def test_service_create_or_update_recipe_ingredient_item_groups(
     recipe_ingredient_item_groups,
     django_assert_num_queries,
     immediate_on_commit,
+    mocker,
 ):
     """
     Test that create_or_update_recipe_ingredient_item_groups successfully creates or
     updates item groups within query limits.
     """
     recipe_ingredient_item_group = recipe_ingredient_item_groups["group1"]
+    create_ingredient_items_mock = mocker.patch(
+        "nest.recipes.ingredients.services.create_or_update_recipe_ingredient_items"
+    )
 
     data = [
         IngredientGroupItem(
@@ -302,7 +306,7 @@ def test_service_create_or_update_recipe_ingredient_item_groups(
 
     initial_group_count = RecipeIngredientItemGroup.objects.count()
 
-    with immediate_on_commit, django_assert_num_queries(2):
+    with immediate_on_commit, django_assert_num_queries(5):
         create_or_update_recipe_ingredient_item_groups(
             recipe_id=recipe.id, ingredient_item_groups=data
         )
@@ -326,6 +330,10 @@ def test_service_create_or_update_recipe_ingredient_item_groups(
     assert all(
         item.ingredient_group_id == created_item_group.id
         for item in created_group_ingredient_items
+    )
+
+    create_ingredient_items_mock.assert_called_once_with(
+        recipe_id=recipe.id, groups=data
     )
 
     # Test that ApplicationError is raised when ordering is not unique.

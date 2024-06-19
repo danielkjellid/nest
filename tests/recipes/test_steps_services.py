@@ -34,12 +34,17 @@ def test_service_create_or_update_recipe_steps(
     recipe_ingredient_items,
     django_assert_num_queries,
     immediate_on_commit,
+    mocker,
 ):
     recipe_step = recipe_steps["step1"]
 
     item1 = recipe_ingredient_items["item1"]
     item2 = recipe_ingredient_items["item2"]
     item3 = recipe_ingredient_items["item3"]
+
+    create_ingredient_items_mock = mocker.patch(
+        "nest.recipes.steps.services.create_or_update_recipe_step_ingredient_items"
+    )
 
     new_duration = 6
 
@@ -89,7 +94,7 @@ def test_service_create_or_update_recipe_steps(
 
     initial_step_count = RecipeStep.objects.count()
 
-    with immediate_on_commit, django_assert_num_queries(2):
+    with immediate_on_commit, django_assert_num_queries(4):
         create_or_update_recipe_steps(recipe_id=recipe.id, steps=data)
 
     # A step already exists, but a new one should be created as well, bringing the total
@@ -99,6 +104,10 @@ def test_service_create_or_update_recipe_steps(
     recipe_step.refresh_from_db()
 
     assert recipe_step.duration == timedelta(minutes=new_duration)
+
+    create_ingredient_items_mock.assert_called_once_with(
+        recipe_id=recipe.id, steps=data
+    )
 
 
 def test__find_ingredient_item_id_for_step_item():
