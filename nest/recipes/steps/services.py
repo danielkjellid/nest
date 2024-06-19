@@ -134,7 +134,7 @@ def create_or_update_recipe_step_ingredient_items(
         RecipeStepIngredientItem.objects.filter(step__recipe_id=recipe_id)
     )
 
-    steps_to_ignore: list[int] = []
+    relations_to_ignore: list[RecipeStepIngredientItem] = []
     relations_to_create: list[RecipeStepIngredientItem] = []
 
     try:
@@ -157,17 +157,17 @@ def create_or_update_recipe_step_ingredient_items(
                     None,
                 )
 
-                # Relation already exist, not point in adding it again.
+                # Relation already exist, not point in adding it again, but
+                # We don't want to delete it either.
                 if existing_relation is not None:
-                    steps_to_ignore.append(step_id)
-                    continue
-
-                relations_to_create.append(
-                    RecipeStepIngredientItem(
-                        step_id=step_id,
-                        ingredient_item_id=ingredient_item_id,
+                    relations_to_ignore.append(existing_relation)
+                else:
+                    relations_to_create.append(
+                        RecipeStepIngredientItem(
+                            step_id=step_id,
+                            ingredient_item_id=ingredient_item_id,
+                        )
                     )
-                )
 
     except StopIteration as exc:
         raise ApplicationError(
@@ -175,9 +175,9 @@ def create_or_update_recipe_step_ingredient_items(
         ) from exc
 
     relation_ids_to_delete = [
-        step_item.id
-        for step_item in existing_relations
-        if step_item.step_id not in steps_to_ignore
+        relation.id
+        for relation in existing_relations
+        if relation not in relations_to_ignore
     ]
 
     if len(relation_ids_to_delete):

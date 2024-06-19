@@ -77,7 +77,7 @@ def create_or_update_recipe_ingredient_items(
     ingredient_items_to_create: list[RecipeIngredientItem] = []
     ingredient_items_to_update: list[RecipeIngredientItem] = []
 
-    recipe_groups = RecipeIngredientItemGroup.objects.filter(recipe_id=recipe_id)
+    recipe_groups = list(RecipeIngredientItemGroup.objects.filter(recipe_id=recipe_id))
     existing_recipe_ingredient_items = list(
         RecipeIngredientItem.objects.filter(ingredient_group__recipe_id=recipe_id)
     )
@@ -178,8 +178,6 @@ def create_or_update_recipe_ingredient_item_groups(
 
     groups_to_create: list[RecipeIngredientItemGroup] = []
     groups_to_update: list[RecipeIngredientItemGroup] = []
-
-    # Delete stale groups
 
     for item_group in ingredient_item_groups:
         item_group_id = getattr(item_group, "id", None)

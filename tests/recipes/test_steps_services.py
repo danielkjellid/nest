@@ -5,12 +5,13 @@ import pytest
 from nest.recipes.ingredients.models import RecipeIngredientItem
 from nest.recipes.ingredients.services import IngredientItem
 from nest.recipes.steps.enums import RecipeStepType
-from nest.recipes.steps.models import RecipeStep
+from nest.recipes.steps.models import RecipeStep, RecipeStepIngredientItem
 from nest.recipes.steps.services import (
     Step,
     create_or_update_recipe_steps,
     _find_step_id_for_step_item,
     _find_ingredient_item_id_for_step_item,
+    create_or_update_recipe_step_ingredient_items,
 )
 
 
@@ -252,5 +253,153 @@ def test__find_step_id_for_step_item(
         )
 
 
-def test_service_create_or_update_recipe_step_ingredient_items():
-    assert False
+@pytest.mark.recipe
+@pytest.mark.products(
+    product1={"name": "Product 1"},
+    product2={"name": "Product 2"},
+    product3={"name": "Product 3"},
+    product4={"name": "Product 4"},
+)
+@pytest.mark.recipe_ingredients(
+    ingredient1={"title": "Green peppers", "product": "product1"},
+    ingredient2={"title": "Cod", "product": "product2"},
+    ingredient3={"title": "Parsly", "product": "product3"},
+    ingredient4={"title": "Tomatoes", "product": "product4"},
+)
+@pytest.mark.recipe_ingredient_item_groups(
+    group1={"ordering": 1}, group2={"ordering": 2}, group3={"ordering": 3}
+)
+@pytest.mark.recipe_ingredient_items(
+    item1={"ingredient_group": "group1", "ingredient": "ingredient1"},
+    item2={"ingredient_group": "group2", "ingredient": "ingredient2"},
+    item3={"ingredient_group": "group3", "ingredient": "ingredient3"},
+)
+@pytest.mark.recipe_steps(
+    step1={"number": 1},
+    step2={"number": 2},
+    step3={"number": 3},
+)
+def test_service_create_or_update_recipe_step_ingredient_items(
+    django_assert_num_queries, recipe, recipe_ingredient_items, recipe_steps
+):
+    assert RecipeStepIngredientItem.objects.count() == 0
+
+    step1 = recipe_steps["step1"]
+    step2 = recipe_steps["step2"]
+    step3 = recipe_steps["step3"]
+
+    item1 = recipe_ingredient_items["item1"]
+    item2 = recipe_ingredient_items["item2"]
+    item3 = recipe_ingredient_items["item3"]
+
+    steps = [
+        Step(
+            id=step1.id,
+            number=step1.number,
+            duration=step1.duration.seconds / 60,
+            instruction=step1.instruction,
+            step_type=step1.step_type,
+            ingredient_items=[
+                IngredientItem(
+                    id=item1.id,
+                    ingredient=item1.ingredient_id,
+                    portion_quantity=item1.portion_quantity,
+                    portion_quantity_unit=item1.portion_quantity_unit_id,
+                    additional_info=item1.additional_info,
+                ),
+                IngredientItem(
+                    id=None,  # On purpose, see if we're able to link it without id.
+                    ingredient=item2.ingredient_id,
+                    portion_quantity=item2.portion_quantity,
+                    portion_quantity_unit=item2.portion_quantity_unit_id,
+                    additional_info=item2.additional_info,
+                ),
+            ],
+        ),
+        Step(
+            id=None,  # On purpose, see if we're able to link it without id.
+            number=step2.number,
+            duration=step2.duration.seconds / 60,
+            instruction=step2.instruction,
+            step_type=step2.step_type,
+            ingredient_items=[
+                IngredientItem(
+                    id=item3.id,
+                    ingredient=item3.ingredient_id,
+                    portion_quantity=item3.portion_quantity,
+                    portion_quantity_unit=item3.portion_quantity_unit_id,
+                    additional_info=item3.additional_info,
+                ),
+            ],
+        ),
+        Step(
+            id=step3.id,
+            number=step3.number,
+            duration=step3.duration.seconds / 60,
+            instruction=step3.instruction,
+            step_type=step3.step_type,
+            ingredient_items=[],  # No items.
+        ),
+    ]
+
+    with django_assert_num_queries(4):
+        create_or_update_recipe_step_ingredient_items(recipe_id=recipe.id, steps=steps)
+
+    assert RecipeStepIngredientItem.objects.count() == 3
+    assert RecipeStepIngredientItem.objects.filter(
+        step=step1, ingredient_item=item1
+    ).exists()
+    assert RecipeStepIngredientItem.objects.filter(
+        step=step1, ingredient_item=item2
+    ).exists()
+    assert RecipeStepIngredientItem.objects.filter(
+        step=step2, ingredient_item=item3
+    ).exists()
+    assert RecipeStepIngredientItem.objects.filter(step=step3).count() == 0
+
+    # Call the function again, but this time without item1 as a connection to step1 and
+    # Delete step2 completely. This should in return also update relations.
+    with django_assert_num_queries(4):
+        create_or_update_recipe_step_ingredient_items(
+            recipe_id=recipe.id,
+            steps=[
+                Step(
+                    id=step1.id,
+                    number=step1.number,
+                    duration=step1.duration.seconds / 60,
+                    instruction=step1.instruction,
+                    step_type=step1.step_type,
+                    ingredient_items=[
+                        IngredientItem(
+                            id=item2.id,
+                            ingredient=item2.ingredient_id,
+                            portion_quantity=item2.portion_quantity,
+                            portion_quantity_unit=item2.portion_quantity_unit_id,
+                            additional_info=item2.additional_info,
+                        ),
+                    ],
+                ),
+                Step(
+                    id=step3.id,
+                    number=step3.number,
+                    duration=step3.duration.seconds / 60,
+                    instruction=step3.instruction,
+                    step_type=step3.step_type,
+                    ingredient_items=[],  # No items.
+                ),
+            ],
+        )
+
+    # Item1 should have been deleted from step1
+    assert not RecipeStepIngredientItem.objects.filter(
+        step=step1, ingredient_item=item1
+    ).exists()
+    # Item2 should still be related to step1
+    assert RecipeStepIngredientItem.objects.filter(
+        step=step1, ingredient_item=item2
+    ).exists()
+
+    # Step2 relations should have been removed when the second call were made.
+    assert RecipeStepIngredientItem.objects.filter(step=step2).count() == 0
+    # Should still not be any relations for step3.
+    assert RecipeStepIngredientItem.objects.filter(step=step3).count() == 0
