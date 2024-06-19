@@ -6,26 +6,56 @@ import django.db.models.manager
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('recipes_steps', '0001_initial'),
+        ("recipes_ingredients", "0002_remove_recipeingredientitem_step"),
+        ("recipes_steps", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='RecipeStepIngredientItem',
+            name="RecipeStepIngredientItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='created time')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='modified time')),
-                ('ingredient_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='steps', to='recipes_ingredients.recipeingredientitem')),
-                ('step', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ingredient_items', to='recipes_steps.recipestep')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="created time"
+                    ),
+                ),
+                (
+                    "updated_at",
+                    models.DateTimeField(auto_now=True, verbose_name="modified time"),
+                ),
+                (
+                    "ingredient_item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="steps",
+                        to="recipes_ingredients.recipeingredientitem",
+                    ),
+                ),
+                (
+                    "step",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="ingredient_items",
+                        to="recipes_steps.recipestep",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
             managers=[
-                ('_objects', django.db.models.manager.Manager()),
+                ("_objects", django.db.models.manager.Manager()),
             ],
         ),
     ]
