@@ -8,7 +8,6 @@ import django.db.models.manager
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('recipes_ingredients', '0002_remove_recipeingredientitem_step'),
         ('recipes_steps', '0001_initial'),
     ]
 
