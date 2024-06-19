@@ -126,9 +126,9 @@ def _find_step_id_for_step_item(
 def create_or_update_recipe_step_ingredient_items(
     recipe_id: int, steps: list[Step]
 ) -> None:
-    recipe_steps = RecipeStep.objects.filter(recipe_id=recipe_id)
-    recipe_ingredient_items = RecipeIngredientItem.objects.filter(
-        ingredient_group__recipe_id=recipe_id
+    recipe_steps = list(RecipeStep.objects.filter(recipe_id=recipe_id))
+    recipe_ingredient_items = list(
+        RecipeIngredientItem.objects.filter(ingredient_group__recipe_id=recipe_id)
     )
     existing_relations = list(
         RecipeStepIngredientItem.objects.filter(step__recipe_id=recipe_id)
