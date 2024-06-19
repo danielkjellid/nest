@@ -15,7 +15,6 @@ from nest.recipes.ingredients.services import (
     IngredientGroupItem,
     IngredientItem,
     _get_ingredient_item_group_id,
-    _get_step_id_for_item,
     _validate_ingredient_item_groups,
     create_or_update_recipe_ingredient_item_groups,
     create_or_update_recipe_ingredient_items,
@@ -124,64 +123,6 @@ def test_service__get_ingredient_item_group_id(recipe_ingredient_item_groups, gr
         )
 
 
-@pytest.mark.recipe_steps(
-    step1={"number": 1},
-    step2={"number": 2},
-    step3={"number": 3},
-)
-@pytest.mark.recipe_ingredient_items(
-    item1={"step": "step1"},
-    item2={"step": "step2"},
-    item3={"step": "step3"},
-)
-@pytest.mark.parametrize("ingredient_item", ("item1", "item2", "item3"))
-def test_service__get_step_id_for_item(
-    recipe_steps, recipe_ingredient_items, ingredient_item
-):
-    """
-    Test that the _get_step_id_for_item service util is able to find the correct step
-    based on given item.
-    """
-    ingredient_item = recipe_ingredient_items[ingredient_item]
-    recipe_steps = list(recipe_steps.values())
-    steps = [
-        Step(
-            id=step.id,
-            number=step.number,
-            duration=step.duration_minutes,
-            instruction=step.instruction,
-            step_type=step.step_type,
-            ingredient_items=[
-                IngredientItem(
-                    id=item.id,
-                    ingredient=item.ingredient_id,
-                    portion_quantity=item.portion_quantity,
-                    portion_quantity_unit=item.portion_quantity_unit_id,
-                    additional_info=item.additional_info,
-                )
-                for item in step.ingredient_items.all()
-            ],
-        )
-        for step in recipe_steps
-    ]
-
-    step_id = _get_step_id_for_item(
-        item=IngredientItem(
-            id=ingredient_item.id,
-            ingredient=ingredient_item.ingredient_id,
-            portion_quantity=ingredient_item.portion_quantity,
-            portion_quantity_unit=ingredient_item.portion_quantity_unit_id,
-            additional_info=ingredient_item.additional_info,
-        ),
-        steps=steps,
-        recipe_steps=recipe_steps,
-    )
-
-    # Assert that we're able to find the correct group id based on passed ingredient
-    # item.
-    assert step_id == ingredient_item.step_id
-
-
 @pytest.mark.recipe
 @pytest.mark.products(
     product1={"name": "Product 1"},
@@ -195,18 +136,16 @@ def test_service__get_step_id_for_item(
     ingredient3={"title": "Parsly", "product": "product3"},
     ingredient4={"title": "Tomatoes", "product": "product4"},
 )
-@pytest.mark.recipe_steps(step1={"number": 1}, step2={"number": 2})
 @pytest.mark.recipe_ingredient_item_groups(
     group1={"ordering": 1}, group2={"ordering": 2}, group3={"ordering": 3}
 )
 @pytest.mark.recipe_ingredient_items(
-    item1={"ingredient_group": "group1", "step": "step1", "ingredient": "ingredient1"},
-    item2={"ingredient_group": "group2", "step": None, "ingredient": "ingredient2"},
-    item3={"ingredient_group": "group3", "step": None, "ingredient": "ingredient3"},
+    item1={"ingredient_group": "group1", "ingredient": "ingredient1"},
+    item2={"ingredient_group": "group2", "ingredient": "ingredient2"},
+    item3={"ingredient_group": "group3", "ingredient": "ingredient3"},
 )
 def test_service_create_or_update_recipe_ingredient_items(
     recipe,
-    recipe_steps,
     recipe_ingredient_items,
     recipe_ingredients,
     get_unit,
@@ -282,39 +221,8 @@ def test_service_create_or_update_recipe_ingredient_items(
         ),
     ]
 
-    step1 = recipe_steps["step1"]
-    step2 = recipe_steps["step2"]
-    steps = [
-        Step(
-            id=step1.id,
-            number=step1.number,
-            duration=step1.duration_minutes,
-            instruction=step1.instruction,
-            step_type=RecipeStepType(step1.step_type),
-            ingredient_items=[
-                IngredientItem(
-                    id=item1.id,
-                    ingredient=item1.ingredient_id,
-                    portion_quantity=item1.portion_quantity,
-                    portion_quantity_unit=item1.portion_quantity_unit_id,
-                    additional_info=item1.additional_info,
-                ),
-            ],
-        ),
-        Step(
-            id=step2.id,
-            number=step2.number,
-            duration=step2.duration_minutes,
-            instruction=step2.instruction,
-            step_type=RecipeStepType(step2.step_type),
-            ingredient_items=[item_to_create],
-        ),
-    ]
-
     with django_assert_num_queries(5):
-        create_or_update_recipe_ingredient_items(
-            recipe_id=recipe.id, groups=groups, steps=steps
-        )
+        create_or_update_recipe_ingredient_items(recipe_id=recipe.id, groups=groups)
 
     item1.refresh_from_db()
     item2.refresh_from_db()
@@ -322,13 +230,8 @@ def test_service_create_or_update_recipe_ingredient_items(
     group3.refresh_from_db()
 
     assert item1.ingredient_group_id == group1.id
-    assert item1.step_id == step1.id
-
     assert item2.ingredient_group_id == group1.id
-    assert item2.step_id is None
-
     assert item3.ingredient_group_id == group3.id
-    assert item3.step_id is None
 
     assert group3.ingredient_items.count() == 2
     new_item = group3.ingredient_items.exclude(id=item3.id).first()
@@ -337,7 +240,6 @@ def test_service_create_or_update_recipe_ingredient_items(
     assert new_item.ingredient_id == recipe_ingredients["ingredient4"].id
     assert new_item.portion_quantity == Decimal("100.00")
     assert new_item.portion_quantity_unit_id == grams.id
-    assert new_item.step_id == step2.id
 
 
 def test_service__validate_ingredient_item_groups():

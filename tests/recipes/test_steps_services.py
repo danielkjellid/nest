@@ -24,9 +24,9 @@ from nest.recipes.steps.services import Step, create_or_update_recipe_steps
     group1={"ordering": 1}, group2={"ordering": 2}, group3={"ordering": 3}
 )
 @pytest.mark.recipe_ingredient_items(
-    item1={"ingredient_group": "group1", "step": "step1", "ingredient": "ingredient1"},
-    item2={"ingredient_group": "group2", "step": None, "ingredient": "ingredient2"},
-    item3={"ingredient_group": "group3", "step": None, "ingredient": "ingredient3"},
+    item1={"ingredient_group": "group1", "ingredient": "ingredient1"},
+    item2={"ingredient_group": "group2", "ingredient": "ingredient2"},
+    item3={"ingredient_group": "group3", "ingredient": "ingredient3"},
 )
 def test_service_create_or_update_recipe_steps(
     recipe,
@@ -99,3 +99,15 @@ def test_service_create_or_update_recipe_steps(
     recipe_step.refresh_from_db()
 
     assert recipe_step.duration == timedelta(minutes=new_duration)
+
+
+def test__find_ingredient_item_id_for_step_item():
+    assert False
+
+
+def test__find_step_id_for_step_item():
+    assert False
+
+
+def test_service_create_or_update_recipe_step_ingredient_items():
+    assert False

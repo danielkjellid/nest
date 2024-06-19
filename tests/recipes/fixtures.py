@@ -14,7 +14,8 @@ from nest.recipes.ingredients.models import (
 )
 from nest.recipes.plans.models import RecipePlan, RecipePlanItem
 from nest.recipes.steps.enums import RecipeStepType
-from nest.recipes.steps.models import RecipeStep
+from nest.recipes.steps.models import RecipeStep, RecipeStepIngredientItem
+
 
 ##########
 # Recipe #
@@ -148,6 +149,82 @@ def recipe_steps(
         create_callback=create_recipe_step_from_spec,
         default_spec=default_recipe_step_spec,
         marker_name="recipe_steps",
+    )
+
+
+class RecipeStepIngredientItemSpec(TypedDict, total=False):
+    step: str
+    ingredient_item: str
+
+
+CreateRecipeStepIngredientItem = Callable[
+    [RecipeStepIngredientItemSpec], RecipeStepIngredientItem
+]
+
+
+@pytest.fixture
+def default_recipe_step_ingredient_item_spec() -> RecipeStepIngredientItemSpec:
+    return RecipeStepIngredientItemSpec(step="default", ingredient_item="default")
+
+
+@pytest.fixture
+def create_recipe_step_ingredient_item_from_spec(
+    db,
+    recipe_step,
+    recipe_steps,
+    recipe_ingredient_item,
+    recipe_ingredient_items,
+    get_related_instance,
+):
+    def _create_recipe_step_ingredient_item(
+        spec: RecipeStepIngredientItemSpec
+    ) -> RecipeStepIngredientItem:
+        step_from_spec = get_related_instance(
+            key="step",
+            spec=spec,
+            related_instance=recipe_step,
+            related_instances=recipe_steps,
+        )
+        ingredient_item_from_spec = get_related_instance(
+            key="ingredient_item",
+            spec=spec,
+            related_instance=recipe_ingredient_item,
+            related_instances=recipe_ingredient_items,
+        )
+
+        item, _created = RecipeStepIngredientItem.objects.get_or_create(
+            step=step_from_spec,
+            ingredient_item=ingredient_item_from_spec,
+        )
+
+        return item
+
+    return _create_recipe_step_ingredient_item
+
+
+@pytest.fixture
+def recipe_step_ingredient_item(
+    create_instance,
+    create_recipe_step_ingredient_item_from_spec,
+    default_recipe_step_ingredient_item_spec,
+):
+    return create_instance(
+        create_callback=create_recipe_step_ingredient_item_from_spec,
+        default_spec=default_recipe_step_ingredient_item_spec,
+        marker_name="recipe_step_ingredient_item",
+    )
+
+
+@pytest.fixture
+def recipe_step_ingredient_items(
+    create_instances,
+    create_recipe_step_ingredient_item_from_spec,
+    default_recipe_step_ingredient_item_spec,
+):
+    return create_instances(
+        create_callback=create_recipe_step_ingredient_item_from_spec,
+        default_spec=default_recipe_step_ingredient_item_spec,
+        marker_name="recipe_step_ingredient_items",
     )
 
 
@@ -285,7 +362,6 @@ def recipe_ingredient_item_groups(
 class RecipeIngredientItemSpec(TypedDict, total=False):
     ingredient_group: str
     ingredient: str
-    step: str
     additional_info: str | None
     portion_quantity: Decimal
     portion_quantity_unit: str
@@ -299,7 +375,6 @@ def default_recipe_ingredient_item_spec() -> RecipeIngredientItemSpec:
     return RecipeIngredientItemSpec(
         ingredient_group="default",
         ingredient="default",
-        step="default",
         additional_info=None,
         portion_quantity=Decimal("250.00"),
         portion_quantity_unit="g",
@@ -313,8 +388,6 @@ def create_recipe_ingredient_item_from_spec(
     recipe_ingredient_item_groups,
     recipe_ingredient,
     recipe_ingredients,
-    recipe_step,
-    recipe_steps,
     get_unit,
     get_related_instance,
 ) -> CreateRecipeIngredientItem:
@@ -333,18 +406,11 @@ def create_recipe_ingredient_item_from_spec(
             related_instance=recipe_ingredient,
             related_instances=recipe_ingredients,
         )
-        step_from_spec = get_related_instance(
-            key="step",
-            spec=spec,
-            related_instance=recipe_step,
-            related_instances=recipe_steps,
-        )
         unit_from_spec = get_unit(spec.pop("portion_quantity_unit"))
 
         item, _created = RecipeIngredientItem.objects.get_or_create(
             ingredient_group=group_from_spec,
             ingredient=ingredient_from_spec,
-            step=step_from_spec,
             portion_quantity_unit=unit_from_spec,
             **spec,
         )
