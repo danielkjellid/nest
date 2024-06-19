@@ -79,8 +79,52 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
     },
     groupDelete: function (index: number) {
       const ingredientGroupsData = [...ingredientGroups]
+      const ingredientGroup = ingredientGroupsData[index]
       ingredientGroupsData.splice(index, 1)
+
+      const stepsData = [...steps]
+      const stepsWithIngredientItemsFromGroup = steps.filter((step) =>
+        step.ingredientItems.some((ingredientItem) => {
+          if ('id' in ingredientItem) {
+            return ingredientGroup.ingredientItems.some((item) => item.id === ingredientItem.id)
+          } else {
+            return ingredientGroup.ingredientItems.some(
+              (item) =>
+                item.ingredient.id === ingredientItem.ingredient.id &&
+                item.portionQuantity === ingredientItem.portionQuantity &&
+                item.portionQuantityUnit.id === ingredientItem.portionQuantityUnit.id &&
+                item.additionalInfo === ingredientItem.additionalInfo
+            )
+          }
+        })
+      )
+
+      stepsWithIngredientItemsFromGroup.forEach((step) => {
+        const stepIndex = stepsData.indexOf(step)
+
+        if (stepIndex === -1) return
+
+        const ingredientsData = [...step.ingredientItems].filter((ingredientItem) => {
+          if ('id' in ingredientItem) {
+            return !ingredientGroup.ingredientItems.some((item) => item.id === ingredientItem.id)
+          } else {
+            return !ingredientGroup.ingredientItems.some(
+              (item) =>
+                item.ingredient.id === ingredientItem.ingredient.id &&
+                item.portionQuantity === ingredientItem.portionQuantity &&
+                item.portionQuantityUnit.id === ingredientItem.portionQuantityUnit.id &&
+                item.additionalInfo === ingredientItem.additionalInfo
+            )
+          }
+        })
+
+        step.ingredientItems = ingredientsData
+
+        stepsData[stepIndex] = step
+      })
+
       setIngredientGroups(ingredientGroupsData)
+      setSteps(stepsData)
       resetValidation()
     },
     groupSequenceChange: function (data: IngredientItemGroup[]) {
@@ -106,36 +150,60 @@ function RecipeForm({ recipe, ingredients, onSubmit }: RecipeFormProps) {
     inputDelete: function (index: number, ingredientIndex: number) {
       const ingredientGroupsData = [...ingredientGroups]
       const ingredientGroup = ingredientGroupsData[index]
+      const ingredientItemToDelete = ingredientGroup.ingredientItems[ingredientIndex]
       const ingredientsData = [...ingredientGroup.ingredientItems]
 
-      const deletedIngredientItems = ingredientsData.splice(ingredientIndex, 1)
-      ingredientGroup.ingredientItems = ingredientsData
-
-      setIngredientGroups(ingredientGroupsData)
-
-      // Update related steps as well so that they don't automatically get assigned the ingredient
-      // if it's added back.
       const stepsData = [...steps]
-      const deletedIngredientIds = deletedIngredientItems.map(
-        (ingredientItem) => ingredientItem.ingredient.id
-      )
       const stepsWithAssignedIngredientItem = steps.filter((step) =>
-        step.ingredientItems.filter((ingredientItem) =>
-          deletedIngredientIds.includes(ingredientItem.ingredient.id)
-        )
+        step.ingredientItems.some((ingredientItem) => {
+          if ('id' in ingredientItem) {
+            return ingredientGroup.ingredientItems.some((item) => item.id === ingredientItem.id)
+          } else {
+            return ingredientGroup.ingredientItems.some(
+              (item) =>
+                item.ingredient.id === ingredientItem.ingredient.id &&
+                item.portionQuantity === ingredientItem.portionQuantity &&
+                item.portionQuantityUnit.id === ingredientItem.portionQuantityUnit.id &&
+                item.additionalInfo === ingredientItem.additionalInfo
+            )
+          }
+        })
       )
 
       stepsWithAssignedIngredientItem.forEach((step) => {
         const stepIndex = stepsData.indexOf(step)
-
         if (stepIndex === -1) return
 
-        const ingredientsData = [...step.ingredientItems]
-        ingredientsData.splice(ingredientIndex, 1)
-        step.ingredientItems = ingredientsData
+        const ingredientItemData = [...step.ingredientItems]
+        const localIngredientItem = ingredientItemData.find((ingredientItem) => {
+          if ('id' in ingredientItem && 'id' in ingredientItemToDelete) {
+            return ingredientItem.id === ingredientItemToDelete.id
+          } else {
+            return (
+              ingredientItemToDelete.ingredient.id === ingredientItem.ingredient.id &&
+              ingredientItemToDelete.portionQuantity === ingredientItem.portionQuantity &&
+              ingredientItemToDelete.portionQuantityUnit.id ===
+                ingredientItem.portionQuantityUnit.id &&
+              ingredientItemToDelete.additionalInfo === ingredientItem.additionalInfo
+            )
+          }
+        })
+
+        if (!localIngredientItem) return
+
+        const ingredientItemIndex = ingredientItemData.indexOf(localIngredientItem)
+        if (ingredientItemIndex === -1) return
+
+        ingredientItemData.splice(ingredientItemIndex, 1)
+        step.ingredientItems = ingredientItemData
 
         stepsData[stepIndex] = step
       })
+
+      ingredientsData.splice(ingredientIndex, 1)
+      ingredientGroup.ingredientItems = ingredientsData
+
+      setIngredientGroups(ingredientGroupsData)
       setSteps(stepsData)
       resetValidation()
     },

@@ -44,13 +44,6 @@ class RecipeIngredientItem(BaseModel):
         related_name="ingredient_items",
         on_delete=models.CASCADE,
     )
-    step = models.ForeignKey(
-        "recipes_steps.RecipeStep",
-        related_name="ingredient_items",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
 
     additional_info = models.CharField(max_length=255, null=True, blank=True)
 

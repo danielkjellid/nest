@@ -2,9 +2,51 @@ from typing import Iterable
 
 from nest.core.types import FetchedResult
 
-from ..ingredients.selectors import get_recipe_ingredient_items_for_steps
-from .models import RecipeStep
+from ...units.records import UnitRecord
+from ..ingredients.records import RecipeIngredientItemRecord, RecipeIngredientRecord
+from .models import RecipeStep, RecipeStepIngredientItem
 from .records import RecipeStepRecord
+
+
+def get_step_ingredient_items_for_steps(
+    *, step_ids: list[int]
+) -> FetchedResult[list[RecipeIngredientItemRecord]]:
+    """
+    Get a list of RecipeIngredientItemRecord that based on related steps.
+    """
+    records: FetchedResult[list[RecipeIngredientItemRecord]] = {}
+
+    for step_id in step_ids:
+        records[step_id] = []
+
+    step_ingredient_items = RecipeStepIngredientItem.objects.filter(
+        step_id__in=step_ids
+    ).select_related(
+        "ingredient_item__ingredient_group",
+        "ingredient_item__ingredient__product__unit",
+        "ingredient_item__portion_quantity_unit",
+    )
+
+    for step_ingredient_item in step_ingredient_items:
+        if step_ingredient_item.ingredient_item is None:
+            continue
+
+        item = step_ingredient_item.ingredient_item
+        records[step_ingredient_item.step_id].append(
+            RecipeIngredientItemRecord(
+                id=item.id,
+                group_title=item.ingredient_group.title,
+                ingredient=RecipeIngredientRecord.from_db_model(item.ingredient),
+                additional_info=item.additional_info,
+                portion_quantity=item.portion_quantity,
+                portion_quantity_unit=UnitRecord.from_unit(item.portion_quantity_unit),
+                portion_quantity_display="{:f}".format(
+                    item.portion_quantity.normalize()
+                ),
+            )
+        )
+
+    return records
 
 
 def get_steps_for_recipes(
@@ -20,7 +62,7 @@ def get_steps_for_recipes(
         records[recipe_id] = []
 
     steps = RecipeStep.objects.filter(recipe_id__in=recipe_ids).order_by("number")
-    ingredient_items = get_recipe_ingredient_items_for_steps(
+    ingredient_items = get_step_ingredient_items_for_steps(
         step_ids=[step.id for step in steps]
     )
 

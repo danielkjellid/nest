@@ -101,25 +101,40 @@ function StepInput({
 
   // Since we need the group index and the ingredient id, back map the ingredient item and find appropriate
   // item group.
-  const getSelectedIngredientGroupItems = useMemo(() => {
-    const sequenceMapping: string[][] = []
-    ingredientGroups.flatMap((ingredientGroup, ingredientGroupIndex) =>
-      ingredientGroup.ingredientItems.map((ingredientItem) => {
-        const ingredientItemFromStep = step.ingredientItems.find(
-          (stepIngredientItem) => ingredientItem.ingredient.id === stepIngredientItem.ingredient.id
+  const selectedIngredientItems = useMemo(() => {
+    const mappedIngredientItems: string[] = []
+
+    step.ingredientItems.flatMap((ingredientItem) => {
+      let ingredientItemGroup: IngredientItemGroup | undefined = undefined
+
+      if ('id' in ingredientItem) {
+        // If we have an id, the ingredient item already exist in the db, and hence back mapping is easier.
+        ingredientItemGroup = ingredientGroups.find((ingredientGroup) =>
+          ingredientGroup.ingredientItems.some((item) => item.id === ingredientItem.id)
         )
+      } else {
+        // If not, we try to match on all the properties of the ingredient item to hopefully find the correct one.
+        // There are some pitfalls here if we have to different groups with the same ingredient item with all data
+        // matching, but it's highly unlikely.
+        ingredientItemGroup = ingredientGroups.find((ingredientGroup) =>
+          ingredientGroup.ingredientItems.some(
+            (item) =>
+              item.ingredient.id === ingredientItem.ingredient.id &&
+              item.portionQuantity === ingredientItem.portionQuantity &&
+              item.portionQuantityUnit.id === ingredientItem.portionQuantityUnit.id &&
+              item.additionalInfo === ingredientItem.additionalInfo
+          )
+        )
+      }
 
-        if (ingredientItemFromStep) {
-          sequenceMapping.push([
-            ingredientGroupIndex.toString(),
-            ingredientItemFromStep?.ingredient.id.toString(),
-          ])
-        }
-      })
-    )
+      if (ingredientItemGroup) {
+        const groupIndex = ingredientGroups.indexOf(ingredientItemGroup)
+        mappedIngredientItems.push(`${groupIndex}-${ingredientItem.ingredient.id}`)
+      }
+    })
 
-    return sequenceMapping.flatMap(([groupIndex, ingredientId]) => `${groupIndex}-${ingredientId}`)
-  }, [ingredientGroups, step])
+    return mappedIngredientItems
+  }, [ingredientGroups, step.ingredientItems])
 
   const getErrorForField = (field: string) => {
     if (!errors) return undefined
@@ -171,7 +186,7 @@ function StepInput({
                 <MultiSelect
                   label="Ingredients"
                   description="Pick ingredients required in this step"
-                  value={getSelectedIngredientGroupItems}
+                  value={selectedIngredientItems}
                   data={ingredientOptions}
                   searchable
                   clearable

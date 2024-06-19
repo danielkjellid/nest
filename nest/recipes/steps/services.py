@@ -1,15 +1,19 @@
 from __future__ import annotations
 
+import functools
 from datetime import timedelta
+from decimal import Decimal
 
 import structlog
+from django.db import transaction
 from pydantic import BaseModel
 
 from nest.core.exceptions import ApplicationError
 
+from ..ingredients.models import RecipeIngredientItem
 from ..ingredients.services import IngredientItem
 from .enums import RecipeStepType
-from .models import RecipeStep
+from .models import RecipeStep, RecipeStepIngredientItem
 
 logger = structlog.get_logger()
 
@@ -42,6 +46,7 @@ def _validate_steps(steps: list[Step]) -> None:
         raise ApplicationError(message="All steps has to have instructions defined.")
 
 
+@transaction.atomic
 def create_or_update_recipe_steps(recipe_id: int, steps: list[Step]) -> None:
     if not steps:
         return None
@@ -72,3 +77,109 @@ def create_or_update_recipe_steps(recipe_id: int, steps: list[Step]) -> None:
         RecipeStep.objects.bulk_update(
             steps_to_update, fields=["number", "duration", "instruction", "step_type"]
         )
+
+    transaction.on_commit(
+        functools.partial(
+            create_or_update_recipe_step_ingredient_items,
+            recipe_id=recipe_id,
+            steps=steps,
+        )
+    )
+
+
+def _find_ingredient_item_id_for_step_item(
+    item: IngredientItem,
+    recipe_ingredient_items: list[RecipeIngredientItem],
+) -> int:
+    if item.id is not None:
+        return item.id
+
+    item_id = next(
+        i.id
+        for i in recipe_ingredient_items
+        if i.ingredient_id == int(item.ingredient_id)
+        and i.portion_quantity == Decimal(item.portion_quantity)
+        and i.portion_quantity_unit_id == int(item.portion_quantity_unit_id)
+        and i.additional_info == item.additional_info
+    )
+
+    return item_id
+
+
+def _find_step_id_for_step_item(step: Step, recipe_steps: list[RecipeStep]) -> int:
+    if step.id is not None:
+        return step.id
+
+    step_id = next(
+        s.id
+        for s in recipe_steps
+        if s.number == step.number
+        and s.duration == timedelta(minutes=step.duration)
+        and s.step_type == step.step_type
+    )
+
+    return step_id
+
+
+def create_or_update_recipe_step_ingredient_items(
+    recipe_id: int, steps: list[Step]
+) -> None:
+    recipe_steps = list(RecipeStep.objects.filter(recipe_id=recipe_id))
+    recipe_ingredient_items = list(
+        RecipeIngredientItem.objects.filter(ingredient_group__recipe_id=recipe_id)
+    )
+    existing_relations = list(
+        RecipeStepIngredientItem.objects.filter(step__recipe_id=recipe_id)
+    )
+
+    relations_to_ignore: list[RecipeStepIngredientItem] = []
+    relations_to_create: list[RecipeStepIngredientItem] = []
+
+    try:
+        for step in steps:
+            step_id = _find_step_id_for_step_item(step=step, recipe_steps=recipe_steps)
+            for ingredient_item in step.ingredient_items:
+                ingredient_item_id = _find_ingredient_item_id_for_step_item(
+                    item=ingredient_item,
+                    recipe_ingredient_items=recipe_ingredient_items,
+                )
+
+                existing_relation = next(
+                    (
+                        step_ingredient_item
+                        for step_ingredient_item in existing_relations
+                        if step_ingredient_item.step_id == step_id
+                        and step_ingredient_item.ingredient_item_id
+                        == ingredient_item_id
+                    ),
+                    None,
+                )
+
+                # Relation already exist, not point in adding it again, but
+                # We don't want to delete it either.
+                if existing_relation is not None:
+                    relations_to_ignore.append(existing_relation)
+                else:
+                    relations_to_create.append(
+                        RecipeStepIngredientItem(
+                            step_id=step_id,
+                            ingredient_item_id=ingredient_item_id,
+                        )
+                    )
+
+    except StopIteration as exc:
+        raise ApplicationError(
+            message="Could not find step or ingredient item to create relation."
+        ) from exc
+
+    relation_ids_to_delete = [
+        relation.id
+        for relation in existing_relations
+        if relation not in relations_to_ignore
+    ]
+
+    if len(relation_ids_to_delete):
+        RecipeStepIngredientItem.objects.filter(id__in=relation_ids_to_delete).delete()
+
+    if len(relations_to_create):
+        RecipeStepIngredientItem.objects.bulk_create(relations_to_create)

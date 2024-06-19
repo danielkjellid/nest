@@ -42,10 +42,14 @@ class RecipePlanItem(BaseModel):
     """
 
     recipe_plan = models.ForeignKey(
-        RecipePlan, on_delete=models.CASCADE, related_name="plan_items"
+        RecipePlan,
+        on_delete=models.CASCADE,
+        related_name="plan_items",
     )
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, related_name="plan_items"
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name="plan_items",
     )
     ordering = models.PositiveIntegerField("ordering")
 

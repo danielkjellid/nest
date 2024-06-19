@@ -120,14 +120,13 @@ export function useForm<T extends object>({
     }
 
     if (validator.errors) {
-      console.error(validator.errors)
       validator.errors.map((error) => {
         const pathParts = error.instancePath.split('/')
         const inputKey = pathParts[pathParts.length - 1]
         const errorMsg = error.message
 
         if (!inputKey || !errorMsg || !schema.required.includes(inputKey)) return
-
+        console.error(error)
         // @ts-ignore
         errors[inputKey] = errorMsg.charAt(0).toUpperCase() + errorMsg.slice(1).toLocaleLowerCase()
       })

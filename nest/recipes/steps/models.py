@@ -4,6 +4,7 @@ from nest.core.models import BaseModel
 
 from .enums import RecipeStepType
 from .managers import (
+    RecipeStepIngredientItemQuerySet,
     RecipeStepQuerySet,
 )
 
@@ -39,3 +40,27 @@ class RecipeStep(BaseModel):
     @property
     def duration_minutes(self) -> int:
         return round(self.duration.seconds / 60)
+
+
+_RecipeStepIngredientItemManager = models.Manager.from_queryset(
+    RecipeStepIngredientItemQuerySet
+)
+
+
+class RecipeStepIngredientItem(BaseModel):
+    """
+    A RecipeStepIngredientItem connects a step and an ingredient item.
+    """
+
+    step = models.ForeignKey(
+        RecipeStep,
+        related_name="ingredient_items",
+        on_delete=models.CASCADE,
+    )
+    ingredient_item = models.ForeignKey(
+        "recipes_ingredients.RecipeIngredientItem",
+        related_name="steps",
+        on_delete=models.CASCADE,
+    )
+
+    objects = _RecipeStepIngredientItemManager()

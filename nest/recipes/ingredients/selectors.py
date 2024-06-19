@@ -41,7 +41,7 @@ def _get_recipe_ingredient_items(
         qs = RecipeIngredientItem.objects.filter(expression)
 
     ingredient_items = list(
-        qs.select_related("ingredient_group", "step").prefetch_related(
+        qs.select_related("ingredient_group").prefetch_related(
             "portion_quantity_unit",
             "ingredient",
             "ingredient__product",
@@ -69,42 +69,6 @@ def get_recipe_ingredient_items_for_groups(
 
     for item in ingredient_items:
         records[item.ingredient_group_id].append(
-            RecipeIngredientItemRecord(
-                id=item.id,
-                group_title=item.ingredient_group.title,
-                ingredient=RecipeIngredientRecord.from_db_model(item.ingredient),
-                additional_info=item.additional_info,
-                portion_quantity=item.portion_quantity,
-                portion_quantity_unit=UnitRecord.from_unit(item.portion_quantity_unit),
-                portion_quantity_display="{:f}".format(
-                    item.portion_quantity.normalize()
-                ),
-            )
-        )
-
-    return records
-
-
-def get_recipe_ingredient_items_for_steps(
-    *, step_ids: Iterable[int]
-) -> FetchedResult[list[RecipeIngredientItemRecord]]:
-    """
-    Get a list of RecipeIngredientItemRecord that based on related steps.
-    """
-    records: FetchedResult[list[RecipeIngredientItemRecord]] = {}
-
-    for step_id in step_ids:
-        records[step_id] = []
-
-    ingredient_items = _get_recipe_ingredient_items(Q(step_id__in=step_ids))
-
-    for item in ingredient_items:
-        item_step_id = getattr(item, "step_id", None)
-
-        if item_step_id is None:
-            continue
-
-        records[item_step_id].append(
             RecipeIngredientItemRecord(
                 id=item.id,
                 group_title=item.ingredient_group.title,

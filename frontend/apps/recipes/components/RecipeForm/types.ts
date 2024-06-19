@@ -17,6 +17,7 @@ export interface IngredientItem
     RecipeIngredientItemRecord,
     'ingredient' | 'portionQuantityUnit' | 'additionalInfo'
   > {
+  id?: number
   portionQuantity: string | number // Allow empty string for input
 }
 export interface IngredientItemGroup

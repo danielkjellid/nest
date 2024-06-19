@@ -4,7 +4,6 @@ from nest.products.core.models import Product
 from nest.products.core.tests.utils import create_product
 from nest.recipes.core.models import Recipe
 from nest.recipes.core.tests.utils import create_recipe
-from nest.recipes.steps.models import RecipeStep
 from nest.units.tests.utils import get_unit
 
 from ..models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
@@ -47,7 +46,6 @@ def create_recipe_ingredient_item(
     *,
     ingredient_group: RecipeIngredientItemGroup | None = None,
     ingredient: RecipeIngredient | None = None,
-    step: RecipeStep | None = None,
     additional_info: str | None = None,
     portion_quantity: str = "100.00",
     portion_quantity_unit: str = "g",
@@ -64,7 +62,6 @@ def create_recipe_ingredient_item(
     ingredient_item = RecipeIngredientItem.objects.create(
         ingredient_group=ingredient_group,
         ingredient=ingredient,
-        step=step,
         additional_info=additional_info,
         portion_quantity=Decimal(portion_quantity),
         portion_quantity_unit=get_unit(portion_quantity_unit),

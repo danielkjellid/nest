@@ -28,7 +28,6 @@ class TestRecipeStepsSelectors:
             ingredient_group=create_recipe_ingredient_item_group(
                 title="Group 1", recipe=recipe1
             ),
-            step=recipe1_step,
             ingredient=create_recipe_ingredient(
                 title="Tomatoes, red", product=create_product(name="Red tomatoes")
             ),
@@ -42,7 +41,6 @@ class TestRecipeStepsSelectors:
             ingredient_group=create_recipe_ingredient_item_group(
                 title="Group 2", recipe=recipe2, ordering=1
             ),
-            step=recipe2_step1,
             ingredient=create_recipe_ingredient(
                 title="Sausage", product=create_product(name="Italian sausage")
             ),
@@ -55,13 +53,12 @@ class TestRecipeStepsSelectors:
             ingredient_group=create_recipe_ingredient_item_group(
                 title="Group 2", recipe=recipe2, ordering=1
             ),
-            step=recipe2_step2,
             ingredient=create_recipe_ingredient(
                 title="Bacon", product=create_product(name="Bacon")
             ),
         )
 
-        with django_assert_num_queries(6):
+        with django_assert_num_queries(2):
             steps = get_steps_for_recipes(recipe_ids=[recipe1.id, recipe2.id])
 
         assert steps[recipe1.id][0].id == recipe1_step.id

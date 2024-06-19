@@ -3,13 +3,11 @@ from django.db.models import Q
 
 from nest.products.core.tests.utils import create_product
 from nest.recipes.core.tests.utils import create_recipe
-from nest.recipes.steps.tests.utils import create_recipe_step
 
 from ..selectors import (
     _get_recipe_ingredient_items,
     get_recipe_ingredient_item_groups_for_recipes,
     get_recipe_ingredient_items_for_groups,
-    get_recipe_ingredient_items_for_steps,
     get_recipe_ingredients,
 )
 from .utils import (
@@ -32,9 +30,6 @@ class TestRecipeIngredientsSelectors:
             ingredient_group=create_recipe_ingredient_item_group(
                 title="Group 1", recipe=recipe1
             ),
-            step=create_recipe_step(
-                recipe=recipe1, number=1, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Tomatoes, red", product=create_product(name="Red tomatoes")
             ),
@@ -43,9 +38,6 @@ class TestRecipeIngredientsSelectors:
         create_recipe_ingredient_item(
             ingredient_group=create_recipe_ingredient_item_group(
                 title="Group 2", recipe=recipe2
-            ),
-            step=create_recipe_step(
-                recipe=recipe2, number=1, instruction="Some instruction"
             ),
             ingredient=create_recipe_ingredient(
                 title="Sausage", product=create_product(name="Italian sausage")
@@ -74,23 +66,6 @@ class TestRecipeIngredientsSelectors:
         assert len(ingredient_items.keys()) == 3
         assert all(key in group_ids for key in ingredient_items.keys())
 
-    def test_selector_get_ingredient_items_for_steps(self, mocker):
-        """
-        Make sure that the get_ingredient_items_for_steps selector calls the
-        _get_ingredient_items selector with correct filter expression.
-        """
-
-        step_ids = [4, 5, 6, 7]
-        selector_mock = mocker.patch(
-            "nest.recipes.ingredients.selectors._get_recipe_ingredient_items"
-        )
-        ingredient_items = get_recipe_ingredient_items_for_steps(step_ids=step_ids)
-
-        selector_mock.assert_called_once_with(Q(step_id__in=step_ids))
-
-        assert len(ingredient_items.keys()) == 4
-        assert all(key in step_ids for key in ingredient_items.keys())
-
     def test_selector_get_ingredient_item_groups_for_recipes(
         self, django_assert_num_queries
     ):
@@ -104,9 +79,6 @@ class TestRecipeIngredientsSelectors:
         )
         create_recipe_ingredient_item(
             ingredient_group=recipe1_ingredient_item_group,
-            step=create_recipe_step(
-                recipe=recipe1, number=1, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Tomatoes, red", product=create_product(name="Red tomatoes")
             ),
@@ -117,9 +89,6 @@ class TestRecipeIngredientsSelectors:
         )
         create_recipe_ingredient_item(
             ingredient_group=recipe2_ingredient_item_group1,
-            step=create_recipe_step(
-                recipe=recipe2, number=1, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Sausage", product=create_product(name="Italian sausage")
             ),
@@ -129,9 +98,6 @@ class TestRecipeIngredientsSelectors:
         )
         create_recipe_ingredient_item(
             ingredient_group=recipe2_ingredient_item_group2,
-            step=create_recipe_step(
-                recipe=recipe2, number=2, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Bacon", product=create_product(name="Bacon")
             ),
