@@ -21,7 +21,11 @@ def get_step_ingredient_items_for_steps(
 
     step_ingredient_items = RecipeStepIngredientItem.objects.filter(
         step_id__in=step_ids
-    ).select_related("ingredient_item__ingredient__product__unit")
+    ).select_related(
+        "ingredient_item__ingredient_group",
+        "ingredient_item__ingredient__product__unit",
+        "ingredient_item__portion_quantity_unit",
+    )
 
     for step_ingredient_item in step_ingredient_items:
         if step_ingredient_item.ingredient_item is None:
