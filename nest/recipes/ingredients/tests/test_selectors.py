@@ -31,9 +31,6 @@ class TestRecipeIngredientsSelectors:
             ingredient_group=create_recipe_ingredient_item_group(
                 title="Group 1", recipe=recipe1
             ),
-            step=create_recipe_step(
-                recipe=recipe1, number=1, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Tomatoes, red", product=create_product(name="Red tomatoes")
             ),
@@ -42,9 +39,6 @@ class TestRecipeIngredientsSelectors:
         create_recipe_ingredient_item(
             ingredient_group=create_recipe_ingredient_item_group(
                 title="Group 2", recipe=recipe2
-            ),
-            step=create_recipe_step(
-                recipe=recipe2, number=1, instruction="Some instruction"
             ),
             ingredient=create_recipe_ingredient(
                 title="Sausage", product=create_product(name="Italian sausage")
@@ -86,9 +80,6 @@ class TestRecipeIngredientsSelectors:
         )
         create_recipe_ingredient_item(
             ingredient_group=recipe1_ingredient_item_group,
-            step=create_recipe_step(
-                recipe=recipe1, number=1, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Tomatoes, red", product=create_product(name="Red tomatoes")
             ),
@@ -99,9 +90,6 @@ class TestRecipeIngredientsSelectors:
         )
         create_recipe_ingredient_item(
             ingredient_group=recipe2_ingredient_item_group1,
-            step=create_recipe_step(
-                recipe=recipe2, number=1, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Sausage", product=create_product(name="Italian sausage")
             ),
@@ -111,9 +99,6 @@ class TestRecipeIngredientsSelectors:
         )
         create_recipe_ingredient_item(
             ingredient_group=recipe2_ingredient_item_group2,
-            step=create_recipe_step(
-                recipe=recipe2, number=2, instruction="Some instruction"
-            ),
             ingredient=create_recipe_ingredient(
                 title="Bacon", product=create_product(name="Bacon")
             ),

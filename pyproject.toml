@@ -163,6 +163,8 @@ markers = [
     "recipe: mark a single recipe",
     "recipes: mark a collection of recipes",
     "recipe_steps: mark a collection of recipe steps",
+    "recipe_step_ingredient_item: mark a single recipe step ingredient item",
+    "recipe_step_ingredient_items: mark a collection of recipe step ingredient item",
     "recipe_ingredient: mark a single recipe ingredient",
     "recipe_ingredients: mark a collection of recipe ingredients",
     "recipe_ingredient_items: mark a collection of recipe ingredient items",
