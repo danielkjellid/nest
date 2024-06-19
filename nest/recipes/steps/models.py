@@ -4,8 +4,8 @@ from nest.core.models import BaseModel
 
 from .enums import RecipeStepType
 from .managers import (
-    RecipeStepQuerySet,
     RecipeStepIngredientItemQuerySet,
+    RecipeStepQuerySet,
 )
 
 _RecipeStepManager = models.Manager.from_queryset(RecipeStepQuerySet)

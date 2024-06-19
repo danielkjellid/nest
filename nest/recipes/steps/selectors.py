@@ -1,11 +1,11 @@
 from typing import Iterable
 
 from nest.core.types import FetchedResult
-from ..ingredients.records import RecipeIngredientItemRecord, RecipeIngredientRecord
 
+from ...units.records import UnitRecord
+from ..ingredients.records import RecipeIngredientItemRecord, RecipeIngredientRecord
 from .models import RecipeStep, RecipeStepIngredientItem
 from .records import RecipeStepRecord
-from ...units.records import UnitRecord
 
 
 def get_step_ingredient_items_for_steps(

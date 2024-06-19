@@ -5,11 +5,12 @@ from datetime import timedelta
 from decimal import Decimal
 
 import structlog
+from django.db import models, transaction
 from pydantic import BaseModel
 
 from nest.core.exceptions import ApplicationError
+
 from ..ingredients.models import RecipeIngredientItem
-from django.db import models, transaction
 from ..ingredients.services import IngredientItem
 from .enums import RecipeStepType
 from .models import RecipeStep, RecipeStepIngredientItem
@@ -89,7 +90,7 @@ def create_or_update_recipe_steps(recipe_id: int, steps: list[Step]) -> None:
 def _find_ingredient_item_id_for_step_item(
     item: IngredientItem,
     recipe_ingredient_items: models.QuerySet[RecipeIngredientItem],
-):
+) -> int:
     if item.id is not None:
         return item.id
 
@@ -105,7 +106,9 @@ def _find_ingredient_item_id_for_step_item(
     return item_id
 
 
-def _find_step_id_for_step_item(step: Step, recipe_steps: models.QuerySet[RecipeStep]):
+def _find_step_id_for_step_item(
+    step: Step, recipe_steps: models.QuerySet[RecipeStep]
+) -> int:
     if step.id is not None:
         return step.id
 
@@ -120,7 +123,9 @@ def _find_step_id_for_step_item(step: Step, recipe_steps: models.QuerySet[Recipe
     return step_id
 
 
-def create_or_update_recipe_step_ingredient_items(recipe_id: int, steps: list[Step]):
+def create_or_update_recipe_step_ingredient_items(
+    recipe_id: int, steps: list[Step]
+) -> None:
     recipe_steps = RecipeStep.objects.filter(recipe_id=recipe_id)
     recipe_ingredient_items = RecipeIngredientItem.objects.filter(
         ingredient_group__recipe_id=recipe_id

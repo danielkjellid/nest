@@ -12,7 +12,6 @@ from nest.core.services import model_update
 from ..ingredients.services import (
     IngredientGroupItem,
     create_or_update_recipe_ingredient_item_groups,
-    create_or_update_recipe_ingredient_items,
 )
 from ..steps.services import Step, create_or_update_recipe_steps
 from .enums import RecipeDifficulty, RecipeStatus

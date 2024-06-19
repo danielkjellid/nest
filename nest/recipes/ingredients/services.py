@@ -1,6 +1,4 @@
 import functools
-from datetime import timedelta
-from typing import TYPE_CHECKING
 
 import structlog
 from django.db import models, transaction
@@ -9,13 +7,9 @@ from pydantic import BaseModel, Field
 
 from nest.audit_logs.services import log_create_or_updated, log_delete
 from nest.core.exceptions import ApplicationError
-from nest.recipes.steps.models import RecipeStep
 
 from .models import RecipeIngredient, RecipeIngredientItem, RecipeIngredientItemGroup
 from .records import RecipeIngredientRecord
-
-if TYPE_CHECKING:
-    from nest.recipes.steps.services import Step
 
 logger = structlog.get_logger()
 
