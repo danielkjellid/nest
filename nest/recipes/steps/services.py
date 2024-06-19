@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import functools
 from datetime import timedelta
+from decimal import Decimal
 
 import structlog
 from pydantic import BaseModel
@@ -92,15 +93,13 @@ def _find_ingredient_item_id_for_step_item(
     if item.id is not None:
         return item.id
 
-    item_id = (
-        next(
-            i.id
-            for i in recipe_ingredient_items
-            if i.ingredient_id == item.ingredient_id
-            and i.portion_quantity == item.portion_quantity
-            and i.portion_quantity_unit_id == item.portion_quantity_unit_id
-            and i.additional_info == item.additional_info
-        ),
+    item_id = next(
+        i.id
+        for i in recipe_ingredient_items
+        if i.ingredient_id == int(item.ingredient_id)
+        and i.portion_quantity == Decimal(item.portion_quantity)
+        and i.portion_quantity_unit_id == int(item.portion_quantity_unit_id)
+        and i.additional_info == item.additional_info
     )
 
     return item_id
@@ -130,7 +129,6 @@ def create_or_update_recipe_step_ingredient_items(recipe_id: int, steps: list[St
         RecipeStepIngredientItem.objects.filter(step__recipe_id=recipe_id)
     )
 
-    updated_steps: list[int] = []
     steps_to_ignore: list[int] = []
     relations_to_create: list[RecipeStepIngredientItem] = []
 

@@ -38,11 +38,12 @@ const makeStepType = (step: FormStep | RecipeStepRecord, index: number): Step =>
 })
 
 const makeIngredientItemGroupType = (
-  ingredientGroup: FromIngredientItemGroup | RecipeIngredientItemGroupRecord
+  ingredientGroup: FromIngredientItemGroup | RecipeIngredientItemGroupRecord,
+  index: number
 ): IngredientGroupItem => ({
   id: 'id' in ingredientGroup ? ingredientGroup.id : undefined,
   title: ingredientGroup.title,
-  ordering: ingredientGroup.ordering,
+  ordering: index + 1,
   ingredientItems: ingredientGroup.ingredientItems.map((ingredientItem) =>
     makeIngredientItemType(ingredientItem)
   ),
@@ -52,8 +53,8 @@ const makePayload = (recipeData: Recipe): RecipeCreateIn | RecipeEditIn => ({
   baseRecipe: { ...recipeData.baseRecipe },
   steps: [...recipeData.steps.map((step, index) => makeStepType(step, index))],
   ingredientItemGroups: [
-    ...recipeData.ingredientItemGroups.map((ingredientGroup) =>
-      makeIngredientItemGroupType(ingredientGroup)
+    ...recipeData.ingredientItemGroups.map((ingredientGroup, index) =>
+      makeIngredientItemGroupType(ingredientGroup, index)
     ),
   ],
 })

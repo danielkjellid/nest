@@ -178,8 +178,14 @@ def create_or_update_recipe_ingredient_item_groups(
 
     _validate_ingredient_item_groups(ingredient_group_items=ingredient_item_groups)
 
+    existing_groups = list(
+        RecipeIngredientItemGroup.objects.filter(recipe_id=recipe_id)
+    )
+
     groups_to_create: list[RecipeIngredientItemGroup] = []
     groups_to_update: list[RecipeIngredientItemGroup] = []
+
+    # Delete stale groups
 
     for item_group in ingredient_item_groups:
         item_group_id = getattr(item_group, "id", None)
@@ -201,6 +207,15 @@ def create_or_update_recipe_ingredient_item_groups(
             groups_to_update,
             fields=["title", "ordering"],
         )
+
+    group_ids_to_delete = [
+        group.id
+        for group in existing_groups
+        if group.id not in [item_group.id for item_group in groups_to_update]
+    ]
+
+    if len(group_ids_to_delete):
+        RecipeIngredientItemGroup.objects.filter(id__in=group_ids_to_delete).delete()
 
     transaction.on_commit(
         functools.partial(
