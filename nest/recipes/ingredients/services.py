@@ -15,13 +15,21 @@ logger = structlog.get_logger()
 
 
 def create_recipe_ingredient(
-    *, title: str, product_id: int | str, request: HttpRequest | None = None
+    *,
+    title: str,
+    product_id: int | str,
+    request: HttpRequest | None = None,
+    is_base_ingredient: bool = False,
 ) -> RecipeIngredientRecord:
     """
     Create a single ingredient instance.
     """
 
-    ingredient = RecipeIngredient(title=title, product_id=product_id)
+    ingredient = RecipeIngredient(
+        title=title,
+        product_id=product_id,
+        is_base_ingredient=is_base_ingredient,
+    )
     ingredient.full_clean()
     ingredient.save()
 

@@ -16,6 +16,7 @@ from nest.recipes.plans.models import RecipePlan, RecipePlanItem
 from nest.recipes.steps.enums import RecipeStepType
 from nest.recipes.steps.models import RecipeStep, RecipeStepIngredientItem
 
+
 ##########
 # Recipe #
 ##########
@@ -235,6 +236,7 @@ def recipe_step_ingredient_items(
 class RecipeIngredientSpec(TypedDict, total=False):
     title: str
     product: str
+    is_base_ingredient: bool
 
 
 CreateRecipeIngredient = Callable[[RecipeIngredientSpec], RecipeIngredient]
@@ -242,7 +244,11 @@ CreateRecipeIngredient = Callable[[RecipeIngredientSpec], RecipeIngredient]
 
 @pytest.fixture
 def default_recipe_ingredient_spec() -> RecipeIngredientSpec:
-    return RecipeIngredientSpec(title="Sample ingredient", product="default")
+    return RecipeIngredientSpec(
+        title="Sample ingredient",
+        product="default",
+        is_base_ingredient=False,
+    )
 
 
 @pytest.fixture
