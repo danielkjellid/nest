@@ -14,6 +14,7 @@ class RecipeIngredientRecord(BaseModel):
     id: int
     title: str
     product: ProductRecord | None
+    is_base_ingredient: bool = False
 
     @classmethod
     def from_db_model(cls, model: RecipeIngredient) -> RecipeIngredientRecord:
@@ -23,6 +24,7 @@ class RecipeIngredientRecord(BaseModel):
             product=ProductRecord.from_product(model.product)
             if model.product
             else None,
+            is_base_ingredient=model.is_base_ingredient,
         )
 
 

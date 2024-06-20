@@ -2622,6 +2622,11 @@
                     },
                     "product": {
                         "$ref": "#/components/schemas/ProductRecord"
+                    },
+                    "isBaseIngredient": {
+                        "title": "Is Base Ingredient",
+                        "type": "boolean",
+                        "default": false
                     }
                 }
             },
@@ -2997,6 +3002,21 @@
                         "x-min": null,
                         "x-max": null,
                         "x-component": "Select"
+                    },
+                    "isBaseIngredient": {
+                        "title": "Is Base Ingredient",
+                        "type": "boolean",
+                        "x-helpText": "The ingredient is something we expect users to already have available. E.g. salt.",
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": null,
+                        "x-section": null,
+                        "x-order": 3,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "Checkbox",
+                        "default": false
                     }
                 }
             },

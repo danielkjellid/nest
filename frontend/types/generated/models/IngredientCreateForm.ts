@@ -6,5 +6,6 @@
 export type IngredientCreateForm = {
     title: string;
     product?: string;
+    isBaseIngredient?: boolean;
 };
 
