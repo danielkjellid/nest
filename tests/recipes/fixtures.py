@@ -16,7 +16,6 @@ from nest.recipes.plans.models import RecipePlan, RecipePlanItem
 from nest.recipes.steps.enums import RecipeStepType
 from nest.recipes.steps.models import RecipeStep, RecipeStepIngredientItem
 
-
 ##########
 # Recipe #
 ##########
