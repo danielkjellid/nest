@@ -22,7 +22,7 @@ class ProductOdaImportOut(Schema):
 @staff_required
 def product_oda_import_api(
     request: HttpRequest, payload: ProductOdaImportForm
-) -> APIResponse[OdaProductDetailRecord]:
+) -> APIResponse[ProductOdaImportOut]:
     """
     Import product data from id. Note: This does not create a product, it only retrieves
     data.

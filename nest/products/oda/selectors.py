@@ -6,7 +6,7 @@ HasBeenImportedPreviously = bool
 
 
 def retrieve_product_from_oda(
-    *, oda_product_id: int
+    *, oda_product_id: int | str
 ) -> tuple[OdaProductDetailRecord, HasBeenImportedPreviously]:
     """
     Retrieve product from Oda and check if it has been imported previously.
