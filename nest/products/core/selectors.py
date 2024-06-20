@@ -49,7 +49,9 @@ def get_products(
     if oda_ids:
         filters["oda_id__in"] = oda_ids
 
-    products = Product.objects.filter(**filters).select_related("unit").distinct("id")
+    products = (
+        Product.objects.filter(**filters).select_related("unit").order_by("-created_at")
+    )
     ids = [product.id for product in products]
 
     log_entries = get_log_entries_for_objects(model=Product, ids=ids, limit=10)

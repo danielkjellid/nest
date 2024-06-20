@@ -22,7 +22,6 @@ export type { OdaProductCategoryRecord } from './models/OdaProductCategoryRecord
 export type { OdaProductClassifierRecord } from './models/OdaProductClassifierRecord';
 export { OdaProductDetailedInfo } from './models/OdaProductDetailedInfo';
 export { OdaProductDetailRecord } from './models/OdaProductDetailRecord';
-export { OdaProductDetailRecordAPIResponse } from './models/OdaProductDetailRecordAPIResponse';
 export type { OdaProductDiscountRecord } from './models/OdaProductDiscountRecord';
 export type { OdaProductHazardRecord } from './models/OdaProductHazardRecord';
 export type { OdaProductHazardSafetyDataSheetRecord } from './models/OdaProductHazardSafetyDataSheetRecord';
@@ -45,6 +44,8 @@ export type { ProductEditForm } from './models/ProductEditForm';
 export type { ProductEditIn } from './models/ProductEditIn';
 export type { ProductOdaImportConfirmIn } from './models/ProductOdaImportConfirmIn';
 export type { ProductOdaImportForm } from './models/ProductOdaImportForm';
+export type { ProductOdaImportOut } from './models/ProductOdaImportOut';
+export { ProductOdaImportOutAPIResponse } from './models/ProductOdaImportOutAPIResponse';
 export type { ProductRecord } from './models/ProductRecord';
 export { ProductRecordAPIResponse } from './models/ProductRecordAPIResponse';
 export { ProductRecordListAPIResponse } from './models/ProductRecordListAPIResponse';

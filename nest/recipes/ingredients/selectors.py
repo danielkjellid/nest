@@ -17,8 +17,10 @@ def get_recipe_ingredients() -> list[RecipeIngredientRecord]:
     """
     Get a list of all ingredients in the application.
     """
-    ingredients = RecipeIngredient.objects.all().select_related(
-        "product", "product__unit"
+    ingredients = (
+        RecipeIngredient.objects.all()
+        .select_related("product", "product__unit")
+        .order_by("-created_at")
     )
     records = [
         RecipeIngredientRecord.from_db_model(ingredient) for ingredient in ingredients

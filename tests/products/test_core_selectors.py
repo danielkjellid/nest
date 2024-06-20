@@ -37,7 +37,7 @@ def test_selector_get_products(
     assert {p.id for p in all_products} == set(normal_product_ids + oda_product_ids)
     log_entries_mock.assert_called_once_with(
         model=Product,
-        ids=oda_product_ids + normal_product_ids,
+        ids=list(reversed(list(oda_product_ids + normal_product_ids))),
         limit=10,
     )
     log_entries_mock.reset_mock()
@@ -48,7 +48,7 @@ def test_selector_get_products(
     assert {p.id for p in normal_products} == set(normal_product_ids)
     log_entries_mock.assert_called_once_with(
         model=Product,
-        ids=normal_product_ids,
+        ids=list(reversed(normal_product_ids)),
         limit=10,
     )
     log_entries_mock.reset_mock()
@@ -59,7 +59,7 @@ def test_selector_get_products(
     assert {p.id for p in oda_products} == set(oda_product_ids)
     log_entries_mock.assert_called_once_with(
         model=Product,
-        ids=oda_product_ids,
+        ids=list(reversed(oda_product_ids)),
         limit=10,
     )
 

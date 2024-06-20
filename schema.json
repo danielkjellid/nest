@@ -169,7 +169,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OdaProductDetailRecordAPIResponse"
+                                    "$ref": "#/components/schemas/ProductOdaImportOutAPIResponse"
                                 }
                             }
                         }
@@ -2011,8 +2011,25 @@
                     }
                 }
             },
-            "OdaProductDetailRecordAPIResponse": {
-                "title": "OdaProductDetailRecordAPIResponse",
+            "ProductOdaImportOut": {
+                "title": "ProductOdaImportOut",
+                "type": "object",
+                "required": [
+                    "product",
+                    "hasBeenImportedPreviously"
+                ],
+                "properties": {
+                    "product": {
+                        "$ref": "#/components/schemas/OdaProductDetailRecord"
+                    },
+                    "hasBeenImportedPreviously": {
+                        "title": "Has Been Imported Previously",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ProductOdaImportOutAPIResponse": {
+                "title": "ProductOdaImportOutAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -2031,7 +2048,7 @@
                         "type": "string"
                     },
                     "data": {
-                        "$ref": "#/components/schemas/OdaProductDetailRecord"
+                        "$ref": "#/components/schemas/ProductOdaImportOut"
                     }
                 }
             },
