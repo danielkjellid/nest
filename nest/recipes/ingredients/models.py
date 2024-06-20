@@ -20,6 +20,13 @@ class RecipeIngredient(BaseModel):
         blank=True,
         null=True,
     )
+    is_base_ingredient = models.BooleanField(
+        default=False,
+        help_text=(
+            "The ingredient is considered as a base ingredient "
+            "(something you should already have available)."
+        ),
+    )
 
     objects = _RecipeIngredientManager()
 

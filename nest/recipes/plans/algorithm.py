@@ -82,6 +82,7 @@ class PlanDistributor:
                         "portion_quantity": item.portion_quantity,
                         "portion_quantity_unit_abbr": item.portion_quantity_unit.abbreviation,
                         "required_amount": converted_quantity / product.unit_quantity,
+                        "is_base_ingredient": item.ingredient.is_base_ingredient,
                     }
                     product_data.append(data)
 
@@ -114,6 +115,7 @@ class PlanDistributor:
                 self.products_df.filter(
                     (pl.col("recipe_id") != recipe.id)
                     & (pl.col("product_id").is_in(recipe_product_ids))
+                    & (pl.col("is_base_ingredient") is False)
                 )
                 .select("product_id")
                 .count()
@@ -207,9 +209,12 @@ class PlanDistributor:
         # Calculate the total plan price by combining ingredients from all recipes being
         # evaluated. E.g. if recipe 1 needs 0,5 cheese, and recipe 2 needs 0,5 cheese,
         # we aggregate these into requiring 1 cheese in total, and thereafter
-        # calculating the price.
+        # calculating the price. We exclude base ingredients from the aggregated total.
         total_plan_price = (
-            self.products_df.filter(pl.col("recipe_id").is_in(recipes_df_ids))
+            self.products_df.filter(
+                (pl.col("recipe_id").is_in(recipes_df_ids))
+                & (pl.col("is_base_ingredient") is False)
+            )
             .select(
                 [
                     "recipe_id",

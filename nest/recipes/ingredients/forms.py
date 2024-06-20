@@ -20,3 +20,11 @@ class IngredientCreateForm(BaseModel):
         order=2,
         component=FrontendComponents.SELECT.value,
     )
+    is_base_ingredient: bool = FormField(
+        False,
+        order=3,
+        help_text=(
+            "The ingredient is something we expect users to already have available. "
+            "E.g. salt."
+        ),
+    )
