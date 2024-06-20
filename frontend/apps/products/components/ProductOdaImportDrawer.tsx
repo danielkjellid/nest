@@ -1,4 +1,4 @@
-import { Badge } from '@mantine/core'
+import { Alert, Badge } from '@mantine/core'
 import { useState } from 'react'
 
 import { Button, type ButtonProps } from '../../../components/Button'
@@ -9,8 +9,8 @@ import { useForm } from '../../../hooks/forms'
 import { useCommonStyles } from '../../../styles/common'
 import {
   type ProductOdaImportForm,
-  type OdaProductDetailRecord,
-  type OdaProductDetailRecordAPIResponse,
+  type ProductOdaImportOutAPIResponse,
+  type ProductOdaImportOut,
 } from '../../../types'
 import { urls } from '../../urls'
 
@@ -26,7 +26,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
    ***********/
   const { classes } = useCommonStyles()
   const form = useForm<ProductOdaImportForm>({ key: 'ProductOdaImportForm' })
-  const [fetchedProduct, setFetchedProduct] = useState<OdaProductDetailRecord | null>()
+  const [fetchedProductData, setFetchedProductData] = useState<ProductOdaImportOut | null>()
   const [importLoadingState, setImportLoadingState] =
     useState<ButtonProps['loadingState']>('initial')
 
@@ -37,20 +37,20 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
   const close = () => {
     onClose()
     form.resetForm()
-    setFetchedProduct(null)
+    setFetchedProductData(null)
   }
 
   const fetchOdaProduct = async () => {
     try {
       form.setLoadingState('loading')
-      const response = await performPost<OdaProductDetailRecordAPIResponse>({
+      const response = await performPost<ProductOdaImportOutAPIResponse>({
         url: urls.products.oda.import(),
         ...form.buildPayload(),
       })
       form.setLoadingState('success')
 
       if (response && response.data) {
-        setFetchedProduct(response.data)
+        setFetchedProductData(response.data)
       }
     } catch (e) {
       const errorResponse = (e as any).response.data
@@ -62,12 +62,12 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
   }
 
   const importOdaProduct = async () => {
-    if (!fetchedProduct) return
+    if (!fetchedProductData) return
     try {
       setImportLoadingState('loading')
       await performPost({
         url: urls.products.oda.importConfirm(),
-        data: { odaProductId: fetchedProduct.id },
+        data: { odaProductId: fetchedProductData.product.id },
       })
       setImportLoadingState('success')
       close()
@@ -94,7 +94,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
           </Button>
           <Button
             loadingState={importLoadingState}
-            disabled={!fetchedProduct}
+            disabled={!fetchedProductData || fetchedProductData.hasBeenImportedPreviously}
             onClick={() => importOdaProduct()}
           >
             Import product
@@ -119,23 +119,27 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
           },
         }}
       />
-      {fetchedProduct && (
-        <div className="mt-6">
+      {fetchedProductData && (
+        <div className="mt-6 space-y-6">
+          {fetchedProductData.hasBeenImportedPreviously && (
+            <Alert color="red">This product is already imported.</Alert>
+          )}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
               <img
                 className={`object-contain w-16 h-16 p-1 border-2 ${classes.border} border-solid rounded-lg bg-white`}
-                src={fetchedProduct.images[0].thumbnail.url}
+                src={fetchedProductData.product.images[0].thumbnail.url}
                 alt=""
               />
               <div className="w-80 overflow-hidden">
                 <div className="whitespace-nowrap text-ellipsis overflow-hidden text-lg font-semibold leading-6">
-                  {fetchedProduct.fullName},{' '}
-                  {Number(fetchedProduct.grossPrice) / Number(fetchedProduct.grossUnitPrice)}{' '}
-                  {fetchedProduct.unitPriceQuantityAbbreviation}
+                  {fetchedProductData.product.fullName},{' '}
+                  {Number(fetchedProductData.product.grossPrice) /
+                    Number(fetchedProductData.product.grossUnitPrice)}{' '}
+                  {fetchedProductData.product.unitPriceQuantityAbbreviation}
                 </div>
-                {fetchedProduct.brand ? (
-                  <div className="mt-1 text-sm">{fetchedProduct.brand}</div>
+                {fetchedProductData.product.brand ? (
+                  <div className="mt-1 text-sm">{fetchedProductData.product.brand}</div>
                 ) : (
                   <div className="mt-1 text-sm">Unknown supplier</div>
                 )}
@@ -145,7 +149,7 @@ function ProductOdaImportDrawer({ opened, onClose, refetch }: ProductOdaImportDr
               <Badge size="lg" color="green">
                 Available
               </Badge>
-              <div className="mt-2 text-sm">{fetchedProduct.grossPrice} kr</div>
+              <div className="mt-2 text-sm">{fetchedProductData.product.grossPrice} kr</div>
             </div>
           </div>
         </div>

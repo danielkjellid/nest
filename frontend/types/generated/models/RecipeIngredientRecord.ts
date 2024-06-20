@@ -9,5 +9,6 @@ export type RecipeIngredientRecord = {
     id: number;
     title: string;
     product?: ProductRecord;
+    isBaseIngredient?: boolean;
 };
 
