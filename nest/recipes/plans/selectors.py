@@ -35,8 +35,8 @@ def find_recipes_applicable_for_plan(
     return list(recipes.values())
 
 
-def get_recipe_plan_items_for_plan(
-    plan_ids: list[int]
+def get_recipe_plan_items_for_plans(
+    *, plan_ids: list[int]
 ) -> FetchedResult[list[RecipePlanItemRecord]]:
     """
     Get relevant recipe plan items for a recipe plan.
@@ -81,7 +81,7 @@ def get_recipe_plans_for_home(*, home_id: int) -> list[RecipePlanRecord]:
     plans = RecipePlan.objects.filter(home_id=home_id).order_by("-created_at")
 
     plan_ids = [plan.id for plan in plans]
-    plan_items = get_recipe_plan_items_for_plan(plan_ids=plan_ids)
+    plan_items = get_recipe_plan_items_for_plans(plan_ids=plan_ids)
 
     return [
         RecipePlanRecord(

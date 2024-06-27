@@ -459,6 +459,7 @@ class RecipePlanSpec(TypedDict, total=False):
     title: str
     description: str | None
     slug: str
+    home: str
     from_date: datetime
 
 
@@ -470,15 +471,23 @@ def default_recipe_plan_spec() -> RecipePlanSpec:
     return RecipePlanSpec(
         title="Recipe test plan",
         description=None,
+        home="default",
         slug="recipe-test-plan",
         from_date=timezone.now(),
     )
 
 
 @pytest.fixture
-def create_recipe_plan_from_spec(db) -> CreateRecipePlan:
+def create_recipe_plan_from_spec(
+    db, get_related_instance, home, homes
+) -> CreateRecipePlan:
     def _create_recipe_plan(spec: RecipePlanSpec) -> RecipePlan:
-        recipe_plan, _created = RecipePlan.objects.get_or_create(**spec)
+        home_from_spec = get_related_instance(
+            key="home", spec=spec, related_instance=home, related_instances=homes
+        )
+        recipe_plan, _created = RecipePlan.objects.get_or_create(
+            home=home_from_spec, **spec
+        )
         return recipe_plan
 
     return _create_recipe_plan
