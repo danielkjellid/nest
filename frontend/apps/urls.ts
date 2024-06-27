@@ -22,6 +22,10 @@ const urls = {
       create: () => '/api/v1/recipes/ingredients/create/',
       delete: () => '/api/v1/recipes/ingredients/delete/',
     },
+
+    plans: {
+      list: ({ id }: { id: Param }) => `/api/v1/recipes/plans/homes/${id}/`,
+    },
   },
   users: {
     list: () => '/api/v1/users/',

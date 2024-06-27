@@ -91,6 +91,7 @@ function Table<TData extends object>({
         density: 'xs',
         showGlobalFilter: true,
         pagination: { pageSize: 25, pageIndex: 0 },
+        grouping: ['planTitle'],
       }}
       state={{ rowSelection: rowSelection }}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -123,6 +124,8 @@ function Table<TData extends object>({
         withBorder: false,
         shadow: 'sm',
       }}
+      enableGrouping={true}
+      positionToolbarAlertBanner="none"
     />
   )
 }

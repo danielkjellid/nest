@@ -8,6 +8,7 @@ from nest.recipes.core.records import RecipeRecord
 class RecipePlanItemRecord(BaseModel):
     id: int
     plan_id: int
+    plan_title: str
     recipe: RecipeRecord
 
 

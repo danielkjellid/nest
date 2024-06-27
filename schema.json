@@ -482,6 +482,43 @@
                 ]
             }
         },
+        "/api/v1/recipes/plans/homes/{home_id}/": {
+            "get": {
+                "operationId": "recipe_plan_list_api",
+                "summary": "Recipe Plan List Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "home_id",
+                        "schema": {
+                            "title": "Home Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipePlanRecordListAPIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Recipe plans"
+                ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/units/": {
             "get": {
                 "operationId": "unit_list_api",
@@ -3074,6 +3111,103 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/RecipeIngredientRecord"
+                        }
+                    }
+                }
+            },
+            "RecipePlanItemRecord": {
+                "title": "RecipePlanItemRecord",
+                "type": "object",
+                "required": [
+                    "id",
+                    "planId",
+                    "planTitle",
+                    "recipe"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "planId": {
+                        "title": "Plan Id",
+                        "type": "integer"
+                    },
+                    "planTitle": {
+                        "title": "Plan Title",
+                        "type": "string"
+                    },
+                    "recipe": {
+                        "$ref": "#/components/schemas/RecipeRecord"
+                    }
+                }
+            },
+            "RecipePlanRecord": {
+                "title": "RecipePlanRecord",
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "slug",
+                    "fromDate",
+                    "items"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "type": "string"
+                    },
+                    "slug": {
+                        "title": "Slug",
+                        "type": "string"
+                    },
+                    "fromDate": {
+                        "title": "From Date",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "items": {
+                        "title": "Items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipePlanItemRecord"
+                        }
+                    }
+                }
+            },
+            "RecipePlanRecordListAPIResponse": {
+                "title": "RecipePlanRecordListAPIResponse",
+                "type": "object",
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "title": "Status",
+                        "type": "string",
+                        "enum": [
+                            "success",
+                            "error"
+                        ]
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "title": "Data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RecipePlanRecord"
                         }
                     }
                 }

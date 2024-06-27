@@ -2,6 +2,10 @@ from datetime import timedelta
 
 from django.utils import timezone
 
+from nest.core.types import FetchedResult
+from nest.recipes.core.selectors import get_recipes
+from nest.recipes.plans.models import RecipePlan, RecipePlanItem
+from nest.recipes.plans.records import RecipePlanRecord, RecipePlanItemRecord
 from nest.recipes.core.enums import RecipeStatus
 from nest.recipes.core.models import Recipe
 from nest.recipes.core.records import RecipeDetailRecord, RecipeDurationRecord
@@ -19,7 +23,7 @@ def find_recipes_applicable_for_plan(
 ) -> list[RecipeDetailRecord]:
     grace_period = grace_period_weeks or RECIPE_GRACE_PERIOD_WEEKS
     first_possible_from_date = timezone.now() - timedelta(weeks=float(grace_period))
-    print(first_possible_from_date.date())
+
     recipes = (
         Recipe.objects.exclude(
             plan_items__recipe_plan__from_date__lt=first_possible_from_date,
@@ -60,4 +64,47 @@ def find_recipes_applicable_for_plan(
             num_plan_usages=getattr(recipe, "num_plan_usages", 0),
         )
         for recipe in recipes
+    ]
+
+
+def get_recipe_plan_items_for_plan(
+    plan_ids: list[int]
+) -> FetchedResult[list[RecipePlanItemRecord]]:
+    result = {plan_id: [] for plan_id in plan_ids}
+    plan_items = RecipePlanItem.objects.filter(
+        recipe_plan_id__in=plan_ids
+    ).select_related("recipe_plan")
+
+    recipe_ids = [plan_item.recipe_id for plan_item in plan_items]
+    recipes = get_recipes(recipe_ids=recipe_ids)
+
+    for plan_item in plan_items:
+        result[plan_item.recipe_plan_id].append(
+            RecipePlanItemRecord(
+                id=plan_item.id,
+                plan_id=plan_item.recipe_plan_id,
+                plan_title=plan_item.recipe_plan.title,
+                recipe=recipes[plan_item.recipe_id],
+            )
+        )
+
+    return result
+
+
+def get_recipe_plans_for_home(*, home_id: int) -> list[RecipePlanRecord]:
+    plans = RecipePlan.objects.filter(home_id=home_id).order_by("-created_at")
+
+    plan_ids = [plan.id for plan in plans]
+    plan_items = get_recipe_plan_items_for_plan(plan_ids=plan_ids)
+
+    return [
+        RecipePlanRecord(
+            id=plan.id,
+            title=plan.title,
+            description=plan.description,
+            slug=plan.slug,
+            from_date=plan.from_date,
+            items=plan_items[plan.id],
+        )
+        for plan in plans
     ]
