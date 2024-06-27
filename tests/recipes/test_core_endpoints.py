@@ -12,7 +12,7 @@ from nest.recipes.core.endpoints import (
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
 
 from ..factories.endpoints import Endpoint, EndpointFactory, FactoryMock, Request
-from ..factories.records import RecipeDetailRecordFactory, RecipeRecordFactory
+from ..factories.records import RecipeDetailRecordFactory
 from ..helpers.clients import (
     anonymous_client,
     authenticated_client,

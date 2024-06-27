@@ -4,8 +4,8 @@ import pytest
 from django.urls import reverse
 from store_kit.http import status
 
-from tests.factories.endpoints import EndpointFactory, Endpoint, FactoryMock, Request
 from nest.recipes.plans.endpoints import recipe_plan_list_for_home_api
+from tests.factories.endpoints import Endpoint, EndpointFactory, FactoryMock, Request
 from tests.factories.records import ReipcePlanRecordFactory
 from tests.helpers.clients import authenticated_client
 

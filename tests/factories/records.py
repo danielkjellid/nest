@@ -3,10 +3,10 @@ from polyfactory.factories.pydantic_factory import ModelFactory
 from nest.products.core.records import ProductRecord
 from nest.products.oda.records import OdaProductDetailRecord
 from nest.recipes.core.records import RecipeDetailRecord, RecipeRecord
-from nest.recipes.plans.records import RecipePlanRecord
 from nest.recipes.ingredients.records import (
     RecipeIngredientRecord,
 )
+from nest.recipes.plans.records import RecipePlanRecord
 from nest.users.core.records import UserRecord
 
 
