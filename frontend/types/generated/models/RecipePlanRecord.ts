@@ -8,9 +8,9 @@ import type { RecipePlanItemRecord } from './RecipePlanItemRecord';
 export type RecipePlanRecord = {
     id: number;
     title: string;
-    description: string;
+    description?: string;
     slug: string;
-    fromDate: string;
+    fromDate?: string;
     items: Array<RecipePlanItemRecord>;
 };
 

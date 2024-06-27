@@ -53,6 +53,7 @@ export { RecipeCreateForm } from './models/RecipeCreateForm';
 export type { RecipeCreateIn } from './models/RecipeCreateIn';
 export type { RecipeDetailRecord } from './models/RecipeDetailRecord';
 export { RecipeDetailRecordAPIResponse } from './models/RecipeDetailRecordAPIResponse';
+export { RecipeDetailRecordListAPIResponse } from './models/RecipeDetailRecordListAPIResponse';
 export { RecipeDifficulty } from './models/RecipeDifficulty';
 export type { RecipeDurationRecord } from './models/RecipeDurationRecord';
 export type { RecipeEditIn } from './models/RecipeEditIn';
@@ -66,8 +67,6 @@ export { RecipeIngredientRecordListAPIResponse } from './models/RecipeIngredient
 export type { RecipePlanItemRecord } from './models/RecipePlanItemRecord';
 export type { RecipePlanRecord } from './models/RecipePlanRecord';
 export { RecipePlanRecordListAPIResponse } from './models/RecipePlanRecordListAPIResponse';
-export type { RecipeRecord } from './models/RecipeRecord';
-export { RecipeRecordListAPIResponse } from './models/RecipeRecordListAPIResponse';
 export { RecipeStatus } from './models/RecipeStatus';
 export type { RecipeStepRecord } from './models/RecipeStepRecord';
 export { RecipeStepType } from './models/RecipeStepType';

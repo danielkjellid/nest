@@ -5,7 +5,7 @@ import Table from '../../components/Table'
 import View from '../../components/View'
 import { useCommonContext } from '../../contexts/CommonProvider'
 import { useFetch } from '../../hooks/fetcher'
-import { type RecipePlanRecordListAPIResponse } from '../../types'
+import { type RecipePlanItemRecord, type RecipePlanRecordListAPIResponse } from '../../types'
 import { routes as recipeRoutes } from '../recipe/routes'
 import { urls } from '../urls'
 
@@ -22,7 +22,7 @@ function PlansAppInner({ results }: PlansAppInnerProps) {
       <div className="flex items-center space-x-3">
         <Title weight={600}>Plans</Title>
       </div>
-      <Table<any>
+      <Table<RecipePlanItemRecord>
         initialState={{ grouping: ['planTitle'] }}
         positionToolbarAlertBanner="none"
         rowIdentifier="id"

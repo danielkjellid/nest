@@ -3,12 +3,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { RecipeRecord } from './RecipeRecord';
+import type { RecipeDetailRecord } from './RecipeDetailRecord';
 
 export type RecipePlanItemRecord = {
     id: number;
     planId: number;
     planTitle: string;
-    recipe: RecipeRecord;
+    recipe: RecipeDetailRecord;
 };
 
