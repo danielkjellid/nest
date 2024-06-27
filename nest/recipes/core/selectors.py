@@ -1,56 +1,48 @@
-from nest.core.exceptions import ApplicationError
+from django.db.models import QuerySet
 
+from ...core.exceptions import ApplicationError
+from ...core.types import FetchedResult
 from ..ingredients.selectors import (
-    get_recipe_ingredient_item_groups_for_recipe,
     get_recipe_ingredient_item_groups_for_recipes,
 )
-from ..steps.selectors import get_steps_for_recipe, get_steps_for_recipes
+from ..steps.selectors import get_steps_for_recipes
 from .enums import RecipeDifficulty, RecipeStatus
 from .models import Recipe
 from .records import (
     RecipeDetailRecord,
     RecipeDurationRecord,
-    RecipeRecord,
 )
-from ...core.types import FetchedResult
 
 
 def get_recipe(*, pk: int) -> RecipeDetailRecord:
     """
     Get a recipe instance.
     """
-    recipe = get_recipes(recipe_ids=[pk])[pk]
+    recipe = get_recipes_by_id(recipe_ids=[pk])[pk]
+
+    if not recipe:
+        raise ApplicationError("Recipe was not found", status_code=404)
+
     return recipe
 
 
-def get_recipes(
-    *, recipe_ids: list[int] | None = None
-) -> FetchedResult[RecipeDetailRecord]:
+def get_recipe_data(*, qs: QuerySet[Recipe]) -> FetchedResult[RecipeDetailRecord]:
     """
-    Get a list off all recipes.
+    Core selector for getting recipes. Takes a filtered queryset as parameter and
+    does all annotations and ordering based on that.
     """
+    result: FetchedResult[RecipeDetailRecord] = {}
 
-    result = {recipe_id: None for recipe_id in recipe_ids}
+    recipes = (
+        qs.annotate_duration()  # type: ignore
+        .annotate_num_plan_usages()
+        .order_by("-created_at")
+    )
 
-    if not recipe_ids:
-        recipes = (
-            Recipe.objects.all()
-            .annotate_duration()
-            .annotate_num_plan_usages()
-            .order_by("-created_at")
-        )
-    else:
-        recipes = (
-            Recipe.objects.filter(id__in=recipe_ids)
-            .annotate_duration()
-            .annotate_num_plan_usages()
-            .order_by("-created_at")
-        )
-
-    relevant_recipe_ids = [recipe.id for recipe in recipes]
-    steps = get_steps_for_recipes(recipe_ids=relevant_recipe_ids)
+    recipe_ids = [recipe.id for recipe in recipes]
+    steps = get_steps_for_recipes(recipe_ids=recipe_ids)
     ingredient_groups = get_recipe_ingredient_item_groups_for_recipes(
-        recipe_ids=relevant_recipe_ids
+        recipe_ids=recipe_ids
     )
 
     for recipe in recipes:
@@ -77,3 +69,32 @@ def get_recipes(
         )
 
     return result
+
+
+def get_recipes_by_id(
+    *, recipe_ids: list[int]
+) -> FetchedResult[RecipeDetailRecord | None]:
+    """
+    Get a retrieved recipes based in provided Ids.
+    """
+
+    qs = Recipe.objects.filter(id__in=recipe_ids)
+    result: FetchedResult[RecipeDetailRecord | None] = {
+        recipe_id: None for recipe_id in recipe_ids
+    }
+    recipes = get_recipe_data(qs=qs)
+
+    for recipe_id, recipe in recipes.items():
+        result[recipe_id] = recipe
+
+    return result
+
+
+def get_recipes() -> list[RecipeDetailRecord]:
+    """
+    Get a list off all recipes.
+    """
+
+    qs = Recipe.objects.all()
+    result = get_recipe_data(qs=qs)
+    return [value for value in result.values() if value is not None]

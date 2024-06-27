@@ -7,7 +7,7 @@ import {
   type MRT_TableOptions,
   MantineReactTable,
 } from 'mantine-react-table'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useCommonContext } from '../../contexts/CommonProvider'
 
@@ -28,6 +28,8 @@ interface TableProps<TData extends object> {
   data: TData[]
   actionMenuItems?: MRT_TableOptions<TData>['renderRowActionMenuItems']
   onRowSelectionChange?: (selection: MRT_RowSelectionState) => void
+  initialState?: MRT_TableOptions<TData>['initialState']
+  positionToolbarAlertBanner?: MRT_TableOptions<TData>['positionToolbarAlertBanner']
 }
 
 function Table<TData extends object>({
@@ -36,6 +38,8 @@ function Table<TData extends object>({
   actionMenuItems,
   onRowSelectionChange,
   columns,
+  initialState = {},
+  positionToolbarAlertBanner,
 }: TableProps<TData>) {
   const getColumnDefinitions = (cols: Column<TData>[]) => {
     const columnDefinitions: MRT_ColumnDef<TData>[] = []
@@ -91,7 +95,7 @@ function Table<TData extends object>({
         density: 'xs',
         showGlobalFilter: true,
         pagination: { pageSize: 25, pageIndex: 0 },
-        grouping: ['planTitle'],
+        ...initialState,
       }}
       state={{ rowSelection: rowSelection }}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -124,8 +128,8 @@ function Table<TData extends object>({
         withBorder: false,
         shadow: 'sm',
       }}
-      enableGrouping={true}
-      positionToolbarAlertBanner="none"
+      enableGrouping={'grouping' in initialState}
+      positionToolbarAlertBanner={positionToolbarAlertBanner}
     />
   )
 }

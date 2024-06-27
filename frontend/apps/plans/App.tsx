@@ -23,6 +23,8 @@ function PlansAppInner({ results }: PlansAppInnerProps) {
         <Title weight={600}>Plans</Title>
       </div>
       <Table<any>
+        initialState={{ grouping: ['planTitle'] }}
+        positionToolbarAlertBanner="none"
         rowIdentifier="id"
         columns={[
           {

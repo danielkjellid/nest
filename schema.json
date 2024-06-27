@@ -361,7 +361,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/RecipeRecordListAPIResponse"
+                                    "$ref": "#/components/schemas/RecipeDetailRecordListAPIResponse"
                                 }
                             }
                         }
@@ -2924,76 +2924,8 @@
                     }
                 }
             },
-            "RecipeRecord": {
-                "title": "RecipeRecord",
-                "type": "object",
-                "required": [
-                    "id",
-                    "title",
-                    "slug",
-                    "defaultNumPortions",
-                    "status",
-                    "statusDisplay",
-                    "difficulty",
-                    "difficultyDisplay",
-                    "isVegetarian",
-                    "isPescatarian"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "slug": {
-                        "title": "Slug",
-                        "type": "string"
-                    },
-                    "defaultNumPortions": {
-                        "title": "Default Num Portions",
-                        "type": "integer"
-                    },
-                    "searchKeywords": {
-                        "title": "Search Keywords",
-                        "type": "string"
-                    },
-                    "externalId": {
-                        "title": "External Id",
-                        "type": "string"
-                    },
-                    "externalUrl": {
-                        "title": "External Url",
-                        "type": "string"
-                    },
-                    "status": {
-                        "$ref": "#/components/schemas/RecipeStatus"
-                    },
-                    "statusDisplay": {
-                        "title": "Status Display",
-                        "type": "string"
-                    },
-                    "difficulty": {
-                        "$ref": "#/components/schemas/RecipeDifficulty"
-                    },
-                    "difficultyDisplay": {
-                        "title": "Difficulty Display",
-                        "type": "string"
-                    },
-                    "isVegetarian": {
-                        "title": "Is Vegetarian",
-                        "type": "boolean"
-                    },
-                    "isPescatarian": {
-                        "title": "Is Pescatarian",
-                        "type": "boolean"
-                    }
-                }
-            },
-            "RecipeRecordListAPIResponse": {
-                "title": "RecipeRecordListAPIResponse",
+            "RecipeDetailRecordListAPIResponse": {
+                "title": "RecipeDetailRecordListAPIResponse",
                 "type": "object",
                 "required": [
                     "status"
@@ -3015,7 +2947,7 @@
                         "title": "Data",
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/RecipeRecord"
+                            "$ref": "#/components/schemas/RecipeDetailRecord"
                         }
                     }
                 }
@@ -3138,7 +3070,7 @@
                         "type": "string"
                     },
                     "recipe": {
-                        "$ref": "#/components/schemas/RecipeRecord"
+                        "$ref": "#/components/schemas/RecipeDetailRecord"
                     }
                 }
             },
@@ -3148,9 +3080,7 @@
                 "required": [
                     "id",
                     "title",
-                    "description",
                     "slug",
-                    "fromDate",
                     "items"
                 ],
                 "properties": {
