@@ -6,6 +6,7 @@ from nest.recipes.core.records import RecipeDetailRecord, RecipeRecord
 from nest.recipes.ingredients.records import (
     RecipeIngredientRecord,
 )
+from nest.recipes.plans.records import RecipePlanRecord
 from nest.users.core.records import UserRecord
 
 
@@ -23,6 +24,10 @@ class RecipeDetailRecordFactory(ModelFactory[RecipeDetailRecord]):
 
 class RecipeIngredientRecordFactory(ModelFactory[RecipeIngredientRecord]):
     __model__ = RecipeIngredientRecord
+
+
+class ReipcePlanRecordFactory(ModelFactory[RecipeRecord]):
+    __model__ = RecipePlanRecord
 
 
 class ProductRecordFactory(ModelFactory[ProductRecord]):

@@ -11,7 +11,7 @@ from nest.recipes.ingredients.services import (
 
 from ..steps.services import Step
 from .forms import RecipeCreateForm
-from .records import RecipeDetailRecord, RecipeRecord
+from .records import RecipeDetailRecord
 from .selectors import get_recipe, get_recipes
 from .services import create_recipe, edit_recipe
 
@@ -88,8 +88,8 @@ def recipe_detail_api(
     return APIResponse(status="success", data=recipe)
 
 
-@router.get("/", response=APIResponse[list[RecipeRecord]])
-def recipe_list_api(request: HttpRequest) -> APIResponse[list[RecipeRecord]]:
+@router.get("/", response=APIResponse[list[RecipeDetailRecord]])
+def recipe_list_api(request: HttpRequest) -> APIResponse[list[RecipeDetailRecord]]:
     """
     Get a list of all recipes in the application.
     """

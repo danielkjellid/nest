@@ -12,7 +12,7 @@ from nest.recipes.core.endpoints import (
 from nest.recipes.core.enums import RecipeDifficulty, RecipeStatus
 
 from ..factories.endpoints import Endpoint, EndpointFactory, FactoryMock, Request
-from ..factories.records import RecipeDetailRecordFactory, RecipeRecordFactory
+from ..factories.records import RecipeDetailRecordFactory
 from ..helpers.clients import (
     anonymous_client,
     authenticated_client,
@@ -119,7 +119,7 @@ recipe_list_api_factory = EndpointFactory(
     endpoint=Endpoint(
         url=reverse("api-1.0.0:recipe_list_api"),
         view_func=recipe_list_api,
-        mocks=[FactoryMock("get_recipes", [RecipeRecordFactory.build()])],
+        mocks=[FactoryMock("get_recipes", [RecipeDetailRecordFactory.build()])],
     ),
     requests={
         "authenticated_request": Request(

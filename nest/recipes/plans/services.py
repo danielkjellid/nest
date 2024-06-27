@@ -38,6 +38,7 @@ def create_weekly_recipe_plan_for_home(
         num_pescatarian=0,
         num_vegetarian=0,
         grace_period_weeks=home.num_weeks_recipe_rotation,
+        home_id=home.id,
     )
 
 
@@ -53,6 +54,7 @@ def create_recipe_plan(
     num_pescatarian: int,
     num_vegetarian: int,
     grace_period_weeks: int | None = None,
+    home_id: int | None = None,
 ) -> None:
     plan_slug = slugify(title)
     recipe_plan = RecipePlan.objects.create(
@@ -60,6 +62,7 @@ def create_recipe_plan(
         description=description,
         slug=plan_slug,
         from_date=from_date,
+        home_id=home_id,
     )
 
     applicable_recipes = find_recipes_applicable_for_plan(
