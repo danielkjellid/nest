@@ -7,13 +7,13 @@ import Table from '../../../components/Table'
 import View from '../../../components/View'
 import { useCommonContext } from '../../../contexts/CommonProvider'
 import { useFetch } from '../../../hooks/fetcher'
-import { type RecipeRecord, type RecipeRecordListAPIResponse } from '../../../types'
+import { type RecipeDetailRecord, type RecipeDetailRecordListAPIResponse } from '../../../types'
 import { routes as recipeRoutes } from '../../recipe/routes'
 import { urls } from '../../urls'
 import { routes } from '../routes'
 
 interface RecipeOverviewInnerProps {
-  results: { recipes: RecipeRecordListAPIResponse }
+  results: { recipes: RecipeDetailRecordListAPIResponse }
 }
 
 function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
@@ -36,7 +36,7 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
           </div>
         )}
       </div>
-      <Table<RecipeRecord>
+      <Table<RecipeDetailRecord>
         rowIdentifier="id"
         columns={[
           {
@@ -71,7 +71,7 @@ function RecipeOverviewInner({ results }: RecipeOverviewInnerProps) {
 }
 
 function RecipeOverview() {
-  const recipes = useFetch<RecipeRecordListAPIResponse>(urls.recipes.list())
+  const recipes = useFetch<RecipeDetailRecordListAPIResponse>(urls.recipes.list())
 
   return (
     <View<object, RecipeOverviewInnerProps>
