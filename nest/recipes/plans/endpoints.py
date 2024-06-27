@@ -9,7 +9,7 @@ router = Router(tags=["Recipe plans"])
 
 
 @router.get("/homes/{home_id}/", response=APIResponse[list[RecipePlanRecord]])
-def recipe_plan_list_api(
+def recipe_plan_list_for_home_api(
     request: HttpRequest, home_id: int
 ) -> APIResponse[list[RecipePlanRecord]]:
     recipe_plans = get_recipe_plans_for_home(home_id=home_id)

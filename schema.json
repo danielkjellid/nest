@@ -484,8 +484,8 @@
         },
         "/api/v1/recipes/plans/homes/{home_id}/": {
             "get": {
-                "operationId": "recipe_plan_list_api",
-                "summary": "Recipe Plan List Api",
+                "operationId": "recipe_plan_list_for_home_api",
+                "summary": "Recipe Plan List For Home Api",
                 "parameters": [
                     {
                         "in": "path",
