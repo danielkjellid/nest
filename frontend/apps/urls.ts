@@ -25,6 +25,7 @@ const urls = {
 
     plans: {
       list: ({ id }: { id: Param }) => `/api/v1/recipes/plans/homes/${id}/`,
+      create: ({ id }: { id: Param }) => `/api/v1/recipes/plans/homes/${id}/`,
     },
   },
   users: {

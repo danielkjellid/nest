@@ -509,9 +509,55 @@
                         }
                     }
                 },
+                "description": "Retrieve a list of plans related to a home.",
                 "tags": [
                     "Recipe plans"
                 ],
+                "security": [
+                    {
+                        "SessionAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "recipe_plan_create_for_home_api",
+                "summary": "Recipe Plan Create For Home Api",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "home_id",
+                        "schema": {
+                            "title": "Home Id",
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/APIResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "Recipe plans"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RecipePlanCreateForm"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "security": [
                     {
                         "SessionAuth": []
@@ -1293,21 +1339,7 @@
                     },
                     "displayStyle": {
                         "title": "Display Style",
-                        "type": "string",
-                        "enum": [
-                            "mix_and_match",
-                            "max_items",
-                            "few_left",
-                            "regular_discount",
-                            "is_new",
-                            "recommended",
-                            "in_season",
-                            "bestseller",
-                            "campaign_price",
-                            "wholesale",
-                            "best_in_test",
-                            "test_winner"
-                        ]
+                        "type": "string"
                     }
                 }
             },
@@ -3139,6 +3171,61 @@
                         "items": {
                             "$ref": "#/components/schemas/RecipePlanRecord"
                         }
+                    }
+                }
+            },
+            "RecipePlanCreateForm": {
+                "title": "RecipePlanCreateForm",
+                "type": "object",
+                "x-form": true,
+                "x-columns": 3,
+                "required": [
+                    "budget",
+                    "portionsPerRecipe",
+                    "recipesAmount"
+                ],
+                "properties": {
+                    "budget": {
+                        "title": "Budget",
+                        "type": "string",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 1,
+                        "x-min": null,
+                        "x-max": null,
+                        "x-component": "TextInput"
+                    },
+                    "portionsPerRecipe": {
+                        "title": "Portions Per Recipe",
+                        "type": "integer",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 2,
+                        "x-min": 1,
+                        "x-max": 99,
+                        "x-component": "Counter"
+                    },
+                    "recipesAmount": {
+                        "title": "Recipes Amount",
+                        "type": "integer",
+                        "x-helpText": null,
+                        "x-defaultValue": null,
+                        "x-placeholder": null,
+                        "x-hiddenLabel": false,
+                        "x-colSpan": 1,
+                        "x-section": null,
+                        "x-order": 3,
+                        "x-min": 1,
+                        "x-max": 10,
+                        "x-component": "Counter"
                     }
                 }
             },

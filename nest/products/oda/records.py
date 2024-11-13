@@ -3,6 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+
 ##############
 # Categories #
 ##############
@@ -62,20 +63,7 @@ class OdaProductPromotionRecord(BaseModel):
     text_color: str
     description_short: str | None
     accessibility_text: str
-    display_style: Literal[
-        "mix_and_match",
-        "max_items",
-        "few_left",
-        "regular_discount",
-        "is_new",
-        "recommended",
-        "in_season",
-        "bestseller",
-        "campaign_price",
-        "wholesale",
-        "best_in_test",
-        "test_winner",
-    ]
+    display_style: str
 
 
 ###################

@@ -64,6 +64,7 @@ export type { RecipeIngredientItemGroupRecord } from './models/RecipeIngredientI
 export type { RecipeIngredientItemRecord } from './models/RecipeIngredientItemRecord';
 export type { RecipeIngredientRecord } from './models/RecipeIngredientRecord';
 export { RecipeIngredientRecordListAPIResponse } from './models/RecipeIngredientRecordListAPIResponse';
+export type { RecipePlanCreateForm } from './models/RecipePlanCreateForm';
 export type { RecipePlanItemRecord } from './models/RecipePlanItemRecord';
 export type { RecipePlanRecord } from './models/RecipePlanRecord';
 export { RecipePlanRecordListAPIResponse } from './models/RecipePlanRecordListAPIResponse';

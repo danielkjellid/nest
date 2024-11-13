@@ -76,7 +76,7 @@ export function useForm<T extends object>({
   validator.compile(schema)
 
   useEffect(() => {
-    if (initialData) {
+    if (initialData && !formData) {
       setFormData(structuredClone(initialData))
       setFormKey(key)
     }
