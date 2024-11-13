@@ -27,7 +27,7 @@ class ProductCreateForm(BaseModel):
         help_text="Amount in selected unit type. E.g. 2 if 2 kg.",
         col_span=1,
     )
-    unit_id: int = FormField(
+    unit_id: str = FormField(
         ...,
         alias="unit",
         help_text="What sort of unit is this?",

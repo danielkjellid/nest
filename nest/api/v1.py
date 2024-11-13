@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from ninja.errors import ValidationError as NinjaValidationError
 from pydantic.error_wrappers import ValidationError as PydanticValidationError
@@ -53,6 +54,10 @@ def models_validation_error(
         location = error["loc"]
         field = camelize(location[len(location) - 1])
         field_errors[field] = error["msg"].capitalize()  # type: ignore
+
+    # If in dev move, raise exc instead as its more useful.
+    if settings.DEBUG:
+        raise exc
 
     return api.create_response(
         request,

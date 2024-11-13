@@ -6,7 +6,6 @@
 import type { OdaProductImageInnerRecord } from './OdaProductImageInnerRecord';
 
 export type OdaProductImageRecord = {
-    large: OdaProductImageInnerRecord;
     thumbnail: OdaProductImageInnerRecord;
 };
 

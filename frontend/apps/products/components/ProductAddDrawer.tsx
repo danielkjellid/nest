@@ -13,7 +13,7 @@ interface ProductAddDrawerProps {
 }
 
 function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
-  const form = useForm<ProductCreateForm>({ key: 'ProductCreateForm' })
+  const form = useForm<ProductCreateForm>({ key: 'ProductCreateForm', isMultipart: true })
   const { unitsOptions } = useUnits()
 
   const close = () => {
@@ -24,6 +24,7 @@ function ProductAddDrawer({ opened, onClose, refetch }: ProductAddDrawerProps) {
   const addProduct = async () => {
     await form.performPost({ url: urls.products.create() })
     refetch()
+    close()
   }
 
   return (

@@ -7,7 +7,7 @@ export type ProductCreateForm = {
     name: string;
     grossPrice: string;
     unitQuantity: string;
-    unit: number;
+    unit: (number | string);
     supplier: string;
     gtin?: string;
     ingredients?: string;

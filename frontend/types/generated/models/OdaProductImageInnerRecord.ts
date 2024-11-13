@@ -5,7 +5,5 @@
 
 export type OdaProductImageInnerRecord = {
     url: string;
-    width: number;
-    height: number;
 };
 

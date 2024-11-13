@@ -985,7 +985,7 @@
                     },
                     "unit": {
                         "title": "Unit",
-                        "type": "integer"
+                        "type": "string"
                     },
                     "supplier": {
                         "title": "Supplier",
@@ -1186,181 +1186,16 @@
                     }
                 }
             },
-            "OdaProductClassifierRecord": {
-                "title": "OdaProductClassifierRecord",
-                "description": "Classifiers are specific product attributes at Oda. Such as:\n- Dangerous good\n- Very tender\n- Very fresh\n- Is frozen\n- is organic\n- Vegan\n- Lactose free\n- Gluten free",
-                "type": "object",
-                "required": [
-                    "name",
-                    "isImportant",
-                    "description"
-                ],
-                "properties": {
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "imageUrl": {
-                        "title": "Image Url",
-                        "type": "string"
-                    },
-                    "isImportant": {
-                        "title": "Is Important",
-                        "type": "boolean"
-                    },
-                    "description": {
-                        "title": "Description",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductDiscountRecord": {
-                "title": "OdaProductDiscountRecord",
-                "type": "object",
-                "required": [
-                    "isDiscounted",
-                    "undiscountedGrossPrice",
-                    "undiscountedGrossUnitPrice",
-                    "descriptionShort",
-                    "absoluteUrl"
-                ],
-                "properties": {
-                    "isDiscounted": {
-                        "title": "Is Discounted",
-                        "type": "boolean"
-                    },
-                    "undiscountedGrossPrice": {
-                        "title": "Undiscounted Gross Price",
-                        "type": "string"
-                    },
-                    "undiscountedGrossUnitPrice": {
-                        "title": "Undiscounted Gross Unit Price",
-                        "type": "string"
-                    },
-                    "descriptionShort": {
-                        "title": "Description Short",
-                        "type": "string"
-                    },
-                    "maximumQuantity": {
-                        "title": "Maximum Quantity",
-                        "type": "integer"
-                    },
-                    "remainingQuantity": {
-                        "title": "Remaining Quantity",
-                        "type": "number"
-                    },
-                    "absoluteUrl": {
-                        "title": "Absolute Url",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductPromotionRecord": {
-                "title": "OdaProductPromotionRecord",
-                "type": "object",
-                "required": [
-                    "title",
-                    "titleColor",
-                    "backgroundColor",
-                    "textColor",
-                    "accessibilityText",
-                    "displayStyle"
-                ],
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "titleColor": {
-                        "title": "Title Color",
-                        "type": "string"
-                    },
-                    "backgroundColor": {
-                        "title": "Background Color",
-                        "type": "string"
-                    },
-                    "textColor": {
-                        "title": "Text Color",
-                        "type": "string"
-                    },
-                    "descriptionShort": {
-                        "title": "Description Short",
-                        "type": "string"
-                    },
-                    "accessibilityText": {
-                        "title": "Accessibility Text",
-                        "type": "string"
-                    },
-                    "displayStyle": {
-                        "title": "Display Style",
-                        "type": "string",
-                        "enum": [
-                            "mix_and_match",
-                            "max_items",
-                            "few_left",
-                            "regular_discount",
-                            "is_new",
-                            "recommended",
-                            "in_season",
-                            "bestseller",
-                            "campaign_price",
-                            "wholesale",
-                            "best_in_test",
-                            "test_winner"
-                        ]
-                    }
-                }
-            },
             "OdaProductAvailabilityRecord": {
                 "title": "OdaProductAvailabilityRecord",
                 "type": "object",
                 "required": [
-                    "isAvailable",
-                    "description",
-                    "descriptionShort",
-                    "code"
+                    "isAvailable"
                 ],
                 "properties": {
                     "isAvailable": {
                         "title": "Is Available",
                         "type": "boolean"
-                    },
-                    "description": {
-                        "title": "Description",
-                        "type": "string"
-                    },
-                    "descriptionShort": {
-                        "title": "Description Short",
-                        "type": "string"
-                    },
-                    "code": {
-                        "title": "Code",
-                        "type": "string",
-                        "enum": [
-                            "available",
-                            "available_later",
-                            "not_for_sale",
-                            "restricted_item_user_policy",
-                            "sold_out",
-                            "sold_out_partial",
-                            "sold_out_supplier",
-                            "unavailable_alcohol_time",
-                            "unavailable_temporarily",
-                            "unavailable_unattended",
-                            "unavailable_weekday",
-                            "unknown"
-                        ]
-                    }
-                }
-            },
-            "OdaProductMetadataRecord": {
-                "title": "OdaProductMetadataRecord",
-                "type": "object",
-                "properties": {
-                    "isSponsorLabeled": {
-                        "title": "Is Sponsor Labeled",
-                        "type": "boolean",
-                        "default": false
                     }
                 }
             },
@@ -1368,22 +1203,12 @@
                 "title": "OdaProductImageInnerRecord",
                 "type": "object",
                 "required": [
-                    "url",
-                    "width",
-                    "height"
+                    "url"
                 ],
                 "properties": {
                     "url": {
                         "title": "Url",
                         "type": "string"
-                    },
-                    "width": {
-                        "title": "Width",
-                        "type": "integer"
-                    },
-                    "height": {
-                        "title": "Height",
-                        "type": "integer"
                     }
                 }
             },
@@ -1391,236 +1216,11 @@
                 "title": "OdaProductImageRecord",
                 "type": "object",
                 "required": [
-                    "large",
                     "thumbnail"
                 ],
                 "properties": {
-                    "large": {
-                        "$ref": "#/components/schemas/OdaProductImageInnerRecord"
-                    },
                     "thumbnail": {
                         "$ref": "#/components/schemas/OdaProductImageInnerRecord"
-                    }
-                }
-            },
-            "OdaProductCategoryRecord": {
-                "title": "OdaProductCategoryRecord",
-                "type": "object",
-                "required": [
-                    "id",
-                    "name"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "uri": {
-                        "title": "Uri",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductCategoryDetailRecord": {
-                "title": "OdaProductCategoryDetailRecord",
-                "type": "object",
-                "required": [
-                    "id",
-                    "name",
-                    "slug",
-                    "parents"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "slug": {
-                        "title": "Slug",
-                        "type": "string"
-                    },
-                    "parent": {
-                        "title": "Parent",
-                        "type": "integer"
-                    },
-                    "parents": {
-                        "title": "Parents",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductCategoryRecord"
-                        }
-                    }
-                }
-            },
-            "OdaProductBottleDepositRecord": {
-                "title": "OdaProductBottleDepositRecord",
-                "type": "object",
-                "required": [
-                    "isIncludedInPrice",
-                    "fee"
-                ],
-                "properties": {
-                    "isIncludedInPrice": {
-                        "title": "Is Included In Price",
-                        "type": "boolean"
-                    },
-                    "fee": {
-                        "title": "Fee",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductRecord": {
-                "title": "OdaProductRecord",
-                "type": "object",
-                "required": [
-                    "id",
-                    "fullName",
-                    "name",
-                    "nameExtra",
-                    "frontUrl",
-                    "absoluteUrl",
-                    "grossPrice",
-                    "grossUnitPrice",
-                    "unitPriceQuantityAbbreviation",
-                    "unitPriceQuantityName",
-                    "clientClassifiers",
-                    "currency",
-                    "availability",
-                    "metadata",
-                    "images"
-                ],
-                "properties": {
-                    "id": {
-                        "title": "Id",
-                        "type": "integer"
-                    },
-                    "fullName": {
-                        "title": "Full Name",
-                        "type": "string"
-                    },
-                    "brand": {
-                        "title": "Brand",
-                        "type": "string"
-                    },
-                    "brandId": {
-                        "title": "Brand Id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "nameExtra": {
-                        "title": "Name Extra",
-                        "type": "string"
-                    },
-                    "frontUrl": {
-                        "title": "Front Url",
-                        "type": "string"
-                    },
-                    "absoluteUrl": {
-                        "title": "Absolute Url",
-                        "type": "string"
-                    },
-                    "grossPrice": {
-                        "title": "Gross Price",
-                        "type": "string"
-                    },
-                    "grossUnitPrice": {
-                        "title": "Gross Unit Price",
-                        "type": "string"
-                    },
-                    "unitPriceQuantityAbbreviation": {
-                        "title": "Unit Price Quantity Abbreviation",
-                        "type": "string"
-                    },
-                    "unitPriceQuantityName": {
-                        "title": "Unit Price Quantity Name",
-                        "type": "string"
-                    },
-                    "clientClassifiers": {
-                        "title": "Client Classifiers",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductClassifierRecord"
-                        }
-                    },
-                    "currency": {
-                        "title": "Currency",
-                        "type": "string",
-                        "enum": [
-                            "NOK"
-                        ]
-                    },
-                    "discount": {
-                        "$ref": "#/components/schemas/OdaProductDiscountRecord"
-                    },
-                    "promotion": {
-                        "title": "Promotion",
-                        "deprecated": true,
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/OdaProductPromotionRecord"
-                            }
-                        ]
-                    },
-                    "promotions": {
-                        "title": "Promotions",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductPromotionRecord"
-                        }
-                    },
-                    "availability": {
-                        "$ref": "#/components/schemas/OdaProductAvailabilityRecord"
-                    },
-                    "metadata": {
-                        "$ref": "#/components/schemas/OdaProductMetadataRecord"
-                    },
-                    "images": {
-                        "title": "Images",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductImageRecord"
-                        }
-                    }
-                }
-            },
-            "OdaProductLocalInfoBadgeRecord": {
-                "title": "OdaProductLocalInfoBadgeRecord",
-                "type": "object",
-                "required": [
-                    "badgeClass",
-                    "text",
-                    "label"
-                ],
-                "properties": {
-                    "badgeClass": {
-                        "title": "Badge Class",
-                        "type": "string",
-                        "enum": [
-                            "sodium-warning",
-                            "keep-frozen",
-                            "keep-cool",
-                            "pharmaceutical"
-                        ]
-                    },
-                    "text": {
-                        "title": "Text",
-                        "type": "string"
-                    },
-                    "label": {
-                        "title": "Label",
-                        "type": "string"
                     }
                 }
             },
@@ -1628,8 +1228,7 @@
                 "title": "OdaProductLocalInfoKeywordEmphasisRecord",
                 "type": "object",
                 "required": [
-                    "keywords",
-                    "emphasisType"
+                    "keywords"
                 ],
                 "properties": {
                     "keywords": {
@@ -1638,14 +1237,6 @@
                         "items": {
                             "type": "string"
                         }
-                    },
-                    "emphasisType": {
-                        "title": "Emphasis Type",
-                        "type": "string",
-                        "enum": [
-                            "bold",
-                            "normal"
-                        ]
                     },
                     "reason": {
                         "title": "Reason",
@@ -1669,27 +1260,8 @@
                         "title": "Value",
                         "type": "string"
                     },
-                    "badge": {
-                        "$ref": "#/components/schemas/OdaProductLocalInfoBadgeRecord"
-                    },
-                    "indent": {
-                        "title": "Indent",
-                        "type": "integer"
-                    },
-                    "tooltip": {
-                        "title": "Tooltip",
-                        "type": "string"
-                    },
-                    "link": {
-                        "title": "Link",
-                        "type": "string"
-                    },
                     "emphasis": {
                         "$ref": "#/components/schemas/OdaProductLocalInfoKeywordEmphasisRecord"
-                    },
-                    "keyId": {
-                        "title": "Key Id",
-                        "type": "string"
                     }
                 }
             },
@@ -1700,128 +1272,12 @@
                     "rows"
                 ],
                 "properties": {
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
                     "rows": {
                         "title": "Rows",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/OdaProductLocalInfoTableRow"
                         }
-                    },
-                    "disclaimers": {
-                        "title": "Disclaimers",
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "OdaProductHazardSymbolRecord": {
-                "title": "OdaProductHazardSymbolRecord",
-                "type": "object",
-                "required": [
-                    "code",
-                    "description",
-                    "imageUrl"
-                ],
-                "properties": {
-                    "code": {
-                        "title": "Code",
-                        "type": "string"
-                    },
-                    "description": {
-                        "title": "Description",
-                        "type": "string"
-                    },
-                    "imageUrl": {
-                        "title": "Image Url",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductHazardStatementRecord": {
-                "title": "OdaProductHazardStatementRecord",
-                "type": "object",
-                "required": [
-                    "code",
-                    "description"
-                ],
-                "properties": {
-                    "code": {
-                        "title": "Code",
-                        "type": "string"
-                    },
-                    "description": {
-                        "title": "Description",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductHazardSafetyDataSheetRecord": {
-                "title": "OdaProductHazardSafetyDataSheetRecord",
-                "type": "object",
-                "required": [
-                    "url",
-                    "title",
-                    "linkText"
-                ],
-                "properties": {
-                    "url": {
-                        "title": "Url",
-                        "type": "string"
-                    },
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "linkText": {
-                        "title": "Link Text",
-                        "type": "string"
-                    }
-                }
-            },
-            "OdaProductHazardRecord": {
-                "title": "OdaProductHazardRecord",
-                "type": "object",
-                "required": [
-                    "title"
-                ],
-                "properties": {
-                    "title": {
-                        "title": "Title",
-                        "type": "string"
-                    },
-                    "signalWord": {
-                        "title": "Signal Word",
-                        "type": "string"
-                    },
-                    "symbols": {
-                        "title": "Symbols",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductHazardSymbolRecord"
-                        }
-                    },
-                    "hazardStatements": {
-                        "title": "Hazard Statements",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductHazardStatementRecord"
-                        }
-                    },
-                    "precautionaryStatements": {
-                        "title": "Precautionary Statements",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductHazardStatementRecord"
-                        }
-                    },
-                    "safetyDataSheet": {
-                        "$ref": "#/components/schemas/OdaProductHazardSafetyDataSheetRecord"
                     }
                 }
             },
@@ -1829,42 +1285,15 @@
                 "title": "OdaProductLocalInfo",
                 "type": "object",
                 "required": [
-                    "language",
-                    "languageName",
-                    "localProductName",
-                    "shortDescription",
                     "nutritionInfoTable",
                     "contentsTable"
                 ],
                 "properties": {
-                    "language": {
-                        "title": "Language",
-                        "type": "string"
-                    },
-                    "languageName": {
-                        "title": "Language Name",
-                        "type": "string"
-                    },
-                    "localProductName": {
-                        "title": "Local Product Name",
-                        "type": "string"
-                    },
-                    "shortDescription": {
-                        "title": "Short Description",
-                        "type": "string"
-                    },
-                    "descriptionFromSupplier": {
-                        "title": "Description From Supplier",
-                        "type": "string"
-                    },
                     "nutritionInfoTable": {
                         "$ref": "#/components/schemas/OdaProductLocalInfoTable"
                     },
                     "contentsTable": {
                         "$ref": "#/components/schemas/OdaProductLocalInfoTable"
-                    },
-                    "hazards": {
-                        "$ref": "#/components/schemas/OdaProductHazardRecord"
                     }
                 }
             },
@@ -1872,17 +1301,9 @@
                 "title": "OdaProductDetailedInfo",
                 "type": "object",
                 "required": [
-                    "country",
                     "local"
                 ],
                 "properties": {
-                    "country": {
-                        "title": "Country",
-                        "type": "string",
-                        "enum": [
-                            "NO"
-                        ]
-                    },
                     "local": {
                         "title": "Local",
                         "type": "array",
@@ -1898,23 +1319,13 @@
                 "required": [
                     "id",
                     "fullName",
-                    "name",
-                    "nameExtra",
                     "frontUrl",
-                    "absoluteUrl",
                     "grossPrice",
                     "grossUnitPrice",
                     "unitPriceQuantityAbbreviation",
-                    "unitPriceQuantityName",
-                    "clientClassifiers",
-                    "currency",
                     "availability",
-                    "metadata",
                     "images",
-                    "categories",
-                    "alternativeProducts",
-                    "detailedInfo",
-                    "isRestricted"
+                    "detailedInfo"
                 ],
                 "properties": {
                     "id": {
@@ -1925,28 +1336,12 @@
                         "title": "Full Name",
                         "type": "string"
                     },
-                    "brand": {
-                        "title": "Brand",
-                        "type": "string"
-                    },
-                    "brandId": {
-                        "title": "Brand Id",
-                        "type": "integer"
-                    },
-                    "name": {
-                        "title": "Name",
-                        "type": "string"
-                    },
-                    "nameExtra": {
-                        "title": "Name Extra",
-                        "type": "string"
-                    },
                     "frontUrl": {
                         "title": "Front Url",
                         "type": "string"
                     },
-                    "absoluteUrl": {
-                        "title": "Absolute Url",
+                    "brand": {
+                        "title": "Brand",
                         "type": "string"
                     },
                     "grossPrice": {
@@ -1961,48 +1356,8 @@
                         "title": "Unit Price Quantity Abbreviation",
                         "type": "string"
                     },
-                    "unitPriceQuantityName": {
-                        "title": "Unit Price Quantity Name",
-                        "type": "string"
-                    },
-                    "clientClassifiers": {
-                        "title": "Client Classifiers",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductClassifierRecord"
-                        }
-                    },
-                    "currency": {
-                        "title": "Currency",
-                        "type": "string",
-                        "enum": [
-                            "NOK"
-                        ]
-                    },
-                    "discount": {
-                        "$ref": "#/components/schemas/OdaProductDiscountRecord"
-                    },
-                    "promotion": {
-                        "title": "Promotion",
-                        "deprecated": true,
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/OdaProductPromotionRecord"
-                            }
-                        ]
-                    },
-                    "promotions": {
-                        "title": "Promotions",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductPromotionRecord"
-                        }
-                    },
                     "availability": {
                         "$ref": "#/components/schemas/OdaProductAvailabilityRecord"
-                    },
-                    "metadata": {
-                        "$ref": "#/components/schemas/OdaProductMetadataRecord"
                     },
                     "images": {
                         "title": "Images",
@@ -2011,40 +1366,8 @@
                             "$ref": "#/components/schemas/OdaProductImageRecord"
                         }
                     },
-                    "categories": {
-                        "title": "Categories",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductCategoryDetailRecord"
-                        }
-                    },
-                    "bottleDeposit": {
-                        "$ref": "#/components/schemas/OdaProductBottleDepositRecord"
-                    },
-                    "alternativeProducts": {
-                        "title": "Alternative Products",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductRecord"
-                        }
-                    },
-                    "discountMixAndMatchProducts": {
-                        "title": "Discount Mix And Match Products",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/OdaProductRecord"
-                        }
-                    },
                     "detailedInfo": {
                         "$ref": "#/components/schemas/OdaProductDetailedInfo"
-                    },
-                    "isProductIncludedInProductLists": {
-                        "title": "Is Product Included In Product Lists",
-                        "type": "boolean"
-                    },
-                    "isRestricted": {
-                        "title": "Is Restricted",
-                        "type": "boolean"
                     }
                 }
             },
@@ -3392,7 +2715,7 @@
                     },
                     "unit": {
                         "title": "Unit",
-                        "type": "integer",
+                        "type": "string",
                         "x-helpText": "What sort of unit is this?",
                         "x-defaultValue": null,
                         "x-placeholder": null,

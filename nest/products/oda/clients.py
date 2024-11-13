@@ -44,6 +44,7 @@ class OdaClient(BaseHTTPClient):
                 "Failed to serialize product with OdaProductDetailRecord",
                 serializer=OdaProductDetailRecord,
                 status_code=response.status_code if response else None,
+                error=pexc.errors(),
             )
             raise ApplicationError(
                 message="Failed to serialize product with OdaProductDetailRecord",
